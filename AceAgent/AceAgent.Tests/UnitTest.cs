@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 using ServiceStack;
 using ServiceStack.Testing;
-using AceAgent.ServiceInterface;
-using AceAgent.ServiceModel;
+using AceAgent.BaseServiceInterface;
+using AceAgent.BaseServiceModel;
 
 namespace AceAgent.Tests
 {
@@ -13,7 +13,7 @@ namespace AceAgent.Tests
         public UnitTest()
         {
             appHost = new BasicAppHost().Init();
-            appHost.Container.AddTransient<MyServices>();
+            appHost.Container.AddTransient<BaseServices>();
         }
 
         [OneTimeTearDown]
@@ -22,9 +22,9 @@ namespace AceAgent.Tests
         [Test]
         public void Can_call_MyServices()
         {
-            var service = appHost.Container.Resolve<MyServices>();
+            var service = appHost.Container.Resolve<BaseServiceIsAlive>();
 
-            var response = (HelloResponse)service.Any(new Hello { Name = "World" });
+            var response = (IsAliveResponse)service.Any(new BaseServiceIsAlive {});
 
             Assert.That(response.Result, Is.EqualTo("Hello, World!"));
         }

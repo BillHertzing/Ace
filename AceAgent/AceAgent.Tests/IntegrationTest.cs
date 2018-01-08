@@ -1,8 +1,8 @@
 ﻿using Funq;
 using ServiceStack;
 using NUnit.Framework;
-using AceAgent.ServiceInterface;
-using AceAgent.ServiceModel;
+using AceAgent.BaseServiceInterface;
+using AceAgent.BaseServiceModel;
 
 namespace AceAgent.Tests
 {
@@ -13,7 +13,7 @@ namespace AceAgent.Tests
 
         class AppHost : AppSelfHostBase
         {
-            public AppHost() : base(nameof(IntegrationTest), typeof(MyServices).Assembly) { }
+            public AppHost() : base(nameof(IntegrationTest), typeof(BaseServices).Assembly) { }
 
             public override void Configure(Container container)
             {
@@ -37,7 +37,7 @@ namespace AceAgent.Tests
         {
             var client = CreateClient();
 
-            var response = client.Get(new Hello { Name = "World" });
+            var response = client.Get(new BaseServiceIsAlive {  });
 
             Assert.That(response.Result, Is.EqualTo("Hello, World!"));
         }

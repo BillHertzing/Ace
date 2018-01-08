@@ -98,6 +98,9 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Polly, Version=5.6.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Polly.5.6.1\lib\net45\Polly.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack, Version=5.0.0.0, Culture=neutral, PublicKeyToken=02c12cbda47e6587, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ServiceStack.5.0.2\lib\net45\ServiceStack.dll</HintPath>
     </Reference>
@@ -177,13 +180,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AceAgent.ServiceInterface\AceAgent.ServiceInterface.csproj">
+    <ProjectReference Include="..\AceAgent.ServiceInterface\AceAgent.BaseServiceInterface.csproj">
       <Project>{130DED02-5984-487C-93DD-0D264EED140E}</Project>
-      <Name>AceAgent.ServiceInterface</Name>
+      <Name>AceAgent.BaseServiceInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AceAgent.ServiceModel\AceAgent.ServiceModel.csproj">
+    <ProjectReference Include="..\AceAgent.ServiceModel\AceAgent.BaseServiceModel.csproj">
       <Project>{8D6DE92C-637E-4433-9810-98D7FBCEA6BA}</Project>
-      <Name>AceAgent.ServiceModel</Name>
+      <Name>AceAgent.BaseServiceModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

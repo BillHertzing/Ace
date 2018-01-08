@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent", "AceAgent\AceAgent\AceAgent.csproj", "{CF36BF58-D08F-425A-9A6A-D0A86C506110}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent.ServiceModel", "AceAgent\AceAgent.ServiceModel\AceAgent.ServiceModel.csproj", "{8D6DE92C-637E-4433-9810-98D7FBCEA6BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent.BaseServiceModel", "AceAgent\AceAgent.ServiceModel\AceAgent.BaseServiceModel.csproj", "{8D6DE92C-637E-4433-9810-98D7FBCEA6BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent.ServiceInterface", "AceAgent\AceAgent.ServiceInterface\AceAgent.ServiceInterface.csproj", "{130DED02-5984-487C-93DD-0D264EED140E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent.BaseServiceInterface", "AceAgent\AceAgent.ServiceInterface\AceAgent.BaseServiceInterface.csproj", "{130DED02-5984-487C-93DD-0D264EED140E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent.Tests", "AceAgent\AceAgent.Tests\AceAgent.Tests.csproj", "{12B06E45-12F5-4E56-ADB4-5879D98D3105}"
 EndProject

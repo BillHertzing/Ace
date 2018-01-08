@@ -1,0 +1,301 @@
+    public abstract class MinerStatus<TRequest, TResponse>
+    {
+        public abstract Task<TResponse> GetStatus(TRequest request);
+        public abstract Task<TResponse> GetStatus(TRequest request, CancellationToken cancellationToken);
+    }
+
+    public class ClaymoreMinerStatus : MinerStatus<ClaymoreMinerStatusRequest, ClaymoreMinerStatusReport>
+    {
+        private int maxResponseBufferSize = 1024;
+        private string messageGetStatusRequest = "{\"id\":0,\"jsonrpc\":\"2.0\",\"method\":\"miner_getstat1\"}";
+        public ClaymoreMinerStatus()
+        {
+        }
+        public override async Task<ClaymoreMinerStatusReport>  GetStatus(ClaymoreMinerStatusRequest request, CancellationToken cancellationToken)
+        {
+            // let every exception in this method bubble up
+            Byte[] buffer = new Byte[Tcp.defaultMaxResponseBufferSize];
+            buffer = await Tcp.FetchAsync(request.Host, request.Port, messageGetStatusRequest,  cancellationToken);
+            // ToDo confirm the task returned as expected, deal with cancellation, etc.
+            // convert the responseBuffer to an instance of the proper type
+            var  encoding = new ASCIIEncoding();
+            return new ClaymoreMinerStatusReport(encoding.GetString(buffer));
+        }
+        public override async Task<ClaymoreMinerStatusReport> GetStatus(ClaymoreMinerStatusRequest request)
+        {
+            // let every exception in this method bubble up
+            var data = System.Text.Encoding.ASCII.GetBytes(messageGetStatusRequest);
+            var socket = new System.Net.Sockets.TcpClient(request.Host, request.Port);
+            var stream = socket.GetStream();
+            // write the request async   
+            await stream.WriteAsync(data, 0, data.Length);
+            Byte[] buffer = new Byte[maxResponseBufferSize];
+            // read the response async   
+            var response = await stream.ReadAsync(buffer, 0, maxResponseBufferSize);
+            var encoding = new ASCIIEncoding();
+            return new ClaymoreMinerStatusReport(encoding.GetString(buffer));
+        }
+    }
+    public class ClaymoreMinerStatusRequest
+    {
+        [DataMember]
+        public  string Host { get; set; }
+        [DataMember]
+        public  int? Port { get; set; }
+
+  /*      public ClaymoreMinerStatusRequest(string host, int port)
+        {
+            Host = host ?? throw new ArgumentNullException(nameof(host));
+            //ToDo validate port is within allowable range
+            Port = port;
+        }
+*/    }
+    public class ClaymoreMinerStatusReport
+    {
+        private string rEGetStatusResponseID = @"""id"":\s+(?<ID>\d+),";
+        private string rEGetStatusResponseStatusQueryError = @"\s+""result"":\s+\[(?<result>.*?)\],";
+        private string rEGetStatusResponseResultDetails = @"\s+""error"":\s+(?<StatusQueryError>.*)";
+        [DataMember]
+        public int ID { get; set; }
+        [DataMember]
+        public string StatusQueryError { get; set; }
+        public class ClaymoreMinerStatusResultDetails
+        {
+            public string Version { get; set; }
+            public string RunningTime { get; set; }
+
+            public int[] TotalHashRatePerCoin { get; set; }
+            public int[] TotalSharesPerCoin { get; set; }
+            public int[] RejectedSharesPerCoin { get; set; }
+            public int[] DetailedHashRatePerCoinPerGPU { get; set; }
+
+            public class TempAndFan
+            {
+                public int Temp { get; set; }
+                public int Pct { get; set; }
+            }
+
+            public TempAndFan[] TempAndFanPerGPU;
+
+            public ClaymoreMinerStatusResultDetails(string str)
+            {
+                Regex RE1 = new Regex(@"{""id"":\s+(?<ID>\d+),\s+""result"":\s+\[(?<result>.*?)\],\s+""error"":\s+(?<StatusQueryError>.*)}");
+                MatchCollection matches = RE1.Matches(str);
+                if (matches.Count == 0) throw new Exception("ToDo");
+                foreach (Match match in matches)
+                {
+                    GroupCollection groups = match.Groups;
+
+                }
+            }
+        }
+        public ClaymoreMinerStatusResultDetails Result { get; set; }
+
+        public ClaymoreMinerStatusReport(string rawbuffer)
+        {
+            StringBuilder sb = new StringBuilder(rEGetStatusResponseID);
+            sb.Append(new string[] { "(", rEGetStatusResponseResultDetails, "|", rEGetStatusResponseStatusQueryError, ")(", rEGetStatusResponseStatusQueryError, "|", rEGetStatusResponseResultDetails, ")}" });
+            Regex RE1 = new Regex(sb.ToString());
+
+            MatchCollection matches = RE1.Matches(rawbuffer);
+            if (matches.Count == 0) throw new Exception("ToDo");
+            foreach (Match match in matches)
+            {
+                GroupCollection groups = match.Groups;
+                int iID;
+                if (int.TryParse(groups["ID"].Value, out iID)) { ID = iID; } else { throw new Exception("ToDo"); }
+                StatusQueryError = groups["StatusQueryError"].Value ?? throw new ArgumentNullException(nameof(StatusQueryError));
+                Result = new ClaymoreMinerStatusReport.ClaymoreMinerStatusResultDetails(groups["result"].Value ?? throw new ArgumentNullException(nameof(Result)));
+            }
+        }
+    }
+	
+	]
+	
+	namespace AceAgent.ServiceInterface
+{
+    
+
+	public class GetMinerStatusService : Service
+    {
+        public GetMinerStatusResponse Any(MinerStatusRequest request)
+        {
+            return new GetMinerStatusResponse { Result = GetMinerStatus(request) };
+        }
+
+        public ClaymoreMinerStatusReport Any(MinerStatusRequest request)
+        {
+            ClaymoreMinerStatusReport m = new ClaymoreMinerStatusReport();
+
+            var builder = GetMinerStatusResponseBuilder.CreateNew();
+            GetMinerStatusResponse r = GetMinerStatusResponseBuilder.CreateNew().Build();
+            return m;
+        }
+    }
+}
+	
+	namespace AceAgent.ServiceModel
+{
+    [Route("/minerstatus")]
+    public class MinerStatusRequest : IReturn<GetMinerStatusResponse>
+    {
+
+        //public string ID { get; set; }
+    }
+    public class GetMinerStatusResponse
+    {
+        public string MinerName { get; set; }
+        public int ID { get; set; }
+        public string StatusQueryError { get; set; }
+    }
+    public interface IMinerStatusResponseBuilder
+    {
+        GetMinerStatusResponse Build();
+    }
+    public class GetMinerStatusResponseBuilder : IMinerStatusResponseBuilder
+    {
+         string MinerName { get; set; }
+         int ID { get; set; }
+         string StatusQueryError { get; set; }
+
+        public GetMinerStatusResponseBuilder AddMinerName(string minerName)
+        {
+            this.MinerName = minerName;
+            return this;
+        }
+        public GetMinerStatusResponseBuilder AddID(int iD)
+        {
+            this.ID = iD;
+            return this;
+        }
+        public GetMinerStatusResponseBuilder AddStatusQueryError(string statusQueryError)
+        {
+            this.StatusQueryError = statusQueryError;
+            return this;
+        }
+        public GetMinerStatusResponse Build()
+        {
+            return new GetMinerStatusResponse(MinerName, ID, StatusQueryError);
+        }
+        public static GetMinerStatusResponseBuilder CreateNew()
+        {
+            return new GetMinerStatusResponseBuilder();
+        }
+    }
+
+	
+	    [Route("/minerstatus")]
+    public class MinerStatusRequest : IReturn<GetMinerStatusResponse>
+    {
+
+        //public string ID { get; set; }
+    }
+    public class GetMinerStatusResponse
+    {
+        public string MinerName { get; set; }
+        public int ID { get; set; }
+        public string StatusQueryError { get; set; }
+    }
+    public interface IMinerStatusResponseBuilder
+    {
+        GetMinerStatusResponse Build();
+    }
+    public class GetMinerStatusResponseBuilder : IMinerStatusResponseBuilder
+    {
+        string MinerName { get; set; }
+        int ID { get; set; }
+        string StatusQueryError { get; set; }
+
+        public GetMinerStatusResponseBuilder AddMinerName(string minerName)
+        {
+            this.MinerName = minerName;
+            return this;
+        }
+        public GetMinerStatusResponseBuilder AddID(int iD)
+        {
+            this.ID = iD;
+            return this;
+        }
+        public GetMinerStatusResponseBuilder AddStatusQueryError(string statusQueryError)
+        {
+            this.StatusQueryError = statusQueryError;
+            return this;
+        }
+        public GetMinerStatusResponse Build()
+        {
+            return new GetMinerStatusResponse(MinerName, ID, StatusQueryError);
+        }
+        public static GetMinerStatusResponseBuilder CreateNew()
+        {
+            return new GetMinerStatusResponseBuilder();
+        }
+    }
+	}
+	
+	namespace AceAgent
+{
+    class AppConfiguration
+    {
+        public string ListeningOn { get; set; }
+        public WindowConfiguration MainWindow { get; set; }
+        public class WindowConfiguration
+        {
+            public int Height { get; set; }
+            public int Width { get; set; }
+            public int Left { get; set; }
+            public int Top { get; set; }
+        }
+        public class MinerConfiguration
+        {
+            public int MPort { get; set; }
+            public string ProcessName { get; set; }
+            public string PathToEXE { get; set; }
+            public string PathToConfig { get; set; }
+            public string PathToEPools { get; set; }
+            public string PathToDPools { get; set; }
+            public int TargetTemperature { get; set; }
+        }
+    }
+
+    partial class Program
+    {
+        static public IConfiguration Configuration { get; set; }
+        public static void GetConfiguration(string[]  args)            {
+            IReadOnlyDictionary<string, string> DefaultConfigurationStrings = new Dictionary<string, string>()   {
+                //["Profile:UserName"] = Environment.UserName,
+              [$"AppConfiguration:ListeningOn"] = "http://localhost:21100/",
+              [$"AppConfiguration:MainWindow:Height"] = "400",
+              [$"AppConfiguration:MainWindow:Width"] = "600",
+              [$"AppConfiguration:MainWindow:Top"] = "0",
+              [$"AppConfiguration:MainWindow:Left"] = "0",
+                [$"AppConfiguration:MinerConfiguration:MPort"] = "21200",
+                [$"AppConfiguration:MinerConfiguration:ProcessName"] = "EthDcrMiner64",
+                [$"AppConfiguration:MinerConfiguration:PathToEXE"] = @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\EthDcrMiner64.exe",
+                [$"AppConfiguration:MinerConfiguration:PathToEPools"] = @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\epools.txt",
+                [$"AppConfiguration:MinerConfiguration:PathToDPools"] = @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\dpools.txt",
+                [$"AppConfiguration:MinerConfiguration:TargetTemperature"] = "70",
+
+            };
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+            // Add defaultConfigurationStrings
+            configurationBuilder.AddInMemoryCollection(DefaultConfigurationStrings)
+                .AddJsonFile("AceServiceConfig.json", true) // Bool indicates file is optional
+                .AddEnvironmentVariables("AceServiceConfiguration")
+                .AddCommandLine(args, GetSwitchMappings(DefaultConfigurationStrings))                   ;
+            Program.Configuration= configurationBuilder.Build();
+
+            }
+
+        static public Dictionary<string, string> GetSwitchMappings(
+  IReadOnlyDictionary<string, string> configurationStrings)
+        {
+            return configurationStrings.Select(item =>
+              new KeyValuePair<string, string>(
+                "-" + item.Key.Substring(item.Key.LastIndexOf(':') + 1),
+                item.Key))
+                .ToDictionary(
+                  item => item.Key, item => item.Value);
+        }
+    }
+}
+

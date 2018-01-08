@@ -7,7 +7,8 @@ using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 using ServiceStack.Text;
-using Microsoft.Extensions.Configuration;
+using ServiceStack.Configuration;
+
 
 namespace AceAgent
 {
@@ -16,8 +17,7 @@ namespace AceAgent
         
         static void Main(string[] args)
         {
-            // Get the configuration settings
-            GetConfiguration(args);
+
             
             var appHost = new AppHost();
             //Allow you to debug your Windows Service while you're developing it. 
@@ -26,8 +26,8 @@ namespace AceAgent
             try
             {
                 appHost.Init();
-                appHost.Start(Configuration[$"AppConfiguration:ListeningOn"]);
-                Process.Start(Configuration[$"AppConfiguration:ListeningOn"]);
+                //appHost.Start(Configuration[$"AppConfiguration:ListeningOn"]);
+                //Process.Start(Configuration[$"AppConfiguration:ListeningOn"]);
                 Console.WriteLine("Press <CTRL>+C to stop.");
                 Thread.Sleep(Timeout.Infinite);
             }
