@@ -1,15 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent", "AceAgent\AceAgent\AceAgent.csproj", "{CF36BF58-D08F-425A-9A6A-D0A86C506110}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceService", "AceService\AceService\AceService.csproj", "{CF36BF58-D08F-425A-9A6A-D0A86C506110}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent.BaseServiceModel", "AceAgent\AceAgent.ServiceModel\AceAgent.BaseServiceModel.csproj", "{8D6DE92C-637E-4433-9810-98D7FBCEA6BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceService.BaseServiceModel", "AceService\AceService.BaseServiceModel\AceService.BaseServiceModel.csproj", "{8D6DE92C-637E-4433-9810-98D7FBCEA6BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent.BaseServiceInterface", "AceAgent\AceAgent.ServiceInterface\AceAgent.BaseServiceInterface.csproj", "{130DED02-5984-487C-93DD-0D264EED140E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceService.BaseServiceInterface", "AceService\AceService.BaseServiceInterface\AceService.BaseServiceInterface.csproj", "{130DED02-5984-487C-93DD-0D264EED140E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceAgent.Tests", "AceAgent\AceAgent.Tests\AceAgent.Tests.csproj", "{12B06E45-12F5-4E56-ADB4-5879D98D3105}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceService.BaseServiceTests", "AceService\AceService.BaseServiceTests\AceService.BaseServiceTests.csproj", "{12B06E45-12F5-4E56-ADB4-5879D98D3105}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AceServicePlugins", "AceServicePlugins", "{52B10DF4-0C16-4CFA-85A4-F67D536EDBAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceService.MinerServicePlugin", "AceService\AceService.MinerServicePlugin\AceService.MinerServicePlugin.csproj", "{7AC66F7A-E44A-435B-BE07-5EC646466AA7}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AceService.Installer", "AceService.Installer\AceService.Installer.vdproj", "{550F2A56-D245-48DE-A47C-F65EEA519A37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,13 @@ Global
 		{12B06E45-12F5-4E56-ADB4-5879D98D3105}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12B06E45-12F5-4E56-ADB4-5879D98D3105}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12B06E45-12F5-4E56-ADB4-5879D98D3105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AC66F7A-E44A-435B-BE07-5EC646466AA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AC66F7A-E44A-435B-BE07-5EC646466AA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AC66F7A-E44A-435B-BE07-5EC646466AA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AC66F7A-E44A-435B-BE07-5EC646466AA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{550F2A56-D245-48DE-A47C-F65EEA519A37}.Debug|Any CPU.ActiveCfg = Debug
+		{550F2A56-D245-48DE-A47C-F65EEA519A37}.Debug|Any CPU.Build.0 = Debug
+		{550F2A56-D245-48DE-A47C-F65EEA519A37}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
