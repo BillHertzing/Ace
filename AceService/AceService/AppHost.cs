@@ -5,12 +5,16 @@ using ServiceStack.Configuration;
 using System.Collections.Generic;
 using ServiceStack.Logging;
 using ServiceStack.Logging.NLogger;
+using OpenHardwareMonitor.Hardware;
+using System.IO;
+using System.Linq;
 
 namespace Ace.AceService
 {
     //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
     public  class AppHost : AppSelfHostBase
     {
+        Computer computer;
         /// <summary>
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// </summary>
@@ -23,32 +27,55 @@ namespace Ace.AceService
         /// </summary>
         public override void Configure(Container container)
         {
-            //inject the concrete logging implementation
+            // inject the concrete logging implementation
             LogManager.LogFactory = new NLogFactory();
 
             // Create the overall application instance of the configuration settings
             // The location should be part of the container IOC injection, (hopefully observable and creating a stream that can be subscribed to by an authorized  client of this service )
-            AppSettings = new MultiAppSettingsBuilder()
-                // Start with any appsettings in the app.config file
+
+            var appSettingsBuilder = new MultiAppSettingsBuilder()
+                 // Start with any appsettings in the App.config file AKA AceAgent.exe.config at runtime
                  .AddAppSettings()
-                // BaseService Builtin Configuration properties and values.
+                // Add the AceService.BaseService builtin (compile-time) configuration settings
                 .AddDictionarySettings(DefaultConfiguration.GetIt())
-                // Superseded by an optional configuration file for the base Services' configuration settings
-                 .AddTextFile("./AceService.BaseService.Settings.txt")
-                // Superseded by an optional configuration file that contains settings for the miningRig plugin
-                .AddTextFile("./AceService.MinerPlugin.Settings.txt")
-                // ToDo Superseded by an optional configuration file that contains 'recently used' configuration settings
-                // Superseded by Environment variables
-                .AddEnvironmentalVariables()
+                // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings AKA AceAgent.config
+                .AddTextFile("./AceService.config");
+            //.AddTextFile(AppDomain.CurrentDomain.BaseDirectory ".config"));
+
+            var htmlFormat = base.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
+
+            // ToDo Validate any plugin settings in the configuration settings
+            var plugInList = new List<IPlugin>() { new Ace.AceService.MinerServicePlugin.MinerServicePlugin() };
+            // Add configuration settings () specific to a plugin
+            foreach (var  pl in plugInList)
+            {
+                // ToDo: Add the plugIns' builtin (compile-time) configuration settings
+                //appSettingsBuilder
+                // Superseded by an optional configuration file that contains settings for the plugin
+            }
+            appSettingsBuilder.AddTextFile("./AceService.MinerPlugin.config");
+
+            // ToDo Superseded by an optional configuration file that contains 'recently used' configuration settings
+            // Superseded by Environment variables
+            appSettingsBuilder.AddEnvironmentalVariables();
                 // ToDo Superseded by command line variables
                 // ToDo Superseded by command line variables
-                .Build();
-            // ToDo Validate the final set of settings
-            // Validate config file location, Logs file location
-            // Add any plugins specified in the configuration
-            // Add that plugin's configuration properties to the current application'instance of the configuration settings
+                // ToDo Validate the final set of settings
+                // Validate config file location, Logs file location
+                // Build the final appsettings
+            AppSettings = appSettingsBuilder.Build();
+            // ToDo eventually consider making the computer hw monitor into a plugin
+            computer = new Computer
+            {
+                MainboardEnabled = true,
+                CPUEnabled = true,
+                //GPUEnabled = true
+            };
+            computer.Open();
+
+            
             Plugins.Add(new Ace.AceService.MinerServicePlugin.MinerServicePlugin());
-            // ToDo Validate the final set of settings for the plugin
+            
             // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
 
             //Config examples
@@ -56,5 +83,11 @@ namespace Ace.AceService
             //this.Plugins.Add(new CorsFeature());
             
         }
+        public override void Stop()
+        {
+            computer.Close();
+            base.Stop();
+        }
+
     }
 }

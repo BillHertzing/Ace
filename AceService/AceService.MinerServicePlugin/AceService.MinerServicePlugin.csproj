@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ace.AceService.MinerServicePlugin</RootNamespace>
     <AssemblyName>AceService.MinerServicePlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectGuid>{7AC66F7A-E44A-435B-BE07-5EC646466AA7}</ProjectGuid>
     <TargetFrameworkProfile />
@@ -40,6 +40,9 @@
     </Reference>
     <Reference Include="ATAP.Utilities.Http">
       <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.Http\bin\Debug\netstandard2.0\ATAP.Utilities.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="ATAP.Utilities.Logging">
+      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.Logging\bin\Debug\netstandard2.0\ATAP.Utilities.Logging.dll</HintPath>
     </Reference>
     <Reference Include="ATAP.Utilities.Tcp">
       <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.Tcp\bin\Debug\netstandard2.0\ATAP.Utilities.Tcp.dll</HintPath>
@@ -105,9 +108,9 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AceService.MinerPlugin.Config.txt">
+    <None Include="AceService.MinerPlugin.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -116,6 +119,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenHardwareMonitorLib\OpenHardwareMonitorLib.csproj">
+      <Project>{5df52e1d-b24a-4cfa-a9d0-0568def43f1c}</Project>
+      <Name>OpenHardwareMonitorLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

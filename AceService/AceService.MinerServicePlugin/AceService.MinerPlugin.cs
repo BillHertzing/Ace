@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using ServiceStack.Logging;
+using OpenHardwareMonitor;
+using System.Linq;
 
 namespace Ace.AceService.MinerServicePlugin
 {
@@ -27,8 +29,9 @@ namespace Ace.AceService.MinerServicePlugin
             appHost.RegisterService<MinerServices>();
 
             // Create the plugIn's observable data structures, pass them in by IoC
+            // 
             ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs = new ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> ();
-
+            //
             ConcurrentObservableDictionary<int, MinerGPU> minerGPUs = new ConcurrentObservableDictionary<int, MinerGPU>();
             // Get the latest known current configuration, and use that information to populate the data structures
             // appHost.AppSettings.Get<string>("Ace.AceService.MinerPlugin.InstalledMinerSW");
@@ -36,6 +39,8 @@ namespace Ace.AceService.MinerServicePlugin
             // get this computers current power consumption from the sensors package
             PowerConsumption pc = new PowerConsumption() { Period = new TimeSpan(0, 1, 0), Watts = 1000.0 };
             // get this computers CPU temp and fan structure from the sensors
+            var htmlFormat = appHost.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
+
             TempAndFan tf = new TempAndFan { Temp = 50, FanPct = 95.5 };
             rigConfig = RigConfigBuilder.CreateNew()
                 .AddMinerSWs(minerSWs)
