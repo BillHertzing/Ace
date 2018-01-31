@@ -11,9 +11,45 @@ using System.Text.RegularExpressions;
 using ServiceStack.Logging;
 using OpenHardwareMonitor;
 using System.Linq;
+using Funq;
+using System.Reflection;
+using OpenHardwareMonitor.Hardware;
 
 namespace Ace.AceService.MinerServicePlugin
 {
+    public static class ContainerExtensions
+    {
+        public static object TryResolve(this Container container, Type type)
+        {
+            var mi = typeof(Container).GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .First(x => x.Name == "TryResolve" &&
+                       x.GetGenericArguments().Length == 1 &&
+                       x.GetParameters().Length == 0);
+
+            var genericMi = mi.MakeGenericMethod(type);
+            var instance = genericMi.Invoke(container, new object[0]);
+            return instance;
+        }
+    }
+
+    public class MinerServicePluginData
+    {
+        ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs;
+        ConcurrentObservableDictionary<int, MinerGPU> minerGPUs ;
+
+        public MinerServicePluginData() : this(new ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW>(), new ConcurrentObservableDictionary<int, MinerGPU>()) { }
+        public MinerServicePluginData(ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs, ConcurrentObservableDictionary<int, MinerGPU> minerGPUs)
+        {
+            this.minerSWs = minerSWs;
+            this.minerGPUs = minerGPUs;
+        }
+
+        //ToDo: constructors with event handlers
+
+        public ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> MinerSWs { get => minerSWs;}
+        public ConcurrentObservableDictionary<int, MinerGPU> MinerGPUs { get => minerGPUs; }
+    }
+
     public class MinerServicePlugin : IPlugin
     {
         /// <summary>
@@ -28,23 +64,35 @@ namespace Ace.AceService.MinerServicePlugin
 
             appHost.RegisterService<MinerServices>();
 
-            // Create the plugIn's observable data structures, pass them in by IoC
-            // 
-            ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs = new ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> ();
-            //
-            ConcurrentObservableDictionary<int, MinerGPU> minerGPUs = new ConcurrentObservableDictionary<int, MinerGPU>();
+            var container = appHost.GetContainer();
+
+            // Create the plugIn's observable data structures based on the configuration settings, and the 
+            // current computer inventory
             // Get the latest known current configuration, and use that information to populate the data structures
             // appHost.AppSettings.Get<string>("Ace.AceService.MinerPlugin.InstalledMinerSW");
             // appHost.AppSettings.Get<string>("Ace.AceService.MinerPlugin.InstalledGPUs");
+
+            var mspd = new MinerServicePluginData();
+
+            // if the current mining rig configuration specifies that the mining rig has mining-specific data structgures that
+            //  can and should be monitored,attach the event handlers that will respond to changes in the monitored data structures
+
+            // setup and enable the mechanisms that monitors each mining-specific data sensor, and start them running
+
+
+            // pass the plugIn's observable data structures and event handlers to the container so they will be available to every other module and services
+            container.Register<MinerServicePluginData>(d => mspd);
+
+            Computer computer = container.TryResolve(typeof(Computer)) as Computer;
+            var x = computer.Hardware.Length;
             // get this computers current power consumption from the sensors package
             PowerConsumption pc = new PowerConsumption() { Period = new TimeSpan(0, 1, 0), Watts = 1000.0 };
             // get this computers CPU temp and fan structure from the sensors
-            var htmlFormat = appHost.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
 
             TempAndFan tf = new TempAndFan { Temp = 50, FanPct = 95.5 };
             rigConfig = RigConfigBuilder.CreateNew()
-                .AddMinerSWs(minerSWs)
-                .AddMinerGPUs(minerGPUs)
+                .AddMinerSWs(mspd.MinerSWs)
+                .AddMinerGPUs(mspd.MinerGPUs)
                 .AddPowerConsumption(pc)
                 .AddTempAndFan(tf)
                 .Build();
@@ -57,7 +105,7 @@ namespace Ace.AceService.MinerServicePlugin
 
     [Route("/StartMiner")]
     [Route("/StartMiner/{ID}")]
-    public class StartMiner : IReturn<StartMinerResponse>
+    public class StartMinerRequest : IReturn<StartMinerResponse>
     {
         public string ID { get; set; }
     }
@@ -67,7 +115,7 @@ namespace Ace.AceService.MinerServicePlugin
     }
     [Route("/StopMiner")]
     [Route("/StopMiner/{ID}")]
-    public class StopMiner : IReturn<StopMinerResponse>
+    public class StopMinerRequest : IReturn<StopMinerResponse>
     {
         public string ProcessName { get; set; }
         public string ID { get; set; }
@@ -76,9 +124,9 @@ namespace Ace.AceService.MinerServicePlugin
     {
         public string Result { get; set; }
     }
-    [Route("/ListMiners")]
+    [Route("/ListMiner")]
     [Route("/ListMiner/{Kind};{Version}")]
-    public class ListMiners : IReturn<ListMinersResponse>
+    public class ListMinerRequest : IReturn<ListMinersResponse>
     {
         public string ID { get; set; }
     }
@@ -89,9 +137,9 @@ namespace Ace.AceService.MinerServicePlugin
 
     [Route("/StatusMiners")]
     [Route("/StatusMiner/{ID}")]
-    public class StatusMiners : IReturn<StatusMinersResponse>
+    public class StatusMinerRequest : IReturn<StatusMinersResponse>
     {
-        public static ILog Log = LogManager.GetLogger(typeof(StatusMiners));
+        public static ILog Log = LogManager.GetLogger(typeof(StatusMinerRequest));
 
         public string ID { get; set; }
     }
@@ -102,17 +150,17 @@ namespace Ace.AceService.MinerServicePlugin
         public ClaymoreMinerStatus Result { get; set; }
     }
 
-    [Route("/TuneMinerGPUs")]
+    [Route("/TuneMinerGPU")]
     [Route("/TuneMinerGPU/{ID}")]
-    public class TuneMinerGPUs : IReturn<TuneMinerGPUsResponse>
+    public class TuneMinerGPURequest : IReturn<TuneMinerGPUResponse>
     {
-        public static ILog Log = LogManager.GetLogger(typeof(TuneMinerGPUs));
+        public static ILog Log = LogManager.GetLogger(typeof(TuneMinerGPURequest));
 
         public string ID { get; set; }
     }
-    public class TuneMinerGPUsResponse
+    public class TuneMinerGPUResponse
     {
-        public static ILog Log = LogManager.GetLogger(typeof(TuneMinerGPUsResponse));
+        public static ILog Log = LogManager.GetLogger(typeof(TuneMinerGPUResponse));
 
         public TuneMinerGPUsResult[] Result { get; set; }
     }
@@ -123,14 +171,14 @@ namespace Ace.AceService.MinerServicePlugin
     {
         public static ILog Log = LogManager.GetLogger(typeof(MinerServices));
 
-        public object Any(StartMiner request)
+        public object Any(StartMinerRequest request)
         {
             Log.Debug("starting Any StartMiner request");
             var minerID = request.ID;
             //ToDo Get miner process details
             return new StartMinerResponse { Result = minerID.ToString() };
         }
-        public object Any(StopMiner request)
+        public object Any(StopMinerRequest request)
         {
             Log.Debug("starting Any StopMiner request");
             var processName = request.ProcessName;
@@ -145,7 +193,7 @@ namespace Ace.AceService.MinerServicePlugin
             p.Kill();
             return new StopMinerResponse { Result = $"process {pName} stopped" };
         }
-        public object Any(ListMiners request)
+        public object Any(ListMinerRequest request)
         {
             Log.Debug("starting Any ListMiners request");
             //ToDo
@@ -153,7 +201,7 @@ namespace Ace.AceService.MinerServicePlugin
         }
 
         //ToDo need a cancellable method here, too
-        public object Any(StatusMiners request)
+        public object Any(StatusMinerRequest request)
         {
             Log.Debug("starting Any StatusMiners request");
             var DUalStr = "{\"id\": 0, \"result\": [\"10.2 - ETH\", \"4258\", \"50033;1249;0\", \"24583;25450\", \"1501011;2571;0\", \"737502;763509\", \"68;100;81;100\", \"eth-us-east1.nanopool.org:9999;sia-us-east1.nanopool.org:7777\", \"0;2;0;2\"], \"error\": null}";
@@ -171,7 +219,7 @@ namespace Ace.AceService.MinerServicePlugin
             return new StatusMinersResponse { Result = new ClaymoreMinerStatus(str) };
         }
 
-        public object Any(TuneMinerGPUs request)
+        public object Any(TuneMinerGPURequest request)
         {
             TuneMinerGPUsResult[] tuneMinerGPUsResult;
             Log.Debug("starting Any TuneGPUs request");

@@ -55,6 +55,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ATAP.Utilities.ComputerInventory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory\bin\Debug\netstandard2.0\ATAP.Utilities.ComputerInventory.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.5.0-rc04\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -167,10 +171,6 @@
     <ProjectReference Include="..\AceService.MinerServicePlugin\AceService.MinerServicePlugin.csproj">
       <Project>{7ac66f7a-e44a-435b-be07-5ec646466aa7}</Project>
       <Name>AceService.MinerServicePlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenHardwareMonitorLib\OpenHardwareMonitorLib.csproj">
-      <Project>{5df52e1d-b24a-4cfa-a9d0-0568def43f1c}</Project>
-      <Name>OpenHardwareMonitorLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

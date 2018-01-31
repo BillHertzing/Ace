@@ -5,16 +5,17 @@ using ServiceStack.Configuration;
 using System.Collections.Generic;
 using ServiceStack.Logging;
 using ServiceStack.Logging.NLogger;
-using OpenHardwareMonitor.Hardware;
 using System.IO;
 using System.Linq;
+using ATAP.Utilities.ComputerInventory;
 
 namespace Ace.AceService
 {
     //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
     public  class AppHost : AppSelfHostBase
     {
-        Computer computer;
+        //
+       readonly ComputerInventory computerInventory;
         /// <summary>
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// </summary>
@@ -42,7 +43,7 @@ namespace Ace.AceService
                 .AddTextFile("./AceService.config");
             //.AddTextFile(AppDomain.CurrentDomain.BaseDirectory ".config"));
 
-            var htmlFormat = base.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
+            //var htmlFormat = base.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
 
             // ToDo Validate any plugin settings in the configuration settings
             var plugInList = new List<IPlugin>() { new Ace.AceService.MinerServicePlugin.MinerServicePlugin() };
@@ -64,16 +65,29 @@ namespace Ace.AceService
                 // Validate config file location, Logs file location
                 // Build the final appsettings
             AppSettings = appSettingsBuilder.Build();
-            // ToDo eventually consider making the computer hw monitor into a plugin
+
+
+            // Create the base agents' observable data structures based on the configuration settings
+            // Get the latest known current configuration, and use that information to populate the data structures
+            computerInventory = new ComputerInventory(AppSettings);
             computer = new Computer
             {
                 MainboardEnabled = true,
                 CPUEnabled = true,
+                FanControllerEnabled = true
                 //GPUEnabled = true
             };
-            computer.Open();
+            // validate that the configuration settings match the real computer inventory
 
-            
+            // if the current computer inventory specifies that the videocard sensors and the cpu/motherboard sensorss
+            // can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
+
+            // setup and enable the mechanisms that monitors each monitored sensor, and start them running
+
+
+            computerInventory.Computer.Open();
+            container.Register<Computer>(c => computer);
+
             Plugins.Add(new Ace.AceService.MinerServicePlugin.MinerServicePlugin());
             
             // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
