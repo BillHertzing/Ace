@@ -70,13 +70,7 @@ namespace Ace.AceService
             // Create the base agents' observable data structures based on the configuration settings
             // Get the latest known current configuration, and use that information to populate the data structures
             computerInventory = new ComputerInventory(AppSettings);
-            computer = new Computer
-            {
-                MainboardEnabled = true,
-                CPUEnabled = true,
-                FanControllerEnabled = true
-                //GPUEnabled = true
-            };
+
             // validate that the configuration settings match the real computer inventory
 
             // if the current computer inventory specifies that the videocard sensors and the cpu/motherboard sensorss
