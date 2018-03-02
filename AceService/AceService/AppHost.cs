@@ -15,7 +15,7 @@ namespace Ace.AceService
     public  class AppHost : AppSelfHostBase
     {
         //
-       readonly ComputerInventory computerInventory;
+        ComputerInventory computerInventory;
         /// <summary>
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// </summary>
@@ -35,19 +35,18 @@ namespace Ace.AceService
             // The location should be part of the container IOC injection, (hopefully observable and creating a stream that can be subscribed to by an authorized  client of this service )
 
             var appSettingsBuilder = new MultiAppSettingsBuilder()
-                 // Start with any appsettings in the App.config file AKA AceAgent.exe.config at runtime
-                 .AddAppSettings()
                 // Add the AceService.BaseService builtin (compile-time) configuration settings
                 .AddDictionarySettings(DefaultConfiguration.GetIt())
+                 // Add the App.config file AKA AceAgent.exe.config at runtime
+                 .AddAppSettings()
                 // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings AKA AceAgent.config
                 .AddTextFile("./AceService.config");
-            //.AddTextFile(AppDomain.CurrentDomain.BaseDirectory ".config"));
 
             //var htmlFormat = base.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
 
             // ToDo Validate any plugin settings in the configuration settings
             var plugInList = new List<IPlugin>() { new Ace.AceService.MinerServicePlugin.MinerServicePlugin() };
-            // Add configuration settings () specific to a plugin
+            // Add configuration setting specific to a plugin
             foreach (var  pl in plugInList)
             {
                 // ToDo: Add the plugIns' builtin (compile-time) configuration settings
@@ -69,18 +68,16 @@ namespace Ace.AceService
 
             // Create the base agents' observable data structures based on the configuration settings
             // Get the latest known current configuration, and use that information to populate the data structures
-            computerInventory = new ComputerInventory(AppSettings);
+            computerInventory = new ComputerInventory(AppSettings.GetAll());
 
             // validate that the configuration settings match the real computer inventory
 
-            // if the current computer inventory specifies that the videocard sensors and the cpu/motherboard sensorss
+            // if the current computer inventory specifies that there are sensors that
             // can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
 
             // setup and enable the mechanisms that monitors each monitored sensor, and start them running
 
-
-            computerInventory.Computer.Open();
-            container.Register<Computer>(c => computer);
+            container.Register<ComputerInventory>(c => computerInventory);
 
             Plugins.Add(new Ace.AceService.MinerServicePlugin.MinerServicePlugin());
             
@@ -93,9 +90,12 @@ namespace Ace.AceService
         }
         public override void Stop()
         {
-            computer.Close();
+            var container = base.Container;
+            // if the current computer inventory specifies that there are sensors that are being monitored, dispose of the resources that are doing the monitoring
+            ComputerInventory computerInventory = container.TryResolve(typeof(ComputerInventory)) as ComputerInventory;
             base.Stop();
         }
+
 
     }
 }
