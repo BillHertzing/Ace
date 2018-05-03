@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <!-- id will be replaced by MSBuild property PackageID -->
+    <id>AceService</id>
+    <!-- version will be replaced by MSBuild -->
+    <version>0.0.0.0</version>
+    <title>AceService</title>
+    <authors>William Hertzing</authors>
+    <description>AceService, testing</description>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2000-2018</copyright>
+    <dependencies />
+  </metadata>
+  <files>
+    <!-- Squirrel for Windows REQUIRES net45 -->
+    <!--  file src="*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*"/> -->
+    <!-- without Squirrel, target should be replaced by MSBuild -->
+	<!-- ToDo: replace hardcoded net47 with MSBuild parameter -->
+    <file src="*.*" target="lib\net47\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+  </files>
+</package>

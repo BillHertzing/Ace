@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <Company>ATAP Technology, Inc.</Company>
+    <Copyright>ATAP Technology, Inc.</Copyright>
+    <Authors>William Hertzing</Authors> 
+    <Product>AceCommander</Product> 
+    <ProductName>AceCommander</ProductName> 
+    <RepositoryType>repositoryType</RepositoryType> 
+    <PackageLicenseUrl>www.license.url</PackageLicenseUrl> 
+    <PackageProjectUrl>www.project.url</PackageProjectUrl> 
+    <PackageIconUrl>www.icon.url</PackageIconUrl> 
+    <RepositoryUrl>www.repository.url</RepositoryUrl> 
+    <PackageTags>experimental, alpha</PackageTags> 
+    <PackageReleaseNotes>release notes</PackageReleaseNotes> 
+  </PropertyGroup>
+</Project>

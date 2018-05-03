@@ -11,9 +11,9 @@ using Xunit.Abstractions;
 
 namespace Ace.AceService.BaseService.UnitTests
 {
-    class AppHost : AppSelfHostBase
+    class UnitTestingAppHost : AppSelfHostBase
     {
-        public AppHost() : base(nameof(UnitTest), typeof(BaseServices).Assembly) { }
+        public UnitTestingAppHost() : base(nameof(UnitTest), typeof(BaseServices).Assembly) { }
 
         public override void Configure(Container container)
         {
@@ -22,7 +22,7 @@ namespace Ace.AceService.BaseService.UnitTests
     public class Fixture
     {
         public const string BaseUri = "http://localhost:2000/";
-        public readonly ServiceStackHost appHost;
+        public readonly ServiceStackHost unitTestingAppHost;
         #region MOQs
         // a MOQ for the async web calls used for Term1
         //public Mock<IWebGet> mockTerm1;
@@ -32,7 +32,7 @@ namespace Ace.AceService.BaseService.UnitTests
 
         public Fixture()
         {
-            appHost = new AppHost()
+            unitTestingAppHost = new UnitTestingAppHost()
     .Init()
     .Start(BaseUri);
             /*
@@ -63,7 +63,7 @@ namespace Ace.AceService.BaseService.UnitTests
         [Fact]
         public void Can_call_BaseServiceIsAlive()
         {
-            var service = _fixture.appHost.Container.Resolve<BaseServices>();
+            var service = _fixture.unitTestingAppHost.Container.Resolve<BaseServices>();
 
             var response = (IsAliveResponse)service.Any(new BaseServiceIsAlive());
             response.Result.Should().Be("Hello!");

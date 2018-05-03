@@ -25,6 +25,7 @@ namespace Ace.AceService.MinerServicePlugin
         ConcurrentObservableDictionary<int, MinerGPU> minerGPUs ;
 
         public MinerServicePluginData() : this(new ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW>(), new ConcurrentObservableDictionary<int, MinerGPU>()) { }
+
         public MinerServicePluginData(ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs, ConcurrentObservableDictionary<int, MinerGPU> minerGPUs)
         {
             this.minerSWs = minerSWs;
