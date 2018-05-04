@@ -8,21 +8,22 @@ using Moq;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
+using System;
 
 namespace Ace.AceService.BaseService.IntegrationTests
 {
-    class AppHost : AppSelfHostBase
+    class IntegrationTestingAppHost : AppSelfHostBase
     {
-        public AppHost() : base(nameof(IntegrationTest), typeof(BaseServices).Assembly) { }
+        public IntegrationTestingAppHost() : base(nameof(IntegrationTest), typeof(BaseServices).Assembly) { }
 
         public override void Configure(Container container)
         {
         }
     }
-    public class Fixture
+    public class Fixture : IDisposable
     {
         public const string BaseUri = "http://localhost:2000/";
-        private readonly ServiceStackHost appHost;
+        private readonly ServiceStackHost integrationTestingAppHost;
         #region MOQs
         // a MOQ for the async web calls used for Term1
         //public Mock<IWebGet> mockTerm1;
@@ -32,7 +33,7 @@ namespace Ace.AceService.BaseService.IntegrationTests
 
         public Fixture()
         {
-            appHost = new AppHost()
+            integrationTestingAppHost = new IntegrationTestingAppHost()
     .Init()
     .Start(BaseUri);
             /*
@@ -44,6 +45,10 @@ namespace Ace.AceService.BaseService.IntegrationTests
                 .Callback(() => Task.Delay(new TimeSpan(0, 0, 1)))
                 .ReturnsAsync(200.0);
                 */
+        }
+        public void Dispose()
+        {
+            integrationTestingAppHost.Dispose();
         }
     }
 

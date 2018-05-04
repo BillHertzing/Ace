@@ -25,7 +25,7 @@ namespace Ace.AceService.BaseServiceInterface {
         public object Any(BaseServicePutConfiguration request) {
             if(!IsAuthenticated && AppSettings.Get("LimitRemoteControlToAuthenticatedUsers", false))
             {
-                throw new HttpError(HttpStatusCode.Forbidden, "You must be authenticated to use remote control.");
+                throw new HttpError(HttpStatusCode.Forbidden, "You must be authenticated and authorized to use remote control.");
             }
 
             return new PutConfigurationResponse { Result = "SUCCESS OR FAILURE" };
