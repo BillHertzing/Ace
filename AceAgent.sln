@@ -13,13 +13,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.BaseServiceModel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.BaseServiceInterface", "AceService\AceService.BaseServiceInterface\AceService.BaseServiceInterface.csproj", "{130DED02-5984-487C-93DD-0D264EED140E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceService.BaseServiceTests", "AceService\AceService.BaseServiceTests\AceService.BaseServiceTests.csproj", "{12B06E45-12F5-4E56-ADB4-5879D98D3105}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.BaseServiceTests", "AceService\AceService.BaseServiceTests\AceService.BaseServiceTests.csproj", "{12B06E45-12F5-4E56-ADB4-5879D98D3105}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AceServicePlugins", "AceServicePlugins", "{52B10DF4-0C16-4CFA-85A4-F67D536EDBAF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.MinerServicePlugin", "AceService\AceService.MinerServicePlugin\AceService.MinerServicePlugin.csproj", "{7AC66F7A-E44A-435B-BE07-5EC646466AA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Releases", "Releases", "{BAEE4E8C-1B7F-4030-9B12-A343D24EBA9D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87D83409-A5BD-4BAE-94A8-D30A2206E64A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

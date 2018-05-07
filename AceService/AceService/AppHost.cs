@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using Ace.AceService.BaseServiceInterface;
+using Ace.AceService.BaseServicesInterface;
 using ATAP.Utilities.ComputerInventory;
 using Funq;
 using ServiceStack;
@@ -43,11 +43,12 @@ namespace Ace.AceService {
                 .AddDictionarySettings(DefaultConfiguration.GetIt())
                 // Add the App.config file AKA AceAgent.exe.config at runtime
                 .AddAppSettings()
-                // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings AKA AceAgent.config
+                // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings AKA AceService.config
                 .AddTextFile("./AceService.config");
 
-
             //var htmlFormat = base.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
+            // Enable Postman integration
+            Plugins.Add(new PostmanFeature());
             // Enable CORS support
             Plugins.Add(new CorsFeature(
      allowedMethods: "GET, POST, PUT, DELETE, OPTIONS",
@@ -149,15 +150,15 @@ namespace Ace.AceService {
                 
         void LongRunningTasksCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            Log.Debug("Entering the appHost.LongRunningTasksCheckTimer_Elapsed Method");
+            //Log.Debug("Entering the appHost.LongRunningTasksCheckTimer_Elapsed Method");
             var container = base.Container;
             Dictionary<string, Timer> timers = container.TryResolve(typeof(Dictionary<string, Timer>)) as Dictionary<string, Timer>;
             timers["longRunningTasksCheckTimer"].Stop();
-            Log.Debug("checking for existence of any longrunningtasks");
+            //Log.Debug("checking for existence of any longRunningTasks");
             List<Task> longRunningTaskList = container.TryResolve(typeof(List<Task>)) as List<Task>;
-            Log.Debug($"There are {longRunningTaskList.Count} tasks in the longRunningTaskList");
+            //Log.Debug($"There are {longRunningTaskList.Count} tasks in the longRunningTaskList");
             timers["longRunningTasksCheckTimer"].Start();
-            Log.Debug("Leaving the appHost.LongRunningTasksCheckTimer_Elapsed Method");
+            //Log.Debug("Leaving the appHost.LongRunningTasksCheckTimer_Elapsed Method");
         }
     }
 }

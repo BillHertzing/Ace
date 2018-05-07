@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using System.Timers;
 using Topshelf;
 using ServiceStack.Logging;
+using ServiceStack;
+using ServiceStack.Configuration;
 
 namespace Ace.AceService
 {
     class TopShelfAroundServiceStackWrapper : ServiceControl
     {
-        public static ILog Log = LogManager.GetLogger(typeof(TopShelfAroundServiceStackWrapper));
-        private const string ListeningOn = "http://localhost:25010/";
+        static ILog Log = LogManager.GetLogger(typeof(TopShelfAroundServiceStackWrapper));
         const string SelfUpdatingServiceDistributionLocation = @"C:\Users\whertzing\Source\Repos\SelfUpdatingService\Releases";
         private AppHost appHost;
         //AutoUpdateData autoUpdateData;
@@ -36,7 +37,7 @@ namespace Ace.AceService
             autoUpdateCheckTimer.Elapsed += new ElapsedEventHandler(AutoUpdateCheckTimer_Elapsed);
             #endregion create autoUpdateCheckTimer, connect callback, and store in container's timers
 
-            // Create the ServiceStack Host service
+            // Create the Ace.AceService Host
             Log.Debug("In TopShelfAroundServiceStackWrapper Ctor, creating appHost");
             appHost = new AppHost();
             Log.Debug("Leaving TopShelfAroundServiceStackWrapper Ctor");
@@ -46,12 +47,13 @@ namespace Ace.AceService
             Log.Debug("Starting TopShelfAroundServiceStackWrapper Start Method");
             try
             {
-                Log.Debug(" Inn TopShelfAroundServiceStackWrapper Start Method calling appHost.Init");
+                Log.Debug(" In TopShelfAroundServiceStackWrapper Start Method calling appHost.Init");
                 appHost.Init();
-                Log.Debug("In TopShelfAroundServiceStackWrapper Start Method calling appHost.Start");
-                appHost.Start(ListeningOn);
+                string listeningOn = appHost.AppSettings.GetString("Ace.AceService:ListeningOn");
+                Log.Debug($"In TopShelfAroundServiceStackWrapper Start Method calling appHost.Start, listeningOn {listeningOn}");
+                appHost.Start(listeningOn);
                 Log.Debug("In TopShelfAroundServiceStackWrapper Start Method calling Process.Start");
-                Process.Start(ListeningOn);
+                Process.Start(listeningOn);
             }
             catch (Exception ex)
             {
@@ -116,7 +118,7 @@ namespace Ace.AceService
 
         void AutoUpdateCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            Log.Debug("Entering the TopShelfAroundServiceStackWrapper.AutoUpdateCheckTimer_Elapsed Method");
+            //Log.Debug("Entering the TopShelfAroundServiceStackWrapper.AutoUpdateCheckTimer_Elapsed Method");
             autoUpdateCheckTimer.Stop();
             // first time through this, create an instance of the update Manager, and if it fails, raise an event
             /*

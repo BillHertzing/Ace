@@ -1,8 +1,8 @@
-﻿using Funq;
+using Funq;
 using ServiceStack;
 using ServiceStack.Testing;
-using Ace.AceService.BaseServiceInterface;
-using Ace.AceService.BaseServiceModel;
+using Ace.AceService.BaseServicesInterface;
+using Ace.AceService.BaseServicesModel;
 using FluentAssertions;
 using Moq;
 using Newtonsoft.Json;

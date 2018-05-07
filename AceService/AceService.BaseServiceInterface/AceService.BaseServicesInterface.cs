@@ -1,19 +1,13 @@
-﻿using System.Net;
-using Ace.AceService.BaseServiceModel;
+using System.Net;
+using Ace.AceService.BaseServicesModel;
 using ServiceStack;
 using ServiceStack.Configuration;
 
-namespace Ace.AceService.BaseServiceInterface {
+namespace Ace.AceService.BaseServicesInterface {
     public class BaseServices : Service {
         public object Any(BaseServiceIsAlive request) {
-            var dto = new IsAliveResponse { Result = $"Hello!" };
-            return new HttpResult(dto) { Headers =
-                {
-                                         { "Access-Control-Allow-Origin", "*" },
-                                                 { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
-                                                 { "Access-Control-Allow-Headers", "Content-Type" },
-                                         }
-            };
+            return new IsAliveResponse { Result = $"Hello!" };
+            
         }
         //public object Any(BaseServiceIsAlive request)
         //{

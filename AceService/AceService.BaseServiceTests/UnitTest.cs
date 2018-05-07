@@ -1,6 +1,6 @@
-﻿using System;
-using Ace.AceService.BaseServiceInterface;
-using Ace.AceService.BaseServiceModel;
+using System;
+using Ace.AceService.BaseServicesInterface;
+using Ace.AceService.BaseServicesModel;
 using FluentAssertions;
 using Funq;
 using ServiceStack;
@@ -52,7 +52,7 @@ namespace Ace.AceService.BaseService.UnitTests {
         public void Can_call_BaseServiceIsAlive() {
             var service = _fixture.unitTestingAppHost.Container.Resolve<BaseServices>();
 
-            var response = (IsAliveResponse)((HttpResult)service.Any(new BaseServiceIsAlive())).Response;
+            var response = (IsAliveResponse)service.Any(new BaseServiceIsAlive());
             response.Result.Should()
                 .Be("Hello!");
         }
