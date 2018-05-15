@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Ace.AceService.MinerServices.Plugin</RootNamespace>
+  </PropertyGroup>
+  
+  <!-- Common for all TargetFrameworks references, compilation flags and build options -->
+  <ItemGroup>
+    <PackageReference Include="ServiceStack" Version="5.1.0" />
+    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+  </ItemGroup>
+  
+  <!-- .NET 4.7 references, compilation flags and build options -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Security" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Types\" />
+  </ItemGroup>
+  
+    <ItemGroup>
+      <ProjectReference Include="..\AceService.MinerServices.Interfaces\AceService.MinerServices.Interfaces.csproj" />
+      <ProjectReference Include="..\AceService.MinerServices.Models\AceService.MinerServices.Models.csproj" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ATAP.Utilities.CryptoCoin.Enumerations">
+      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoCoin.Enumerations\bin\Debug\netstandard2.0\ATAP.Utilities.CryptoCoin.Enumerations.dll</HintPath>
+    </Reference>
+    <Reference Include="ATAP.Utilities.CryptoMiner.Enumerations">
+      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Enumerations\bin\Debug\netstandard2.0\ATAP.Utilities.CryptoMiner.Enumerations.dll</HintPath>
+    </Reference>
+    <Reference Include="ATAP.Utilities.CryptoMiner.Models">
+      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Models\bin\Debug\netstandard2.0\ATAP.Utilities.CryptoMiner.Models.dll</HintPath>
+    </Reference>
+    <!-- 
+    <ProjectReference Include="..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoCoin\ATAP.Utilities.CryptoCoin.csproj" />
+    -->
+  </ItemGroup>
+  
+  <ItemGroup>
+      <None Update="AceService.MinerServicesPlugin.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,62 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net47</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>latest</LangVersion>
     <RootNamespace>Ace.AceService</RootNamespace>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-
-    <!--
-    <TargetFramework>net47</TargetFramework>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-	<TargetFrameworks>netcoreapp2.0;net47</TargetFramework>
-    <DefineConstants>NET47</DefineConstants>
-	-->
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>RELEASE;</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET Standard 2.0 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-  </ItemGroup>
-
-  <!-- .NET Core 2.0 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0'">
-    <DefineConstants>NETCORE;</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-  </ItemGroup>
-
-  <!-- .NET Full  references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net47'">
-    <DefineConstants>NET47;NETFULL</DefineConstants>
   </PropertyGroup>
 
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.3" />
     <PackageReference Include="ServiceStack" Version="5.1.0" />
     <PackageReference Include="ServiceStack.Logging.NLog" Version="5.1.0" />
     <PackageReference Include="Topshelf" Version="4.0.4" />
-    <Reference Include="ATAP.Utilities.ComputerInventory">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory\bin\Debug\netstandard2.0\ATAP.Utilities.ComputerInventory.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  
+  <!-- .NET 4.7 references, compilation flags and build options -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -93,23 +50,12 @@
   
 
   <ItemGroup>
-    <ProjectReference Include="..\AceService.BaseServiceInterface\AceService.BaseServiceInterface.csproj">
-      <Project>{130ded02-5984-487c-93dd-0d264eed140e}</Project>
-      <Name>AceService.BaseServiceInterface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AceService.MinerServicePlugin\AceService.MinerServicePlugin.csproj">
-      <Project>{7ac66f7a-e44a-435b-be07-5ec646466aa7}</Project>
-      <Name>AceService.MinerServicePlugin</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\AceService.BaseServiceInterface\AceService.BaseServiceInterface.csproj" />
+    <ProjectReference Include="..\AceService.MinerServices.Plugin\AceService.MinerServices.Plugin.csproj" />
   </ItemGroup>
 
-  <!--
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
-  </ItemGroup>
-  
-  <Import Project="..\..\packages\xunit.core.2.3.1\build\xunit.core.targets" Condition="Exists('..\..\packages\xunit.core.2.3.1\build\xunit.core.targets')" />
-  -->
+
+
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

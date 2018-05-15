@@ -1,19 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-<PropertyGroup>
+   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>Ace.AceService.BaseServiceModel</RootNamespace>
+    <RootNamespace>Ace.AceService.MinerServices.Models</RootNamespace>
   </PropertyGroup>
-  
+
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.1.0" />
-    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.1.0" />
-      </ItemGroup>
+    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+    
+  </ItemGroup>
   
   <!-- .NET 4.7 references, compilation flags and build options -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
-<Reference Include="mscorlib" />
+    <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
@@ -30,6 +31,16 @@
     <Reference Include="System.Security" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Types\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ATAP.Utilities.CryptoMiner.Models">
+      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Models\bin\Debug\netstandard2.0\ATAP.Utilities.CryptoMiner.Models.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

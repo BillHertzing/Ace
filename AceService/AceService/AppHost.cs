@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Ace.AceService.BaseServicesInterface;
-using ATAP.Utilities.ComputerInventory;
+
 using Funq;
 using ServiceStack;
 using ServiceStack.Configuration;
@@ -16,7 +16,7 @@ namespace Ace.AceService {
         static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
         Dictionary<string, Timer> timers;
         List<Task> longRunningTaskList;
-        ComputerInventory computerInventory;
+        /// ComputerInventory computerInventory;
 
         /// <summary>
         /// Base constructor requires a Name and Assembly where web service implementation is located
@@ -57,14 +57,14 @@ namespace Ace.AceService {
      allowedHeaders: "content-type, Authorization, Accept"));
 
             // ToDo Validate any plugin settings in the configuration settings
-            var plugInList = new List<IPlugin>() { new MinerServicePlugin.MinerServicePlugin() };
+            var plugInList = new List<IPlugin>() { new MinerServices.Plugin.MinerServicesPlugin() };
             // Add configuration setting specific to a plugin
             foreach(var pl in plugInList) {
                 // ToDo: Add the plugIns' builtin (compile-time) configuration settings
                 //appSettingsBuilder
                 // Superseded by an optional configuration file that contains settings for the plugin
             }
-            appSettingsBuilder.AddTextFile("./AceService.MinerPlugin.config");
+            appSettingsBuilder.AddTextFile("./AceService.MinerServices.Plugin.config");
 
             // ToDo Superseded by an optional configuration file that contains 'recently used' configuration settings
             // Superseded by Environment variables
@@ -106,7 +106,7 @@ namespace Ace.AceService {
 
             // ToDo: container.Register<ComputerInventory>(c => computerInventory);
 
-            Plugins.Add(new MinerServicePlugin.MinerServicePlugin());
+            Plugins.Add(new MinerServices.Plugin.MinerServicesPlugin());
 
             // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
 
@@ -126,7 +126,7 @@ namespace Ace.AceService {
             //  so need to check that each of container's disposable items actually exist before disposing of them
             
             // if the current computer inventory specifies that there are sensors that are being monitored, dispose of the resources that are doing the monitoring
-            ComputerInventory computerInventory = container.TryResolve(typeof(ComputerInventory)) as ComputerInventory;
+            //ComputerInventory computerInventory = container.TryResolve(typeof(ComputerInventory)) as ComputerInventory;
 
             // Stop and dispose of all timers
             Dictionary<string, Timer> timers;
