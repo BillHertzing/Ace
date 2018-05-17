@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Ace.AceService.BaseServicesInterface;
-
+using Ace.AceService.GUIServices.Interfaces;
 using Funq;
 using ServiceStack;
 using ServiceStack.Configuration;
+using ServiceStack.Common;
 using ServiceStack.Logging;
+using ServiceStack.IO;
+using ServiceStack.VirtualPath;
 
 namespace Ace.AceService {
     //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
@@ -47,8 +50,10 @@ namespace Ace.AceService {
                 .AddTextFile("./AceService.config");
 
             //var htmlFormat = base.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
+
             // Enable Postman integration
             Plugins.Add(new PostmanFeature());
+
             // Enable CORS support
             Plugins.Add(new CorsFeature(
      allowedMethods: "GET, POST, PUT, DELETE, OPTIONS",
@@ -57,7 +62,7 @@ namespace Ace.AceService {
      allowedHeaders: "content-type, Authorization, Accept"));
 
             // ToDo Validate any plugin settings in the configuration settings
-            var plugInList = new List<IPlugin>() { new MinerServices.Plugin.MinerServicesPlugin() };
+            var plugInList = new List<IPlugin>() { new MinerServices.Plugin.MinerServicesPlugin(), new Ace.AceService.GUIServices.Plugin.GUIServicesPlugin() };
             // Add configuration setting specific to a plugin
             foreach(var pl in plugInList) {
                 // ToDo: Add the plugIns' builtin (compile-time) configuration settings
@@ -90,35 +95,44 @@ namespace Ace.AceService {
             longRunningTasksCheckTimer.AutoReset = true;
             longRunningTasksCheckTimer.Elapsed += new ElapsedEventHandler(LongRunningTasksCheckTimer_Elapsed);
             timers.Add("longRunningTasksCheckTimer", longRunningTasksCheckTimer);
-            #endregion create longRunningTasksCheckTimer, connect callback, and store in container's timers
+      #endregion create longRunningTasksCheckTimer, connect callback, and store in container's timers
 
+      // Get the latest known current configuration, and use that information to populate the data structures
+      //ToDo: computerInventory = new ComputerInventory(AppSettings.GetAll());
 
+      // validate that the configuration settings match the real computer inventory
 
-            // Get the latest known current configuration, and use that information to populate the data structures
-            //ToDo: computerInventory = new ComputerInventory(AppSettings.GetAll());
+      // if the current computer inventory specifies that there are sensors that
+      // can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
 
-            // validate that the configuration settings match the real computer inventory
+      // setup and enable the mechanisms that monitors each monitored sensor, and start them running
 
-            // if the current computer inventory specifies that there are sensors that
-            // can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
-
-            // setup and enable the mechanisms that monitors each monitored sensor, and start them running
-
-            // ToDo: container.Register<ComputerInventory>(c => computerInventory);
-
-            Plugins.Add(new MinerServices.Plugin.MinerServicesPlugin());
-
+      // ToDo: container.Register<ComputerInventory>(c => computerInventory);
+      foreach (var pl in plugInList)
+      {
+        Plugins.Add(pl);
+      }
             // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
-
-            //Config examples
-            //this.Plugins.Add(new PostmanFeature());
 
             // start all the timers
             Log.Debug("In AppHost.Configure method, starting all timers");
             longRunningTasksCheckTimer.Start();
-            Log.Debug("Leaving AppHost.Configure");
+      Log.Debug("Leaving AppHost.Configure");
         }
-        public override void Stop() {
+
+    // override GetVirtualFileSources to support multiple FileSystemMapping.
+    // Allow plugins to add their own FileSystemMapping
+    public override List<IVirtualPathProvider> GetVirtualFileSources()
+    {
+      var existingProviders = base.GetVirtualFileSources();
+      existingProviders.Add(new FileSystemMapping("gui",  @"C:\Dropbox\whertzing\GitHub\Ace\AceGUI\obj\Debug\netstandard2.0\blazor"));
+      return existingProviders;
+    }
+
+    /// <summary>
+    /// Shut down the Web Service
+    /// </summary>
+    public override void Stop() {
             Log.Debug("Entering AppHost Stop Method");
             var container = base.Container;
 
