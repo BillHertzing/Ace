@@ -5,13 +5,7 @@ using ServiceStack.Web;
 namespace Ace.AceService.GUIServices.Models
 {
 
-  [FallbackRoute("/gui/{PathInfo*}")]
-  public class FallbackForUnmatchedGUIRoutes : IReturn<IHttpResult>
-  {
-    public string PathInfo { get; set; }
-  }
-
-  [Route("/gui/StartGUI")]
+   [Route("/gui/StartGUI")]
   [Route("/gui/StartGUI/{Kind};{Version}")]
   public class StartGUIRequest : IReturn<StartGUIResponse>
     {

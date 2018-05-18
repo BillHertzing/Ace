@@ -5,7 +5,7 @@
   </PropertyGroup>
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.1.0" />
+    <PackageReference Include="ServiceStack" Version="5.1.1" />
     <ProjectReference Include="..\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
   </ItemGroup>
 
@@ -26,6 +26,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Security" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web" />
   </ItemGroup>
   
 </Project>

@@ -112,22 +112,13 @@ namespace Ace.AceService {
       {
         Plugins.Add(pl);
       }
-            // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
+      // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
 
-            // start all the timers
-            Log.Debug("In AppHost.Configure method, starting all timers");
+      // start all the timers
+      Log.Debug("In AppHost.Configure method, starting all timers");
             longRunningTasksCheckTimer.Start();
       Log.Debug("Leaving AppHost.Configure");
         }
-
-    // override GetVirtualFileSources to support multiple FileSystemMapping.
-    // Allow plugins to add their own FileSystemMapping
-    public override List<IVirtualPathProvider> GetVirtualFileSources()
-    {
-      var existingProviders = base.GetVirtualFileSources();
-      existingProviders.Add(new FileSystemMapping("gui",  @"C:\Dropbox\whertzing\GitHub\Ace\AceGUI\obj\Debug\netstandard2.0\blazor"));
-      return existingProviders;
-    }
 
     /// <summary>
     /// Shut down the Web Service

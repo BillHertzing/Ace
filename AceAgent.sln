@@ -36,8 +36,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.MinerServices.Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.GUIServices.Models", "AceService\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj", "{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{9B020CBE-E0A0-460F-95F7-9D8104D4EFA1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.GUIServices.Interfaces", "AceService\AceService.GUIServices.Interfaces\AceService.GUIServices.Interfaces.csproj", "{5FA00593-5F8C-4DEB-A6FA-51A8D0CA76F7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.GUIServices.Plugin", "AceService\AceService.GUIServices.Plugin\AceService.GUIServices.Plugin.csproj", "{6D051132-4829-41E9-9658-306FE30F6C38}"
@@ -84,10 +82,6 @@ Global
 		{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B020CBE-E0A0-460F-95F7-9D8104D4EFA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B020CBE-E0A0-460F-95F7-9D8104D4EFA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B020CBE-E0A0-460F-95F7-9D8104D4EFA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B020CBE-E0A0-460F-95F7-9D8104D4EFA1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5FA00593-5F8C-4DEB-A6FA-51A8D0CA76F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5FA00593-5F8C-4DEB-A6FA-51A8D0CA76F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FA00593-5F8C-4DEB-A6FA-51A8D0CA76F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
