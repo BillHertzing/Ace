@@ -8,8 +8,6 @@
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.1.1" />
-    <PackageReference Include="ServiceStack.Common" Version="5.1.1" />
-    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.1.1" />
     <PackageReference Include="Topshelf" Version="4.0.4" />
   </ItemGroup>
   

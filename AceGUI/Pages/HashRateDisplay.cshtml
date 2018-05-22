@@ -1,7 +1,7 @@
 @using ATAP.Utilities.CryptoCoin.Enumerations;
 @using ATAP.Utilities.CryptoCoin.Models;
 @using Itenso.TimePeriod;
-@page "/hashrate"
+@page "/HashRateDisplay"
 
 
 <h1>HashRate</h1>
@@ -22,6 +22,8 @@
     @(@currentHashRate.HashRatePerTimeSpan) Hashes / @currentHashRate.HashRateTimeSpan.Duration.TotalSeconds Seconds
   </p>*@
 <button class="btn btn-primary" onclick="@Print">Print</button>
+
+<a href="/hardware">hardware page</a>
 
 
 @functions {

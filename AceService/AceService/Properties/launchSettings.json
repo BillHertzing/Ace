@@ -1,7 +1,9 @@
 {
   "profiles": {
     "AceService": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:21100/GUI/"
     }
   }
 }

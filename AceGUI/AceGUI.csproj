@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RunCommand>dotnet</RunCommand>
     <RunArguments>blazor serve</RunArguments>
+    <UserSecretsId>115496fd-8f63-4cd8-9576-d2e799be9824</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +15,7 @@
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
     <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
     <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.3.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
 
@@ -40,4 +42,31 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <BlazorGenerate Remove="Pages\BaseServicesConfiguration.cshtml" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DeployOnBuild>true</DeployOnBuild>
+    <SiteUrlToLaunchAfterPublish>http://localhost:21100/GUI/</SiteUrlToLaunchAfterPublish>
+    <LaunchSiteAfterPublish>True</LaunchSiteAfterPublish>
+    <ExcludeApp_Data>False</ExcludeApp_Data>
+    <ProjectGuid>722e51fc-a9fb-4b6d-aa10-dfd8d2c137b1</ProjectGuid>
+    <DeleteExistingFiles>False</DeleteExistingFiles>
+  </PropertyGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Message Importance="High" Text="This is a $(Configuration) Build" Condition="'$(Configuration)'=='Release'" />
+    <Message Importance="High" Text="This is a $(Configuration) Build" Condition="'$(Configuration)'=='Debug'" />
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="targetPathAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <Message Importance="High" Text="TargetPath: $(TargetPath) GetAssemblyIdentity.Version: %(targetPathAssemblyInfo.Version) GetAssemblyIdentity.InformationalVersion: %(targetPathAssemblyInfo.InformationalVersion)" />
+    <Message Importance="High" Text="TargetPath: $(TargetPath) GetFileVersionInfo.Version: %(myFileVersionInfo.Version) GetFileVersionInfo.InformationalVersion: %(myFileVersionInfo.InformationalVersion)" />
+
+    <Message Importance="High" Text="LastUsedBuildConfiguration: $(LastUsedBuildConfiguration) " />
+    <Message Importance="High" Text="MSBuildThisFileDirectory: $(MSBuildThisFileDirectory) " />
+    <Message Importance="High" Text="publishUrl: $(publishUrl) " />
+
+  </Target>
 </Project>

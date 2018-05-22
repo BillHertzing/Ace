@@ -2,7 +2,8 @@
   "profiles": {
     "AceGUI": {
       "commandName": "Project",
-      "launchBrowser": false,
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:21100/GUI/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

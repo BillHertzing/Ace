@@ -55,6 +55,9 @@
   </ItemGroup>
   
   <ItemGroup>
+      <None Update="AceService.MinerServices.Plugin.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="AceService.MinerServicesPlugin.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

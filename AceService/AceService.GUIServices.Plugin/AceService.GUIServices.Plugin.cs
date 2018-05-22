@@ -21,7 +21,7 @@ namespace Ace.AceService.GUIServices.Plugin {
     }
 
   public class GUIServicesPlugin : IPlugin, IPreInitPlugin {
-      const string builtinDebugRootPath = "~/../../../Releases/AceGUI/dist";
+      const string builtinDebugRootPath = "~/../../../Releases/AceGUI/AceGUI/dist";
     const string builtinReleaseRelativeRootPath = "/blazor";
     const string gUIServicesPlugInDebugRootPathKey = "Ace.GUIServices.Plugin.Debug.RootPath";
     const string gUIServicesPlugInReleaseAbsoluteRootPathKey = "Ace.GUIServices.Plugin.Release.AbsoluteRootPath";
@@ -59,11 +59,11 @@ namespace Ace.AceService.GUIServices.Plugin {
 
       // ToDo: refactor this Plugin to "BlazorGUI"
       // Add the MIMEType application/wasm and associate it with .wasm files
-      MimeTypes.ExtensionMimeTypes["wasm"] = "application/wasm";
+      MimeTypes.ExtensionMimeTypes["dll"] = "application/octet-stream";
       // Allow static files ending in .wasm to be served
       var config = new HostConfig();
       var allowFileExtensions = config.AllowFileExtensions;
-      allowFileExtensions.Add(".wasm");
+      allowFileExtensions.Add("dll");
 
       // ToDo: if the GUI configuration specifies that the GUI has GUI-specific data sensor that can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
       // ToDo: setup the mechanisms that monitors the GUI 
