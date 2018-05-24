@@ -30,3 +30,7 @@ Starting with the core piece, called AceAgent, at this time (May 2018), there ar
 The peer-to-peer mesh as of May 22018 is a set of REST APIs that allow the agents to communicate with each other and to the GUI. Data Transfer Objects (DTOs) define the format of the data as it is communicated over these API endpoints. Messaging between the AceAgents and the AceGUIs will support normal REST APIs and Publish/Subscribe architectures as well. Ports of the peer-to-peer Publish/Subscribe mesh to multiple messaging brokers are encouraged.
 
 The GUI design can be done many different ways, and the project encourages many different implementations. The first GUI implementation and current primary GUI (May 2018) is written in C# and JS, using the Blazor project from Microsoft. As Blazor is experimental at this time, there may be a chance the technology will change or be superseded. But as Blazor holds forth the promise that all of the GUI can be written on C#, and that object definitions can be shared verbatim across the server and client sides of a communication channel, as well as define the DTOs that transport data across process and computer boundaries, this will be the technology for the initial implementation of the AceGUI. 
+
+Feature request:
+personal fitness:
+Take picture of food/dinner from phone, estimate calories, add to daily food intake log.
