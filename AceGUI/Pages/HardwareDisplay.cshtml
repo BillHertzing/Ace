@@ -18,29 +18,36 @@
 <p>
     currentCPUMakers = @currentCPUMaker
 </p>
-<button class="btn btn-primary" onclick="@Print">Print</button>
+<button class="btn btn-primary" onclick="@Print">PrintCurrentcpuMaker</button>
+
+<button class="btn btn-primary" onclick="@ForceCurrentCPMakerToIntel">Force the currentCPMaker To Intel</button>
 
 
 @functions {
 
     public CPUMaker currentCPUMaker = CPUMaker.Intel;
-public List<CPUMaker> cPUMakersList { get; set; } = new List<CPUMaker>();
+    public List<CPUMaker> cPUMakersList { get; set; } = new List<CPUMaker>();
 
     public void Print()    {
-        Console.WriteLine(currentCPUMaker.ToString());
+      Console.WriteLine(currentCPUMaker.ToString());
     }
 
- protected override void OnInit()    {
-    foreach (CPUMaker cpumaker in Enum.GetValues(typeof(CPUMaker)))  {
-      cPUMakersList.Add(cpumaker);
+    protected override void OnInit()    {
+      foreach (CPUMaker cpumaker in Enum.GetValues(typeof(CPUMaker)))  {
+        cPUMakersList.Add(cpumaker);
+      }
+      currentCPUMaker= CPUMaker.AMD;
+
     }
-    currentCPUMaker= CPUMaker.Intel;
 
-  }
+    protected void ChangeCPUMaker(UIChangeEventArgs e) {
+      Console.WriteLine($"Firing from ChangeCPUMaker, Initial currentCPUMaker = {currentCPUMaker}, eventvalue = {e.Value}");
+      currentCPUMaker = (CPUMaker) Enum.Parse(typeof(CPUMaker), (string)e.Value);
+      Console.WriteLine($"Firing from ChangeCPUMaker, final currentCPUMaker = {currentCPUMaker}");
+    }
 
-  protected void ChangeCPUMaker(UIChangeEventArgs e) {
-    Console.WriteLine($"Firing from ChangeCPUMaker, Initial currentCPUMaker = {currentCPUMaker}, eventvalue = {e.Value}");
-    currentCPUMaker = (CPUMaker) Enum.Parse(typeof(CPUMaker), (string)e.Value);
-    Console.WriteLine($"Firing from ChangeCPUMaker, final currentCPUMaker = {currentCPUMaker}");
-  }
+    public void ForceCurrentCPMakerToIntel()
+    {
+      currentCPUMaker = CPUMaker.Intel;
+    }
 }
