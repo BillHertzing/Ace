@@ -31,6 +31,13 @@ The peer-to-peer mesh as of May 22018 is a set of REST APIs that allow the agent
 
 The GUI design can be done many different ways, and the project encourages many different implementations. The first GUI implementation and current primary GUI (May 2018) is written in C# and JS, using the Blazor project from Microsoft. As Blazor is experimental at this time, there may be a chance the technology will change or be superseded. But as Blazor holds forth the promise that all of the GUI can be written on C#, and that object definitions can be shared verbatim across the server and client sides of a communication channel, as well as define the DTOs that transport data across process and computer boundaries, this will be the technology for the initial implementation of the AceGUI. 
 
+AceCommander on GitHub has a "Features Request" project. It is moderated to prevent abuse. One of the features currently requested for AceCommander is that the "Features Request" ability be added to AceCommander itself. Also requested is that Feature Requests provide a clear set of guidelines for what should be considered "abuse" of the feature,
+
+One of the core tenants of this project is to quantify entities' reputation. Reputation should be enhanced by positive behaviours. Reputation should be reduced by negative behaviouors
+
+As part of Reputation, bullying is certainly considered negative behaviour. "Abuse" of any entity should be considered negative behaviour. So it is important that AceCommander reputation scores should react quickly to such allegations. However the allegations must be validateted. The reputation system needs to time-weight behaviour so that reputations might be smirched, and yet reputations must recover if allegations prove unfounded.
+
+Another part of the core is the cgame that rewards cooperative action. Intrinsic in this game is the reputation of the player's in-game avatars. It is the goal of the project that game creation should become a collabrotive effort among users interested in this feature.
 Feature request:
 personal fitness:
 Take picture of food/dinner from phone, estimate calories, add to daily food intake log.
