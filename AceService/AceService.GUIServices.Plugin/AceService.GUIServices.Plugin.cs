@@ -21,11 +21,13 @@ namespace Ace.AceService.GUIServices.Plugin {
     }
 
   public class GUIServicesPlugin : IPlugin, IPreInitPlugin {
-      const string builtinDebugRootPath = "~/../../../Releases/AceGUI/AceGUI/dist";
+      const string builtinDebugRootPath = @"~/../../../AceGUI/bin/Debug/netstandard2.0/Publish/AceGUI/dist";
     const string builtinReleaseRelativeRootPath = "/blazor";
+    const string builtinGUIVirtualRootPath = "";
     const string gUIServicesPlugInDebugRootPathKey = "Ace.GUIServices.Plugin.Debug.RootPath";
     const string gUIServicesPlugInReleaseAbsoluteRootPathKey = "Ace.GUIServices.Plugin.Release.AbsoluteRootPath";
     const string gUIServicesPlugInReleaseRelativeRootPathKey = "Ace.GUIServices.Plugin.Release.RelativeRootPath";
+    const string gUIServicesPlugInGUIVirtualRootPathKey = "Ace.GUIServices.Plugin.GUIVirtualRoot";
 
     /// <summary>
     /// Register this plugin with the appHost
@@ -55,15 +57,21 @@ namespace Ace.AceService.GUIServices.Plugin {
       rootPath = appHost.AppSettings.Get(gUIServicesPlugInReleaseAbsoluteRootPathKey, Assembly.GetAssembly(typeof("Program")).Location +
         appHost.AppSettings.Get(gUIServicesPlugInReleaseReleaseRootPathKey,builtinReleaseRelativeRootPath);
 #endif
-      appHost.AddVirtualFileSources.Add(new FileSystemMapping("GUI", rootPath));
+      // use an appSetting for the VirtualRootPath if one is present, otherwise use the builtin value
+      String virtualRootPath;
+      virtualRootPath = appHost.AppSettings.Get(gUIServicesPlugInGUIVirtualRootPathKey, builtinGUIVirtualRootPath);
+      // Map the Virtual root Dir to the physical path of the root of the GUI
+      // Wrap in a try catch block in case the root Path does not exist
+      try
+      {
+        appHost.AddVirtualFileSources.Add(new FileSystemMapping(virtualRootPath, rootPath));
+      } catch {
+        throw;
+        // ToDo: figure out how to log this and fallback to something useful
+      }
 
-      // ToDo: refactor this Plugin to "BlazorGUI"
-      // Add the MIMEType application/wasm and associate it with .wasm files
-      MimeTypes.ExtensionMimeTypes["dll"] = "application/octet-stream";
-      // Allow static files ending in .wasm to be served
-      var config = new HostConfig();
-      var allowFileExtensions = config.AllowFileExtensions;
-      allowFileExtensions.Add("dll");
+      // change the default redirect path so that a request to an unexpected path will redirect to index.html
+      appHost.Config.DefaultRedirectPath = "/index.html";
 
       // ToDo: if the GUI configuration specifies that the GUI has GUI-specific data sensor that can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
       // ToDo: setup the mechanisms that monitors the GUI 

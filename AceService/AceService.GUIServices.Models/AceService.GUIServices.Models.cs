@@ -5,8 +5,8 @@ using ServiceStack.Web;
 namespace Ace.AceService.GUIServices.Models
 {
 
-   [Route("/gui/StartGUI")]
-  [Route("/gui/StartGUI/{Kind};{Version}")]
+   [Route("/StartGUI")]
+  [Route("/StartGUI/{Kind};{Version}")]
   public class StartGUIRequest : IReturn<StartGUIResponse>
     {
         public string Kind { get; set; }
