@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
    <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="ATAP.Utilities.ComputerInventory.Enumerations">
+      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory.Enumerations\bin\Debug\netstandard2.0\ATAP.Utilities.ComputerInventory.Enumerations.dll</HintPath>
+    </Reference>
     <Reference Include="ATAP.Utilities.ComputerInventory.Models">
       <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory.Models\bin\Debug\netstandard2.0\ATAP.Utilities.ComputerInventory.Models.dll</HintPath>
     </Reference>
@@ -33,24 +36,7 @@
     <Reference Include="ATAP.Utilities.CryptoMiner.Models">
       <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Models\bin\Debug\netstandard2.0\ATAP.Utilities.CryptoMiner.Models.dll</HintPath>
     </Reference>
-    <Reference Include="ATAP.Utilities.Http">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.Http\bin\Debug\net47\ATAP.Utilities.Http.dll</HintPath>
-    </Reference>
-    <!-- 
-    <ProjectReference Include="..\..\..\ATAP.Utilities\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
-    -->
-    <Reference Include="ATAP.Utilities.Tcp">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.Tcp\bin\Debug\net47\ATAP.Utilities.Tcp.dll</HintPath>
-    </Reference>
-    <!-- 
-    <ProjectReference Include="..\..\..\ATAP.Utilities\ATAP.Utilities.Tcp\ATAP.Utilities.Tcp.csproj" />
-    -->
-    <!-- 
-    <ProjectReference Include="..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoCoin\ATAP.Utilities.CryptoCoin.csproj" />
-    -->
-    <!-- 
-    <ProjectReference Include="..\..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory\ATAP.Utilities.ComputerInventory.csproj" />
-    -->
+ 
   </ItemGroup>
 
 
