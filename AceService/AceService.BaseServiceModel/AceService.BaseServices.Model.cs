@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Web;
 using ServiceStack;
 
 
@@ -18,7 +18,7 @@ namespace Ace.AceService.BaseServicesModel
     {
         public string Result { get; set; }
     }
-
+/*
     [Route("/GetConfiguration")]
     public class BaseServiceGetConfiguration : IReturn<GetConfigurationResponse>
     {

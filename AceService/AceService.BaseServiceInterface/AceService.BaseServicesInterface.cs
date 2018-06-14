@@ -6,13 +6,10 @@ using ServiceStack.Configuration;
 namespace Ace.AceService.BaseServicesInterface {
     public class BaseServices : Service {
         public object Any(BaseServiceIsAlive request) {
-            return new IsAliveResponse { Result = $"Hello!" };
+            return new IsAliveResponse { Result = $"Hello, {request.Name}!" };
             
         }
-        //public object Any(BaseServiceIsAlive request)
-        //{
-        //    return new IsAliveResponse { Result = $"Hello, {request.Name}!" };
-        //}
+    /*
         public object Any(BaseServiceGetConfiguration request) {
             return new GetConfigurationResponse { Result = AppSettings.Get<string>("Ace.AceService:ListeningOn")};
         }
@@ -28,5 +25,6 @@ namespace Ace.AceService.BaseServicesInterface {
         public IAppSettings AppSettings {
             get; set;
         }
+        */
     }
 }
