@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+  	<TargetFrameworks>net47</TargetFrameworks>
+  <OutputType>Library</OutputType>
   </PropertyGroup>
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>

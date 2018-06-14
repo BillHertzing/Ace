@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-   <PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>Ace.AceService</RootNamespace>
-    <TargetFramework>net47</TargetFramework>
   </PropertyGroup>
 
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
