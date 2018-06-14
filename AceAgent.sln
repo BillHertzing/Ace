@@ -41,6 +41,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.GUIServices.Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.GUIServices.Plugin", "AceService\AceService.GUIServices.Plugin\AceService.GUIServices.Plugin.csproj", "{6D051132-4829-41E9-9658-306FE30F6C38}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{10D21D00-59F6-481F-81D6-4A5764E3BCF4}"
+	ProjectSection(SolutionItems) = preProject
+		Doc\BuildingNotes.MD = Doc\BuildingNotes.MD
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

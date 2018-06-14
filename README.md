@@ -1,11 +1,9 @@
 # Ace
 Computer Control Center
 
-This is a project for people who want to use technology to make  a difference for good in the world.
+This is a project for people who want to use technology to make a difference for good in the world.
 
-<grandiose>
-ToDo: Insert lyrical passionate moving passage about how this software project will evolve over time into a world spanning application that will make the lives of everyone on earth better :-)
-</grandiose>
+The Docs subfolder contains specific notes on building this application
 
 At the moment, it is a lot of ideas and some few lines of code in this repository.
 

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AceService\AceService.BaseServiceModel\AceService.BaseServiceModel.csproj" />
     <ProjectReference Include="..\AceService\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
   </ItemGroup>
 
