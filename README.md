@@ -39,3 +39,10 @@ Another part of the core is the cgame that rewards cooperative action. Intrinsic
 Feature request:
 personal fitness:
 Take picture of food/dinner from phone, estimate calories, add to daily food intake log.
+
+<H1> List of Open Source Libraries used by AceCommander
+- ServiceStack Version 5.1.1 (Community Edition) URL TBD
+- TopShelf TBD
+- MedallionShell
+- Swordfish
+- TimePeriodLibrary.NET

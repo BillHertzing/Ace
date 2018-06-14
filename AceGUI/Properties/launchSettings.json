@@ -3,11 +3,11 @@
     "AceGUI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:21100/GUI/",
+      "launchUrl": "http://localhost:21100/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:21100/GUI/"
+      "applicationUrl": "http://localhost:21100/"
     }
   }
 }
