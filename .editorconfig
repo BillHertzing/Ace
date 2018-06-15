@@ -1,3 +1,4 @@
+# Copied from https://github.com/aspnet/Blazor/blob/dev/.editorconfig on 6/15/2018
 # All Files
 [*]
 charset = utf-8

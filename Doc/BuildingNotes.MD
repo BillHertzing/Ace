@@ -30,3 +30,15 @@ Located just below the solution, this folder holds the projects/assemblies that 
 ## AceService.GUIServices.Interfaces
 - The .csproj should specify <TargetFrameworks>net47</TargetFrameworks>. Note the use of the plural form; this ensures a subdirectory will be created under Debug and Release  for netstandard2.0
 - The project (server) should depend on ServiceStack.Interfaces assembly in order to share DTO projects/assemblies/classes with the AceGUI (client) Blazor app.
+
+# NuGet Packages Used
+## Blazor
+
+## AceAgent
+### AceService
+Newtonsoft
+TimePerdiolibrary
+### UnitTesting
+Xunit
+MOQ
+FluentAssertions
