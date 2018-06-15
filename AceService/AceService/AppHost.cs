@@ -4,21 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Ace.AceService.BaseServicesInterface;
-using Ace.AceService.GUIServices.Interfaces;
+using Ace.AceService.GUIServices.Plugin;
+using Ace.AceService.MinerServices.Plugin;
 using Funq;
 using ServiceStack;
 using ServiceStack.Configuration;
-using ServiceStack.Common;
 using ServiceStack.Logging;
-using ServiceStack.IO;
-using ServiceStack.VirtualPath;
 
 namespace Ace.AceService {
     //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
     public class AppHost : AppSelfHostBase {
         static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
-        Dictionary<string, Timer> timers;
         List<Task> longRunningTaskList;
+        Dictionary<string, Timer> timers;
         /// ComputerInventory computerInventory;
 
         /// <summary>
@@ -27,6 +25,18 @@ namespace Ace.AceService {
         public AppHost() : base("AceService", typeof(BaseServices).Assembly) {
             Log.Debug("Entering AppHost Ctor");
             Log.Debug("Leaving AppHost Ctor");
+        }
+
+        void LongRunningTasksCheckTimer_Elapsed(object sender, ElapsedEventArgs e) {
+            //Log.Debug("Entering the appHost.LongRunningTasksCheckTimer_Elapsed Method");
+            var container = base.Container;
+            Dictionary<string, Timer> timers = container.TryResolve(typeof(Dictionary<string, Timer>)) as Dictionary<string, Timer>;
+            timers["longRunningTasksCheckTimer"].Stop();
+            //Log.Debug("checking for existence of any longRunningTasks");
+            List<Task> longRunningTaskList = container.TryResolve(typeof(List<Task>)) as List<Task>;
+            //Log.Debug($"There are {longRunningTaskList.Count} tasks in the longRunningTaskList");
+            timers["longRunningTasksCheckTimer"].Start();
+            //Log.Debug("Leaving the appHost.LongRunningTasksCheckTimer_Elapsed Method");
         }
 
         /// <summary>
@@ -40,130 +50,126 @@ namespace Ace.AceService {
             // populate the configuration settings
             // The location should be part of the container IOC injection, (hopefully observable and creating a stream that can be subscribed to by an authorized  client of this service )
 
+            // Start with the AceService.BaseService builtin (compile-time) configuration settings
+            // Add the AceService.BaseService builtin (compile-time) configuration settings
+            // Add (Superseding any previous values) the App.config file (AKA AceAgent.exe.config after building and at runtime)
+            // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings AKA AceService.config
+            // Add (Superseding any previous values) environment values that match any keys
+            // ToDo: Add (Superseding any previous values) command line variable values that match any keys
             var appSettingsBuilder = new MultiAppSettingsBuilder()
-                // Add the AceService.BaseService builtin (compile-time) configuration settings
                 .AddDictionarySettings(DefaultConfiguration.GetIt())
-                // Add the App.config file AKA AceAgent.exe.config at runtime
                 .AddAppSettings()
-                // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings AKA AceService.config
-                .AddTextFile("./AceService.config");
+                .AddTextFile("./AceService.config")
+                .AddEnvironmentalVariables();
+            // Build the base services AppSettings
+            AppSettings = appSettingsBuilder.Build();
+            // ToDo: Validate the final set of settings
+            // ToDo: Validate config file location, Logs file location
 
-            //var htmlFormat = base.Plugins.First(x => x is ServiceStack.Formats.HtmlFormat) as ServiceStack.Formats.HtmlFormat;
-
+            // ToDo: support AppSettings to control the enable/disable of Postman
             // Enable Postman integration
             Plugins.Add(new PostmanFeature());
 
+            // ToDo: support AppSettings to control the enable/disable of CorsFeature
             // Enable CORS support
             Plugins.Add(new CorsFeature(
-     allowedMethods: "GET, POST, PUT, DELETE, OPTIONS",
-     allowedOrigins: "*",
-     allowCredentials: true,
-     allowedHeaders: "content-type, Authorization, Accept"));
+               allowedMethods: "GET, POST, PUT, DELETE, OPTIONS",
+               allowedOrigins: "*",
+               allowCredentials: true,
+               allowedHeaders: "content-type, Authorization, Accept"));
 
-            // ToDo Validate any plugin settings in the configuration settings
-            //var plugInList = new List<IPlugin>() { new MinerServices.Plugin.MinerServicesPlugin(), new Ace.AceService.GUIServices.Plugin.GUIServicesPlugin() };
-            var plugInList = new List<IPlugin>() { new Ace.AceService.GUIServices.Plugin.GUIServicesPlugin() };
-            // Add configuration setting specific to a plugin
-            foreach (var pl in plugInList) {
-                // ToDo: Add the plugIns' builtin (compile-time) configuration settings
-                //appSettingsBuilder
-                // Superseded by an optional configuration file that contains settings for the plugin
-            }
-            appSettingsBuilder.AddTextFile("./AceService.MinerServices.Plugin.config");
+            // ToDo: support AppSettings to control the enable/disable of Metadata Feature
+            this.Config.EnableFeatures = Feature.All.Remove(Feature.Metadata);
 
-            // ToDo Superseded by an optional configuration file that contains 'recently used' configuration settings
-            // Superseded by Environment variables
-            appSettingsBuilder.AddEnvironmentalVariables();
-            // ToDo Superseded by command line variables
-            // ToDo Validate the final set of settings
-            // Validate config file location, Logs file location
-            // Build the final AppSettings
-            AppSettings = appSettingsBuilder.Build();
+            // Turn debug mode for the ACEAgent depending if running in debug mode or release mode
+#if Debug
+      this.Config.DebugMode = true;
+#else
+            this.Config.DebugMode = false;
+#endif
 
-            // Create the base agents' observable data structures based on the configuration settings
+            // Create the basic services observable data structures based on the configuration settings
 
-            // Add data structures and timers to handle the list of LongRunningTasks
+            // Add a dictionary of timers and a list to hold "long-running tasks" to the IoC container
+            #region create a dictionary of timers and register it in the IoC container
             timers = new Dictionary<string, Timer>();
             container.Register<Dictionary<string, Timer>>(c => timers);
+            #endregion create a dictionary of timers and register it in the IoC container
+            #region create a list of tasks that is intended to hold "long running" tasks and register the list in the IoC container
             longRunningTaskList = new List<Task>();
             container.Register<List<Task>>(c => longRunningTaskList);
+            #endregion create a list of tasks that is intended to hold "long running" tasks and register the list in the IoC container
 
-            // Add a timer to check  the status of long running tasks, and attach a callback to the timer
+            // Add a timer to check the status of long running tasks, and attach a callback to the timer
             #region create longRunningTasksCheckTimer, connect callback, and store in container's timers
             Log.Debug("In AppHost.Configure method, creating longRunningTasksCheckTimer");
             var longRunningTasksCheckTimer = new Timer(1000);
             longRunningTasksCheckTimer.AutoReset = true;
             longRunningTasksCheckTimer.Elapsed += new ElapsedEventHandler(LongRunningTasksCheckTimer_Elapsed);
             timers.Add("longRunningTasksCheckTimer", longRunningTasksCheckTimer);
-      #endregion create longRunningTasksCheckTimer, connect callback, and store in container's timers
+            #endregion create longRunningTasksCheckTimer, connect callback, and store in container's timers
 
-      // Get the latest known current configuration, and use that information to populate the data structures
-      //ToDo: computerInventory = new ComputerInventory(AppSettings.GetAll());
+            // ToDo: Get the list of plugins to install from the configuration settings, currently hardcoded to load just the GUIServices
+            // Create the list of PlugIns to load
+            var plugInList = new List<IPlugin>() {
+            new MinerServicesPlugin(),
+                new GUIServicesPlugin()
+            };
 
-      // validate that the configuration settings match the real computer inventory
+            // Load each plugin here. Note that plugins may add AppSettings specific to its needs
+            foreach (var pl in plugInList) {
+                Plugins.Add(pl);
+            }
 
-      // if the current computer inventory specifies that there are sensors that
-      // can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
+            // ToDo: See Issue #8
+            // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
 
-      // setup and enable the mechanisms that monitors each monitored sensor, and start them running
-
-      // ToDo: container.Register<ComputerInventory>(c => computerInventory);
-      foreach (var pl in plugInList)
-      {
-        Plugins.Add(pl);
-      }
-      // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
-
-      // start all the timers
-      Log.Debug("In AppHost.Configure method, starting all timers");
+            // start all the timers
+            Log.Debug("In AppHost.Configure method, starting all timers");
             longRunningTasksCheckTimer.Start();
-      Log.Debug("Leaving AppHost.Configure");
+            Log.Debug("Leaving AppHost.Configure");
         }
 
-    /// <summary>
-    /// Shut down the Web Service
-    /// </summary>
-    public override void Stop() {
+        /// <summary>
+        /// Shut down the Web Service
+        /// </summary>
+        public override void Stop() {
             Log.Debug("Entering AppHost Stop Method");
             var container = base.Container;
 
             // It is possible that the Stop method is called during service startup, because the service could be failing because of a problem during startup,
             //  so need to check that each of container's disposable items actually exist before disposing of them
-            
-            // if the current computer inventory specifies that there are sensors that are being monitored, dispose of the resources that are doing the monitoring
-            //ComputerInventory computerInventory = container.TryResolve(typeof(ComputerInventory)) as ComputerInventory;
 
             // Stop and dispose of all timers
             Dictionary<string, Timer> timers;
-            try
-            {
+            try {
                 Log.Debug("In AppHost.Stop method, trying to resolve the timers dictionary");
                 timers = container.TryResolve(typeof(Dictionary<string, Timer>)) as Dictionary<string, Timer>;
-            }
-            catch (Exception ex)
-            {
+            } catch(Exception ex) {
                 Log.Debug($"In AppHost.Stop method, resolving the timers dictionary threw exception message: {ex.Message}");
                 throw;
             }
 
-            foreach (var t in timers.Values) { t.Stop(); t.Dispose(); }
+            foreach(var t in timers.Values) {
+                t.Stop(); t.Dispose();
+            }
             // call the ServiceStack AppSelfHostBase Stop method
             Log.Debug("Entering the ServiceStack AppSelfHostBase Stop Method");
             base.Stop();
             Log.Debug("Leaving AppHost Stop Method");
         }
-                
-        void LongRunningTasksCheckTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            //Log.Debug("Entering the appHost.LongRunningTasksCheckTimer_Elapsed Method");
-            var container = base.Container;
-            Dictionary<string, Timer> timers = container.TryResolve(typeof(Dictionary<string, Timer>)) as Dictionary<string, Timer>;
-            timers["longRunningTasksCheckTimer"].Stop();
-            //Log.Debug("checking for existence of any longRunningTasks");
-            List<Task> longRunningTaskList = container.TryResolve(typeof(List<Task>)) as List<Task>;
-            //Log.Debug($"There are {longRunningTaskList.Count} tasks in the longRunningTaskList");
-            timers["longRunningTasksCheckTimer"].Start();
-            //Log.Debug("Leaving the appHost.LongRunningTasksCheckTimer_Elapsed Method");
-        }
+            // Get the latest known current configuration, and use that information to populate the data structures
+            //ToDo: computerInventory = new ComputerInventory(AppSettings.GetAll());
+
+            // validate that the configuration settings match the real computer inventory
+
+            // if the current computer inventory specifies that there are sensors that
+            // can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
+
+            // setup and enable the mechanisms that monitors each monitored sensor, and start them running
+            // ToDo: container.Register<ComputerInventory>(c => computerInventory);
+            // if the current computer inventory specifies that there are sensors that are being monitored, dispose of the resources that are doing the monitoring
+            //ComputerInventory computerInventory = container.TryResolve(typeof(ComputerInventory)) as ComputerInventory;
+
     }
 }
