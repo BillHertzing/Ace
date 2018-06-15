@@ -58,6 +58,5 @@
     <Message Importance="High" Text="publishUrl: $(publishUrl) " />
 
   </Target>
-  
 
 </Project>
