@@ -27,7 +27,6 @@ namespace Ace.AceService {
         public AppHost() : base("AceService", typeof(BaseServices).Assembly) {
             Log.Debug("Entering AppHost Ctor");
             Log.Debug("Leaving AppHost Ctor");
-
         }
 
         /// <summary>
@@ -62,9 +61,10 @@ namespace Ace.AceService {
      allowedHeaders: "content-type, Authorization, Accept"));
 
             // ToDo Validate any plugin settings in the configuration settings
-            var plugInList = new List<IPlugin>() { new MinerServices.Plugin.MinerServicesPlugin(), new Ace.AceService.GUIServices.Plugin.GUIServicesPlugin() };
+            //var plugInList = new List<IPlugin>() { new MinerServices.Plugin.MinerServicesPlugin(), new Ace.AceService.GUIServices.Plugin.GUIServicesPlugin() };
+            var plugInList = new List<IPlugin>() { new Ace.AceService.GUIServices.Plugin.GUIServicesPlugin() };
             // Add configuration setting specific to a plugin
-            foreach(var pl in plugInList) {
+            foreach (var pl in plugInList) {
                 // ToDo: Add the plugIns' builtin (compile-time) configuration settings
                 //appSettingsBuilder
                 // Superseded by an optional configuration file that contains settings for the plugin
