@@ -14,7 +14,8 @@ namespace Ace.AceService.GUIServices.Models
     {
         public string Result { get; set; }
     }
-
+	
+	// This route will list all of the GUIS and their versions that are loaded via a plugin
     //[Route("/gui/ListGUI")]
     //[Route("/gui/ListGUI/{Kind};{Version}")]
     //public class ListGUIRequest : IReturn<ListGUIsResponse>
