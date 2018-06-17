@@ -9,8 +9,7 @@
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack.Interfaces" Version="5.1.1" />
-    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.1.1" />
-      </ItemGroup>
+  </ItemGroup>
   
   <!-- .NET 4.7 references, compilation flags and build options -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
@@ -31,11 +30,4 @@
     <Reference Include="System.Security" />
   </ItemGroup>
 
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
