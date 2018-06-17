@@ -26,7 +26,6 @@
     <ProjectReference Include="..\AceService\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
   </ItemGroup>
 
-
   <ItemGroup>
     <Reference Include="ATAP.Utilities.ComputerInventory.Enumerations">
       <HintPath>..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory.Enumerations\bin\Debug\netstandard2.0\ATAP.Utilities.ComputerInventory.Enumerations.dll</HintPath>
