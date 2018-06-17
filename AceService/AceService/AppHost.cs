@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using Ace.AceService.BaseServicesInterface;
-using Ace.AceService.GUIServices.Plugin;
-using Ace.AceService.MinerServices.Plugin;
 using Funq;
 using ServiceStack;
 using ServiceStack.Configuration;
@@ -22,7 +19,7 @@ namespace Ace.AceService {
         /// <summary>
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// </summary>
-        public AppHost() : base("AceService", typeof(BaseServices).Assembly) {
+        public AppHost() : base("AceService", typeof(Ace.AceService.BaseServices.Interfaces.BaseServices).Assembly) {
             Log.Debug("Entering AppHost Ctor");
             Log.Debug("Leaving AppHost Ctor");
         }
@@ -112,8 +109,8 @@ namespace Ace.AceService {
             // ToDo: Get the list of plugins to install from the configuration settings, currently hardcoded to load just the GUIServices
             // Create the list of PlugIns to load
             var plugInList = new List<IPlugin>() {
-            new MinerServicesPlugin(),
-                new GUIServicesPlugin()
+            new Ace.AceService.MinerServices.Plugin.MinerServicesPlugin(),
+                new Ace.AceService.GUIServices.Plugin.GUIServicesPlugin()
             };
 
             // Load each plugin here. Note that plugins may add AppSettings specific to its needs
