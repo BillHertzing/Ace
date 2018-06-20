@@ -34,11 +34,13 @@
   <ItemGroup>
     <Folder Include="Types\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AceService.MinerServices.Interfaces\AceService.MinerServices.Interfaces.csproj" />
+    <ProjectReference Include="..\AceService.MinerServices.Models\AceService.MinerServices.Models.csproj" />
+  </ItemGroup>
   
-    <ItemGroup>
-      <ProjectReference Include="..\AceService.MinerServices.Interfaces\AceService.MinerServices.Interfaces.csproj" />
-      <ProjectReference Include="..\AceService.MinerServices.Models\AceService.MinerServices.Models.csproj" />
-    </ItemGroup>
+
 
   <ItemGroup>
     <Reference Include="ATAP.Utilities.CryptoCoin.Enumerations">
