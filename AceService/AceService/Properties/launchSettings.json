@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "AceService": {
-      "commandName": "Project",
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:21100"
-    }
-  }
-}
