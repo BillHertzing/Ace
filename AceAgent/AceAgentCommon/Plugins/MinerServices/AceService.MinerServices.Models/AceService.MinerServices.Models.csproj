@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>Ace.AceService.MinerServices.Models</RootNamespace>
   </PropertyGroup>
@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.1.1" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
-    
   </ItemGroup>
   
   <!-- .NET 4.7 references, compilation flags and build options -->
@@ -33,20 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Types\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="ATAP.Utilities.CryptoMiner.Models">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Models\bin\Debug\netstandard2.0\ATAP.Utilities.CryptoMiner.Models.dll</HintPath>
+      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Models\bin\$(Configuration)\netstandard2.0</HintPath>
+      <Private>true</Private>
     </Reference>
   </ItemGroup>
-  
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
