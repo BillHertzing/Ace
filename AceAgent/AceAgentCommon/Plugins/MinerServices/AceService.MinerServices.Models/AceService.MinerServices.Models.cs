@@ -1,4 +1,4 @@
-using ATAP.Utilities.CryptoMiner.Models;
+//using ATAP.Utilities.CryptoMiner.Models;
 using ServiceStack;
 using ServiceStack.Logging;
 
@@ -36,7 +36,7 @@ namespace Ace.AceService.MinerServices.Models
     {
         public int ProcessID { get; set; }
     }
-
+  /*
     [Route("/StatusMiners")]
     [Route("/StatusMiner/{ID}")]
     public class StatusMinerRequest : IReturn<StatusMinersResponse>
@@ -58,5 +58,5 @@ namespace Ace.AceService.MinerServices.Models
     {
         public TuneMinerGPUsResult[] Result { get; set; }
     }
-
+*/
 }

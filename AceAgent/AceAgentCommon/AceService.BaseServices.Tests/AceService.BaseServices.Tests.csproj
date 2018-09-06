@@ -1,9 +1,9 @@
-
+﻿
 <Project Sdk="Microsoft.NET.Sdk">
 
  <PropertyGroup>
-    <TargetFrameworks>net47</TargetFrameworks>
-    <IsPackable>false</IsPackable>
+   <TargetFrameworks>net471</TargetFrameworks>
+   <IsPackable>false</IsPackable>
     <RootNamespace>Ace.AceService.BaseServices.Tests</RootNamespace>
   </PropertyGroup>
   

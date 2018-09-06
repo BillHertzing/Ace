@@ -8,14 +8,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService", "AceAgent\AceService\AceService.csproj", "{CF36BF58-D08F-425A-9A6A-D0A86C506110}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8D6DE92C-637E-4433-9810-98D7FBCEA6BA} = {8D6DE92C-637E-4433-9810-98D7FBCEA6BA}
-		{12B06E45-12F5-4E56-ADB4-5879D98D3105} = {12B06E45-12F5-4E56-ADB4-5879D98D3105}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.BaseServices.Models", "AceAgent\AceAgentCommon\AceService.BaseServices.Models\AceService.BaseServices.Models.csproj", "{8D6DE92C-637E-4433-9810-98D7FBCEA6BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.BaseServices.Interfaces", "AceAgent\AceAgentCommon\AceService.BaseServices.Interfaces\AceService.BaseServices.Interfaces.csproj", "{130DED02-5984-487C-93DD-0D264EED140E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.BaseServices.Tests", "AceAgent\AceAgentCommon\AceService.BaseServices.Tests\AceService.BaseServices.Tests.csproj", "{12B06E45-12F5-4E56-ADB4-5879D98D3105}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87D83409-A5BD-4BAE-94A8-D30A2206E64A}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.filenesting.json = .filenesting.json
 		ATTRIBUTION.md = ATTRIBUTION.md
 		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -83,10 +81,6 @@ Global
 		{130DED02-5984-487C-93DD-0D264EED140E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{130DED02-5984-487C-93DD-0D264EED140E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{130DED02-5984-487C-93DD-0D264EED140E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12B06E45-12F5-4E56-ADB4-5879D98D3105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12B06E45-12F5-4E56-ADB4-5879D98D3105}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12B06E45-12F5-4E56-ADB4-5879D98D3105}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12B06E45-12F5-4E56-ADB4-5879D98D3105}.Release|Any CPU.Build.0 = Release|Any CPU
 		{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -120,7 +114,6 @@ Global
 		{CF36BF58-D08F-425A-9A6A-D0A86C506110} = {358C6FBD-56E7-4385-A70C-9191A4085A2C}
 		{8D6DE92C-637E-4433-9810-98D7FBCEA6BA} = {D38D93F8-9063-4E68-B982-72B81C57943B}
 		{130DED02-5984-487C-93DD-0D264EED140E} = {D38D93F8-9063-4E68-B982-72B81C57943B}
-		{12B06E45-12F5-4E56-ADB4-5879D98D3105} = {D38D93F8-9063-4E68-B982-72B81C57943B}
 		{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F} = {2894C382-76E8-4B77-BFAE-3CF8433AFC55}
 		{5FA00593-5F8C-4DEB-A6FA-51A8D0CA76F7} = {2894C382-76E8-4B77-BFAE-3CF8433AFC55}
 		{6D051132-4829-41E9-9658-306FE30F6C38} = {2894C382-76E8-4B77-BFAE-3CF8433AFC55}

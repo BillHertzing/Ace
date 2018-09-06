@@ -17,6 +17,7 @@
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <!--
     <TargetFramework>net47</TargetFramework>
@@ -53,8 +54,8 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
   </ItemGroup>
 
-  <!-- .NET Full  references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net47'">
+    <!-- .NET 4 or greater references, compilation flags and build options -->
+  <PropertyGroup Condition="$(TargetFramework.Contains('net4'))">
     <DefineConstants>NET47;NETFULL</DefineConstants>
   </PropertyGroup>
 

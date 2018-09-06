@@ -1,7 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>Ace.AceService.MinerServices.Models</RootNamespace>
   </PropertyGroup>
@@ -12,8 +11,8 @@
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
   </ItemGroup>
   
-  <!-- .NET 4.7 references, compilation flags and build options -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+  <!-- .NET 4 or greater references, compilation flags and build options -->
+  <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -31,11 +30,6 @@
     <Reference Include="System.Security" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="ATAP.Utilities.CryptoMiner.Models">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Models\bin\$(Configuration)\netstandard2.0</HintPath>
-      <Private>true</Private>
-    </Reference>
-  </ItemGroup>
+
 
 </Project>

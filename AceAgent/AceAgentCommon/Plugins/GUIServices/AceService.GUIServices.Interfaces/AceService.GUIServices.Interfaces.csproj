@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFrameworks>net47</TargetFrameworks>
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
@@ -10,7 +9,8 @@
     <ProjectReference Include="..\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- .NET 4 or greater references, compilation flags and build options -->
+  <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="System.Web" />
   </ItemGroup>
   

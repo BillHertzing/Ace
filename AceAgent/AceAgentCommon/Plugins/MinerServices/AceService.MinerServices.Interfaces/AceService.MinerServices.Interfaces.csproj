@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
    <PropertyGroup>
-    <TargetFrameworks>net471</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>Ace.AceService.MinerServices.Interfaces</RootNamespace>
   </PropertyGroup>
@@ -44,8 +43,8 @@
   </ItemGroup>
 
 
-  <!-- .NET 4.7 references, compilation flags and build options -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+  <!-- .NET 4 or greater references, compilation flags and build options -->
+  <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
