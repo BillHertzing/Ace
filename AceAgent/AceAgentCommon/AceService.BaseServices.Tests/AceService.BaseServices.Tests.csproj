@@ -2,9 +2,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
  <PropertyGroup>
-   <TargetFrameworks>net471</TargetFrameworks>
-   <IsPackable>false</IsPackable>
     <RootNamespace>Ace.AceService.BaseServices.Tests</RootNamespace>
+    <TargetFrameworks>net471;netcoreapp2.0</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+	<!-- Assembly, File, and Package Information for this assembly-->
+    <!-- Build and revision are created based on date-->
+    <MajorVersion>0</MajorVersion>
+    <MinorVersion>1</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <!-- Current Lifecycle stage for this assembly-->
+    <PackageLifeCycleStage>dev</PackageLifeCycleStage>
+    <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
+    <PackageLabel>alpha</PackageLabel>
   </PropertyGroup>
   
   <ItemGroup>

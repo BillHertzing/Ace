@@ -1,37 +1,82 @@
-<Project>
+<Project >
+
+  <!-- Solution wide default location of the version file for all projects in the solution -->
+  <!-- Can be overridden if desired by a property of the same name in a project file for an assembly -->
   <PropertyGroup>
-    <Company>ATAP Technology, Inc.</Company>
-    <Copyright>ATAP Technology, Inc.</Copyright>
-    <Authors>William Hertzing</Authors> 
-    <Product>AceCommander</Product> 
-    <ProductName>AceCommander</ProductName> 
-    <RepositoryType>repositoryType</RepositoryType>
-    <RepositoryUrl>www.repository.url</RepositoryUrl>
-    <PackageLicenseUrl>www.license.url</PackageLicenseUrl> 
-    <PackageProjectUrl>www.project.url</PackageProjectUrl> 
-    <PackageIconUrl>www.icon.url</PackageIconUrl>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <PackageTags>Testing, experimental, alpha, ATAP, ATAP.AceCommander</PackageTags> 
-    <PackageReleaseNotes>Initial implementation/test of ATAP.AceCommander Nuget packaging</PackageReleaseNotes> 
+    <!-- Solution wide default location of the version file for all projects in the solution -->
+    <!-- Can be overridden if desired by a property of the same name in a project file for an assembly -->
+    <VersionFile Condition=" '$(VersionFile)' == '' ">$(MSBuildProjectDirectory)\properties\AssemblyInfo.cs</VersionFile>
+    <!-- Solution wide default location of the lock file for the UpdatePackageVersion tasks for all projects in the solution -->
+    <!-- Can be overridden if desired by a property of the same name in a project file for an assembly -->
+    <UpdatePackageVersionLockFilePath Condition=" '$(UpdatePackageVersionLockFilePath)' == '' ">$(MSBuildProjectDirectory)\$(MSBuildProjectName).UpdatePackageVersion.lock</UpdatePackageVersionLockFilePath>
   </PropertyGroup>
 
   <PropertyGroup>
+    <TargetFrameworks>net471</TargetFrameworks>
     <LangVersion>latest</LangVersion>
-    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <!--
     <TargetFramework>net47</TargetFramework>
+    <TargetFramework>net471</TargetFramework>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <TargetFramework>netstandard2.0</TargetFramework>
-  	<TargetFrameworks>netcoreapp2.0;net47</TargetFrameworks>
-    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
+  	<TargetFrameworks>netcoreapp2.0;net471</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
 	-->
   </PropertyGroup>
+
+  <!-- solution-wide properties to include in every project -->
+  <PropertyGroup>
+    <!-- root directory of the solution, relative to the location where current project is found take place -->
+    <!-- when msbuild is run by Visual Studio 15.8.2, ($(MSBuildRuntimeType) != 'Core') the property $(SolutionDir) is already defined at this point, so this line is not executed -->
+    <!-- when msbuild is run by dotnet command, ($(MSBuildRuntimeType) == 'Core') the property $(SolutionDir) is not defined at this point, so this line is executed -->
+    <!-- the result is that the $(SolutionDir) is set properly regardless of the $(MSBuildRuntimeType) -->
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildProjectDirectory)\..\</SolutionDir>
+    <!-- Directory where all of the custom build tools are stored -->
+    <SolutionBuildToolsBaseDir Condition=" '$(SolutionBuildToolsBaseDir)' == '' ">$(SolutionDir).build\</SolutionBuildToolsBaseDir>
+    <!-- bring in the build tasks extensions defined in the MSBuild.Community project-->
+    <MSBuildCommunityTasksPath>$(SolutionBuildToolsBaseDir)MSBuildTasks.*\build</MSBuildCommunityTasksPath>
+    <!-- bring in the build tasks extensions defined in the ATAP.Utilities.BuildTooling project-->
+    <!-- ATAPBuildToolingConfiguration is normaly set to Release; use Debug if developing the BuildTooling assemblies and scripts -->
+	  <ATAPBuildToolingConfiguration>Release</ATAPBuildToolingConfiguration>
+    <!-- ATAPBuildToolingDebugVerbosity controls the level of details the Debug mode logging. If ATAPBuildToolingConfiguration is not Debug, this setting has no effect -->
+    <!-- valid values for ATAPBuildToolingDebugVerbosity are trace -->
+    <ATAPBuildToolingDebugVerbosity>Trace</ATAPBuildToolingDebugVerbosity>
+    <ATAPUtilitiesBuildToolingTargetsPath>$(SolutionBuildToolsBaseDir)ATAP.Utilities.BuildTooling.0.1.0.1\build\</ATAPUtilitiesBuildToolingTargetsPath>
+    <ATAPUtilitiesBuildToolingTasksPath>$(SolutionBuildToolsBaseDir)ATAP.Utilities.BuildTooling.0.1.0.1\build</ATAPUtilitiesBuildToolingTasksPath>
+    <ATAPUtilitiesBuildToolingTasksAssembly Condition=" '$(MSBuildRuntimeType)' == 'Core'">$(ATAPUtilitiesBuildToolingTasksPath)\$(ATAPBuildToolingConfiguration)\netstandard2.0\ATAP.Utilities.BuildTooling.CSharp.dll</ATAPUtilitiesBuildToolingTasksAssembly>
+    <ATAPUtilitiesBuildToolingTasksAssembly Condition=" '$(MSBuildRuntimeType)' != 'Core'">$(ATAPUtilitiesBuildToolingTasksPath)\$(ATAPBuildToolingConfiguration)\net471\ATAP.Utilities.BuildTooling.CSharp.dll</ATAPUtilitiesBuildToolingTasksAssembly>
+  </PropertyGroup>
+
+  <!-- NuGet Package information for all assemblies in the solution -->
+  <PropertyGroup>
+    <Company>ATAP Technology, Inc.</Company>
+    <Copyright>ATAP Technology, Inc.</Copyright>
+    <Authors>William Hertzing</Authors>
+    <Product>AceCommander</Product> 
+    <ProductName>AceCommander</ProductName> 
+    <RepositoryUrl>https://github.com/BillHertzing/Ace</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>www.project.url</PackageProjectUrl>
+    <PackageIconUrl>www.icon.url</PackageIconUrl>
+    <PackageTags>Testing, experimental, alpha, ATAP, ATAP.AceCommander</PackageTags> 
+    <PackageReleaseNotes>Initial implementation/test of ATAP.AceCommander Nuget packaging</PackageReleaseNotes> 
+  </PropertyGroup>
+     
+  <!-- NuGet Local Feed location, using an environment variable and fallback -->
+  <PropertyGroup>
+    <NuGetLocalFeedPath Condition=" '$(NuGetLocalFeedPath)' == '' ">C:\Dropbox\NuGetLocalFeed</NuGetLocalFeedPath> 
+  </PropertyGroup>
+
+
+  <!-- Release Configuration compilation symbols, flags and build options -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DefineConstants>RELEASE;</DefineConstants>
   </PropertyGroup>
 
+  <!-- Debug Configuration compilation symbols, flags and build options -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -43,6 +88,7 @@
     <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
 
+  <!-- .NET Standard 2.0 solution-wide items to include in every project -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
   </ItemGroup>
 
@@ -51,17 +97,26 @@
     <DefineConstants>NETCORE;</DefineConstants>
   </PropertyGroup>
 
+  <!-- .NET Core 2.0 solution-wide items to include in every project -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
   </ItemGroup>
 
     <!-- .NET 4 or greater references, compilation flags and build options -->
-  <PropertyGroup Condition="$(TargetFramework.Contains('net4'))">
+  <PropertyGroup Condition="$(TargetFramework.Contains('net47'))">
     <DefineConstants>NET47;NETFULL</DefineConstants>
   </PropertyGroup>
 
-  <!-- Common for all TargetFrameworks references, compilation flags and build options -->
-  <ItemGroup>
+  <!-- .NET 471 solution-wide items to include in every project -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
   </ItemGroup>
+
+  <!-- Demonstrate the difference between a msbuild run from inside Visual Studio, and a msbuild callled from dotnet CLI
+       Replace Never with Clean -->
+  <Target Name="HighlightDifferencesBetweenMSBuild" BeforeTargets="Never">
+    <Message  Text="MSBuildRuntimeType = $(MSBuildRuntimeType)" />
+    <Message Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'" Text="SolutionDir undefined or null"/>
+    <Message Condition="$(SolutionDir) != '' And $(SolutionDir) != '*Undefined*'" Text="SolutionDir =$(SolutionDir)"/>
+  </Target>
 
   <!--
   <ItemGroup>

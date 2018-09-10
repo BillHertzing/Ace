@@ -1,9 +1,10 @@
 <Project>
+  <!-- import the non-default targets files -->
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuildTasks.Targets" />
+  <Import Project="$(ATAPUtilitiesBuildToolingTargetsPath)\ATAP.Utilities.BuildTooling.Targets" />
 <!-- Targets for multiframework publishing courtesy of
   this stackoverflow answer https://stackoverflow.com/questions/43947599/how-to-publish-for-all-target-frameworks
   this GIST:https://gist.github.com/dasMulli/b14026437468ce4b56ef93e010f24a36
--->
-<Target Name="PublishProjectIfFrameworkSet"
           DependsOnTargets="Publish"
           Condition=" '$(TargetFramework)' != '' " />
 
@@ -23,4 +24,7 @@
   
   <Target Name="PublishAll"
           DependsOnTargets="PublishProjectIfFrameworkSet;PublishProjectForAllRIDsIfTargetFrameworkSet;PublishProjectForAllFrameworksIfFrameworkUnset" />
+
+<Target Name="PublishProjectIfFrameworkSet"
+-->
 </Project>
