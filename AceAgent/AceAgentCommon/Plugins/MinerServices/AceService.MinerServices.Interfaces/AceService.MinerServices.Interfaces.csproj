@@ -1,51 +1,35 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
    <PropertyGroup>
-    <TargetFrameworks>net471</TargetFrameworks>
-    <OutputType>Library</OutputType>
     <RootNamespace>Ace.AceService.MinerServices.Interfaces</RootNamespace>
+    <OutputType>Library</OutputType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
+	<!-- Assembly, File, and Package Information for this assembly-->
+    <!-- Build and revision are created based on date-->
+    <MajorVersion>0</MajorVersion>
+    <MinorVersion>1</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <!-- Current Lifecycle stage for this assembly-->
+    <PackageLifeCycleStage>dev</PackageLifeCycleStage>
+    <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
+    <PackageLabel>alpha</PackageLabel>
   </PropertyGroup>
 
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.1.1" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AceService.MinerServices.Models\AceService.MinerServices.Models.csproj" />
   </ItemGroup>
   
-  <ItemGroup>
-    <Reference Include="ATAP.Utilities.ComputerInventory.Enumerations">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory.Enumerations\bin\$(Configuration)\netstandard2.0\ATAP.Utilities.ComputerInventory.Enumerations.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.ComputerInventory.Models">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory.Models\bin\$(Configuration)\netstandard2.0\ATAP.Utilities.ComputerInventory.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.CryptoCoin.Enumerations">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoCoin.Enumerations\bin\$(Configuration)\netstandard2.0\ATAP.Utilities.CryptoCoin.Enumerations.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.CryptoCoin.Extensions">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoCoin.Extensions\bin\$(Configuration)\netstandard2.0\ATAP.Utilities.CryptoCoin.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.CryptoCoin.Models">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoCoin.Models\bin\$(Configuration)\netstandard2.0\ATAP.Utilities.CryptoCoin.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.CryptoMiner.Enumerations">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Enumerations\bin\$(Configuration)\netstandard2.0\ATAP.Utilities.CryptoMiner.Enumerations.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.CryptoMiner.Models">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.CryptoMiner.Models\bin\$(Configuration)\netstandard2.0\ATAP.Utilities.CryptoMiner.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.Http">
-      <HintPath>..\..\..\ATAP.Utilities\ATAP.Utilities.Http\bin\$Configuration)\netstandard2.0\ATAP.Utilities.Http.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
-
-  <!-- .NET 4.7 references, compilation flags and build options -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
+  <!-- .NET 4 or greater references, compilation flags and build options -->
+  <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

@@ -3,9 +3,7 @@ using ServiceStack;
 using Swordfish.NET.Collections;
 using System;
 using Ace.AceService.MinerServices.Interfaces;
-using ATAP.Utilities.CryptoMiner.Models;
-using ATAP.Utilities.CryptoCoin.Enumerations;
-using ATAP.Utilities.CryptoMiner.Enumerations;
+
 
 namespace Ace.AceService.MinerServices.Plugin
 {
@@ -13,6 +11,7 @@ namespace Ace.AceService.MinerServices.Plugin
 
     public class MinerServicesPluginData
     {
+    /*
         ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs;
         ConcurrentObservableDictionary<int, MinerGPU> minerGPUs ;
 
@@ -28,6 +27,7 @@ namespace Ace.AceService.MinerServices.Plugin
 
         public ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> MinerSWs { get => minerSWs;}
         public ConcurrentObservableDictionary<int, MinerGPU> MinerGPUs { get => minerGPUs; }
+        */
     }
 
     public class MinerServicesPlugin : IPlugin
