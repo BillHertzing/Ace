@@ -1,17 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFrameworks>net47</TargetFrameworks>
     <OutputType>Library</OutputType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
+	<!-- Assembly, File, and Package Information for this assembly-->
+    <!-- Build and revision are created based on date-->
+    <MajorVersion>0</MajorVersion>
+    <MinorVersion>1</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <!-- Current Lifecycle stage for this assembly-->
+    <PackageLifeCycleStage>dev</PackageLifeCycleStage>
+    <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
+    <PackageLabel>alpha</PackageLabel>
+
   </PropertyGroup>
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.1.1" />
-    <ProjectReference Include="..\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- .NET 4 or greater references, compilation flags and build options -->
+  <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
   </ItemGroup>
   
 </Project>

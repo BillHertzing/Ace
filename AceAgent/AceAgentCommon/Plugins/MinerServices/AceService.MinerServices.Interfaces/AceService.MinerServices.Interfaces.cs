@@ -11,7 +11,7 @@ using System.Linq;
 using Funq;
 using System.Reflection;
 using Ace.AceService.MinerServices.Models;
-using ATAP.Utilities.CryptoMiner.Models;
+//using ATAP.Utilities.CryptoMiner.Models;
 
 namespace Ace.AceService.MinerServices.Interfaces
 {
@@ -47,7 +47,7 @@ namespace Ace.AceService.MinerServices.Interfaces
             //ToDo
             return new ListMinersResponse { ProcessID = 101010 };
         }
-
+/*
         //ToDo need a cancellable method here, too
         public object Any(StatusMinerRequest request)
         {
@@ -66,7 +66,7 @@ namespace Ace.AceService.MinerServices.Interfaces
             tuneMinerGPUsResult = default;
             return tuneMinerGPUsResult;
         }
-
+*/
     }
 
 

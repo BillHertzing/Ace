@@ -1,0 +1,30 @@
+<Project>
+  <!-- import the non-default targets files -->
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuildTasks.Targets" />
+  <Import Project="$(ATAPUtilitiesBuildToolingTargetsPath)\ATAP.Utilities.BuildTooling.Targets" />
+<!-- Targets for multiframework publishing courtesy of
+  this stackoverflow answer https://stackoverflow.com/questions/43947599/how-to-publish-for-all-target-frameworks
+  this GIST:https://gist.github.com/dasMulli/b14026437468ce4b56ef93e010f24a36
+          DependsOnTargets="Publish"
+          Condition=" '$(TargetFramework)' != '' " />
+
+  <Target Name="PublishProjectForAllRIDsIfTargetFrameworkSet" Condition=" '$(TargetFramework)' != '' and '$(RuntimeIdentifiers)' != '' and '$(RuntimeIdentifier)' == ''  ">
+    <ItemGroup>
+      <_PublishRuntimeIdentifier Include="$(RuntimeIdentifiers)" />
+    </ItemGroup>
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="PublishAll" Properties="TargetFramework=$(TargetFramework);RuntimeIdentifier=%(_PublishRuntimeIdentifier.Identity)" />
+  </Target>
+  
+  <Target Name="PublishProjectForAllFrameworksIfFrameworkUnset" Condition=" '$(TargetFramework)' == '' ">
+    <ItemGroup>
+      <_PublishFramework Include="$(TargetFrameworks)" />
+    </ItemGroup>
+    <MSBuild Projects="$(MSBuildProjectFile)" Targets="PublishAll" Properties="TargetFramework=%(_PublishFramework.Identity)" />
+  </Target>
+  
+  <Target Name="PublishAll"
+          DependsOnTargets="PublishProjectIfFrameworkSet;PublishProjectForAllRIDsIfTargetFrameworkSet;PublishProjectForAllFrameworksIfFrameworkUnset" />
+
+<Target Name="PublishProjectIfFrameworkSet"
+-->
+</Project>
