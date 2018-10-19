@@ -22,7 +22,8 @@
   </PropertyGroup>
 
       <ItemGroup>
-        <PackageReference Include="ServiceStack" Version="5.4.1" />
+        <PackageReference Include="ATAP.Utilities.RealEstate.Enumerations" Version="0.1.0" />
+        <PackageReference Include="ServiceStack.Interfaces" Version="5.4.1" />
       </ItemGroup>
   
 </Project>

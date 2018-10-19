@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using ServiceStack;
+using ServiceStack.Logging;
 using ServiceStack.VirtualPath;
 
 namespace Ace.AceService.GUIServices.Plugin {
@@ -24,13 +25,16 @@ namespace Ace.AceService.GUIServices.Plugin {
         const string builtinGUIVirtualRootPath = "";
         const string gUIServicesPlugInGUIVirtualRootPathKey = "Ace.GUIServices.Plugin.GUIVirtualRoot";
 
-        public void Configure(IAppHost appHost) {
-            // ToDo: Load a plugin-specific app settings file, if one is present
+    public static ILog Log = LogManager.GetLogger(typeof(GUIServicesPlugin));
 
-            // tell ServiceStack where to find the base of the GUI static files
+    public void Configure(IAppHost appHost) {
+      Log.Debug("starting GUIServicesPlugin.Configure");
+      // ToDo: Load a plugin-specific app settings file, if one is present
+
+      // tell ServiceStack where to find the base of the GUI static files
       // In RELEASE mode, the physical path of the root of the GUI should be located in a subdirectory relative to the location of the assembly that holds Program
       // In DEBUG mode, the physical path of the root of the GUI will be located somewhere "above and to the side" of the ServiceStack Plugin project
-            string physicalRootPath;
+      string physicalRootPath;
 #if DEBUG
       // use a Debug appSetting for the physicalRootPath if one is present, otherwise use the builtin Debug value
             physicalRootPath = appHost.AppSettings.Get(gUIServicesPlugInDebugRootPathKey,
@@ -71,7 +75,8 @@ namespace Ace.AceService.GUIServices.Plugin {
     /// </summary>
     /// <param name="appHost">The hosting provider</param>
     public void Register(IAppHost appHost) {
-        if(null == appHost) {
+      Log.Debug("starting GUIServicesPlugin.Register");
+      if (null == appHost) {
             throw new ArgumentNullException("appHost");
         }
 

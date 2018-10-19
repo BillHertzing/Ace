@@ -109,7 +109,8 @@ namespace Ace.AceService {
             // ToDo: Get the list of plugins to install from the configuration settings, currently hardcoded to load just the GUIServices
             // Create the list of PlugIns to load
             var plugInList = new List<IPlugin>() {
-            new Ace.AceService.MinerServices.Plugin.MinerServicesPlugin(),
+             new Ace.AceService.RealEstateSearchServices.Plugin.RealEstateSearchServicesPlugin(),     
+              new Ace.AceService.MinerServices.Plugin.MinerServicesPlugin(),
                 new Ace.AceService.GUIServices.Plugin.GUIServicesPlugin()
             };
 

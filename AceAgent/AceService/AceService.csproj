@@ -64,6 +64,7 @@
     <ProjectReference Include="..\AceAgentCommon\AceService.BaseServices.Interfaces\AceService.BaseServices.Interfaces.csproj" />
     <ProjectReference Include="..\AceAgentCommon\PlugIns\GUIServices\AceService.GUIServices.Plugin\AceService.GUIServices.Plugin.csproj" />
     <ProjectReference Include="..\AceAgentCommon\PlugIns\MinerServices\AceService.MinerServices.Plugin\AceService.MinerServices.Plugin.csproj" />
+    <ProjectReference Include="..\AceAgentCommon\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Plugin\AceService.RealEstateSearchServices.Plugin.csproj" />
   </ItemGroup>
 
 

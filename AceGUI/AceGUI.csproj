@@ -18,6 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ATAP.Utilities.RealEstate.Enumerations" Version="0.1.0" />
     <PackageReference Include="Blazor.Extensions.Logging" Version="0.1.2" />
     <PackageReference Include="MedallionShell" Version="1.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Browser" Version="0.4.0" />
@@ -35,6 +36,7 @@
     <ProjectReference Include="..\AceAgent\AceAgentCommon\AceService.BaseServices.Models\AceService.BaseServices.Models.csproj" />
     <ProjectReference Include="..\AceAgent\AceAgentCommon\PlugIns\GUIServices\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
     <ProjectReference Include="..\AceAgent\AceAgentCommon\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj" />
+    
   </ItemGroup>
 
   <ItemGroup>

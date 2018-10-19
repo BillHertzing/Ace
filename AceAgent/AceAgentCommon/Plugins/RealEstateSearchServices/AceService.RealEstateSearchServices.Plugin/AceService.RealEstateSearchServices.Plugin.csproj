@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AceService.RealEstateSearchServices.Interfaces\AceService.RealEstateSearchServices.Interfaces.csproj" />
     <ProjectReference Include="..\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj" />
+    <ProjectReference Include="..\AceService.RealEstateSearchServices.PluginData\AceService.RealEstateSearchServices.PluginData.csproj" />
   </ItemGroup>
 
 </Project>

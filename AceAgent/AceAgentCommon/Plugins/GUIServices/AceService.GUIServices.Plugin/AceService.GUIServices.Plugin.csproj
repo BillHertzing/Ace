@@ -41,8 +41,5 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Security" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
-  </ItemGroup>
 
 </Project>

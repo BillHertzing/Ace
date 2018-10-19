@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+<!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
   </PropertyGroup>
 
-      <PropertyGroup>
-    <RootNamespace>AceService.RealEstateSearchServices.Interfaces</RootNamespace>
+<PropertyGroup>
+    <RootNamespace>AceService.RealEstateSearchServices.PluginData</RootNamespace>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
@@ -20,14 +21,11 @@
     <PackageLabel>NA</PackageLabel>
   </PropertyGroup>
 
+  <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.4.1" />
+    <PackageReference Include="ServiceStack" Version="5.4.0" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
-  </ItemGroup>
+ </ItemGroup>
   
-  <ItemGroup>
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj" />
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.PluginData\AceService.RealEstateSearchServices.PluginData.csproj" />
-  </ItemGroup>
 
 </Project>
