@@ -18,7 +18,7 @@
   </PropertyGroup>
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.1.1" />
+    <PackageReference Include="ServiceStack" Version="5.4.1" />
     <ProjectReference Include="..\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
     <ProjectReference Include="..\AceService.GUIServices.Interfaces\AceService.GUIServices.Interfaces.csproj" />
   </ItemGroup>
@@ -40,9 +40,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Security" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
   </ItemGroup>
 
 </Project>

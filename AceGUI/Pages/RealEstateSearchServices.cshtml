@@ -1,0 +1,26 @@
+@page "/RealEstateSearchServices"
+@inherits Ace.AceGUI.Pages.RealEstateSearchServicesCodeBehind
+<h1>AceCommander Real Estate Search Services</h1>
+    Real Estate Search :
+    URL = placeholder
+    parameters = placeholder
+@if (@PropertySearchResponse == null)
+{
+  <p><em>Loading...</em></p>
+}
+else
+{
+  <p>
+    PropertySearchRespone = @PropertySearchResponse
+    <br>
+    PropertySearchRespone.Kind = @PropertySearchResponse.Kind 
+    <br>
+    PropertySearchRespone.Result = @PropertySearchResponse.Result
+    <br>
+    PropertySearchRespone.Result[0]=@PropertySearchResponse.Result[0]
+    <br>
+    PropertySearchRespone.Result[1] = @PropertySearchResponse.Result[1]
+    <br>
+  </p>
+}
+
