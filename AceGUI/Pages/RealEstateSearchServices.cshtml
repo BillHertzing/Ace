@@ -1,31 +1,58 @@
 @page "/RealEstateSearchServices"
 @inherits Ace.AceGUI.Pages.RealEstateSearchServicesCodeBehind
 <h1>AceCommander Real Estate Search Services</h1>
-   
-@if (@realEstateSearchServicesInitializationResponseOK == false)
+
+@if (@RealEstateSearchServicesInitializationResponse == null)
 {
   <p><em>Loading (Calling onInitAsync)</em></p>
 }
 else
 {
-  <p>
-    Enter Google passphrase to decrypt Google APIKey stored in iCacheProvider. The value of the APIKey stored in this cache is encrypted, and will not be saved to VersionControl
-    <input type="text"
-           bind="@GoogleAPIKeyPassPhrase"
-           placeholder="@GoogleAPIKeyPassPhrasePlaceHolder" />
-    <button type="button"  onclick="@SubmitGoogleAPIKeyPassPhrase">Submit To AceCommander</button>
-    <br />
-    SubmitGoogleAPIKeyPassPhraseResponse = @if (@SubmitGoogleAPIKeyPassPhraseResponse == null) { <p>The Response is null</p> }
-    else
-    {@SubmitGoogleAPIKeyPassPhraseResponse.Result}
-    <br />
-    Enter HomeAway passphrase to decrypt HomeAway APIKey stored in iCacheProvider. The value of the APIKey stored in this cache is encrypted.
-    <br />
-    Would you like to save the Google APIKey passphrase on this machine? Will be stored in a different persistence storage than where the APIKey is stored, and will not be saved to VersionControl
-    <br />
-    Would you like to save the HomeAway APIKey passphrase on this machine?
+  <hr />
+  <div>
+    <label for="GoogleAPIKey">@labelForGoogleAPIKey</label>
+    <input type="password" class="form-control" id="GoogleAPIKey" bind="@GoogleAPIKey" placeholder="@GoogleAPIKeyPlaceHolder" />
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" bind="@GoogleAPIKeySave"/> @labelForSavingGoogleAPIKey
+    </label>
+  </div>
+  <div>
+    <label for="GoogleAPIKeyPassPhrase">@labelForGoogleAPIKeyPassPhrase</label>
+    <input type="password" class="form-control" id="GoogleAPIKeyPassPhrase" bind="@GoogleAPIKeyPassPhrase" placeholder="@GoogleAPIKeyPassPhrasePlaceHolder" />
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" bind="@GoogleAPIKeyPassPhraseSave"/> @labelForSavingGoogleAPIKeyPassPhrase
+    </label>
+  </div>
+  <hr />
+  <div>
+    <label for="HomeAwayAPIKey">@labelForHomeAwayAPIKey</label>
+    <input type="password" class="form-control" id="HomeAwayAPIKey" bind="@HomeAwayAPIKey" placeholder="@HomeAwayAPIKeyPlaceHolder" />
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"  bind="@HomeAwayAPIKeySave"/> @labelForSavingHomeAwayAPIKey
+    </label>
+  </div>
+  <div>
+    <label for="HomeAwayAPIKeyPassPhrase">@labelForHomeAwayAPIKeyPassPhrase</label>
+    <input type="password" class="form-control" id="HomeAwayAPIKeyPassPhrase" bind="@HomeAwayAPIKeyPassPhrase" placeholder="@HomeAwayAPIKeyPassPhrasePlaceHolder" />
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"bind="@HomeAwayAPIKeyPassPhraseSave"/> @labelForSavingHomeAwayAPIKeyPassPhrase
+    </label>
+  </div>
+  <button type="button" class="btn btn-default" onclick="@SubmitAPIInformation">Submit</button>
+  <hr />
+  @if (@SubmitGoogleAPIKeyPassPhraseResponse == null) {
+    <p>API Information has not yet been submitted to Ace Commander</p> 
+  } else {
+    <p>SubmitAPIInformation returned @SubmitGoogleAPIKeyPassPhraseResponse.Result </p>
+  }
 
-
-  </p>
   }
 
