@@ -2,18 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Timers;
 using Funq;
 using ServiceStack;
 using ServiceStack.Configuration;
 using ServiceStack.Logging;
+using ServiceStack.Redis;
+using ServiceStack.Caching;
+using System.Drawing;
 
 namespace Ace.AceService {
     //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
     public class AppHost : AppSelfHostBase {
         static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
         List<Task> longRunningTaskList;
-        Dictionary<string, Timer> timers;
+        Dictionary<string, System.Timers.Timer> timers;
         /// ComputerInventory computerInventory;
 
         /// <summary>
@@ -27,7 +31,7 @@ namespace Ace.AceService {
         void LongRunningTasksCheckTimer_Elapsed(object sender, ElapsedEventArgs e) {
             //Log.Debug("Entering the appHost.LongRunningTasksCheckTimer_Elapsed Method");
             var container = base.Container;
-            Dictionary<string, Timer> timers = container.TryResolve(typeof(Dictionary<string, Timer>)) as Dictionary<string, Timer>;
+            Dictionary<string, System.Timers.Timer> timers = container.TryResolve(typeof(Dictionary<string, System.Timers.Timer>)) as Dictionary<string, System.Timers.Timer>;
             timers["longRunningTasksCheckTimer"].Stop();
             //Log.Debug("checking for existence of any longRunningTasks");
             List<Task> longRunningTaskList = container.TryResolve(typeof(List<Task>)) as List<Task>;
@@ -44,16 +48,23 @@ namespace Ace.AceService {
             // inject the concrete logging implementation
             Log.Debug($"Entering AppHost.Configure method, container is {container.ToString()}");
 
-            // populate the configuration settings
-            // The location should be part of the container IOC injection, (hopefully observable and creating a stream that can be subscribed to by an authorized  client of this service )
+      // register local Redis as a name:value pair cache
+      container.Register<IRedisClientsManager>(c =>    new RedisManagerPool("localhost:6379"));
+      container.Register(c => c.Resolve<IRedisClientsManager>().GetCacheClient());
+      // Get configuration settings from redis
+      ICacheClient cacheClient = container.Resolve<ICacheClient>();
+      var configkeys = cacheClient.GetKeysStartingWith("config");
 
-            // Start with the AceService.BaseService builtin (compile-time) configuration settings
-            // Add the AceService.BaseService builtin (compile-time) configuration settings
-            // Add (Superseding any previous values) the App.config file (AKA AceAgent.exe.config after building and at runtime)
-            // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings AKA AceService.config
-            // Add (Superseding any previous values) environment values that match any keys
-            // ToDo: Add (Superseding any previous values) command line variable values that match any keys
-            var appSettingsBuilder = new MultiAppSettingsBuilder()
+      // populate the configuration settings
+      // The location should be part of the container IOC injection, (hopefully observable and creating a stream that can be subscribed to by an authorized  client of this service )
+
+      // Start with the AceService.BaseService builtin (compile-time) configuration settings
+      // Add the AceService.BaseService builtin (compile-time) configuration settings
+      // Add (Superseding any previous values) the App.config file (AKA AceAgent.exe.config after building and at runtime)
+      // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings AKA AceService.config
+      // Add (Superseding any previous values) environment values that match any keys
+      // ToDo: Add (Superseding any previous values) command line variable values that match any keys
+      var appSettingsBuilder = new MultiAppSettingsBuilder()
                 .AddDictionarySettings(DefaultConfiguration.GetIt())
                 .AddAppSettings()
                 .AddTextFile("./AceService.config")
@@ -89,8 +100,8 @@ namespace Ace.AceService {
 
             // Add a dictionary of timers and a list to hold "long-running tasks" to the IoC container
             #region create a dictionary of timers and register it in the IoC container
-            timers = new Dictionary<string, Timer>();
-            container.Register<Dictionary<string, Timer>>(c => timers);
+            timers = new Dictionary<string, System.Timers.Timer>();
+            container.Register<Dictionary<string, System.Timers.Timer>>(c => timers);
             #endregion create a dictionary of timers and register it in the IoC container
             #region create a list of tasks that is intended to hold "long running" tasks and register the list in the IoC container
             longRunningTaskList = new List<Task>();
@@ -100,7 +111,7 @@ namespace Ace.AceService {
             // Add a timer to check the status of long running tasks, and attach a callback to the timer
             #region create longRunningTasksCheckTimer, connect callback, and store in container's timers
             Log.Debug("In AppHost.Configure method, creating longRunningTasksCheckTimer");
-            var longRunningTasksCheckTimer = new Timer(1000);
+            var longRunningTasksCheckTimer = new System.Timers.Timer(1000);
             longRunningTasksCheckTimer.AutoReset = true;
             longRunningTasksCheckTimer.Elapsed += new ElapsedEventHandler(LongRunningTasksCheckTimer_Elapsed);
             timers.Add("longRunningTasksCheckTimer", longRunningTasksCheckTimer);
@@ -125,13 +136,41 @@ namespace Ace.AceService {
             // start all the timers
             Log.Debug("In AppHost.Configure method, starting all timers");
             longRunningTasksCheckTimer.Start();
-            Log.Debug("Leaving AppHost.Configure");
+
+      // create a NotifyIcon
+      Log.Debug("Create a NotifyIcon for AceCommander");
+      Application.EnableVisualStyles();
+      Application.SetCompatibleTextRenderingDefault(false);
+      NotifyIcon notifyIcon1 = new NotifyIcon();
+      ContextMenu contextMenu1 = new ContextMenu();
+      MenuItem menuItem1 = new MenuItem();
+      contextMenu1.MenuItems.AddRange(new MenuItem[] { menuItem1 });
+      menuItem1.Index = 0;
+      menuItem1.Text = "E&xit";
+      menuItem1.Click += new EventHandler(menuItem1_Click);
+      notifyIcon1.Icon = new Icon("atap.ico");
+      notifyIcon1.Text = "AceCommander";
+      notifyIcon1.ContextMenu = contextMenu1;
+      notifyIcon1.Visible = true;
+
+      //Log.Debug("Calling a Web Forms Application instance's static Run method");
+      //Application.Run();
+      //notifyIcon1.Visible = false;
+      Log.Debug("NotifyIcon for AceCommander created");
+      Log.Debug("Leaving AppHost.Configure");
         }
 
-        /// <summary>
-        /// Shut down the Web Service
-        /// </summary>
-        public override void Stop() {
+    // Stop the entire program
+    private void menuItem1_Click(object Sender, EventArgs e)
+    {
+      Log.Debug("AceCommander NotifyIcon menuItem1_Click event handdler started");
+     this.Stop();
+      Log.Debug("AceCommander NotifyIcon menuItem1_Click event handdler started");
+    }
+    /// <summary>
+    /// Shut down the Web Service
+    /// </summary>
+    public override void Stop() {
             Log.Debug("Entering AppHost Stop Method");
             var container = base.Container;
 
@@ -139,10 +178,10 @@ namespace Ace.AceService {
             //  so need to check that each of container's disposable items actually exist before disposing of them
 
             // Stop and dispose of all timers
-            Dictionary<string, Timer> timers;
+            Dictionary<string, System.Timers.Timer> timers;
             try {
                 Log.Debug("In AppHost.Stop method, trying to resolve the timers dictionary");
-                timers = container.TryResolve(typeof(Dictionary<string, Timer>)) as Dictionary<string, Timer>;
+                timers = container.TryResolve(typeof(Dictionary<string, System.Timers.Timer>)) as Dictionary<string, System.Timers.Timer>;
             } catch(Exception ex) {
                 Log.Debug($"In AppHost.Stop method, resolving the timers dictionary threw exception message: {ex.Message}");
                 throw;

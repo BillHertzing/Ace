@@ -1,26 +1,31 @@
 @page "/RealEstateSearchServices"
 @inherits Ace.AceGUI.Pages.RealEstateSearchServicesCodeBehind
 <h1>AceCommander Real Estate Search Services</h1>
-    Real Estate Search :
-    URL = placeholder
-    parameters = placeholder
-@if (@PropertySearchResponse == null)
+   
+@if (@realEstateSearchServicesInitializationResponseOK == false)
 {
-  <p><em>Loading...</em></p>
+  <p><em>Loading (Calling onInitAsync)</em></p>
 }
 else
 {
   <p>
-    PropertySearchRespone = @PropertySearchResponse
-    <br>
-    PropertySearchRespone.Kind = @PropertySearchResponse.Kind 
-    <br>
-    PropertySearchRespone.Result = @PropertySearchResponse.Result
-    <br>
-    PropertySearchRespone.Result[0]=@PropertySearchResponse.Result[0]
-    <br>
-    PropertySearchRespone.Result[1] = @PropertySearchResponse.Result[1]
-    <br>
+    Enter Google passphrase to decrypt Google APIKey stored in iCacheProvider. The value of the APIKey stored in this cache is encrypted, and will not be saved to VersionControl
+    <input type="text"
+           bind="@GoogleAPIKeyPassPhrase"
+           placeholder="@GoogleAPIKeyPassPhrasePlaceHolder" />
+    <button type="button"  onclick="@SubmitGoogleAPIKeyPassPhrase">Submit To AceCommander</button>
+    <br />
+    SubmitGoogleAPIKeyPassPhraseResponse = @if (@SubmitGoogleAPIKeyPassPhraseResponse == null) { <p>The Response is null</p> }
+    else
+    {@SubmitGoogleAPIKeyPassPhraseResponse.Result}
+    <br />
+    Enter HomeAway passphrase to decrypt HomeAway APIKey stored in iCacheProvider. The value of the APIKey stored in this cache is encrypted.
+    <br />
+    Would you like to save the Google APIKey passphrase on this machine? Will be stored in a different persistence storage than where the APIKey is stored, and will not be saved to VersionControl
+    <br />
+    Would you like to save the HomeAway APIKey passphrase on this machine?
+
+
   </p>
-}
+  }
 

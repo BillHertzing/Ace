@@ -15,11 +15,13 @@
     <PackageLifeCycleStage>dev</PackageLifeCycleStage>
     <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
     <PackageLabel>alpha</PackageLabel>
+    <ApplicationIcon>ATAP.ICO</ApplicationIcon>
   </PropertyGroup>
 
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.4.1" />
+    <PackageReference Include="ServiceStack.Redis" Version="5.4.1" />
     <PackageReference Include="Topshelf" Version="4.0.4" />
   </ItemGroup>
   
@@ -65,6 +67,18 @@
     <ProjectReference Include="..\AceAgentCommon\PlugIns\GUIServices\AceService.GUIServices.Plugin\AceService.GUIServices.Plugin.csproj" />
     <ProjectReference Include="..\AceAgentCommon\PlugIns\MinerServices\AceService.MinerServices.Plugin\AceService.MinerServices.Plugin.csproj" />
     <ProjectReference Include="..\AceAgentCommon\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Plugin\AceService.RealEstateSearchServices.Plugin.csproj" />
+  </ItemGroup>
+  
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  
+
+  <ItemGroup>
+    <None Update="ATAP.ICO">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

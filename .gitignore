@@ -8,6 +8,7 @@
 .build/
 # Lock files used when incrementing AssemblyVersions
 *.lock
+# User Secrets file for things like DB conenction strings and APIs
 
 # User-specific files
 *.suo
