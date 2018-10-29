@@ -1,0 +1,72 @@
+@page "/RealEstateSearchServices"
+@inherits Ace.AceGUI.Pages.RealEstateSearchServicesCodeBehind
+<h1>AceCommander Real Estate Search Services</h1>
+
+@if (@RealEstateSearchServicesInitializationResponse == null)
+{
+  <p><em>Loading (Calling onInitAsync)</em></p>
+}
+else
+{
+  <hr />
+  <h2>User Data</h2>
+  <div>
+    <label for="GoogleAPIKey">@labelForGoogleAPIKey</label>
+    <input type="password" onmousedown="this.type='text'" onmouseup="this.type='password'" onmousemove="this.type='password' class="form-control" id="GoogleAPIKey" bind="@GoogleAPIKey" placeholder="@GoogleAPIKeyPlaceHolder" />
+  </div>
+  <div>
+    <label for="GoogleAPIKeyPassPhrase">@labelForGoogleAPIKeyPassPhrase</label>
+    <input type="password" class="form-control" id="GoogleAPIKeyPassPhrase" bind="@GoogleAPIKeyPassPhrase" placeholder="@GoogleAPIKeyPassPhrasePlaceHolder" />
+  </div>
+  <div>
+    <label for="HomeAwayAPIKey">@labelForHomeAwayAPIKey</label>
+    <input type="password" class="form-control" id="HomeAwayAPIKey" bind="@HomeAwayAPIKey" placeholder="@HomeAwayAPIKeyPlaceHolder" />
+  </div>
+  <div>
+    <label for="HomeAwayAPIKeyPassPhrase">@labelForHomeAwayAPIKeyPassPhrase</label>
+    <input type="password" class="form-control" id="HomeAwayAPIKeyPassPhrase" bind="@HomeAwayAPIKeyPassPhrase" placeholder="@HomeAwayAPIKeyPassPhrasePlaceHolder" />
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" bind="@UserDataSave" /> @labelForUserDataSave
+    </label>
+  </div>
+  <button type="button" class="btn btn-default" onclick="@SetRealEstateSearchServicesUserData">Submit</button>
+
+  @if (@SetRealEstateSearchServicesUserDataResponse == null)
+  {
+  <p>User Information has not yet been submitted to Ace Commander</p>
+  }
+  else
+  {
+  <p>SetRealEstateSearchServicesUserData returned @SetRealEstateSearchServicesUserDataResponse.Result.ToString() </p>
+  }
+
+  <hr />
+  <h2>Configuration Data</h2>
+  <div>
+    <label for="Google_API_URI">@labelForGoogle_API_URI</label>
+    <input type="text" class="form-control" id="Google_API_URI" bind="@Google_API_URI" placeholder="@placeHolderForGoogle_API_URI" />
+  </div>
+  <div>
+    <label for="HomeAway_API_URI">@labelForHomeAway_API_URI</label>
+    <input type="text" class="form-control" id="HomeAway_API_URI" bind="@HomeAway_API_URI" placeholder="@placeHolderForHomeAway_API_URI" />
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" bind="@ConfigurationDataSave" /> @labelForConfigurationDataSave
+    </label>
+  </div>
+  <button type="button" class="btn btn-default" onclick="@SetRealEstateSearchServicesConfigurationData">Submit</button>
+
+  @if (@SetRealEstateSearchServicesConfigurationDataResponse == null)
+  {
+    <p>Configuration Information has not yet been submitted to Ace Commander</p>
+  }
+  else
+  {
+    <p>SetRealEstateSearchServicesConfigurationData returned @SetRealEstateSearchServicesConfigurationDataResponse.Result.ToString() </p>
+  }
+
+}
+

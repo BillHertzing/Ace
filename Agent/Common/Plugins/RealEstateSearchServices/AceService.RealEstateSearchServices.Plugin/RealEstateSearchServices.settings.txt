@@ -1,0 +1,7 @@
+# comment
+# VersionInfo
+
+HomeAwayAPIKeyEncrypted string {9236F76F-BE72-4629-96F8-8F0BEF150633}
+GoogleAPIKeyEncrypted string {1D243B01-76A8-4681-B021-69A88199CDEC}
+HomeAway_API_URI string https://www.homeaway.com/api/
+Google_API_URI string https://www.google.com/api/
