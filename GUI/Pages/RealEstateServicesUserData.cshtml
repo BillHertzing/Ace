@@ -1,6 +1,6 @@
-@page "/RealEstateSearchServices"
-@inherits Ace.AceGUI.Pages.RealEstateSearchServicesCodeBehind
-<h1>AceCommander Real Estate Search Services</h1>
+@page "/RealEstateServicesUserData"
+@inherits Ace.AceGUI.Pages.RealEstateServicesCodeBehind
+<h1>AceCommander Real Estate Services User Data</h1>
 
 @if (@RealEstateSearchServicesInitializationResponse == null)
 {
@@ -8,7 +8,6 @@
 }
 else
 {
-  <hr />
   <h2>User Data</h2>
   <div>
     <label for="GoogleAPIKey">@labelForGoogleAPIKey</label>
@@ -41,32 +40,5 @@ else
   {
   <p>SetRealEstateSearchServicesUserData returned @SetRealEstateSearchServicesUserDataResponse.Result.ToString() </p>
   }
-
-  <hr />
-  <h2>Configuration Data</h2>
-  <div>
-    <label for="Google_API_URI">@labelForGoogle_API_URI</label>
-    <input type="text" class="form-control" id="Google_API_URI" bind="@Google_API_URI" placeholder="@placeHolderForGoogle_API_URI" />
-  </div>
-  <div>
-    <label for="HomeAway_API_URI">@labelForHomeAway_API_URI</label>
-    <input type="text" class="form-control" id="HomeAway_API_URI" bind="@HomeAway_API_URI" placeholder="@placeHolderForHomeAway_API_URI" />
-  </div>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" bind="@ConfigurationDataSave" /> @labelForConfigurationDataSave
-    </label>
-  </div>
-  <button type="button" class="btn btn-default" onclick="@SetRealEstateSearchServicesConfigurationData">Submit</button>
-
-  @if (@SetRealEstateSearchServicesConfigurationDataResponse == null)
-  {
-    <p>Configuration Information has not yet been submitted to Ace Commander</p>
-  }
-  else
-  {
-    <p>SetRealEstateSearchServicesConfigurationData returned @SetRealEstateSearchServicesConfigurationDataResponse.Result.ToString() </p>
-  }
-
 }
 

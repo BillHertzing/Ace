@@ -70,7 +70,7 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
       // Get this namespaces configuration settings from the cache
       var cacheClient = appHost.GetContainer().Resolve<ICacheClient>();
       var cacheConfigKeys = cacheClient.GetKeysStartingWith(configKeyPrefix);
-
+      
       // Compare the configuration retrieved from the cache with the configuration from the built-in defaults, the text files, and the environment variables
       // If the cache is missing a ConfigKey, update the cache with the ConfigKey and its value from the appSettings
       var excludedConfigKeys = new HashSet<string>(cacheConfigKeys);

@@ -70,12 +70,15 @@ namespace Ace.AceService {
                 .AddEnvironmentalVariables();
             // Build the base services AppSettings
             AppSettings = appSettingsBuilder.Build();
-            // ToDo: Validate the final set of settings
-            // ToDo: Validate config file location, Logs file location
+      // ToDo: Validate the final set of settings
+      // ToDo: Validate config file location, Logs file location
 
-            // ToDo: support AppSettings to control the enable/disable of Postman
-            // Enable Postman integration
-            Plugins.Add(new PostmanFeature());
+      // ToDo:Create the ATAP.Utilities.HTTP web client and register it
+      //container.Register<GenericWebGet>(c => new GenericWebGet());
+
+      // ToDo: support AppSettings to control the enable/disable of Postman
+      // Enable Postman integration
+      Plugins.Add(new PostmanFeature());
 
             // ToDo: support AppSettings to control the enable/disable of CorsFeature
             // Enable CORS support

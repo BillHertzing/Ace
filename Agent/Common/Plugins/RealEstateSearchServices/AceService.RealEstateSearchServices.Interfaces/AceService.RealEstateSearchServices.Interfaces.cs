@@ -5,6 +5,7 @@ using Swordfish.NET.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using ATAP.Utilities.RealEstate.Enumerations;
+using System.Collections.Generic;
 
 namespace Ace.AceCommon.Plugin.RealEstateSearchServices
   
@@ -69,23 +70,92 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
       Log.Debug($"leaving Post(SetRealEstateSearchServicesUserDataRequest request), returning {result}");
       return new SetRealEstateSearchServicesConfigurationDataResponse { Result = result };
     }
-     public object Any(PropertySearchRequest request)
+     public object Post(PropertySearchRequest request)
     {
-      Log.Debug("starting Any(PropertySearchRequest request)");
-      string filters = request.Filters;
-      // Create the HTTP request for a property search, and update it with the filters
+      Log.Debug("starting Post(PropertySearchRequest)");
+      PropertySearchRequestPayload propertySearchRequestPayload = request.PropertySearchRequestPayload;
+      PropertySearchRequestData propertySearchRequestData = propertySearchRequestPayload.PropertySearchRequestData;
+      bool savePropertySearchData = propertySearchRequestPayload.SavePropertySearchData;
+      SearchParameters searchParameters = propertySearchRequestData.SearchParameters;
+      ListingParameters listingParameters = propertySearchRequestData.ListingParameters;
+      // Create the HTTP request for a property search
+      // update it with the searchParameters
+      // update it with the listingParameters
       {
 
       }
+      // save the HTTP request
+      // Call the propertysearch sites
+
       // update the Plugin Data Structure
-      RealEstateSearchServicesPluginData.PluginRootCOD.Add("test1", 100);
-      string[] results = new string[2] { $"You sent me filter = {filters}", "Line2Complete" };
-      //string results = $"You sent me filter = {filters}";
-      Operation kind = Operation.PropertySearch;
-      Log.Debug("leaving Any(PropertySearchRequest request)");
-      return new PropertySearchResponse { Result = results, Kind = kind };
-      //return new PropertySearchResponse { Result = results};
+      //RealEstateSearchServicesPluginData.PluginRootCOD.Add("test1", 100);
+      Log.Debug("leaving Post(PropertySearchRequest)");
+      List<ListingSearchHit> listingSearchHits = new List<ListingSearchHit>();
+      PropertySearchResponseData propertySearchResponseData = new PropertySearchResponseData(listingSearchHits);
+      PropertySearchResponsePayload propertySearchResponsePayload = new PropertySearchResponsePayload(propertySearchResponseData);
+      PropertySearchResponse propertySearchResponse = new PropertySearchResponse();
+      propertySearchResponse.PropertySearchResponsePayload = propertySearchResponsePayload;
+      Log.Debug("Leaving Post(PropertySearchRequest)");
+      return propertySearchResponse;
     }
     public RealEstateSearchServicesPluginData RealEstateSearchServicesPluginData { get; set; }
   }
+
+  public class HomeAwayGateway
+  {
+    public const string HomeAwayGatewayApiBaseUrl = "https://api.github.com/";
+
+    public T GetJson<T>(string route, params object[] routeArgs)
+    {
+      //ToDo try/catch the many possible error returns
+      return HomeAwayGatewayApiBaseUrl.AppendPath(route.Fmt(routeArgs))
+          .GetJsonFromUrl(req => req.UserAgent = "ATAP AceCommander")
+          .FromJson<T>();
+    }
+
+    public ListingSearchPaginator PublicSearch(SearchParameters searchParameters)
+    {
+      return GetJson<ListingSearchPaginator>("public/search", searchParameters);
+    }
+
+    public ListingAd PublicListing(ListingParameters listingParameters)
+    {
+      return GetJson<ListingAd>("public/listing", listingParameters);
+    }
+    /*
+    public List<ListingAd> PublicSearchAndListing(SearchParameters searchParameters, ListingParameters listingParameters)
+    {
+      var map = new Dictionary<int, int>();
+      PublicSearch(searchParameters).ForEach(x => map[x.Id] = x);
+      PublicListing(listingParameters).ForEach(p =>
+          GetOrgRepos(org.Login)
+              .ForEach(repo => map[repo.Id] = repo));
+
+      return map.Values.ToList();
+    }
+    */
+    public class ListingAd
+    {
+      public ListingAd() { }
+      public ListingAd(string listingId, ListingLocation listingLocation, string listingUrl)
+      {
+        ListingId = listingId;
+        ListingLocation = listingLocation;
+        ListingUrl = listingUrl;
+      }
+      string ListingId { get; set; }
+      ListingLocation ListingLocation { get; set; }
+      string ListingUrl { get; set; }
+    }
+    
+    public class ListingSearchPaginator
+    {
+      public ListingSearchPaginator() { }
+      public ListingSearchPaginator(List<ListingSearchHit> entries)
+      {
+        Entries = entries;
+      }
+      List<ListingSearchHit> Entries { get; set; }
+    }
+  }    
 }

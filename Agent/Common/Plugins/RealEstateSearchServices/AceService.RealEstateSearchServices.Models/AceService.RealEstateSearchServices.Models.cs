@@ -56,19 +56,18 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
   #endregion RealEstateSearchServicesInitialization
 
 
-  #region PropertySearchServices
+  #region PropertySearch
   [Route("/PropertySearch")]
   [Route("/PropertySearch/{Filters}")]
   public class PropertySearchRequest : IReturn<PropertySearchResponse>
   {
-    public string Filters { get; set; }
+    public PropertySearchRequestPayload PropertySearchRequestPayload { get; set; }
   }
   public class PropertySearchResponse
   {
-    public string[] Result { get; set; }
-    public Operation Kind { get; set; }
+    public PropertySearchResponsePayload PropertySearchResponsePayload { get; set; }
   }
-  #endregion PropertySearchServices
+  #endregion PropertySearch
 
   [Route("/MonitorRealEstateSearchServicesDataStructures")]
     public class MonitorRealEstateSearchServicesDataStructuresRequest : IReturn<MonitorRealEstateSearchServicesDataStructuresResponse>
