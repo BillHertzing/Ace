@@ -1,0 +1,523 @@
+{
+	"info": {
+		"_postman_id": "44984cb7-818f-44fa-b3bd-7bc3d35e4fc1",
+		"name": "GitHub-HPE",
+		"description": "## GitHub-HPE \n\n * GHE [FAQ](https://pages.github.hpe.com/GitHub/Support/index.html)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "REST API v3",
+			"item": [
+				{
+					"name": "Issues",
+					"item": [
+						{
+							"name": "List issues",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Response time is less than 2000ms\"] = responseTime < 2000;",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "{{MEDIA_TYPE}}"
+									},
+									{
+										"key": "Authorization",
+										"value": "token {{TOKEN}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{ROOT_ENDPOINT}}/issues",
+									"host": [
+										"{{ROOT_ENDPOINT}}"
+									],
+									"path": [
+										"issues"
+									]
+								},
+								"description": "Testing authentication using token in a header\n```\ncurl -H \"Authorization: token OAUTH-TOKEN\" https://github.hpe.com/api/v3\n```"
+							},
+							"response": [
+								{
+									"name": "OAuth2 Token (sent in a header) ",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "{{MEDIA_TYPE}}",
+												"disabled": false
+											},
+											{
+												"key": "Authorization",
+												"value": "token {{TOKEN}}",
+												"disabled": false
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{ROOT_ENDPOINT}}",
+											"host": [
+												"{{ROOT_ENDPOINT}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*",
+											"name": "Access-Control-Allow-Origin",
+											"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+										},
+										{
+											"key": "Access-Control-Expose-Headers",
+											"value": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+											"name": "Access-Control-Expose-Headers",
+											"description": "Lets a server whitelist headers that browsers are allowed to access."
+										},
+										{
+											"key": "Cache-Control",
+											"value": "private, max-age=60, s-maxage=60",
+											"name": "Cache-Control",
+											"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+										},
+										{
+											"key": "Content-Length",
+											"value": "2253",
+											"name": "Content-Length",
+											"description": "The length of the response body in octets (8-bit bytes)"
+										},
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'none'",
+											"name": "Content-Security-Policy",
+											"description": "Custom header"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8",
+											"name": "Content-Type",
+											"description": "The mime type of this content"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 16 Aug 2017 19:56:09 GMT",
+											"name": "Date",
+											"description": "The date and time that the message was sent"
+										},
+										{
+											"key": "ETag",
+											"value": "\"b6e4ca90d38c0298dc6b6ed667cad599\"",
+											"name": "ETag",
+											"description": "An identifier for a specific version of a resource, often a message digest"
+										},
+										{
+											"key": "Server",
+											"value": "GitHub.com",
+											"name": "Server",
+											"description": "A name for the server"
+										},
+										{
+											"key": "Status",
+											"value": "200 OK",
+											"name": "Status",
+											"description": "Custom header"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=31536000; includeSubdomains",
+											"name": "Strict-Transport-Security",
+											"description": "A HSTS Policy informing the HTTP client how long to cache the HTTPS only policy and whether this applies to subdomains."
+										},
+										{
+											"key": "Vary",
+											"value": "Accept, Authorization, Cookie, X-GitHub-OTP",
+											"name": "Vary",
+											"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+										},
+										{
+											"key": "X-Accepted-OAuth-Scopes",
+											"value": "",
+											"name": "X-Accepted-OAuth-Scopes",
+											"description": "Custom header"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"name": "X-Content-Type-Options",
+											"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "deny",
+											"name": "X-Frame-Options",
+											"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+										},
+										{
+											"key": "X-GitHub-Media-Type",
+											"value": "github.v3; format=json",
+											"name": "X-GitHub-Media-Type",
+											"description": "Custom header"
+										},
+										{
+											"key": "X-GitHub-Request-Id",
+											"value": "765e1985-6462-4ec7-b2e4-ff3f380bcb4f",
+											"name": "X-GitHub-Request-Id",
+											"description": "Custom header"
+										},
+										{
+											"key": "X-OAuth-Scopes",
+											"value": "gist, repo, user",
+											"name": "X-OAuth-Scopes",
+											"description": "Custom header"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "1; mode=block",
+											"name": "X-XSS-Protection",
+											"description": "Cross-site scripting (XSS) filter"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Sun Aug 16 2037 13:08:59 GMT-0400 (Eastern Daylight Time)",
+											"httpOnly": true,
+											"domain": "github.hpe.com",
+											"path": "/",
+											"secure": true,
+											"value": "no",
+											"key": "logged_in"
+										}
+									],
+									"body": "{\"current_user_url\":\"https://github.hpe.com/api/v3/user\",\"current_user_authorizations_html_url\":\"https://github.hpe.com/settings/connections/applications{/client_id}\",\"authorizations_url\":\"https://github.hpe.com/api/v3/authorizations\",\"code_search_url\":\"https://github.hpe.com/api/v3/search/code?q={query}{&page,per_page,sort,order}\",\"commit_search_url\":\"https://github.hpe.com/api/v3/search/commits?q={query}{&page,per_page,sort,order}\",\"emails_url\":\"https://github.hpe.com/api/v3/user/emails\",\"emojis_url\":\"https://github.hpe.com/api/v3/emojis\",\"events_url\":\"https://github.hpe.com/api/v3/events\",\"feeds_url\":\"https://github.hpe.com/api/v3/feeds\",\"followers_url\":\"https://github.hpe.com/api/v3/user/followers\",\"following_url\":\"https://github.hpe.com/api/v3/user/following{/target}\",\"gists_url\":\"https://github.hpe.com/api/v3/gists{/gist_id}\",\"hub_url\":\"https://github.hpe.com/api/v3/hub\",\"issue_search_url\":\"https://github.hpe.com/api/v3/search/issues?q={query}{&page,per_page,sort,order}\",\"issues_url\":\"https://github.hpe.com/api/v3/issues\",\"keys_url\":\"https://github.hpe.com/api/v3/user/keys\",\"notifications_url\":\"https://github.hpe.com/api/v3/notifications\",\"organization_repositories_url\":\"https://github.hpe.com/api/v3/orgs/{org}/repos{?type,page,per_page,sort}\",\"organization_url\":\"https://github.hpe.com/api/v3/orgs/{org}\",\"public_gists_url\":\"https://github.hpe.com/api/v3/gists/public\",\"rate_limit_url\":\"https://github.hpe.com/api/v3/rate_limit\",\"repository_url\":\"https://github.hpe.com/api/v3/repos/{owner}/{repo}\",\"repository_search_url\":\"https://github.hpe.com/api/v3/search/repositories?q={query}{&page,per_page,sort,order}\",\"current_user_repositories_url\":\"https://github.hpe.com/api/v3/user/repos{?type,page,per_page,sort}\",\"starred_url\":\"https://github.hpe.com/api/v3/user/starred{/owner}{/repo}\",\"starred_gists_url\":\"https://github.hpe.com/api/v3/gists/starred\",\"team_url\":\"https://github.hpe.com/api/v3/teams\",\"user_url\":\"https://github.hpe.com/api/v3/users/{user}\",\"user_organizations_url\":\"https://github.hpe.com/api/v3/user/orgs\",\"user_repositories_url\":\"https://github.hpe.com/api/v3/users/{user}/repos{?type,page,per_page,sort}\",\"user_search_url\":\"https://github.hpe.com/api/v3/search/users?q={query}{&page,per_page,sort,order}\"}"
+								}
+							]
+						}
+					],
+					"description": "### Issues\n\nGo [here](https://developer.github.com/v3/issues/) for reference",
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Root Endpoint",
+					"item": [
+						{
+							"name": "auth token sent in header",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Response time is less than 1000ms\"] = responseTime < 1000;",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "{{MEDIA_TYPE}}"
+									},
+									{
+										"key": "Authorization",
+										"value": "token {{TOKEN}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{ROOT_ENDPOINT}}",
+									"host": [
+										"{{ROOT_ENDPOINT}}"
+									]
+								},
+								"description": "Testing authentication using token in a header\n```\ncurl -H \"Authorization: token OAUTH-TOKEN\" https://github.hpe.com/api/v3\n```"
+							},
+							"response": [
+								{
+									"name": "OAuth2 Token (sent in a header) ",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "{{MEDIA_TYPE}}"
+											},
+											{
+												"key": "Authorization",
+												"value": "token {{TOKEN}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{ROOT_ENDPOINT}}",
+											"host": [
+												"{{ROOT_ENDPOINT}}"
+											]
+										},
+										"description": "Testing authentication using token in a header\n```\ncurl -H \"Authorization: token OAUTH-TOKEN\" https://github.hpe.com/api/v3\n```"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*",
+											"name": "Access-Control-Allow-Origin",
+											"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+										},
+										{
+											"key": "Access-Control-Expose-Headers",
+											"value": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+											"name": "Access-Control-Expose-Headers",
+											"description": "Lets a server whitelist headers that browsers are allowed to access."
+										},
+										{
+											"key": "Cache-Control",
+											"value": "private, max-age=60, s-maxage=60",
+											"name": "Cache-Control",
+											"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+										},
+										{
+											"key": "Content-Length",
+											"value": "2253",
+											"name": "Content-Length",
+											"description": "The length of the response body in octets (8-bit bytes)"
+										},
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'none'",
+											"name": "Content-Security-Policy",
+											"description": "Custom header"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8",
+											"name": "Content-Type",
+											"description": "The mime type of this content"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 16 Aug 2017 19:56:09 GMT",
+											"name": "Date",
+											"description": "The date and time that the message was sent"
+										},
+										{
+											"key": "ETag",
+											"value": "\"b6e4ca90d38c0298dc6b6ed667cad599\"",
+											"name": "ETag",
+											"description": "An identifier for a specific version of a resource, often a message digest"
+										},
+										{
+											"key": "Server",
+											"value": "GitHub.com",
+											"name": "Server",
+											"description": "A name for the server"
+										},
+										{
+											"key": "Status",
+											"value": "200 OK",
+											"name": "Status",
+											"description": "Custom header"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=31536000; includeSubdomains",
+											"name": "Strict-Transport-Security",
+											"description": "A HSTS Policy informing the HTTP client how long to cache the HTTPS only policy and whether this applies to subdomains."
+										},
+										{
+											"key": "Vary",
+											"value": "Accept, Authorization, Cookie, X-GitHub-OTP",
+											"name": "Vary",
+											"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+										},
+										{
+											"key": "X-Accepted-OAuth-Scopes",
+											"value": "",
+											"name": "X-Accepted-OAuth-Scopes",
+											"description": "Custom header"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff",
+											"name": "X-Content-Type-Options",
+											"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "deny",
+											"name": "X-Frame-Options",
+											"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+										},
+										{
+											"key": "X-GitHub-Media-Type",
+											"value": "github.v3; format=json",
+											"name": "X-GitHub-Media-Type",
+											"description": "Custom header"
+										},
+										{
+											"key": "X-GitHub-Request-Id",
+											"value": "765e1985-6462-4ec7-b2e4-ff3f380bcb4f",
+											"name": "X-GitHub-Request-Id",
+											"description": "Custom header"
+										},
+										{
+											"key": "X-OAuth-Scopes",
+											"value": "gist, repo, user",
+											"name": "X-OAuth-Scopes",
+											"description": "Custom header"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "1; mode=block",
+											"name": "X-XSS-Protection",
+											"description": "Cross-site scripting (XSS) filter"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Sun Aug 16 2037 13:08:59 GMT-0400 (Eastern Daylight Time)",
+											"httpOnly": true,
+											"domain": "github.hpe.com",
+											"path": "/",
+											"secure": true,
+											"value": "no",
+											"key": "logged_in"
+										}
+									],
+									"body": "{\"current_user_url\":\"https://github.hpe.com/api/v3/user\",\"current_user_authorizations_html_url\":\"https://github.hpe.com/settings/connections/applications{/client_id}\",\"authorizations_url\":\"https://github.hpe.com/api/v3/authorizations\",\"code_search_url\":\"https://github.hpe.com/api/v3/search/code?q={query}{&page,per_page,sort,order}\",\"commit_search_url\":\"https://github.hpe.com/api/v3/search/commits?q={query}{&page,per_page,sort,order}\",\"emails_url\":\"https://github.hpe.com/api/v3/user/emails\",\"emojis_url\":\"https://github.hpe.com/api/v3/emojis\",\"events_url\":\"https://github.hpe.com/api/v3/events\",\"feeds_url\":\"https://github.hpe.com/api/v3/feeds\",\"followers_url\":\"https://github.hpe.com/api/v3/user/followers\",\"following_url\":\"https://github.hpe.com/api/v3/user/following{/target}\",\"gists_url\":\"https://github.hpe.com/api/v3/gists{/gist_id}\",\"hub_url\":\"https://github.hpe.com/api/v3/hub\",\"issue_search_url\":\"https://github.hpe.com/api/v3/search/issues?q={query}{&page,per_page,sort,order}\",\"issues_url\":\"https://github.hpe.com/api/v3/issues\",\"keys_url\":\"https://github.hpe.com/api/v3/user/keys\",\"notifications_url\":\"https://github.hpe.com/api/v3/notifications\",\"organization_repositories_url\":\"https://github.hpe.com/api/v3/orgs/{org}/repos{?type,page,per_page,sort}\",\"organization_url\":\"https://github.hpe.com/api/v3/orgs/{org}\",\"public_gists_url\":\"https://github.hpe.com/api/v3/gists/public\",\"rate_limit_url\":\"https://github.hpe.com/api/v3/rate_limit\",\"repository_url\":\"https://github.hpe.com/api/v3/repos/{owner}/{repo}\",\"repository_search_url\":\"https://github.hpe.com/api/v3/search/repositories?q={query}{&page,per_page,sort,order}\",\"current_user_repositories_url\":\"https://github.hpe.com/api/v3/user/repos{?type,page,per_page,sort}\",\"starred_url\":\"https://github.hpe.com/api/v3/user/starred{/owner}{/repo}\",\"starred_gists_url\":\"https://github.hpe.com/api/v3/gists/starred\",\"team_url\":\"https://github.hpe.com/api/v3/teams\",\"user_url\":\"https://github.hpe.com/api/v3/users/{user}\",\"user_organizations_url\":\"https://github.hpe.com/api/v3/user/orgs\",\"user_repositories_url\":\"https://github.hpe.com/api/v3/users/{user}/repos{?type,page,per_page,sort}\",\"user_search_url\":\"https://github.hpe.com/api/v3/search/users?q={query}{&page,per_page,sort,order}\"}"
+								}
+							]
+						},
+						{
+							"name": "auth token sent as parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Response time is less than 1000ms\"] = responseTime < 1000;",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "{{MEDIA_TYPE}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{ROOT_ENDPOINT}}?access_token={{TOKEN}}",
+									"host": [
+										"{{ROOT_ENDPOINT}}"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{TOKEN}}"
+										}
+									]
+								},
+								"description": "Testing authentication using token in a header\n```\ncurl -H \"Authorization: token OAUTH-TOKEN\" https://github.hpe.com/api/v3\n```"
+							},
+							"response": []
+						},
+						{
+							"name": "Basic Authentication",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Response time is less than 1000ms\"] = responseTime < 1000;",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.github.v3+json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Basic bWlndWVsLXF1aW50ZXJvOjZlMzJhYjY4ODhkYTYwNDExNjBiYmI1NWQ4OTA0YWJhMDhlYTlmNzQ="
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{ROOT_ENDPOINT}}",
+									"host": [
+										"{{ROOT_ENDPOINT}}"
+									]
+								},
+								"description": "Testing authentication using token in a header\n```\ncurl -H \"Authorization: token OAUTH-TOKEN\" https://github.hpe.com/api/v3\n```"
+							},
+							"response": []
+						}
+					],
+					"description": "You can issue a ```GET``` request to the root endpoint to get all the endpoint categories that the REST API v3 supports:\r\n\r\n```\r\ncurl https://api.github.com\r\n```\r\n",
+					"_postman_isSubFolder": true
+				}
+			],
+			"description": "### REST API v3"
+		},
+		{
+			"name": "GraphQL API v4",
+			"item": [],
+			"description": "### GraphQL API v4"
+		}
+	]
+}

@@ -51,7 +51,7 @@ namespace Ace.AceService {
                 //if (promptForCredentialsWhileInstall){
                 //    x.RunAsFirstPrompt();
                 //} else{
-                x.RunAsLocalSystem();
+                //    x.RunAsLocalSystem();
                 //}
                 x.EnableShutdown();
                 //ToDo Implement Squirrel or equivalent to AutoUpdate a service
@@ -65,38 +65,6 @@ namespace Ace.AceService {
 
             });
             Log.Debug("Leaving Program.Main");
-
-            //            // Run the service in a console window when built in Debug configuration, to allow for debugging during development
-            //#if DEBUG
-            //            Console.WriteLine("Running WinServiceAppHost in Console mode");
-
-            //            try {
-            //                appHost.Init();
-            //                appHost.Start(appHost.AppSettings.Get<string>("Ace.AceService:ListeningOn"));
-            //                Process.Start(appHost.AppSettings.Get<string>("Ace.AceService:ListeningOn"));
-            //                Console.WriteLine("Press <CTRL>+C to stop.");
-            //                Thread.Sleep(Timeout.Infinite);
-            //            } catch(Exception ex) {
-            //                Console.WriteLine($"ERROR: {ex.GetType().Name}: {ex.Message}");
-            //                throw;
-            //            } finally {
-            //                appHost.Stop();
-            //            }
-
-            //            Console.WriteLine("WinServiceAppHost has finished");
-
-            //#else
-            //            //When in RELEASE mode it will run as a Windows Service with the code below
-
-            //            ServiceBase[] ServicesToRun;
-            //            ServicesToRun = new ServiceBase[]
-            //            {
-            //                new WinService(appHost, Configuration[$"AppConfiguration:ListeningOn"]) //appHost.AppSettings.Get<string>("Ace.AceService:ListeningOn")?
-            //            };
-            //            ServiceBase.Run(ServicesToRun);
-            //#endif
-            //
-            //            Console.ReadLine();
         }
     }
 }

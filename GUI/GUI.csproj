@@ -33,10 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Agent\Common\AceService.BaseServices.Models\AceService.BaseServices.Models.csproj" />
-    <ProjectReference Include="..\Agent\Common\PlugIns\GUIServices\AceService.GUIServices.Models\AceService.GUIServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Common\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Common\Plugins\RealEstateSearchServices\AceService.RealEstateSearchServices.S\AceService.RealEstateSearchServices.Shared.csproj" />
+    <ProjectReference Include="..\Agent\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
     
   </ItemGroup>
 

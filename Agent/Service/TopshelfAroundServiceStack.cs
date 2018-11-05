@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,12 +10,17 @@ using Topshelf;
 using ServiceStack.Logging;
 using ServiceStack;
 using ServiceStack.Configuration;
+using Ace.AceAgent.BaseServices;
 
 namespace Ace.AceService
 {
     class TopShelfAroundServiceStackWrapper : ServiceControl
     {
-        static ILog Log = LogManager.GetLogger(typeof(TopShelfAroundServiceStackWrapper));
+    #region Exception Messages (string constants)
+    const string ListeningOnStringKeyOrValueNotFoundExceptionMessage = "ListeningOnString Key not found in Application's Configuration setting, or the key is present but set to String.Empty. Add the ListeningOnString Key and Value to the Application Configuration, and retry.";
+    #endregion Exception Messages (string constants)
+
+    static ILog Log = LogManager.GetLogger(typeof(TopShelfAroundServiceStackWrapper));
         const string SelfUpdatingServiceDistributionLocation = @"C:\Users\whertzing\Source\Repos\SelfUpdatingService\Releases";
         private AppHost appHost;
         //AutoUpdateData autoUpdateData;
@@ -33,7 +38,7 @@ namespace Ace.AceService
 
             #region create autoUpdateCheckTimer, connect callback
             Log.Debug("In TopShelfAroundServiceStackWrapper Ctor, creating autoUpdateCheckTimer");
-            autoUpdateCheckTimer = new System.Timers.Timer(1000)            {                AutoReset = true            };
+            autoUpdateCheckTimer = new System.Timers.Timer(1000){AutoReset = true};
             autoUpdateCheckTimer.Elapsed += new ElapsedEventHandler(AutoUpdateCheckTimer_Elapsed);
             #endregion create autoUpdateCheckTimer, connect callback, and store in container's timers
 
@@ -49,7 +54,11 @@ namespace Ace.AceService
             {
                 Log.Debug(" In TopShelfAroundServiceStackWrapper Start Method calling appHost.Init");
                 appHost.Init();
-                string listeningOn = appHost.AppSettings.GetString("Ace.AceService:ListeningOn");
+        if (!appHost.AppSettings.Exists(BaseServicesData.appSettingsConfigKeyAceAgentListeningOnString) || (appHost.AppSettings.GetString(BaseServicesData.appSettingsConfigKeyAceAgentListeningOnString) == "") ) {
+          throw new Exception(ListeningOnStringKeyOrValueNotFoundExceptionMessage);
+        }
+
+                string listeningOn = appHost.AppSettings.GetString(BaseServicesData.appSettingsConfigKeyAceAgentListeningOnString);
                 Log.Debug($"In TopShelfAroundServiceStackWrapper Start Method calling appHost.Start, listeningOn {listeningOn}");
                 appHost.Start(listeningOn);
                 Log.Debug("In TopShelfAroundServiceStackWrapper Start Method calling Process.Start");

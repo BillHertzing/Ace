@@ -1,0 +1,8 @@
+# Application Configuration Settings for Ace AgentPlugin GUI services
+# versioninfo
+
+Ace.Agent.GUIServices.InstalledGUI.Kind Blazor
+Ace.Agent.GUIServices.InstalledGUI.Kind 0.5.0
+ReleaseRelativeRootPath ./GUI/
+DebugRelativeRootPath ../../../../../GUI/bin/Debug/netstandard2.0/Publish/GUI/dist
+VirtualRootPath ""

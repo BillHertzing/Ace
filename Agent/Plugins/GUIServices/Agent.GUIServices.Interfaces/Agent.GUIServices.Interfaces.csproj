@@ -1,11 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
-  </PropertyGroup>
-
-      <PropertyGroup>
-    <RootNamespace>Ace.AceCommon.Plugin.RealEstateSearchServices.Interfaces</RootNamespace>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
@@ -18,17 +13,19 @@
     <PackageLifeCycleStage>Production</PackageLifeCycleStage>
     <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
     <PackageLabel>NA</PackageLabel>
-  </PropertyGroup>
 
+  </PropertyGroup>
+  <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.4.1" />
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj" />
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.PluginData\AceService.RealEstateSearchServices.PluginData.csproj" />
   </ItemGroup>
 
+  <!-- .NET 4 or greater references, compilation flags and build options -->
+  <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
+  </ItemGroup>
+  
 </Project>

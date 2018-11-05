@@ -49,10 +49,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="AceService.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -64,10 +60,11 @@
   
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\AceService.BaseServices.Interfaces\AceService.BaseServices.Interfaces.csproj" />
-    <ProjectReference Include="..\Common\PlugIns\GUIServices\AceService.GUIServices.Plugin\AceService.GUIServices.Plugin.csproj" />
+    <ProjectReference Include="..\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj" />
+    <ProjectReference Include="..\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj" />
     <ProjectReference Include="..\Common\PlugIns\MinerServices\AceService.MinerServices.Plugin\AceService.MinerServices.Plugin.csproj" />
     <ProjectReference Include="..\Common\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Plugin\AceService.RealEstateSearchServices.Plugin.csproj" />
+    <ProjectReference Include="..\PlugIns\GUIServices\Agent.GUIServices.Plugin\Agent.GUIServices.Plugin.csproj" />
   </ItemGroup>
   
 

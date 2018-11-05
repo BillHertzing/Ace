@@ -29,7 +29,6 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
     public SetRealEstateSearchServicesUserDataRequestData SetRealEstateSearchServicesUserDataRequestData { get; set; }
   }
   #endregion SetRealEstateSearchServicesUserData
-
   #region GetRealEstateSearchServicesUserData
   [Route("/GetRealEstateSearchServicesUserData")]
   [Route("/GetRealEstateSearchServicesUserData/{GetRealEstateSearchServicesUserDataRequestData}")]
@@ -54,7 +53,6 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
     public RealEstateSearchServicesInitializationResponseData RealEstateSearchServicesInitializationResponseData { get; set; }
   }
   #endregion RealEstateSearchServicesInitialization
-
 
   #region PropertySearch
   [Route("/PropertySearch")]

@@ -1,0 +1,6 @@
+# Application Configuration Settings for AceAgent Base services
+# versioninfo
+
+Ace.AceAgent.BaseServices.Config.ListenOn" 21100
+Ace.Agent.ListeningOn http://localhost:21100/
+Ace.AceAgent.BaseServices.Config.RedisConnectionString localhost:6379

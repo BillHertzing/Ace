@@ -78,16 +78,28 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
       bool savePropertySearchData = propertySearchRequestPayload.SavePropertySearchData;
       SearchParameters searchParameters = propertySearchRequestData.SearchParameters;
       ListingParameters listingParameters = propertySearchRequestData.ListingParameters;
-      // Create the HTTP request for a property search
+      // Get the name of the gateway to use
+      var gatewayName = "HomeAway";
+      // Get the HTTP request for a property search from the gateway
       // update it with the searchParameters
       // update it with the listingParameters
+      // Get the type of Response to expect back
+      // async call the gateway URI for property search, using the predefined policy and retry scheme
+      // ToDo: figure out how to integrate a CancellationToken
+      try
       {
+        Log.Debug("Calling through gateway {gateway}, using Registry Key {RegistryKey}");
 
       }
-      // save the HTTP request
-      // Call the propertysearch sites
+      catch {
+        Log.Debug("leaving Post(PropertySearchRequest)");
+      }
+      finally
+      {
+      }
 
-      // update the Plugin Data Structure
+
+      // update the Plugin Data Structure with the data from the response
       //RealEstateSearchServicesPluginData.PluginRootCOD.Add("test1", 100);
       Log.Debug("leaving Post(PropertySearchRequest)");
       List<ListingSearchHit> listingSearchHits = new List<ListingSearchHit>();

@@ -48,7 +48,7 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
       Log.Debug("starting RealEstateSearchServicesPlugin.Configure");
 
       // Populate this Plugin's Application Configuration Settings
-      // Location of the files will depend on Production/DebugLogFactory, as
+      // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
       var pluginAppSettings =new MultiAppSettingsBuilder()
       // Builtin (compiled in)
     .AddDictionarySettings(DefaultConfiguration.Configuration())
