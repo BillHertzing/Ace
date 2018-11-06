@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace Ace.AceCommon.Plugin.RealEstateSearchServices {
+namespace Ace.Agent.RealEstateServices
+{
   #region RealEstateServicesConfigurationData
     public class RealEstateSearchServicesConfigurationData {
         public RealEstateSearchServicesConfigurationData() : this(string.Empty, string.Empty) { }
@@ -241,7 +242,6 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices {
     }
 
   #endregion RealEstateServicesPropertySearch
-
 
   #region RealEstateServicesDoInitialization
   public class RealEstateSearchServicesInitializationData {

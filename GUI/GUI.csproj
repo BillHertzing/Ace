@@ -34,9 +34,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Agent\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
-    <ProjectReference Include="..\Agent\Common\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj" />
-    <ProjectReference Include="..\Agent\Common\Plugins\RealEstateSearchServices\AceService.RealEstateSearchServices.S\AceService.RealEstateSearchServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
     
   </ItemGroup>
 

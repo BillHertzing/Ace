@@ -62,9 +62,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj" />
+    <ProjectReference Include="..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
     <ProjectReference Include="..\Common\PlugIns\MinerServices\AceService.MinerServices.Plugin\AceService.MinerServices.Plugin.csproj" />
-    <ProjectReference Include="..\Common\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Plugin\AceService.RealEstateSearchServices.Plugin.csproj" />
     <ProjectReference Include="..\PlugIns\GUIServices\Agent.GUIServices.Plugin\Agent.GUIServices.Plugin.csproj" />
+    <ProjectReference Include="..\PlugIns\RealEstateServices\Agent.RealEstateServices.Plugin\Agent.RealEstateServices.Plugin.csproj" />
   </ItemGroup>
   
 

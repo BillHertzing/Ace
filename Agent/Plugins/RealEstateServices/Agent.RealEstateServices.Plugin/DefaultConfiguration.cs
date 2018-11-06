@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Ace.AceCommon.Plugin.RealEstateSearchServices
+namespace Ace.Agent.RealEstateServices
 {
   static class DefaultConfiguration
   {

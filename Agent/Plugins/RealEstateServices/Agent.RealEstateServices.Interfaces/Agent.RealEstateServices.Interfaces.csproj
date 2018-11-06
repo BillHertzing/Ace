@@ -26,9 +26,9 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj" />
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.PluginData\AceService.RealEstateSearchServices.PluginData.csproj" />
+    <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.PluginData\Agent.RealEstateServices.PluginData.csproj" />
   </ItemGroup>
 
 </Project>

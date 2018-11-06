@@ -1,5 +1,7 @@
 
 using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using ServiceStack;
 using ServiceStack.Configuration;
@@ -21,6 +23,7 @@ namespace Ace.Agent.GUIServices {
     const string debugRelativeRootPathKeyOrValueNotFoundExceptionMessage = "DebugRelativeRootPath Key not found in Plugin's Configuration setting, or the key is present but set to String.Empty. Add the DebugRelativeRootPath Key and Value to the Application Configuration, and retry.";
     const string releaseRelativeRootPathKeyOrValueNotFoundExceptionMessage = "ReleaseRelativeRootPath Key not found in Plugin's Configuration setting, or the key is present but set to String.Empty. Add the ReleaseRelativeRootPath Key and Value to the Application Configuration, and retry.";
     const string virtualRootPathKeyOrValueNotFoundExceptionMessage  = "VirtualRootPath Key not found in Plugin's Configuration setting. Add the VirtualRootPath Key and Value (null value is OK) to the Application Configuration, and retry.";
+    const string relativeRootPathValueContainsIlegalCharacterExceptionMessage = "relativeRootPathValue contains one or more characters that are illegal in a path. Ensure that the DebugRelativeRootPathKey's value and the ReleaseRelativeRootPathKey's value does not contain any characters that are illegal in a path, and retry.";
     #endregion Exception Messages (string constants)
 
     const string defaultRedirectPath = "/index.html";
@@ -44,13 +47,13 @@ namespace Ace.Agent.GUIServices {
 
     public void Configure(IAppHost appHost) {
       Log.Debug("starting GUIServicesPlugin.Configure");
-      // ToDo: Load a plugin-specific app settings file, if one is present
+
 	    // Populate this Plugin's Application Configuration Settings
       // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
       var pluginAppSettings =new MultiAppSettingsBuilder()
-    // Environment varialbes have higest priority
+    // Environment variables have higest priority
     //.AddEnvironmentalVariables()
-    // Configuration settings in a text file relativve to the current working directory at the point in time when this method executes.
+    // Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
     .AddTextFile(pluginSettingsTextFileNameString)
     // Builtin (compiled in) have the lowest priority
     .AddDictionarySettings(DefaultConfiguration.Configuration())
@@ -61,6 +64,7 @@ namespace Ace.Agent.GUIServices {
       // In DEBUG mode, the physical path of the root of the GUI will be located somewhere "above and to the side" of the ServiceStack Plugin project
       string physicalRootPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
       Log.Debug($"in GUIServicesPlugin.Configure, initial physicalRootPath (GetExecutingAssembly().Location) = {physicalRootPath}");
+      string relativeRootPathValue;
 #if DEBUG
       // set the physicalRootPath of the GUI code to the appSetting for the development RelativeRootPathKey relative to the location of this plugin's assembly
       // verify key exists, else throw exception
@@ -68,9 +72,7 @@ namespace Ace.Agent.GUIServices {
       {
         throw new Exception(debugRelativeRootPathKeyOrValueNotFoundExceptionMessage);
       }
-      // ToDo: Add check for invalid characters in the relative location
-      Log.Debug($"in GUIServicesPlugin.Configure, debugRelativeRootPath = {pluginAppSettings.GetString(debugRelativeRootPathKey)}");
-      physicalRootPath = PathUtils.CombinePaths(physicalRootPath, pluginAppSettings.GetString(debugRelativeRootPathKey));
+      relativeRootPathValue = pluginAppSettings.GetString(debugRelativeRootPathKey);
 #else
       // set the physicalRootPath of the GUI code to the appSetting for the production RelativeRootPathKey relative to the location of this plugin's assembly
       // verify key exists, else throw exception
@@ -78,10 +80,17 @@ namespace Ace.Agent.GUIServices {
       {
         throw new Exception(productionRelativeRootPathKeyOrValueNotFoundExceptionMessage);
       }
-      Log.Debug($"in GUIServicesPlugin.Configure, productionRelativeRootPathKey = {pluginAppSettings.GetString(productionRelativeRootPathKey)}");
-       physicalRootPath =PathUtils.CombinePaths(physicalRootPath, pluginAppSettings.GetString(productionRelativeRootPathKey));
+       relativeRootPathValue = pluginAppSettings.GetString(productionRelativeRootPathKey);
 #endif
-      Log.Debug($"in GUIServicesPlugin.Configure, physicalRootPath = {physicalRootPath}");
+      Log.Debug($"in GUIServicesPlugin.Configure, relativeRootPathValue = {relativeRootPathValue}");
+      // Use these for checking for invalid characters in the appSettings RelativeRootPath values
+      char[] invalidChars = Path.GetInvalidPathChars();
+      bool valid = !relativeRootPathValue.Any(x => invalidChars.Contains(x));
+
+      if (!valid) { throw new Exception(relativeRootPathValueContainsIlegalCharacterExceptionMessage); }
+      Log.Debug($"in GUIServicesPlugin.Configure, physicalRootPath = {physicalRootPath}, relativeRootPathValue = {relativeRootPathValue}");
+      physicalRootPath = PathUtils.CombinePaths(physicalRootPath, relativeRootPathValue);
+      Log.Debug($"in GUIServicesPlugin.Configure, ");
 
       // use an appSetting for the VirtualRootPath 
       string virtualRootPath;
@@ -109,7 +118,7 @@ namespace Ace.Agent.GUIServices {
       // ToDo: setup the mechanisms that monitors the GUI 
 
             // create the plugIn's data object and pass it to the container so it will be available to every other module and services
-            var gspd = new GUIServicesPluginData(physicalRootPath);
+            var gspd = new GUIServicesPluginData(pluginAppSettings);
             appHost.GetContainer()
             .Register<GUIServicesPluginData>(d => gspd);
 

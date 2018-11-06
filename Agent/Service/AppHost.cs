@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using Ace.AceCommon.Plugin.RealEstateSearchServices;
+using Ace.Agent.RealEstateServices;
 using Ace.Agent.GUIServices;
 using Ace.AceService.MinerServices.Plugin;
 using Funq;
@@ -16,13 +16,20 @@ using ServiceStack.Logging;
 using ServiceStack.Redis;
 using Ace.AceAgent.BaseServices;
 
+//VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
 namespace Ace.AceService {
-    //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
-    public class AppHost : AppSelfHostBase {
-        static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
+
+  public class AppHost : AppSelfHostBase {
+
+    #region string constants
     #region File Name string constants
-    public const string agentSettingsTextFileNameString = "Agent.settings.txt";
+    public const string agentSettingsTextFileNameString = "Agent.BaseServices.settings.txt";
     #endregion File Name string constants
+    #endregion string constants
+
+
+    static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
+
     List<Task> longRunningTaskList;
         Dictionary<string, System.Timers.Timer> timers;
         public AppHost() : base("AceService", typeof(BaseServices.Interfaces.BaseServices).Assembly) {
@@ -57,24 +64,19 @@ namespace Ace.AceService {
         // inject the concrete logging implementation
         Log.Debug($"Entering AppHost.Configure method, container is {container.ToString()}");
       // Read in the Application's base configuration settings. AppSettings is a first class object on the Container, so it will be auto-wired
-      // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
-      // Start with the AceService.BaseService builtin (compile-time) configuration settings
-      // Add (Superseding any previous values) the App.config file (AKA AceAgent.exe.config at runtime)
-      // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings from a text file in the program directory (AKA AceService.settings.txt )
-      // ToDo: Add (Superseding any previous values) environment values that match any keys
-      // ToDo: Add (Superseding any previous values) command line variable values that match any keys
+      // Location of the configuration files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
 
       AppSettings = new MultiAppSettingsBuilder()
-// Start with the AceService.BaseService builtin (compile-time) configuration settings
-.AddDictionarySettings(DefaultConfiguration.Configuration())
-          // Add (Superseding any previous values) the App.config file (AKA AceAgent.exe.config at runtime)
-          .AddAppSettings()
-          // Add (Superseding any previous values) the optional configuration file for BaseService configuration settings from a text file in the program directory (AKA AceService.settings.txt )
-          .AddTextFile(agentSettingsTextFileNameString)
-          // ToDo: Add (Superseding any previous values) environment values that match any keys
-          //.AddEnvironmentalVariables()
-          // ToDo: Add (Superseding any previous values) command line variable values that match any keys
+          // ToDo: Highest priority is any command line variable values that match any keys
           //.Add??
+          // Next in priority are any environment values that match any keys
+          //.AddEnvironmentalVariables()
+          // Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
+          .AddTextFile(agentSettingsTextFileNameString)
+          // Next in priority are Configuration settings the App.config file (AKA AceAgent.exe.config at runtime)
+          .AddAppSettings()
+          // Builtin (compiled in) have the lowest priority
+          .AddDictionarySettings(DefaultConfiguration.Configuration())
           .Build();
 
       // Create the BaseServices data structure and register it in the container

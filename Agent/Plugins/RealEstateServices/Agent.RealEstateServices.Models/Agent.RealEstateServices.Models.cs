@@ -3,7 +3,7 @@ using ServiceStack;
 using ServiceStack.Logging;
 using ATAP.Utilities.RealEstate.Enumerations;
 
-namespace Ace.AceCommon.Plugin.RealEstateSearchServices
+namespace Ace.Agent.RealEstateServices
 {
   #region SetRealEstateSearchServicesConfigurationData
   [Route("/SetRealEstateSearchServicesConfigurationData")]

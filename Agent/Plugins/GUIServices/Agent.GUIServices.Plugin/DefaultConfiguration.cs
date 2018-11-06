@@ -8,7 +8,7 @@ namespace Ace.Agent.GUIServices{
     {
       return new Dictionary<string, string>() {
                 { "DebugRelativeRootPath", "../../../../../GUI/bin/Debug/netstandard2.0/Publish/GUI/dist" },
-                { "ReleaseRelativeRootPath", "./GUI" },
+                { "ReleaseRelativeRootPath", "./GUI/dist" },
                 { "VirtualRootPath", string.Empty },
                 { "", "" }
             };

@@ -7,8 +7,8 @@ using System.Collections.Specialized;
 using ATAP.Utilities.RealEstate.Enumerations;
 using System.Collections.Generic;
 
-namespace Ace.AceCommon.Plugin.RealEstateSearchServices
-  
+namespace Ace.Agent.RealEstateServices
+
 {
   public class RealEstateSearchServices : Service
   {

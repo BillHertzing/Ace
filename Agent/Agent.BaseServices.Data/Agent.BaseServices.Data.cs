@@ -80,16 +80,19 @@ namespace Ace.AceAgent.BaseServices {
 
 
     public class BaseServicesData : IDisposable {
-  #region AppSettings Configuration Keys (string constants)
+    #region string constants
+    #region Configuration Key strings
     public const string appSettingsConfigKeyRedisConnectionString = "RedisConnectionString";
     public const string appSettingsConfigKeyAceAgentListeningOnString = "Ace.Agent.ListeningOn";
-    #endregion AppSettings Configuration Keys
+    #endregion Configuration Key strings
     #region Exception Messages (string constants)
     const string RedisConnectionStringKeyNotFoundExceptionMessage = "RedisConnectionString Key not found in Application's Configuration settings and no other ICache implemenation is supported. Add the RedisConnectionString Key and Value to the Application Configuration, and retry.";
-  #endregion Exception Messages (string constants)
-
-        // Constructor with just AppHost parameter
-        public BaseServicesData(IAppHost appHost) {
+    #endregion Exception Messages (string constants)
+    #region File Name string constants
+    #endregion File Name string constants
+    #endregion string constants
+    // Constructor with just AppHost parameter
+    public BaseServicesData(IAppHost appHost) {
             Log.Debug("Entering BaseServicesData ctor");
             AppHost = appHost;
             Container = appHost.GetContainer();

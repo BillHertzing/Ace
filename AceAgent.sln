@@ -41,13 +41,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.MinerServices.Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.MinerServices.Plugin", "Agent\Common\PlugIns\MinerServices\AceService.MinerServices.Plugin\AceService.MinerServices.Plugin.csproj", "{7AC66F7A-E44A-435B-BE07-5EC646466AA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.RealEstateSearchServices.Models", "Agent\Common\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj", "{8E880A9D-47E1-4EC0-B698-2BD6D4C17A80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Models", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj", "{8E880A9D-47E1-4EC0-B698-2BD6D4C17A80}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.RealEstateSearchServices.Interfaces", "Agent\Common\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Interfaces\AceService.RealEstateSearchServices.Interfaces.csproj", "{DDA36E39-D60B-4624-ACC3-1910C2E821E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Interfaces", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Interfaces\Agent.RealEstateServices.Interfaces.csproj", "{DDA36E39-D60B-4624-ACC3-1910C2E821E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.RealEstateSearchServices.Plugin", "Agent\Common\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.Plugin\AceService.RealEstateSearchServices.Plugin.csproj", "{5EAAD690-BF3D-486D-81F6-D2AF76D84386}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Plugin", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Plugin\Agent.RealEstateServices.Plugin.csproj", "{5EAAD690-BF3D-486D-81F6-D2AF76D84386}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.RealEstateSearchServices.PluginData", "Agent\Common\PlugIns\RealEstateSearchServices\AceService.RealEstateSearchServices.PluginData\AceService.RealEstateSearchServices.PluginData.csproj", "{F397F057-6267-4A56-BE06-313FCB97D7CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.PluginData", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.PluginData\Agent.RealEstateServices.PluginData.csproj", "{F397F057-6267-4A56-BE06-313FCB97D7CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Shared", "Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj", "{69083826-DF64-4E73-83B4-50D6EED7A6FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agent", "Agent", "{0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}"
 EndProject
@@ -70,9 +72,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUIServices", "GUIServices"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MinerServices", "MinerServices", "{E1D20164-8795-40E5-92D1-20E4D5F0753D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstateSearchServices", "RealEstateSearchServices", "{4F890257-219C-4A15-A143-74E0F7BCA81F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AceService.RealEstateSearchServices.Shared", "Agent\Common\Plugins\RealEstateSearchServices\AceService.RealEstateSearchServices.S\AceService.RealEstateSearchServices.Shared.csproj", "{69083826-DF64-4E73-83B4-50D6EED7A6FA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstateServices", "RealEstateServices", "{4F890257-219C-4A15-A143-74E0F7BCA81F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent.GUIServices.PluginData", "Agent\Plugins\GUIServices\Agent.GUIServices.PluginData\Agent.GUIServices.PluginData.csproj", "{5908C201-44B9-4BCA-A9F1-BCDF6F66833F}"
 EndProject

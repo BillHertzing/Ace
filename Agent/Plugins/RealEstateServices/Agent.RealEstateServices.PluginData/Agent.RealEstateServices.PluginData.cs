@@ -7,10 +7,20 @@ using ServiceStack.Caching;
 using ServiceStack.Logging;
 using Swordfish.NET.Collections;
 
-namespace Ace.AceCommon.Plugin.RealEstateSearchServices {
+namespace Ace.Agent.RealEstateServices
+{
     public class RealEstateSearchServicesPluginData : IDisposable {
-        // Surface the configKeyPrefix for this namespace
-        public static string configKeyPrefix =
+    #region string constants
+    #region Configuration Key strings
+    #endregion Configuration Key strings
+    #region Exception Messages (string constants)
+    #endregion Exception Messages (string constants)
+    #region File Name string constants
+    #endregion File Name string constants
+    #endregion string constants
+
+    // Surface the configKeyPrefix for this namespace
+    public static string configKeyPrefix =
     MethodBase
     .GetCurrentMethod()
                 .DeclaringType

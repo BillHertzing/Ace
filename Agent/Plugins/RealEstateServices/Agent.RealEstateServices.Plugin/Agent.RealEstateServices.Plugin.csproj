@@ -6,7 +6,6 @@
   </PropertyGroup>
 
 <PropertyGroup>
-    <RootNamespace>Ace.AceCommon.Plugin.RealEstateSearchServices.Plugin</RootNamespace>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
@@ -28,17 +27,14 @@
  </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.Interfaces\AceService.RealEstateSearchServices.Interfaces.csproj" />
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.Models\AceService.RealEstateSearchServices.Models.csproj" />
-    <ProjectReference Include="..\AceService.RealEstateSearchServices.PluginData\AceService.RealEstateSearchServices.PluginData.csproj" />
+    <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.Interfaces\Agent.RealEstateServices.Interfaces.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.PluginData\Agent.RealEstateServices.PluginData.csproj" />
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="RealEstateSearchServices.settings">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Generator>SettingsSingleFileGenerator</Generator>
-    </None>
-    <None Update="RealEstateSearchServices.settings.txt">
+    <None Update="Agent.RealEstateServices.settings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

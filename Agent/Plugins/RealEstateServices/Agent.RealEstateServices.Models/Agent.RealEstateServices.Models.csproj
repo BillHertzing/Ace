@@ -27,7 +27,7 @@
       </ItemGroup>
 
       <ItemGroup>
-        <ProjectReference Include="..\AceService.RealEstateSearchServices.S\AceService.RealEstateSearchServices.Shared.csproj" />
+        <ProjectReference Include="..\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
       </ItemGroup>
   
 </Project>

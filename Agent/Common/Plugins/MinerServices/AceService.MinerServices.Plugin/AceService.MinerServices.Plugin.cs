@@ -11,6 +11,14 @@ namespace Ace.AceService.MinerServices.Plugin
 
     public class MinerServicesPluginData
     {
+    #region string constants
+    #region Configuration Key strings
+    #endregion Configuration Key strings
+    #region Exception Messages (string constants)
+    #endregion Exception Messages (string constants)
+    #region File Name string constants
+    #endregion File Name string constants
+    #endregion string constants
     /*
         ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs;
         ConcurrentObservableDictionary<int, MinerGPU> minerGPUs ;
@@ -28,9 +36,9 @@ namespace Ace.AceService.MinerServices.Plugin
         public ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> MinerSWs { get => minerSWs;}
         public ConcurrentObservableDictionary<int, MinerGPU> MinerGPUs { get => minerGPUs; }
         */
-    }
+  }
 
-    public class MinerServicesPlugin : IPlugin
+  public class MinerServicesPlugin : IPlugin
     {
     /// <summary>
     /// Register this plugin with the appHost

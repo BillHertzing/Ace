@@ -3,8 +3,6 @@ using System.Collections;
 using ServiceStack;
 using ServiceStack.Logging;
 using ServiceStack.Caching;
-//using Ace.AceCommon.Plugin.RealEstateSearchServices.Interfaces;
-//using Ace.AceCommon.Plugin.RealEstateSearchServices.PluginData;
 using Swordfish.NET.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
@@ -13,12 +11,20 @@ using ServiceStack.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ace.AceCommon.Plugin.RealEstateSearchServices
+namespace Ace.Agent.RealEstateServices
 {
-  
-
   public class RealEstateSearchServicesPlugin : IPlugin, IPreInitPlugin
   {
+    #region string constants
+    #region Configuration Key strings
+    #endregion Configuration Key strings
+    #region Exception Messages (string constants)
+    #endregion Exception Messages (string constants)
+    #region File Name string constants
+    const string pluginSettingsTextFileNameString = "Agent.RealEstateServices.settings.txt";
+    #endregion File Name string constants
+    #endregion string constants
+
     // Create a logger for this class
     public static ILog Log = LogManager.GetLogger(typeof(RealEstateSearchServicesPlugin));
 
@@ -50,11 +56,12 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
       // Populate this Plugin's Application Configuration Settings
       // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
       var pluginAppSettings =new MultiAppSettingsBuilder()
-      // Builtin (compiled in)
-    .AddDictionarySettings(DefaultConfiguration.Configuration())
-    // Configuration settings in a text file in the program directory
-    .AddTextFile("RealEstateSearchServices.settings.txt")
+    // Environment variables have higest priority
     //.AddEnvironmentalVariables()
+    // Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
+    .AddTextFile(pluginSettingsTextFileNameString)
+    // Builtin (compiled in) have the lowest priority
+    .AddDictionarySettings(DefaultConfiguration.Configuration())
     .Build();
 
       // Key names in the cache for Configuration settings for a Plugin consist of the namespace and the string .Config
@@ -120,7 +127,7 @@ namespace Ace.AceCommon.Plugin.RealEstateSearchServices
       Log.Debug("starting RealEstateSearchServicesPlugin.Register");
 
       if (null == appHost) { throw new ArgumentNullException("appHost"); }
-      appHost.RegisterService<Ace.AceCommon.Plugin.RealEstateSearchServices.RealEstateSearchServices>();
+      appHost.RegisterService<RealEstateSearchServices>();
       this.Configure(appHost);
     }
 
