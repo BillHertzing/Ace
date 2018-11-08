@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using ServiceStack.Text;
+using ServiceStack;
 
 namespace ATAP.Utilities.Http
 {
@@ -124,7 +126,178 @@ namespace ATAP.Utilities.Http
     }
 
 
-    /*
+  // Create the concept of a Gateway, a collection of related API entries and a base URL
+  public interface IGatewayEntry
+  {
+    string Name { get; }
+    Type RequestDataPayload { get; set; }
+    Type ResponseDataPayload { get; set; }
+    string RUriStr { get; set; }
+  }
+  public class GatewayEntry : IGatewayEntry
+  {
+    string name;
+    public GatewayEntry(string name)
+    {
+      this.name = name;
+    }
+    public string Name { get => name; }
+    public Type RequestDataPayload { get; set; }
+
+    public Type ResponseDataPayload { get; set; }
+
+    public string RUriStr { get; set; }
+
+
+  }
+
+  public interface IGateway
+  {
+    Uri BaseUri { get; }
+    Policy DefaultPolicy { get; set; }
+    string Name { get; }
+    Dictionary<string, IGatewayEntry> GatewayEntries { get; set; }
+  }
+  public class Gateway : IGateway
+  {
+    string name;
+    Uri baseUri;
+
+    public Gateway(string name, Uri baseUrI)
+    {
+      this.name = name;
+      this.baseUri = baseUrI;
+    }
+    public string Name { get => name; }
+    public Uri BaseUri { get => baseUri; }
+    public Policy DefaultPolicy { get; set; }
+
+    public Dictionary<string, IGatewayEntry> GatewayEntries { get; set; }
+    
+      public string GetJsonFromUrl(IGatewayEntry entry, Action<HttpWebRequest> requestFilter = null,
+  Action<HttpWebResponse> responseFilter = null)
+    {
+      string r = new Uri(BaseUri, entry.RUriStr).AbsolutePath.GetJsonFromUrl(requestFilter, responseFilter);
+      return r;
+      }
+    public  Task<string> PostJsonToUrlAsync(IGatewayEntry entry, string json, Action<HttpWebRequest> requestFilter = null,
+Action<HttpWebResponse> responseFilter = null)
+    {
+      return new Uri(BaseUri, entry.RUriStr).AbsolutePath.PostJsonToUrlAsync(json, requestFilter, responseFilter);
+    }
+
+  }
+
+  public interface IGatewayBuilder
+  {
+    IGateway Build();
+  }
+
+  public class GatewayBuilder : IGatewayBuilder
+  {
+    string name;
+    Uri baseUri;
+    Policy defaultPolicy;
+    Dictionary<string, IGatewayEntry> gatewayEntries;
+
+        public GatewayBuilder AddName(string _name) {
+      name = _name;
+      return this;
+    }
+
+    public GatewayBuilder AddBaseUri(Uri _baseUri)
+    {
+      baseUri = _baseUri;
+      return this;
+    }
+
+
+    public GatewayBuilder()
+    {
+    }
+
+    public IGateway Build()
+    {
+      Gateway g = new Gateway(name,baseUri);
+      return g;
+    }
+    public static GatewayBuilder CreateNew()
+    {
+      return new GatewayBuilder();
+    }
+  }
+
+  public interface IGateways
+  {
+
+  }
+
+  public class Gateways : IGateways
+  {
+    public Gateways()
+    {
+
+    }
+  }
+  public interface IMultiGatewaysBuilder
+  {
+    IGateways Build();
+  }
+
+  public class MultiGatewaysBuilder : IMultiGatewaysBuilder
+  {
+    string name;
+    Uri baseUri;
+    Policy defaultPolicy;
+    Dictionary<string, IGatewayEntry> gatewayEntries;
+
+    public MultiGatewaysBuilder AddDictionarySettings(Dictionary<string, IGateway> map)
+    {
+      throw new NotImplementedException();
+      return this;
+    }
+    public MultiGatewaysBuilder AddEnvironmentalVariables()
+    {
+      throw new NotImplementedException();
+      return this;
+    }
+    public MultiGatewaysBuilder AddEnvironmentalVariables(string tier)
+    {
+      throw new NotImplementedException();
+      return this;
+    }
+    public MultiGatewaysBuilder AddTextFile(string path)
+    {
+      throw new NotImplementedException();
+      return this;
+    }
+    public MultiGatewaysBuilder AddTextFile(string path, string delimeter)
+    {
+      throw new NotImplementedException();
+      return this;
+    }
+    public MultiGatewaysBuilder AddTextFile(string path, string delimeter, string tier)
+    {
+      throw new NotImplementedException();
+      return this;
+    }
+
+    public MultiGatewaysBuilder(string tier = null)
+    {
+    }
+
+    public IGateways Build()
+    {
+      Gateways mg = new Gateways();
+      return mg;
+    }
+    public static MultiGatewaysBuilder CreateNew()
+    {
+      return new MultiGatewaysBuilder();
+    }
+  }
+
+  /*
     // Within an application, there should only be one static instance of a HTTPClient. This class provides that, and a set of static async tasks to interact with it.
     public interface IWebGet
     {
@@ -160,4 +333,6 @@ namespace ATAP.Utilities.Http
         Dictionary<IWebGetRegistryKey, IWebGetRegistryKey> Registry { get; set; }
     }
     */
+
+
 }

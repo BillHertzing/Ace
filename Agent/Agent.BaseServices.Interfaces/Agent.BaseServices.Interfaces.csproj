@@ -21,6 +21,7 @@
     <PackageReference Include="ServiceStack" Version="5.4.1" />
     <PackageReference Include="ServiceStack.Logging.NLog" Version="5.4.1" />
     <ProjectReference Include="..\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
+    <ProjectReference Include="..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
   </ItemGroup>
   
   <!-- .NET 4 or greater references, compilation flags and build options -->

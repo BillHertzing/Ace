@@ -10,10 +10,11 @@ using System.ComponentModel;
 using ServiceStack.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using ATAP.Utilities.Http;
 
 namespace Ace.Agent.RealEstateServices
 {
-  public class RealEstateSearchServicesPlugin : IPlugin, IPreInitPlugin
+  public class RealEstateServicesPlugin : IPlugin, IPreInitPlugin
   {
     #region string constants
     #region Configuration Key strings
@@ -21,12 +22,13 @@ namespace Ace.Agent.RealEstateServices
     #region Exception Messages (string constants)
     #endregion Exception Messages (string constants)
     #region File Name string constants
-    const string pluginSettingsTextFileNameString = "Agent.RealEstateServices.settings.txt";
+    const string pluginSettingsTextFileName = "Agent.RealEstateServices.settings.txt";
+    const string pluginGatewaysTextFileName = "Agent.RealEstateServices.Gateways.txt";
     #endregion File Name string constants
     #endregion string constants
 
     // Create a logger for this class
-    public static ILog Log = LogManager.GetLogger(typeof(RealEstateSearchServicesPlugin));
+    public static ILog Log = LogManager.GetLogger(typeof(RealEstateServicesPlugin));
 
     // Surface the configKeyPrefix for this namespace
     public static string myNamespace = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace;
@@ -51,15 +53,16 @@ namespace Ace.Agent.RealEstateServices
     }
     public void Configure(IAppHost appHost)
     {
-      Log.Debug("starting RealEstateSearchServicesPlugin.Configure");
+      Log.Debug("starting RealEstateServicesPlugin.Configure");
 
       // Populate this Plugin's Application Configuration Settings
       // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
       var pluginAppSettings =new MultiAppSettingsBuilder()
-    // Environment variables have higest priority
+    // Command line flags have highest priority
+    // next in priority are  Environment variables
     //.AddEnvironmentalVariables()
-    // Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
-    .AddTextFile(pluginSettingsTextFileNameString)
+    // next in priority are Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
+    .AddTextFile(pluginSettingsTextFileName)
     // Builtin (compiled in) have the lowest priority
     .AddDictionarySettings(DefaultConfiguration.Configuration())
     .Build();
@@ -89,24 +92,43 @@ namespace Ace.Agent.RealEstateServices
       // Set a flag indicating the need to dialog with the user to resolve the cache vs. appSettings discrepancies
       bool configurationsMatch = true; // (appSettingsConfigkeys.Count == cacheConfigkeys.Count) ;
 
+
+      // Populate this Plugin's Gateways
+      // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
+      var pluginGateways = new MultiGatewaysBuilder()
+    // Command line flags have highest priority
+    // next in priority are  Environment variables
+    //.AddEnvironmentalVariables()
+    // next in priority are Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
+    //.AddTextFile(pluginGatewaysTextFileName)
+    // Builtin (compiled in) have the lowest priority
+    //.AddDictionarySettings(DefaultGateways.Configuration())
+    .Build();
+
+
+
+      // Create a Gateways collection from the txt file
+      ConcurrentObservableDictionary<string, IGateway> gateways = new ConcurrentObservableDictionary<string, IGateway>();
+      gateways.Add("test", new GatewayBuilder().Build());
       // Create the Plugin's data structure. There should only be a single instance.
       // Every Property matching a ConfigKey gets/sets the value of the matching ConfigKey in the cache
       // ConfigKey Properties do not have to be set in the constructor because the cache was setup before calling the constructor
 
-      RealEstateSearchServicesPluginData realEstateSearchServicesPluginData = new RealEstateSearchServicesPluginData(appHost, new ConcurrentObservableDictionary<string, decimal>(), onPluginRootCollectionChanged, onPluginRootPropertyChanged);
 
-      // copy the most recent configuration settings to the PluginData
-      // hmm should be a way to make sure the PluginData has a Property for each configuration setting, and to populate the initial PluginData with the cache value
-      realEstateSearchServicesPluginData.GoogleAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "GoogleAPIKeyEncrypted");
-      realEstateSearchServicesPluginData.HomeAwayAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "HomeAwayAPIKeyEncrypted");
-      realEstateSearchServicesPluginData.HomeAway_API_URI = cacheClient.Get<string>(configKeyPrefix + "HomeAway_API_URI");
-      realEstateSearchServicesPluginData.Google_API_URI = cacheClient.Get<string>(configKeyPrefix + "Google_API_URI");
-      realEstateSearchServicesPluginData.UriHomeAway_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriHomeAway_API_URI");
-      realEstateSearchServicesPluginData.UriGoogle_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriGoogle_API_URI");
+      RealEstateServicesData RealEstateServicesData = new RealEstateServicesData(appHost, new ConcurrentObservableDictionary<string, decimal>(), onPluginRootCollectionChanged, onPluginRootPropertyChanged);
+
+      // copy the most recent configuration settings to the Data
+      // hmm should be a way to make sure the Data has a Property for each configuration setting, and to populate the initial Data with the cache value
+      RealEstateServicesData.GoogleAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "GoogleAPIKeyEncrypted");
+      RealEstateServicesData.HomeAwayAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "HomeAwayAPIKeyEncrypted");
+      RealEstateServicesData.HomeAway_API_URI = cacheClient.Get<string>(configKeyPrefix + "HomeAway_API_URI");
+      RealEstateServicesData.Google_API_URI = cacheClient.Get<string>(configKeyPrefix + "Google_API_URI");
+      RealEstateServicesData.UriHomeAway_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriHomeAway_API_URI");
+      RealEstateServicesData.UriGoogle_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriGoogle_API_URI");
 
       // and pass the Plugin's data structure to the container so it will be available to every other module and services
       appHost.GetContainer()
-      .Register<RealEstateSearchServicesPluginData>(x => realEstateSearchServicesPluginData);
+      .Register<RealEstateServicesData>(x => RealEstateServicesData);
 
 
 
@@ -124,10 +146,10 @@ namespace Ace.Agent.RealEstateServices
     /// 
     public void Register(IAppHost appHost)
     {
-      Log.Debug("starting RealEstateSearchServicesPlugin.Register");
+      Log.Debug("starting RealEstateServicesPlugin.Register");
 
       if (null == appHost) { throw new ArgumentNullException("appHost"); }
-      appHost.RegisterService<RealEstateSearchServices>();
+      appHost.RegisterService<RealEstateServices>();
       this.Configure(appHost);
     }
 

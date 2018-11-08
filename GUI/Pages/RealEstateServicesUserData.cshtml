@@ -2,7 +2,7 @@
 @inherits Ace.AceGUI.Pages.RealEstateServicesCodeBehind
 <h1>AceCommander Real Estate Services User Data</h1>
 
-@if (@RealEstateSearchServicesInitializationResponse == null)
+@if (@RealEstateServicesInitializationResponse == null)
 {
   <p><em>Loading (Calling onInitAsync)</em></p>
 }
@@ -11,7 +11,7 @@ else
   <h2>User Data</h2>
   <div>
     <label for="GoogleAPIKey">@labelForGoogleAPIKey</label>
-    <input type="password" onmousedown="this.type='text'" onmouseup="this.type='password'" onmousemove="this.type='password' class="form-control" id="GoogleAPIKey" bind="@GoogleAPIKey" placeholder="@GoogleAPIKeyPlaceHolder" />
+    <input type="password" onmousedown="this.type='text'" onmouseup="this.type='password'" onmousemove="this.type='password'" class="form-control" id="GoogleAPIKey" bind="@GoogleAPIKey" placeholder="@GoogleAPIKeyPlaceHolder" />
   </div>
   <div>
     <label for="GoogleAPIKeyPassPhrase">@labelForGoogleAPIKeyPassPhrase</label>
@@ -30,15 +30,15 @@ else
       <input type="checkbox" bind="@UserDataSave" /> @labelForUserDataSave
     </label>
   </div>
-  <button type="button" class="btn btn-default" onclick="@SetRealEstateSearchServicesUserData">Submit</button>
+  <button type="button" class="btn btn-default" onclick="@SetRealEstateServicesUserData">Submit</button>
 
-  @if (@SetRealEstateSearchServicesUserDataResponse == null)
+  @if (@SetRealEstateServicesUserDataResponse == null)
   {
   <p>User Information has not yet been submitted to Ace Commander</p>
   }
   else
   {
-  <p>SetRealEstateSearchServicesUserData returned @SetRealEstateSearchServicesUserDataResponse.Result.ToString() </p>
+  <p>SetRealEstateServicesUserData returned @SetRealEstateServicesUserDataResponse.Result.ToString() </p>
   }
 }
 

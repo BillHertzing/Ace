@@ -9,7 +9,7 @@ using Swordfish.NET.Collections;
 
 namespace Ace.Agent.RealEstateServices
 {
-    public class RealEstateSearchServicesPluginData : IDisposable {
+    public class RealEstateServicesData : IDisposable {
     #region string constants
     #region Configuration Key strings
     #endregion Configuration Key strings
@@ -27,7 +27,7 @@ namespace Ace.Agent.RealEstateServices
                 .Namespace +
             ".Config";
         // Create a logger for this class
-        public static ILog Log = LogManager.GetLogger(typeof(RealEstateSearchServicesPluginData));
+        public static ILog Log = LogManager.GetLogger(typeof(RealEstateServicesData));
         // private field for the cacheClient, populated by the constructor
         ICacheClient cacheClient;
 
@@ -38,7 +38,7 @@ namespace Ace.Agent.RealEstateServices
         PropertyChangedEventHandler onPluginRootCODPropertyChanged;
 
         // constructor with event handlers
-        public RealEstateSearchServicesPluginData(IAppHost appHost, ConcurrentObservableDictionary<string, decimal> pluginRootCOD, NotifyCollectionChangedEventHandler onPluginRootCODCollectionChanged, PropertyChangedEventHandler onPluginRootCODPropertyChanged) {
+        public RealEstateServicesData(IAppHost appHost, ConcurrentObservableDictionary<string, decimal> pluginRootCOD, NotifyCollectionChangedEventHandler onPluginRootCODCollectionChanged, PropertyChangedEventHandler onPluginRootCODPropertyChanged) {
       
             cacheClient = appHost.GetContainer().Resolve<ICacheClient>();
             PluginRootCOD = pluginRootCOD;

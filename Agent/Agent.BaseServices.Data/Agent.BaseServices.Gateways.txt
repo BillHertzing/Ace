@@ -1,52 +1,52 @@
-# Gateways for the BaseServices
+# Agent.BaseServices.Gateways
 # Versioninfo
 
-Ace.Agent.BaseServices.Policies {}
 
-Ace.Agent.BaseServices.Gateways {
+
+Ace.Agent.BaseServices.Gateways: {
   Google : {
     BaseUriString: https://www.google.com/api
     DefaultPolicy: TimeOut30
-    Headers {
-	  User-Agent: Awesome-Octocat-App
-	}
-	Entries {
-	  GetStreet
-	}
+    Headers: {
+	    User-Agent: ACECommander v0.1.0
+	  }
+	  Entries: {
+	    GetStreet:stuff
+	  }
   }
   GitHub {
     BaseUriString: https://api.github.com
     DefaultPolicy: TimeOut30
-	CORS : True
-	RequestHeaders : {
-	  Accept: application/vnd.github.v3+json
-	  User-Agent: Awesome-Octocat-App
-	  Time-Zone
-	}
-	Authentication : {
-	  OAuth2TokenHeader
-	  OAuth2TokenParameter
-	  OAuth2TokenKeySecret
-	}
-	ResponseHeaders : {
-	ETag : ""
-	Last-Modified : DateTimeStamp
-	}
-	Entries : {
-	  Search/Repositories : {
-	    RequestHeaders : {
-	      Accept: application/vnd.github.mercy-preview+json
-	    }
-	    Parameters : {
-	      Accept: application/vnd.github.mercy-preview+json
+	  CORS : True
+	  RequestHeaders : {
+	    Accept: application/vnd.github.v3+json
+	    User-Agent: ACECommander v0.1.0
+	    Time-Zone :EDT
+	  }
+  	Authentication : [
+  	  OAuth2TokenHeader,
+	    OAuth2TokenParameter,
+	    OAuth2TokenKeySecret
+	  ]
+	  ResponseHeaders : {
+	    ETag : ""
+	    Last-Modified : DateTimeStamp
+	  }
+	  Entries : {
+	    Search/Repositories : {
+	      RequestHeaders : {
+	        Accept: application/vnd.github.mercy-preview+json
+	      }
+	      Parameters : {
+	        Accept: application/vnd.github.mercy-preview+json
+	      }
 	    }
 	  }
-	}
   }
   AceCommander : {
     BaseUriString: http://localhost:21100/
     DefaultPolicy: TimeOut30
-	  Entries {
+	  Entries :: {
 	    IsAlive
 	  }
 	}

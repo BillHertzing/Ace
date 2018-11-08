@@ -2,7 +2,7 @@
 @inherits Ace.AceGUI.Pages.RealEstateServicesCodeBehind
 <h1>AceCommander Real Estate Services Configuration Data</h1>
 
-@if (@RealEstateSearchServicesInitializationResponse == null)
+@if (@RealEstateServicesInitializationResponse == null)
 {
   <p><em>Loading (Calling onInitAsync)</em></p>
 }
@@ -22,14 +22,14 @@ else
       <input type="checkbox" bind="@ConfigurationDataSave" /> @labelForConfigurationDataSave
     </label>
   </div>
-  <button type="button" class="btn btn-default" onclick="@SetRealEstateSearchServicesConfigurationData">Submit</button>
-  @if (@SetRealEstateSearchServicesConfigurationDataResponse == null)
+  <button type="button" class="btn btn-default" onclick="@SetRealEstateServicesConfigurationData">Submit</button>
+  @if (@SetRealEstateServicesConfigurationDataResponse == null)
   {
     <p>Configuration Information has not yet been submitted to Ace Commander</p>
   }
   else
   {
-    <p>SetRealEstateSearchServicesConfigurationData returned @SetRealEstateSearchServicesConfigurationDataResponse.Result.ToString() </p>
+    <p>SetRealEstateServicesConfigurationData returned @SetRealEstateServicesConfigurationDataResponse.Result.ToString() </p>
   }
 }
 

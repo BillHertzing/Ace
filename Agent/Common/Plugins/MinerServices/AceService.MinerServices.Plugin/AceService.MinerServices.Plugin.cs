@@ -9,7 +9,7 @@ namespace Ace.AceService.MinerServices.Plugin
 {
 
 
-    public class MinerServicesPluginData
+    public class MinerServicesData
     {
     #region string constants
     #region Configuration Key strings
@@ -23,9 +23,9 @@ namespace Ace.AceService.MinerServices.Plugin
         ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs;
         ConcurrentObservableDictionary<int, MinerGPU> minerGPUs ;
 
-        public MinerServicesPluginData() : this(new ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW>(), new ConcurrentObservableDictionary<int, MinerGPU>()) { }
+        public MinerServicesData() : this(new ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW>(), new ConcurrentObservableDictionary<int, MinerGPU>()) { }
 
-        public MinerServicesPluginData(ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs, ConcurrentObservableDictionary<int, MinerGPU> minerGPUs)
+        public MinerServicesData(ConcurrentObservableDictionary<(MinerSWE minerSWE, string version, Coin[] coins), MinerSW> minerSWs, ConcurrentObservableDictionary<int, MinerGPU> minerGPUs)
         {
             this.minerSWs = minerSWs;
             this.minerGPUs = minerGPUs;
@@ -59,7 +59,7 @@ namespace Ace.AceService.MinerServices.Plugin
             // appHost.AppSettings.Get<string>("Ace.AceService.MinerPlugin.InstalledMinerSW");
             // appHost.AppSettings.Get<string>("Ace.AceService.MinerPlugin.InstalledGPUs");
 
-            var mspd = new MinerServicesPluginData();
+            var mspd = new MinerServicesData();
 
             // if the current mining rig configuration specifies that the mining rig has mining-specific data structures that
             //  can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
@@ -68,7 +68,7 @@ namespace Ace.AceService.MinerServices.Plugin
 
 
             // pass the plugIn's observable data structures and event handlers to the container so they will be available to every other module and services
-            container.Register<MinerServicesPluginData>(d => mspd);
+            container.Register<MinerServicesData>(d => mspd);
 
       // enable the mechanisms that monitors each mining-specific data sensor, and start them running
 

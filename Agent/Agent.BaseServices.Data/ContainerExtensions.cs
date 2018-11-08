@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-namespace Ace.AceService {
+namespace Ace.Agent.BaseServices {
     public static class ContainerExtensions {
         public static object TryResolve(this Container container, Type type) {
             var mi = typeof(Container).GetMethods(BindingFlags.Public | BindingFlags.Instance)

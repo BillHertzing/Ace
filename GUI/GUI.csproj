@@ -55,6 +55,15 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Pages\BaseServicesUserData.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\BaseServicesGeoLocation.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 
   
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -7,7 +7,7 @@ using ServiceStack.Logging;
 using ServiceStack.VirtualPath;
 
 namespace Ace.Agent.GUIServices {
-    public class GUIServicesPluginData {
+    public class GUIServicesData {
     #region string constants
     #region Configuration Key strings
     #endregion Configuration Key strings
@@ -15,10 +15,10 @@ namespace Ace.Agent.GUIServices {
     #endregion Exception Messages (string constants)
     #endregion string constants
 
-    public GUIServicesPluginData() : this(new MultiAppSettingsBuilder().Build()) {
+    public GUIServicesData() : this(new MultiAppSettingsBuilder().Build()) {
         }
 
-        public GUIServicesPluginData(IAppSettings pluginAppSettings) {
+        public GUIServicesData(IAppSettings pluginAppSettings) {
       PluginAppSettings = pluginAppSettings;
         }
 

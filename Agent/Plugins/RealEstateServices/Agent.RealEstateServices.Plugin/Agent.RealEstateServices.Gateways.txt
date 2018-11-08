@@ -1,0 +1,11 @@
+# Agent.RealEstateServices.Gateways
+# VersionInfo
+
+HomeAway {
+}
+
+Zillow {
+}
+
+Realtor {
+}

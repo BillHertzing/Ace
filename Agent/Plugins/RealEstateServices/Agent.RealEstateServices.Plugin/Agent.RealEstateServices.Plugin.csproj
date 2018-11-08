@@ -30,10 +30,13 @@
     <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
     <ProjectReference Include="..\Agent.RealEstateServices.Interfaces\Agent.RealEstateServices.Interfaces.csproj" />
     <ProjectReference Include="..\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
-    <ProjectReference Include="..\Agent.RealEstateServices.PluginData\Agent.RealEstateServices.PluginData.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.Data\Agent.RealEstateServices.Data.csproj" />
   </ItemGroup>
   
   <ItemGroup>
+    <None Update="Agent.RealEstateServices.Gateways.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Agent.RealEstateServices.settings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

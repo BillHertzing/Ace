@@ -5,7 +5,6 @@
   </PropertyGroup>
 
       <PropertyGroup>
-    <RootNamespace>Ace.AceCommon.Plugin.RealEstateSearchServices.Interfaces</RootNamespace>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
@@ -28,7 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
     <ProjectReference Include="..\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
-    <ProjectReference Include="..\Agent.RealEstateServices.PluginData\Agent.RealEstateServices.PluginData.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.Data\Agent.RealEstateServices.Data.csproj" />
   </ItemGroup>
 
 </Project>

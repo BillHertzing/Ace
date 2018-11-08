@@ -1,58 +1,84 @@
 using ServiceStack;
 
 
-namespace Ace.AceService.BaseServices.Models
+namespace Ace.Agent.BaseServices
 {
-    [Route("/isAlive")]
+  #region Base Services Initialization
+  [Route("/BaseServicesInitialization")]
+        public class BaseServicesInitializationReqPayload : IReturn<BaseServicesInitializationRspPayload>
+  {
+    //public string Name { get; set; }
+  }
+  public class BaseServicesInitializationRspPayload
+  {
+    //public string Result { get; set; }
+  }
+  #endregion
+
+  #region IsAlive
+  [Route("/isAlive")]
     [Route("/isAlive/{Name}")]
-    public class BaseServiceIsAlive : IReturn<IsAliveResponse>
+    public class IsAliveReqPayload : IReturn<IsAliveRspPayload>
     {
         public string Name { get; set; }
     }
 
-    public class IsAliveResponse
+    public class IsAliveRspPayload
     {
         public string Result { get; set; }
     }
-/*
-    [Route("/GetConfiguration")]
-    public class BaseServiceGetConfiguration : IReturn<GetConfigurationResponse>
-    {
-        //  public string Name { get; set; }
-    }
-    public class GetConfigurationResponse
-    {
-        public string Result { get; set; }
-    }
+  #endregion IsAlive
 
+  #region Lat/Lng To Address and reverse
+  [Route("/LatLngToAddress")]
+  public class LatLngToAddressReqPayload : IReturn<LatLngToAddressRspPayload>
+  {
+    public string Latitude { get; set; }
+    public string Longitude { get; set; }
+  }
 
-    [Route("/PutConfiguration")]
-    public class BaseServicePutConfiguration : IReturn<PutConfigurationResponse>
-    {
-        //  public string Name { get; set; }
+  public class LatLngToAddressRspPayload
+  {
+    public string Address { get; set; }
+  }
+
+  [Route("/AddressToLatLng")]
+  public class AddressToLatLngReqPayload : IReturn<AddressToLatLngRspPayload>
+  {
+    public string Address { get; set; }
+  }
+  public class AddressToLatLngRspPayload
+  {
+      public string Latitude { get; set; }
+      public string Longitude { get; set; }
     }
-    public class PutConfigurationResponse
-    {
-        public string Result { get; set; }
-    }
-    /*
-        public class BaseServiceUpdateConfiguration : IReturn<UpdateConfigurationResponse>
-        {
-            //  public string Name { get; set; }
-        }
+  #endregion
 
-        public class BaseServiceDeleteConfiguration : IReturn<DeleteConfigurationResponse>
-        {
-            //  public string Name { get; set; }
-        }
+  #region Configuration Data
+  [Route("/BaseServicesConfigurationData")]
+  public class BaseServicesConfigurationDataReqPayload : IReturn<BaseServicesConfigurationDataRspPayload>
+  {
+    public string RedisCacheConnectionString { get; set; }
+  }
+  public class BaseServicesConfigurationDataRspPayload
+  {
+    public string RedisCacheConnectionString { get; set; }
+  }
 
-        public class BaseServiceWriteConfigurationToStorage : IReturn<WriteConfigurationToStorageResponse>
-        {
-            //  public string Name { get; set; }
-        }
-        public class BaseServiceReadConfigurationFromStorage : IReturn<ReadConfigurationFromStorageResponse>
-        {
-            //  public string Name { get; set; }
-        }
-        */
+  #endregion
+
+  #region User Data
+  [Route("/BaseServicesUserData")]
+  public class BaseServicesUserDataReqPayload : IReturn<BaseServicesUserDataRspPayload>
+  {
+    public string GatewayNameString { get; set; }
+    public string GatewayEntryAPIKeyString { get; set; }
+  }
+  public class BaseServicesUserDataRspPayload
+  {
+    public string GatewayNameString { get; set; }
+    public string GatewayEntryAPIKeyString { get; set; }
+  }
+  #endregion
+
 }

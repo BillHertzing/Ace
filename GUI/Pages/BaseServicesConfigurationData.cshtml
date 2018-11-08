@@ -1,0 +1,25 @@
+@page "/BaseServices.Configuration"
+@inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
+<h1>AceCommander Base Services Configuration Settings</h1>
+
+@if (@BaseServicesInitializationRspPayload == null)
+{
+  <p>Loading (Calling onInitAsync)</p>
+}
+else
+{
+  <h2>Configuration Data</h2>
+  <div>
+    <label for="RedisCacheConnectionString">@labelForRedisCacheConnectionString</label>
+    <input type="text" class="form-control" id="RedisCacheConnectionString" bind="@RedisCacheConnectionString" placeholder="@placeHolderForRedisCacheConnectionString" />
+  </div>
+  <button type="button" class="btn btn-default" onclick="@PostBaseServicesConfigurationData">@labelForPostBaseServicesConfigurationDataButton</button>
+  @if (@BaseServicesConfigurationDataRspPayload == null)
+  {
+    <p>Configuration Information has not yet been submitted to Ace Commander</p>
+  }
+  else
+  {
+    <p>PostBaseServicesConfigurationData returned @BaseServicesConfigurationDataRspPayload.RedisCacheConnectionString.ToString() </p>
+  }
+}

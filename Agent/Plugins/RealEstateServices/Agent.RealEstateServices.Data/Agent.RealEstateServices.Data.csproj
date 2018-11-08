@@ -26,6 +26,9 @@
     <PackageReference Include="ServiceStack" Version="5.4.0" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
+  </ItemGroup>
   
 
 </Project>

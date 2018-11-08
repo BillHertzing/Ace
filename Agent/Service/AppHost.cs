@@ -14,7 +14,7 @@ using ServiceStack.Caching;
 using ServiceStack.Configuration;
 using ServiceStack.Logging;
 using ServiceStack.Redis;
-using Ace.AceAgent.BaseServices;
+using Ace.Agent.BaseServices;
 
 //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
 namespace Ace.AceService {
@@ -32,7 +32,7 @@ namespace Ace.AceService {
 
     List<Task> longRunningTaskList;
         Dictionary<string, System.Timers.Timer> timers;
-        public AppHost() : base("AceService", typeof(BaseServices.Interfaces.BaseServices).Assembly) {
+        public AppHost() : base("AceService", typeof(BaseServices).Assembly) {
             Log.Debug("Entering AppHost Ctor");
             Log.Debug("Leaving AppHost Ctor");
         }
@@ -82,32 +82,6 @@ namespace Ace.AceService {
       // Create the BaseServices data structure and register it in the container
       var baseServicesData = new BaseServicesData(this);
       container.Register<BaseServicesData>(c => baseServicesData);
-
-
-        // ToDo: support AppSettings to control the enable/disable of Postman
-      // Enable Postman integration
-      Plugins.Add(new PostmanFeature());
-
-        // ToDo: support AppSettings to control the enable/disable of CorsFeature
-      // Enable CORS support
-      Plugins.Add(new CorsFeature(allowedMethods: "GET, POST, PUT, DELETE, OPTIONS",
-                                  allowedOrigins: "*",
-                                  allowCredentials: true,
-                                  allowedHeaders: "content-type, Authorization, Accept"));
-
-        // ToDo: support AppSettings to control the enable/disable of Metadata Feature
-        this.Config
-            .EnableFeatures = Feature.All
-            .Remove(Feature.Metadata);
-
-        // Turn debug mode for the ACEAgent depending if running in debug mode or release mode
-#if Debug
-      this.Config.DebugMode = true;
-#else
-        this.Config
-            .DebugMode = false;
-#endif
-
         // Create the basic services observable data structures based on the configuration settings
 
         // Add a dictionary of timers and a list to hold "long-running tasks" to the IoC container
@@ -132,7 +106,7 @@ namespace Ace.AceService {
         // ToDo: Get the list of plugins to install from the configuration settings, currently hardcoded to load just the GUIServices
       // Create the list of PlugIns to load
       var plugInList = new List<IPlugin>() {
-          new RealEstateSearchServicesPlugin(),
+          new RealEstateServicesPlugin(),
           new MinerServicesPlugin(),
           new GUIServicesPlugin()
       };

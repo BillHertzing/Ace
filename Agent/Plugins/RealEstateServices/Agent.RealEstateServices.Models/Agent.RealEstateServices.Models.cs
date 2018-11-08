@@ -1,58 +1,57 @@
 using System;
 using ServiceStack;
-using ServiceStack.Logging;
 using ATAP.Utilities.RealEstate.Enumerations;
 
 namespace Ace.Agent.RealEstateServices
 {
-  #region SetRealEstateSearchServicesConfigurationData
-  [Route("/SetRealEstateSearchServicesConfigurationData")]
-  public class SetRealEstateSearchServicesConfigurationDataRequest : IReturn<SetRealEstateSearchServicesConfigurationDataResponse>
+  #region SetRealEstateServicesConfigurationData
+  [Route("/SetRealEstateServicesConfigurationData")]
+  public class SetRealEstateServicesConfigurationDataRequest : IReturn<SetRealEstateServicesConfigurationDataResponse>
   {
-    public SetRealEstateSearchServicesConfigurationDataRequestData SetRealEstateSearchServicesConfigurationDataRequestData { get; set; }
+    public SetRealEstateServicesConfigurationDataRequestData SetRealEstateServicesConfigurationDataRequestData { get; set; }
   }
-  #endregion SetRealEstateSearchServicesConfigurationData
-  #region GetRealEstateSearchServicesConfigurationData
-  [Route("/GetRealEstateSearchServicesConfigurationData")]
-  [Route("/GetRealEstateSearchServicesConfigurationData/{GetRealEstateSearchServicesConfigurationDataRequestData}")]
-  public class GetRealEstateSearchServicesConfigurationDataRequest : IReturn<GetRealEstateSearchServicesConfigurationDataResponse>
+  #endregion SetRealEstateServicesConfigurationData
+  #region GetRealEstateServicesConfigurationData
+  [Route("/GetRealEstateServicesConfigurationData")]
+  [Route("/GetRealEstateServicesConfigurationData/{GetRealEstateServicesConfigurationDataRequestData}")]
+  public class GetRealEstateServicesConfigurationDataRequest : IReturn<GetRealEstateServicesConfigurationDataResponse>
   {
-    public GetRealEstateSearchServicesConfigurationDataRequestData GetRealEstateSearchServicesConfigurationDataRequestData { get; set; }
+    public GetRealEstateServicesConfigurationDataRequestData GetRealEstateServicesConfigurationDataRequestData { get; set; }
   }
-  #endregion GetRealEstateSearchServicesConfigurationData
+  #endregion GetRealEstateServicesConfigurationData
 
-  #region SetRealEstateSearchServicesUserData
-  [Route("/SetRealEstateSearchServicesUserData")]
-  [Route("/SetRealEstateSearchServicesUserData/{SetRealEstateSearchServicesUserDataRequestData}")]
-  public class SetRealEstateSearchServicesUserDataRequest : IReturn<SetRealEstateSearchServicesUserDataResponse>
+  #region SetRealEstateServicesUserData
+  [Route("/SetRealEstateServicesUserData")]
+  [Route("/SetRealEstateServicesUserData/{SetRealEstateServicesUserDataRequestData}")]
+  public class SetRealEstateServicesUserDataRequest : IReturn<SetRealEstateServicesUserDataResponse>
   {
-    public SetRealEstateSearchServicesUserDataRequestData SetRealEstateSearchServicesUserDataRequestData { get; set; }
+    public SetRealEstateServicesUserDataRequestData SetRealEstateServicesUserDataRequestData { get; set; }
   }
-  #endregion SetRealEstateSearchServicesUserData
-  #region GetRealEstateSearchServicesUserData
-  [Route("/GetRealEstateSearchServicesUserData")]
-  [Route("/GetRealEstateSearchServicesUserData/{GetRealEstateSearchServicesUserDataRequestData}")]
-  public class GetRealEstateSearchServicesUserDataRequest : IReturn<GetRealEstateSearchServicesUserDataResponse>
+  #endregion SetRealEstateServicesUserData
+  #region GetRealEstateServicesUserData
+  [Route("/GetRealEstateServicesUserData")]
+  [Route("/GetRealEstateServicesUserData/{GetRealEstateServicesUserDataRequestData}")]
+  public class GetRealEstateServicesUserDataRequest : IReturn<GetRealEstateServicesUserDataResponse>
   {
-    public GetRealEstateSearchServicesUserDataRequestData GetRealEstateSearchServicesUserDataRequestData { get; set; }
+    public GetRealEstateServicesUserDataRequestData GetRealEstateServicesUserDataRequestData { get; set; }
   }
-  #endregion SetRealEstateSearchServicesUserData
+  #endregion SetRealEstateServicesUserData
 
-  #region RealEstateSearchServicesInitialization
-  [Route("/RealEstateSearchServicesInitialization")]
-  public class RealEstateSearchServicesInitializationRequest : IReturn<RealEstateSearchServicesInitializationResponse>
+  #region RealEstateServicesInitialization
+  [Route("/RealEstateServicesInitialization")]
+  public class RealEstateServicesInitializationRequest : IReturn<RealEstateServicesInitializationResponse>
   {
-    public RealEstateSearchServicesInitializationDataRequestData RealEstateSearchServicesInitializationDataRequestData { get; set; }
+    public RealEstateServicesInitializationDataRequestData RealEstateServicesInitializationDataRequestData { get; set; }
   }
-  public class RealEstateSearchServicesInitializationResponse
+  public class RealEstateServicesInitializationResponse
   {
-    public RealEstateSearchServicesInitializationResponse() : this( new RealEstateSearchServicesInitializationResponseData()) { }
-    public RealEstateSearchServicesInitializationResponse(RealEstateSearchServicesInitializationResponseData realEstateSearchServicesInitializationResponseData) {
-      RealEstateSearchServicesInitializationResponseData = realEstateSearchServicesInitializationResponseData;
+    public RealEstateServicesInitializationResponse() : this( new RealEstateServicesInitializationResponseData()) { }
+    public RealEstateServicesInitializationResponse(RealEstateServicesInitializationResponseData realEstateServicesInitializationResponseData) {
+      RealEstateServicesInitializationResponseData = realEstateServicesInitializationResponseData;
     }
-    public RealEstateSearchServicesInitializationResponseData RealEstateSearchServicesInitializationResponseData { get; set; }
+    public RealEstateServicesInitializationResponseData RealEstateServicesInitializationResponseData { get; set; }
   }
-  #endregion RealEstateSearchServicesInitialization
+  #endregion RealEstateServicesInitialization
 
   #region PropertySearch
   [Route("/PropertySearch")]
@@ -67,12 +66,12 @@ namespace Ace.Agent.RealEstateServices
   }
   #endregion PropertySearch
 
-  [Route("/MonitorRealEstateSearchServicesDataStructures")]
-    public class MonitorRealEstateSearchServicesDataStructuresRequest : IReturn<MonitorRealEstateSearchServicesDataStructuresResponse>
+  [Route("/MonitorRealEstateServicesDataStructures")]
+    public class MonitorRealEstateServicesDataStructuresRequest : IReturn<MonitorRealEstateServicesDataStructuresResponse>
   {
     public string Filters { get; set; }
   }
-  public class MonitorRealEstateSearchServicesDataStructuresResponse
+  public class MonitorRealEstateServicesDataStructuresResponse
   {
     public string[] Result { get; set; }
     public Operation Kind { get; set; }

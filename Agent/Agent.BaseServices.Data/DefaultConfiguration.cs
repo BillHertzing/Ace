@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace Ace.AceAgent.BaseServices
+namespace Ace.Agent.BaseServices
 {
     public static class DefaultConfiguration
     {
@@ -12,16 +12,16 @@ namespace Ace.AceAgent.BaseServices
         {
             return new Dictionary<string, string>() {
                 { "Ace.Agent:ListeningOn", "http://localhost:21100/"} ,
-                { "Ace.AceService:UserName", System.Environment.UserName} ,
-                {"Ace.AceService.HWPlugin.PathToHWConfigFile" , $"{Environment.GetEnvironmentVariable("ProgramData")}+/ACE/AceService.HWPlugin.Config.txt"},
-                {"Ace.AceService.MinerPlugin.PathToMinerConfigFile" , $"{Environment.GetEnvironmentVariable("ProgramData")}+/ACE/AceService.MinerPlugin.Config.txt"},
-                {"Ace.AceService.MinerPlugin.MPort" , "21200"},
-                {"Ace.AceService.MinerPlugin.ProcessName" , "EthDcrMiner64"},
-                {"Ace.AceService.MinerPlugin.PathToEXE" , @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\EthDcrMiner64.exe"},
-                {"Ace.AceService.MinerPlugin.PathToEPools" , @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\epools.txt"},
-                {"Ace.AceService.MinerPlugin.PathToDPools" , @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\dpools.txt"},
-                {"Ace.AceService.MinerPlugin.TargetTemperature" , "70"},
-                {"Ace.AceService.ProcessesToStartOnAceServiceStartup" , "placeholder"},
+                { "Ace.Agent:UserName", System.Environment.UserName} ,
+                {"Ace.Agent.Plugin.HWPlugin.PathToHWConfigFile" , $"{Environment.GetEnvironmentVariable("ProgramData")}+/ACE/AceService.HWPlugin.Config.txt"},
+                {"Ace.Agent.Plugin.MinerPlugin.PathToMinerConfigFile" , $"{Environment.GetEnvironmentVariable("ProgramData")}+/ACE/AceService.MinerPlugin.Config.txt"},
+                {"Ace.Agent.Plugin.MinerPlugin.MPort" , "21200"},
+                {"Ace.Agent.Plugin.MinerPlugin.ProcessName" , "EthDcrMiner64"},
+                {"Ace.Agent.Plugin.MinerPlugin.PathToEXE" , @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\EthDcrMiner64.exe"},
+                {"Ace.Agent.Plugin.MinerPlugin.PathToEPools" , @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\epools.txt"},
+                {"Ace.Agent.Plugin.MinerPlugin.PathToDPools" , @"C:\ProgramData\CryptoCurrency\Ethereum\Claymore's Dual Ethereum+Decred_Siacoin_Lbry_Pascal AMD+NVIDIA GPU Miner v10.2\dpools.txt"},
+                {"Ace.Agent.Plugin.MinerPlugin.TargetTemperature" , "70"},
+                {"Ace.Agent.ProcessesToStartOnAceServiceStartup" , "placeholder"},
                 { "Ace.AceGUI::MainWindow:Height", "400"},
                 { "Ace.AceGUI::MainWindow:Width", "600"},
                 { "Ace.AceGUI::MainWindow:Top", "0"},

@@ -10,7 +10,7 @@ using Topshelf;
 using ServiceStack.Logging;
 using ServiceStack;
 using ServiceStack.Configuration;
-using Ace.AceAgent.BaseServices;
+using Ace.Agent.BaseServices;
 
 namespace Ace.AceService
 {
