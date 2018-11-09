@@ -1,0 +1,79 @@
+-- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
+--
+-- Host: localhost    Database: acecommander
+-- ------------------------------------------------------
+-- Server version	8.0.13
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `userauth`
+--
+
+DROP TABLE IF EXISTS `userauth`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `userauth` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `UserName` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `PrimaryEmail` varchar(255) DEFAULT NULL,
+  `PhoneNumber` varchar(255) DEFAULT NULL,
+  `FirstName` varchar(255) DEFAULT NULL,
+  `LastName` varchar(255) DEFAULT NULL,
+  `DisplayName` varchar(255) DEFAULT NULL,
+  `Company` varchar(255) DEFAULT NULL,
+  `BirthDate` datetime DEFAULT NULL,
+  `BirthDateRaw` varchar(255) DEFAULT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `Address2` varchar(255) DEFAULT NULL,
+  `City` varchar(255) DEFAULT NULL,
+  `State` varchar(255) DEFAULT NULL,
+  `Country` varchar(255) DEFAULT NULL,
+  `Culture` varchar(255) DEFAULT NULL,
+  `FullName` varchar(255) DEFAULT NULL,
+  `Gender` varchar(255) DEFAULT NULL,
+  `Language` varchar(255) DEFAULT NULL,
+  `MailAddress` varchar(255) DEFAULT NULL,
+  `Nickname` varchar(255) DEFAULT NULL,
+  `PostalCode` varchar(255) DEFAULT NULL,
+  `TimeZone` varchar(255) DEFAULT NULL,
+  `Salt` varchar(255) DEFAULT NULL,
+  `PasswordHash` varchar(255) DEFAULT NULL,
+  `DigestHa1Hash` varchar(255) DEFAULT NULL,
+  `Roles` longtext,
+  `Permissions` longtext,
+  `CreatedDate` datetime NOT NULL,
+  `ModifiedDate` datetime NOT NULL,
+  `InvalidLoginAttempts` int(11) NOT NULL,
+  `LastLoginAttempt` datetime DEFAULT NULL,
+  `LockedDate` datetime DEFAULT NULL,
+  `RecoveryToken` varchar(255) DEFAULT NULL,
+  `RefId` int(11) DEFAULT NULL,
+  `RefIdStr` varchar(255) DEFAULT NULL,
+  `Meta` longtext,
+  PRIMARY KEY (`Id`),
+  KEY `idx_userauth_username` (`UserName`),
+  KEY `idx_userauth_email` (`Email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-11-09 18:13:01

@@ -11,6 +11,7 @@ using Swordfish.NET.Collections;
 using Polly;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
+using ServiceStack.Auth;
 
 namespace Ace.Agent.BaseServices {
     public class BaseServicesData : IDisposable {
@@ -39,7 +40,7 @@ namespace Ace.Agent.BaseServices {
             {
               var test = cacheClient.GetKeysStartingWith(configKeyPrefix);
             } catch ( ServiceStack.Redis.RedisException Ex){
-              if (Ex.InnerException.Message.Contains(RedisNotRunningInnerExceptionMessage) ) {
+              if (Ex.InnerException.Message.Contains(ListeningServiceNotRunningInnerExceptionMessage) ) {
                 throw new Exception($"{RedisNotRunningExceptionMessage} on {Ex.Message}", Ex); }
             } 
 
@@ -50,27 +51,41 @@ namespace Ace.Agent.BaseServices {
       var appSettingsConfigKeys = AppHost.AppSettings.GetAllKeys();
       //var fullAppSettingsConfigKeys = appSettingsConfigKeys.Select(x => x.IndexOf(configKeyPrefix) >= 0? x: configKeyPrefix + x);
 
-      // Get the RDBMS connection key from the BaseService configuration settings
-      var connectionString = "Server=localhost;Port=3306;Database=acecommander;Uid=whertzing;Pwd=devDBAdminPwd!;";
-      // Configure OrmLiteConnectionFactory and register it
-      Container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(connectionString, MySqlDialect.Provider));
-      var dbFactory = Container.TryResolve<IDbConnectionFactory>();
-
-      // Try to open the RDBMS to ensure the RDBMS is listening and the connection string is correct
-      try
+      // See if the MySQL configuration key exists, if so register MySQL as the RDBMS behind ORMLite
+      if (AppHost.AppSettings
+          .Exists(configKeyPrefix + appSettingsConfigKeyMySqlConnectionString))
       {
-        using (var db = dbFactory.Open()) {
-          // do nothing, just open a connection to the registered  RDBMS
-          Log.Debug($"Successfully opened connection to RDBMS");
+        var appSettingsConfigValueMySqlConnectionString = AppHost.AppSettings
+            .GetString(configKeyPrefix +
+            appSettingsConfigKeyMySqlConnectionString);
+        // Configure OrmLiteConnectionFactory and register it
+        Container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(appSettingsConfigValueMySqlConnectionString, MySqlDialect.Provider));
+        // Access the OrmLiteConnectionFactory
+        var dbFactory = Container.TryResolve<IDbConnectionFactory>();
+        // Try to open the RDBMS to ensure the RDBMS is listening and the connection string is correct
+        try
+        {
+          using (var db = dbFactory.Open())
+          {
+            // do nothing, just open a connection to the registered  RDBMS
+            Log.Debug($"Successfully opened connection to RDBMS");
+          }
         }
-      } catch( Exception e )
+        catch (Exception e)
+        {
+          Log.Debug($"Exception when trying to connect to the RDBMS: Message = {e.Message}");
+          throw new Exception(MySqlCannotConnectExceptionMessage, e);
+        }
+      }
+      else
       {
-        // dispose of the db connection
-        Log.Debug($"Exception when trying to connect to the RDBMS: Message = {e.Message}");
-        throw new Exception("Error opening RDBMS", e);
+        throw new NotImplementedException(MySqlConnectionStringKeyNotFoundExceptionMessage);
       }
 
       // Register an Auth Repository
+      Container.Register<IAuthRepository>(c => new OrmLiteAuthRepository(c.Resolve<IDbConnectionFactory>()));
+      /// Create the  UserAuth and UserAuthDetails tables in the RDBMS if they do not already exist
+      Container.Resolve<IAuthRepository>().InitSchema();
 
 
       // Populate the application's Base Gateways
@@ -171,16 +186,19 @@ namespace Ace.Agent.BaseServices {
         }
     */
 
-    #region string constants
-    #region Configuration Key strings
+      #region string constants
+      #region Configuration Key strings
+    public const string appSettingsConfigKeyAceAgentListeningOnString = "Ace.Agent.ListeningOn";
     public const string appSettingsConfigKeyRedisConnectionString = "RedisConnectionString";
-        public const string appSettingsConfigKeyAceAgentListeningOnString = "Ace.Agent.ListeningOn";
+    public const string appSettingsConfigKeyMySqlConnectionString = "MySqlConnectionString";
     #endregion Configuration Key strings
     #region Exception Messages (string constants)
-    const string RedisNotRunningExceptionMessage = "Redis Connection string found, but Redis not running as cacheClient.";
-      
-          const string RedisConnectionStringKeyNotFoundExceptionMessage = "RedisConnectionString Key not found in Application's Configuration settings and no other ICache implemenation is supported. Add the RedisConnectionString Key and Value to the Application Configuration, and retry.";
-    const string RedisNotRunningInnerExceptionMessage = "No connection could be made because the target machine actively refused it ";
+    const string RedisNotRunningExceptionMessage = "Redis Connection string found, but Redis not running as cacheClient."; 
+    const string RedisConnectionStringKeyNotFoundExceptionMessage = "RedisConnectionString Key not found in Application's Configuration settings and no other ICache implemenation is supported. Add the RedisConnectionString Key and Value to the Application Configuration, and retry.";
+    const string MySqlConnectionStringKeyNotFoundExceptionMessage = "MySqlConnectionString Key not found in Application's Configuration settings and no other ORMLite implemenation is supported. Add the MySqlConnectionString Key and Value to the Application Configuration, and retry.";
+    const string ListeningServiceNotRunningInnerExceptionMessage = "No connection could be made because the target machine actively refused it ";
+    const string MySqlCannotConnectExceptionMessage = "MySqlConnectionString Key found, but cannot connect to it. Ensure that the service is running, and that you have supplied the correct credentials";
+
     #endregion Exception Messages (string constants)
     #region File Name string constants
     const string dummy = "";

@@ -4,3 +4,4 @@
 Ace.Agent.BaseServices.Config.ListenOn 21100
 Ace.Agent.ListeningOn http://localhost:21100/
 Ace.Agent.BaseServices.Config.RedisConnectionString localhost:6379
+Ace.Agent.BaseServices.Config.MySqlConnectionString Server=localhost;Port=3306;Database=acecommander;Uid=whertzing;Pwd=devDBAdminPwd!

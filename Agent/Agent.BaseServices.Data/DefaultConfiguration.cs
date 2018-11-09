@@ -11,7 +11,9 @@ namespace Ace.Agent.BaseServices
         public static Dictionary<string, string> Configuration()
         {
             return new Dictionary<string, string>() {
+                { "Ace.Agent.BaseServices.Config.ListenOn", "http://localhost:21100/"} ,
                 { "Ace.Agent:ListeningOn", "http://localhost:21100/"} ,
+                { "Ace.Agent.BaseServices.Config.MySqlConnectionString", "Server=localhost;Port=3306;Database=acecommander;Uid=whertzing;Pwd=devDBAdminPwd!"} ,
                 { "Ace.Agent:UserName", System.Environment.UserName} ,
                 {"Ace.Agent.Plugin.HWPlugin.PathToHWConfigFile" , $"{Environment.GetEnvironmentVariable("ProgramData")}+/ACE/AceService.HWPlugin.Config.txt"},
                 {"Ace.Agent.Plugin.MinerPlugin.PathToMinerConfigFile" , $"{Environment.GetEnvironmentVariable("ProgramData")}+/ACE/AceService.MinerPlugin.Config.txt"},
