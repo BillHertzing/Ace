@@ -9,6 +9,8 @@ using ServiceStack.Logging;
 using ServiceStack.Redis;
 using Swordfish.NET.Collections;
 using Polly;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 
 namespace Ace.Agent.BaseServices {
     public class BaseServicesData : IDisposable {
@@ -48,9 +50,32 @@ namespace Ace.Agent.BaseServices {
       var appSettingsConfigKeys = AppHost.AppSettings.GetAllKeys();
       //var fullAppSettingsConfigKeys = appSettingsConfigKeys.Select(x => x.IndexOf(configKeyPrefix) >= 0? x: configKeyPrefix + x);
 
+      // Get the RDBMS connection key from the BaseService configuration settings
+      var connectionString = "Server=localhost;Port=3306;Database=acecommander;Uid=whertzing;Pwd=devDBAdminPwd!;";
+      // Configure OrmLiteConnectionFactory and register it
+      Container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(connectionString, MySqlDialect.Provider));
+      var dbFactory = Container.TryResolve<IDbConnectionFactory>();
+
+      // Try to open the RDBMS to ensure the RDBMS is listening and the connection string is correct
+      try
+      {
+        using (var db = dbFactory.Open()) {
+          // do nothing, just open a connection to the registered  RDBMS
+          Log.Debug($"Successfully opened connection to RDBMS");
+        }
+      } catch( Exception e )
+      {
+        // dispose of the db connection
+        Log.Debug($"Exception when trying to connect to the RDBMS: Message = {e.Message}");
+        throw new Exception("Error opening RDBMS", e);
+      }
+
+      // Register an Auth Repository
+
+
       // Populate the application's Base Gateways
       // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
-       Gateways = new MultiGatewaysBuilder()
+      Gateways = new MultiGatewaysBuilder()
     // Command line flags have highest priority
     // next in priority are  Environment variables
     //.AddEnvironmentalVariables()

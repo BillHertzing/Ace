@@ -45,13 +45,28 @@ FluentAssertions
 
 # Runtime Notes
 ## Windows Service
-### on Windfows 10
-[Install the Windows Subsytem for Linux (WSL) features in Windows 10](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
-Create a Task Scheduler task to start the WSL subsystem on computer start
-Inside of WSL, create a .bat file in shell:startup that will run bash.exe and tell bash to run crontab in a forever loop.
-Inside of WSL, create a shell scrpt to start all necessary services (Redis, Fluree), and set the script toexecutable [WSL Tips: Starting Linux Background Services on Windows Login](https://dev.to/ironfroggy/wsl-tips-starting-linux-background-services-on-windows-login-3o98)
-Enable password-less sudo on the shell script (sudo visudo)[]()
-Put the shell script to start services into cron [How to run Ubuntu service on Windows (at startup)?](https://superuser.com/questions/1112007/how-to-run-ubuntu-service-on-windows-at-startup?noredirect=1&lq=1)
+### on Windows 10
+#### Prerequisites
+
+0.Install MySQL for Windows
+Download teh Windows Installer for community edition, install, taking all defaults.
+
+
+1. [Install the Windows Subsytem for Linux (WSL) features in Windows 10](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+
+Install Redis for Ubuntu
+
+Install MySQL for Ubuntu
+
+2. Create a Task Scheduler task to start the WSL subsystem on computer start.
+
+    Inside of WSL, create a .bat file in shell:startup that will run bash.exe and tell bash to run crontab in a forever loop.
+	
+    Inside of WSL, create a shell script to start all necessary services (Redis, Fluree), and set the script to executable [WSL Tips: Starting Linux Background Services on Windows Login](https://dev.to/ironfroggy/wsl-tips-starting-linux-background-services-on-windows-login-3o98)
+    
+	Enable password-less sudo on the shell script (sudo visudo)[]()
+   
+    Put the shell script to start services into cron [How to run Ubuntu service on Windows (at startup)?](https://superuser.com/questions/1112007/how-to-run-ubuntu-service-on-windows-at-startup?noredirect=1&lq=1)
 
 
 
