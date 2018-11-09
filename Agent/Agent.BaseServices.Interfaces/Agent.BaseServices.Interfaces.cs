@@ -1,4 +1,7 @@
+using System;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using ServiceStack;
 using ServiceStack.Configuration;
 
@@ -19,13 +22,87 @@ namespace Ace.Agent.BaseServices
     #region Lat/Lng To Address and reverse
     public object Post(LatLngToAddressReqPayload request)
       {
-        // Call the GUI Maps API to convert Latitude/Longitude to a street address
-        return new LatLngToAddressRspPayload { Address = $"Latitude sent was {request.Latitude}, Longitude sent was {request.Longitude} " };
-      }
-      public object Post(AddressToLatLngReqPayload request)
+      // Resolve the gateway from the Base Services Data Gateways that handles this Service
+      //The associate "Route To Gateway" will reurn a structure that identifies the gateway and gatewayEntry to use
+      var route = "LatLngToAddress";
+      var gatewayName = "GoogleMapsGeoCoding";
+      var gatewayEntryName = "GeoCaching";
+      var gateway = BaseServicesData.Gateways.Get(gatewayName);
+      var gatewayEntry = gateway.GatewayEntries[gatewayEntryName];
+      var completeURI = new Uri(gateway.BaseUri, gatewayEntry.RUri);
+      var gatewayPolicy = gateway.DefaultPolicy;
+      Type gatewayEntryReqDataPayloadType = gatewayEntry.ReqDataPayloadType;
+      Type gatewayEntryRspDataPayloadType = gatewayEntry.RspDataPayloadType;
+      // Get the cancellationtoken from the GatewayEntrymonitor for this specific GatewayEntryRequest
+      CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+      CancellationToken cancellationToken = cancellationTokenSource.Token;
+      var gatewayEntryRspDataPayload = Activator.CreateInstance(gatewayEntryRspDataPayloadType);
+      var gatewayEntryReqDataPayload = Activator.CreateInstance(gatewayEntryReqDataPayloadType);
+      Func<string, string, string, string> gatewayDecodeAPIKey = (aPIKeyEncoded, aPIKeyPassphrase, aPIKeyEncryptionIV) => { return $"{aPIKeyEncoded},{aPIKeyPassphrase},{aPIKeyEncryptionIV}"; };
+      string completeUrl = completeURI.ToString().AddQueryParam("latlng",$"{request.Latitude},{request.Longitude}").AddQueryParam("key",$"{gatewayDecodeAPIKey("AKE","AKP","AKEIV")}");
+      string msg = "notinitialized";
+      while (!cancellationToken.IsCancellationRequested)
       {
-        // Call the GUI Maps API to convert street address to a Latitude/Longitude
-        return new AddressToLatLngRspPayload { Latitude = "0.0", Longitude = "1.0" };
+        try
+        {
+          // Execute the following call according to the policy.
+           gatewayPolicy.Execute( () =>
+          {
+            // This code is executed within the Policy 
+            // Make a request and get a response
+            msg = completeUrl.GetJsonFromUrl();
+
+          });
+        }
+        catch (Exception e)
+        {
+          throw new Exception("caught something", e);
+        }
+      }
+
+        return new LatLngToAddressRspPayload { Address = $"msg returned was {msg}" };
+      }
+      public async Task<AddressToLatLngRspPayload> Post(AddressToLatLngReqPayload request)
+      {
+      var baseServicesData = HostContext.TryResolve<BaseServicesData>();
+      var gatewayName = "GoogleMapsGeoCoding";
+      var gatewayEntryName = "GeoCaching";
+      var gateway = baseServicesData.Gateways.Get(gatewayName);
+      var gatewayEntry = gateway.GatewayEntries[gatewayEntryName];
+      var completeURI = new Uri(gateway.BaseUri, gatewayEntry.RUri);
+      var gatewayPolicy = gateway.DefaultPolicy;
+      Type gatewayEntryReqDataPayloadType = gatewayEntry.ReqDataPayloadType;
+      Type gatewayEntryRspDataPayloadType = gatewayEntry.RspDataPayloadType;
+      // Get the cancellationtoken from the GatewayEntrymonitor for this specific GatewayEntryRequest
+      CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+      CancellationToken cancellationToken = cancellationTokenSource.Token;
+      var gatewayEntryRspDataPayload = Activator.CreateInstance(gatewayEntryRspDataPayloadType);
+      var gatewayEntryReqDataPayload = Activator.CreateInstance(gatewayEntryReqDataPayloadType);
+      Func<string, string, string, string> gatewayDecodeAPIKey = (aPIKeyEncoded, aPIKeyPassphrase, aPIKeyEncryptionIV) => { return $"{aPIKeyEncoded},{aPIKeyPassphrase},{aPIKeyEncryptionIV}"; };
+      //string aKE=  
+      string completeUrl = completeURI.ToString().AddQueryParam("address", $"{request.Address}").AddQueryParam("key", $"{gatewayDecodeAPIKey("AKE", "AKP", "AKEIV")}");
+      string msg = "notinitialized";
+      while (!cancellationToken.IsCancellationRequested)
+      {
+        try
+        {
+          // Execute the following call according to the policy.
+          gatewayPolicy.Execute(async () =>
+          {
+            // This code is executed within the Policy 
+            // Make a request and get a response
+               msg = await completeUrl.GetStringFromUrlAsync();
+
+          });
+        }
+        catch (Exception e)
+        {
+          throw new Exception("caught something", e);
+        }
+      }
+
+      // Call the GUI Maps API to convert street address to a Latitude/Longitude
+      return new AddressToLatLngRspPayload { Latitude = msg, Longitude = msg };
       }
     #endregion
     #region Configuration Data
@@ -43,6 +120,8 @@ namespace Ace.Agent.BaseServices
       return new BaseServicesUserDataRspPayload { GatewayEntryAPIKeyString = "A HARDCODE sTRING" };
     }
     #endregion
+
+    BaseServicesData BaseServicesData { get; set; }
     /*
              public object Any(BaseServicePutConfiguration request) {
                  if(!IsAuthenticated && AppSettings.Get("LimitRemoteControlToAuthenticatedUsers", false))

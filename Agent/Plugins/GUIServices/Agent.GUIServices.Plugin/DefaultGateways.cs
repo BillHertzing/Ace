@@ -8,7 +8,7 @@ namespace Ace.Agent.GUIServices{
     public static Dictionary<string, IGateway> Configuration()
     {
       return new Dictionary<string, IGateway>() {
-                { "GoogleMaps", new GatewayBuilder().Build() }
+                { "GoogleMapsGeoCoding", new GatewayBuilder().Build() }
                 ,{ "Bing", new GatewayBuilder().Build() }
                 ,{ "Yahoo", new GatewayBuilder().Build() }
                 ,{ "GutHub", new GatewayBuilder().Build() }

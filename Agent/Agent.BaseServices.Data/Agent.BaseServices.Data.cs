@@ -8,6 +8,7 @@ using ServiceStack.Caching;
 using ServiceStack.Logging;
 using ServiceStack.Redis;
 using Swordfish.NET.Collections;
+using Polly;
 
 namespace Ace.Agent.BaseServices {
     public class BaseServicesData : IDisposable {
@@ -31,38 +32,77 @@ namespace Ace.Agent.BaseServices {
                 throw new NotImplementedException(RedisConnectionStringKeyNotFoundExceptionMessage);
             }
 
-      // Ensure that the cacheClient is running
-      try
-      {
-        var cacheConfigKeys = cacheClient.GetKeysStartingWith(configKeyPrefix);
-      } catch ( ServiceStack.Redis.RedisException Ex){
-        if (Ex.InnerException.Message.Contains(RedisNotRunningInnerExceptionMessage) ) {
-          throw new Exception($"{RedisNotRunningExceptionMessage} on {Ex.Message}", Ex); }
-      } finally
-      {
-        // shutdown cleanly
-      }
+            // Ensure that the cacheClient is running
+            try
+            {
+              var test = cacheClient.GetKeysStartingWith(configKeyPrefix);
+            } catch ( ServiceStack.Redis.RedisException Ex){
+              if (Ex.InnerException.Message.Contains(RedisNotRunningInnerExceptionMessage) ) {
+                throw new Exception($"{RedisNotRunningExceptionMessage} on {Ex.Message}", Ex); }
+            } 
 
-            // placeholder for the eventual COD structure that holds all the base services data, which can be monitored by the GUI
-            BaseCOD = new ConcurrentObservableDictionary<string, object>();
 
-            // Key names in the cache for the Application's Base configuration settings consist of this namespace and the string .Config
+      // Key names in the cache for the Application's Base configuration settings consist of this namespace and the string .Config
       // This prefix is available as a static method on this class
-      //var appSettingsConfigKeys = appSettings.GetAllKeys();
+      var cacheConfigKeys = cacheClient.GetKeysStartingWith(configKeyPrefix);
+      var appSettingsConfigKeys = AppHost.AppSettings.GetAllKeys();
       //var fullAppSettingsConfigKeys = appSettingsConfigKeys.Select(x => x.IndexOf(configKeyPrefix) >= 0? x: configKeyPrefix + x);
-      // ToDo:Create the ATAP.Utilities.HTTP web client and register it
-      //container.Register<GenericWebGet>(c => new GenericWebGet());
 
-            // Create the collection of Gateways
-      Gateways = new ConcurrentObservableDictionary<string, IGateway>();
-            Gateways.Add("test", new GatewayBuilder().Build());
-      // populate the collection with some common web APIs
-      // Start with the gateways defined in the AceService.BaseService builtin (compile-time) file
-      // Add (Superseding any previous values) gateways from the optional Gateway file for BaseService gateways. This is a text file in the program directory (AKA Ace.Gateways.txt )
+      // Populate the application's Base Gateways
+      // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
+       Gateways = new MultiGatewaysBuilder()
+    // Command line flags have highest priority
+    // next in priority are  Environment variables
+    //.AddEnvironmentalVariables()
+    // next in priority are Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
+    //.AddTextFile(pluginGatewaysTextFileName)
+    // Builtin (compiled in) have the lowest priority
+    //.AddDictionarySettings(DefaultGateways.Configuration())
+    .Build();
 
-      // First from the builtin
-      //
+      // temporarly manually populate the collection with one Gateway
+      var geb = new GatewayEntryBuilder();
+      geb.AddName("ReverseGeoCode");
+      geb.AddRUri("geocode/json");
+      geb.AddReqDataPayloadType(typeof(Base_GoogleMapsGeoCoding_ReverseGeoCode_ReqDTO));
+      geb.AddRspDataPayloadType(typeof(Base_GoogleMapsGeoCoding_ReverseGeoCode_RspDTO));
+      var ge = geb.Build();
 
+      var defaultPolicy = Policy.Handle<Exception>().RetryAsync(3, (exception, attempt) =>
+      {
+        // This is the  exception handler for this policy deaultpolicy
+        Log.Debug($"Policy logging: {exception.Message} : attempt = {attempt}");
+        //retries++;
+
+      });
+
+      var gb = new GatewayBuilder();
+      gb.AddName("GoogleMapsGeoCoding");
+      gb.AddBaseUri(new Uri("https://maps.googleapis.com/maps/api"));
+      gb.AddDefaultPolicy(defaultPolicy);
+      gb.AddGatewayEntry(ge);
+      var gw = gb.Build();
+      Gateways.Add("GoogleMapsGeoCoding", gw);
+     //Gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().AddName("GoogleMapsGeoCoding").AddBaseUri(new Uri("https://maps.googleapis.com/maps/api").AddDefaultPolicy(new Polly.Policy()).Build());
+
+      // Create a collection of GatewayMonitors for Base services based on the collection of Gateways defined by the Base services
+      var gatewayMonitorsBuilder = new GatewayMonitorsBuilder("Base");
+      //gatewayMonitorsBuilder.AddGatewayMonitor(new GatewayMonitor(Gateways.Get("GoogleMapsGeoCoding")));
+      GatewayMonitors = gatewayMonitorsBuilder.Build();
+      // temporarly manually populate the collection with one GatewayMonitor
+      
+      var gemb = new GatewayEntryMonitorBuilder();
+      gemb.AddName("GeoCode");
+      var gem = gemb.Build();
+      var gmb = new GatewayMonitorBuilder();
+      gmb.AddName("GoogleMapsGeoCoding");
+      gmb.AddGatewayEntryMonitor(gem);
+      var gm = gmb.Build();
+      GatewayMonitors.GatewayMonitorColl.Add("Manual", gm);
+      
+   //   GatewayMonitors.GatewayMonitorColl.Add("Manual", new GatewayMonitorBuilder().AddName("GoogleMapsGeoCoding").AddGatewayEntryMonitor(new GatewayEntryMonitorBuilder().AddName("GeoCode").Build()).Build());
+
+      // Store the collection of Gateway Monitor in the Base Data structure
       // ToDo: support AppSettings to control the enable/disable of Postman
       // Enable Postman integration
       AppHost.Plugins.Add(new PostmanFeature());
@@ -92,17 +132,19 @@ namespace Ace.Agent.BaseServices {
       Log.Debug("Leaving BaseServicesData ctor");
         }
         // constructor with event handlers
-        public BaseServicesData(IAppHost appHost, ConcurrentObservableDictionary<string, object> baseCOD, NotifyCollectionChangedEventHandler onBaseCODCollectionChanged, PropertyChangedEventHandler onBaseCODPropertyChanged) {
+        /*
+        public BaseServicesData(IAppHost appHost, ConcurrentObservableDictionary<string, GatewayMonitor> baseCOD, NotifyCollectionChangedEventHandler onBaseCODCollectionChanged, PropertyChangedEventHandler onBaseCODPropertyChanged) {
             Log.Debug("Entering BaseServicesData ctor");
             cacheClient = appHost.GetContainer()
                 .Resolve<ICacheClient>();
-            BaseCOD = baseCOD;
+            GatewayMonitorCOD = baseCOD;
             this.onBaseCODCollectionChanged = onBaseCODCollectionChanged;
             this.onBaseCODPropertyChanged = onBaseCODPropertyChanged;
-            BaseCOD.CollectionChanged += this.onBaseCODCollectionChanged;
-            BaseCOD.PropertyChanged += this.onBaseCODPropertyChanged;
+            GatewayMonitorCOD.CollectionChanged += this.onBaseCODCollectionChanged;
+            GatewayMonitorCOD.PropertyChanged += this.onBaseCODPropertyChanged;
             Log.Debug("Leaving BaseServicesData ctor");
         }
+    */
 
     #region string constants
     #region Configuration Key strings
@@ -148,39 +190,42 @@ namespace Ace.Agent.BaseServices {
     #region Public Properties
     public IAppHost AppHost { get; set; }
 
-        public ConcurrentObservableDictionary<string, object> BaseCOD { get; set; }
-
         public Funq.Container Container { get; set; }
 
-        public ConcurrentObservableDictionary<string, IGateway> Gateways {
+        public IGateways Gateways {
             get;
             set;
         }
+
+
+    public IGatewayMonitors GatewayMonitors { get; set; }
     #endregion Public Properties
 
     #region IDisposable Support
     public void TearDown() {
-        BaseCOD.CollectionChanged -= this.onBaseCODCollectionChanged;
-        BaseCOD.PropertyChanged -= this.onBaseCODPropertyChanged;
-        /*
-  var enumerator = BaseCOD.Keys.GetEnumerator();
-  try
-  {
-  while (enumerator.MoveNext())
-  {
-  var key = enumerator.Current;
-  calculatedResults[key].CollectionChanged -= this.onNestedCollectionChanged;
-  calculatedResults[key].PropertyChanged -= this.onNestedPropertyChanged;
-  }
-  }
-  finally
-  {
-  enumerator.Dispose();
-  }
-  */
+      //TearDownGateways
+      //TearDownGatewayMonitors
+      /*
+      GatewayMonitorCOD.CollectionChanged -= this.onBaseCODCollectionChanged;
+      GatewayMonitorCOD.PropertyChanged -= this.onBaseCODPropertyChanged;
+var enumerator = GatewayMonitorCOD.Keys.GetEnumerator();
+try
+{
+while (enumerator.MoveNext())
+{
+var key = enumerator.Current;
+calculatedResults[key].CollectionChanged -= this.onNestedCollectionChanged;
+calculatedResults[key].PropertyChanged -= this.onNestedPropertyChanged;
+}
+}
+finally
+{
+enumerator.Dispose();
+}
+*/
     }
 
-        bool disposedValue = false; // To detect redundant calls
+    bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing) {
             if(!disposedValue) {

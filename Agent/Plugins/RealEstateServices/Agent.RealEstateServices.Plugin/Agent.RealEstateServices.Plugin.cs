@@ -109,7 +109,7 @@ namespace Ace.Agent.RealEstateServices
 
       // Create a Gateways collection from the txt file
       ConcurrentObservableDictionary<string, IGateway> gateways = new ConcurrentObservableDictionary<string, IGateway>();
-      gateways.Add("test", new GatewayBuilder().Build());
+      gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().Build());
       // Create the Plugin's data structure. There should only be a single instance.
       // Every Property matching a ConfigKey gets/sets the value of the matching ConfigKey in the cache
       // ConfigKey Properties do not have to be set in the constructor because the cache was setup before calling the constructor
@@ -153,10 +153,5 @@ namespace Ace.Agent.RealEstateServices
       this.Configure(appHost);
     }
 
-#if DEBUG
-    const string apipath = @"https://www.realtor.com";
-#else
-  const string apipath = @"https://www.realtor.com";
-#endif
   }
 }

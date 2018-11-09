@@ -66,6 +66,8 @@ namespace Ace.Agent.RealEstateServices
   }
   #endregion PropertySearch
 
+  /*
+  #region Monitor Data Structures
   [Route("/MonitorRealEstateServicesDataStructures")]
     public class MonitorRealEstateServicesDataStructuresRequest : IReturn<MonitorRealEstateServicesDataStructuresResponse>
   {
@@ -76,7 +78,8 @@ namespace Ace.Agent.RealEstateServices
     public string[] Result { get; set; }
     public Operation Kind { get; set; }
   }
-
+  #endregion
+  */
 
 }
 
