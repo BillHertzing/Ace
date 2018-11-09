@@ -84,7 +84,7 @@ param (
 
 
     write-host "Starting PostBuild powershell script postBuild.ps1 TargetName = $TargetName, Version = $Version"
-    Set-NuSpecVersion $TargetName $Version
-    Clear-BrowserCache "Firefox" "Cache" -whatif
+    #Set-NuSpecVersion $TargetName $Version
+    #Clear-BrowserCache "Firefox" "Cache" -whatif
     write-host "Ending PostBuild powershell script postBuild.ps1"
 

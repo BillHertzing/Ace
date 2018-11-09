@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 // Required for the logger/logging
 using Microsoft.Extensions.Logging;
+//using ServiceStack;
 
 namespace Ace.AceGUI.Pages {
     public class BaseServicesCodeBehind : BlazorComponent {
@@ -60,9 +61,11 @@ namespace Ace.AceGUI.Pages {
 
     #region Page Initialization Handler
     protected override async Task OnInitAsync() {
-        Logger.LogDebug($"Starting OnInitAsync");
-
-        BaseServicesInitializationReqPayload baseServicesInitializationReqPayload = new BaseServicesInitializationReqPayload();
+      Logger.LogDebug($"Starting OnInitAsync");
+      //Logger.LogDebug($"Initializing IServiceClient");
+      //IServiceClient client = new JsonHttpClient("http://localhost:21100");
+      //Logger.LogDebug($"client is null: {client == null}");
+      BaseServicesInitializationReqPayload baseServicesInitializationReqPayload = new BaseServicesInitializationReqPayload();
 
         Logger.LogDebug($"Calling PostJsonAsync<BaseServicesInitializationRspPayload> with baseServicesInitializationReqPayload ={baseServicesInitializationReqPayload}");
         BaseServicesInitializationRspPayload = await HttpClient.PostJsonAsync<BaseServicesInitializationRspPayload>("BaseServicesInitialization",

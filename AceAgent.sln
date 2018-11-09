@@ -76,6 +76,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstateServices", "RealE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.GUIServices.Data", "Agent\Plugins\GUIServices\Agent.GUIServices.Data\Agent.GUIServices.Data.csproj", "{5908C201-44B9-4BCA-A9F1-BCDF6F66833F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{5ED42294-12FE-4055-9A79-8334896F351B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Liquibase", "Liquibase", "{98781561-2E59-4F90-8CFF-2696752F7070}"
+	ProjectSection(SolutionItems) = preProject
+		Database\Liquibase\DBChangeLog For MySQL.xml = Database\Liquibase\DBChangeLog For MySQL.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataDumpFiles", "DataDumpFiles", "{1F751B0F-2900-4E82-836F-AEE00D52B079}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SchemaDumpFiles", "SchemaDumpFiles", "{A4399FC1-E4EE-48AA-A011-67D5143AFDD2}"
+	ProjectSection(SolutionItems) = preProject
+		Database\SchemaDumpFiles\acecommander_routines.sql = Database\SchemaDumpFiles\acecommander_routines.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -183,6 +197,9 @@ Global
 		{E1D20164-8795-40E5-92D1-20E4D5F0753D} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
 		{4F890257-219C-4A15-A143-74E0F7BCA81F} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
 		{5908C201-44B9-4BCA-A9F1-BCDF6F66833F} = {2894C382-76E8-4B77-BFAE-3CF8433AFC55}
+		{98781561-2E59-4F90-8CFF-2696752F7070} = {5ED42294-12FE-4055-9A79-8334896F351B}
+		{1F751B0F-2900-4E82-836F-AEE00D52B079} = {5ED42294-12FE-4055-9A79-8334896F351B}
+		{A4399FC1-E4EE-48AA-A011-67D5143AFDD2} = {5ED42294-12FE-4055-9A79-8334896F351B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44B34B59-441A-460C-85B9-364D0E4153F9}

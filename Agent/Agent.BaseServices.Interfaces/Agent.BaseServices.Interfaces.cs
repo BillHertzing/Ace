@@ -8,9 +8,9 @@ using ServiceStack.Configuration;
 namespace Ace.Agent.BaseServices
 {
     public class BaseServices : Service {
-    #region Base Services Initialization
+    #region BaseServices Initialization
     public object Post(BaseServicesInitializationReqPayload request) {
-          return new BaseServicesInitializationRspPayload { };
+      return new BaseServicesInitializationRspPayload { };
       }
     #endregion
     #region IsAlive
@@ -22,18 +22,19 @@ namespace Ace.Agent.BaseServices
     #region Lat/Lng To Address and reverse
     public object Post(LatLngToAddressReqPayload request)
       {
-      // Resolve the gateway from the Base Services Data Gateways that handles this Service
-      //The associate "Route To Gateway" will reurn a structure that identifies the gateway and gatewayEntry to use
-      var route = "LatLngToAddress";
-      var gatewayName = "GoogleMapsGeoCoding";
+      // Resolve the GatewayEntry from the BaseServices Data Gateways that handles this Service
+      // The associate "Route To Gateway" will reurn a structure that identifies the gateway and gatewayEntry to use
+      var route =  "LatLngToAddress";
+      var baseServicesData = HostContext.TryResolve<BaseServicesData>();
       var gatewayEntryName = "GeoCaching";
-      var gateway = BaseServicesData.Gateways.Get(gatewayName);
+      var gatewayName = "GoogleMapsGeoCoding";
+      var gateway = baseServicesData.Gateways.Get(gatewayName);
       var gatewayEntry = gateway.GatewayEntries[gatewayEntryName];
       var completeURI = new Uri(gateway.BaseUri, gatewayEntry.RUri);
       var gatewayPolicy = gateway.DefaultPolicy;
       Type gatewayEntryReqDataPayloadType = gatewayEntry.ReqDataPayloadType;
       Type gatewayEntryRspDataPayloadType = gatewayEntry.RspDataPayloadType;
-      // Get the cancellationtoken from the GatewayEntrymonitor for this specific GatewayEntryRequest
+      // Get the cancellationtoken from the GatewayEntryMonitor for this specific GatewayEntryRequest
       CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
       CancellationToken cancellationToken = cancellationTokenSource.Token;
       var gatewayEntryRspDataPayload = Activator.CreateInstance(gatewayEntryRspDataPayloadType);
@@ -51,7 +52,6 @@ namespace Ace.Agent.BaseServices
             // This code is executed within the Policy 
             // Make a request and get a response
             msg = completeUrl.GetJsonFromUrl();
-
           });
         }
         catch (Exception e)
@@ -64,6 +64,7 @@ namespace Ace.Agent.BaseServices
       }
       public async Task<AddressToLatLngRspPayload> Post(AddressToLatLngReqPayload request)
       {
+      var route = "AddressToLatLng";
       var baseServicesData = HostContext.TryResolve<BaseServicesData>();
       var gatewayName = "GoogleMapsGeoCoding";
       var gatewayEntryName = "GeoCaching";
@@ -121,7 +122,7 @@ namespace Ace.Agent.BaseServices
     }
     #endregion
 
-    BaseServicesData BaseServicesData { get; set; }
+
     /*
              public object Any(BaseServicePutConfiguration request) {
                  if(!IsAuthenticated && AppSettings.Get("LimitRemoteControlToAuthenticatedUsers", false))

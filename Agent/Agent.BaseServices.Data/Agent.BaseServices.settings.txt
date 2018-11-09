@@ -1,4 +1,4 @@
-# Application Configuration Settings for AceAgent Base services
+# Application Configuration Settings for AceAgent BaseServices
 # versioninfo
 
 Ace.Agent.BaseServices.Config.ListenOn 21100

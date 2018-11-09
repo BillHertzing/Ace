@@ -85,7 +85,7 @@ namespace Ace.Agent.BaseServices {
       Gateways.Add("GoogleMapsGeoCoding", gw);
      //Gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().AddName("GoogleMapsGeoCoding").AddBaseUri(new Uri("https://maps.googleapis.com/maps/api").AddDefaultPolicy(new Polly.Policy()).Build());
 
-      // Create a collection of GatewayMonitors for Base services based on the collection of Gateways defined by the Base services
+      // Create a collection of GatewayMonitors for BaseServices based on the collection of Gateways defined by the Base services
       var gatewayMonitorsBuilder = new GatewayMonitorsBuilder("Base");
       //gatewayMonitorsBuilder.AddGatewayMonitor(new GatewayMonitor(Gateways.Get("GoogleMapsGeoCoding")));
       GatewayMonitors = gatewayMonitorsBuilder.Build();

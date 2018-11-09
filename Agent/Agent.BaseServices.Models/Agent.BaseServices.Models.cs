@@ -3,7 +3,7 @@ using ServiceStack;
 
 namespace Ace.Agent.BaseServices
 {
-  #region Base Services Initialization
+  #region BaseServices Initialization
   [Route("/BaseServicesInitialization")]
         public class BaseServicesInitializationReqPayload : IReturn<BaseServicesInitializationRspPayload>
   {
