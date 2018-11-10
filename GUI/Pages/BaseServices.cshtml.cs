@@ -39,6 +39,8 @@ namespace Ace.AceGUI.Pages {
     public const string placeHolderForGatewayEntryAPIKeyString = "Enter the API Key needed to use the Lat/Lng to Address translation service";
     public const string labelForPostBaseServicesUserDataButton = "Submit";
 
+    public const string labelForUserRegistrationButton = "Register New User";
+
     #endregion string constants
 
     #region Access Objects registerd in the DI container
@@ -71,8 +73,9 @@ namespace Ace.AceGUI.Pages {
         BaseServicesInitializationRspPayload = await HttpClient.PostJsonAsync<BaseServicesInitializationRspPayload>("BaseServicesInitialization",
                                                                                                                     baseServicesInitializationReqPayload);
         Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesInitializationRspPayload>, BaseServicesInitializationRspPayload = {BaseServicesInitializationRspPayload}");
+      Logger.LogDebug($"Leaving OnInitAsync");
     }
-        public BaseServicesInitializationRspPayload BaseServicesInitializationRspPayload {
+    public BaseServicesInitializationRspPayload BaseServicesInitializationRspPayload {
             get;
             set;
         }
@@ -96,6 +99,21 @@ await HttpClient.PostJsonAsync<IsAliveRspPayload>("/IsAlive?format=json", isAliv
             get;
             set;
         }
+    #endregion
+
+    #region User Registration
+    protected async Task UserRegistration()
+    {
+      Logger.LogDebug($"Starting UserRegistration");
+      
+      ServiceStack.Register registerDTO = new ServiceStack.Register();
+
+      Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserRegistrationRspDTO> with registerDTO ={registerDTO}");
+      RegisterResponseDTO = await HttpClient.PostJsonAsync<ServiceStack.RegisterResponse>("Register", registerDTO);
+      Logger.LogDebug($"Returned from PostJsonAsync<ServiceStack.RegisterResponse>, RegisterResponseDTO = {RegisterResponseDTO}");
+      Logger.LogDebug($"Leaving UserRegistration");
+    }
+    ServiceStack.RegisterResponse RegisterResponseDTO { get; set; }
     #endregion
     #region Post and Get Configuration data
     public async Task PostBaseServicesConfigurationData()
