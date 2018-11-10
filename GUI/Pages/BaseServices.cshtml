@@ -2,6 +2,10 @@
 @inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
 <h1>AceCommander Base Services</h1>
 
+<hr />
+<h2>Register</h2>
+<button type="button" class="btn btn-default" id="UserRegistration" onclick="@UserRegistration">@labelForUserRegistrationButton</button>
+
 @if (@BaseServicesInitializationRspPayload == null)
 {
   <p>Loading (Calling onInitAsync)</p>

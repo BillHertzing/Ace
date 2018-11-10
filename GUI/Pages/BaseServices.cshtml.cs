@@ -105,15 +105,17 @@ await HttpClient.PostJsonAsync<IsAliveRspPayload>("/IsAlive?format=json", isAliv
     protected async Task UserRegistration()
     {
       Logger.LogDebug($"Starting UserRegistration");
-      
-      ServiceStack.Register registerDTO = new ServiceStack.Register();
 
+      //ServiceStack.Register registerDTO = new ServiceStack.Register();
+      Register registerDTO = new Register();
       Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserRegistrationRspDTO> with registerDTO ={registerDTO}");
-      RegisterResponseDTO = await HttpClient.PostJsonAsync<ServiceStack.RegisterResponse>("Register", registerDTO);
+      //RegisterResponseDTO = await HttpClient.PostJsonAsync<ServiceStack.RegisterResponse>("Register", registerDTO);
+      RegisterResponseDTO = await HttpClient.PostJsonAsync<RegisterResponse>("Register", registerDTO);
       Logger.LogDebug($"Returned from PostJsonAsync<ServiceStack.RegisterResponse>, RegisterResponseDTO = {RegisterResponseDTO}");
       Logger.LogDebug($"Leaving UserRegistration");
     }
-    ServiceStack.RegisterResponse RegisterResponseDTO { get; set; }
+    //ServiceStack.RegisterResponse RegisterResponseDTO { get; set; }
+    RegisterResponse RegisterResponseDTO { get; set; }
     #endregion
     #region Post and Get Configuration data
     public async Task PostBaseServicesConfigurationData()
@@ -202,5 +204,15 @@ await HttpClient.PostJsonAsync<AddressToLatLngRspPayload>("/AddressToLatLng?form
             set;
         }
     #endregion
+
+    class Register
+    {
+      string Name { get; set; }
     }
+    class RegisterResponse
+    {
+      string Result { get; set; }
+    }
+
+  }
 }

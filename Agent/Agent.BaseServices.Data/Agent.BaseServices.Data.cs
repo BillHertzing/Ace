@@ -21,8 +21,13 @@ namespace Ace.Agent.BaseServices {
             AppHost = appHost;
             Container = appHost.GetContainer();
 
+      // Blazor as of version 0.5.0 expects to be able to download a static file wwith the extensions "json"
+      // ServiceStack by default will not allow downloading a static file with "json" extensions
+      // Configure ServiceStack to allow the delivery of static files that end in json
+      AppHost.Config.AllowFileExtensions.Add("json");
+
             // If the Redis configuration key exists, register Redis as a name:value pair cache
-            if(AppHost.AppSettings
+      if (AppHost.AppSettings
                 .Exists(configKeyPrefix + appSettingsConfigKeyRedisConnectionString)) {
                 var appSettingsConfigValueRedisConnectionString = AppHost.AppSettings
                     .GetString(configKeyPrefix +
@@ -100,7 +105,7 @@ namespace Ace.Agent.BaseServices {
     //.AddDictionarySettings(DefaultGateways.Configuration())
     .Build();
 
-      // temporarly manually populate the collection with one Gateway
+      // temporary manually populate the collection with one Gateway
       var geb = new GatewayEntryBuilder();
       geb.AddName("ReverseGeoCode");
       geb.AddRUri("geocode/json");
@@ -110,7 +115,7 @@ namespace Ace.Agent.BaseServices {
 
       var defaultPolicy = Policy.Handle<Exception>().RetryAsync(3, (exception, attempt) =>
       {
-        // This is the  exception handler for this policy deaultpolicy
+        // This is the  exception handler for this defaultPolicy
         Log.Debug($"Policy logging: {exception.Message} : attempt = {attempt}");
         //retries++;
 
@@ -129,7 +134,7 @@ namespace Ace.Agent.BaseServices {
       var gatewayMonitorsBuilder = new GatewayMonitorsBuilder("Base");
       //gatewayMonitorsBuilder.AddGatewayMonitor(new GatewayMonitor(Gateways.Get("GoogleMapsGeoCoding")));
       GatewayMonitors = gatewayMonitorsBuilder.Build();
-      // temporarly manually populate the collection with one GatewayMonitor
+      // temporary manually populate the collection with one GatewayMonitor
       
       var gemb = new GatewayEntryMonitorBuilder();
       gemb.AddName("GeoCode");
@@ -145,7 +150,7 @@ namespace Ace.Agent.BaseServices {
       // Store the collection of Gateway Monitor in the Base Data structure
       // ToDo: support AppSettings to control the enable/disable of Postman
       // Enable Postman integration
-      AppHost.Plugins.Add(new PostmanFeature());
+      //AppHost.Plugins.Add(new PostmanFeature());
 
 
       // ToDo: support AppSettings to control the enable/disable of CorsFeature

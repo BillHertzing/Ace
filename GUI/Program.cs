@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Blazor.Browser.Rendering;
-using Microsoft.AspNetCore.Blazor.Browser.Services;
+//using Microsoft.AspNetCore.Blazor.Browser.Rendering;
+//using Microsoft.AspNetCore.Blazor.Browser.Services;
+using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 // Both are required for the logger/logging
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,23 @@ using GUI;
 
 namespace GUI
 {
+  
+    // Code for Blazor 0.6.0
+     public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
+            BlazorWebAssemblyHost.CreateDefaultBuilder()
+                .UseBlazorStartup<Startup>();
+    }
+   
+
+  /*
+   * // Code for Blazor V0.4.0
     public class Program
     {
         static void Main(string[] args)
@@ -25,4 +43,5 @@ namespace GUI
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");
         }
     }
+    */
 }
