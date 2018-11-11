@@ -18,20 +18,19 @@ namespace Ace.Agent.BaseServices {
         // Constructor with just AppHost parameter
         public BaseServicesData(IAppHost appHost) {
             Log.Debug("Entering BaseServicesData ctor");
-            AppHost = appHost;
             Container = appHost.GetContainer();
 
-      // Blazor as of version 0.5.0 expects to be able to download a static file wwith the extensions "json"
+      // Blazor as of version 0.5.0 expects to be able to download a static file with the extensions "json"
       // ServiceStack by default will not allow downloading a static file with "json" extensions
       // Configure ServiceStack to allow the delivery of static files that end in json
-      AppHost.Config.AllowFileExtensions.Add("json");
+      appHost.Config.AllowFileExtensions.Add("json");
 
             // If the Redis configuration key exists, register Redis as a name:value pair cache
-      if (AppHost.AppSettings
-                .Exists(configKeyPrefix + appSettingsConfigKeyRedisConnectionString)) {
-                var appSettingsConfigValueRedisConnectionString = AppHost.AppSettings
+      if (appHost.AppSettings
+                .Exists(configKeyPrefix + configKeyRedisConnectionString)) {
+                var appSettingsConfigValueRedisConnectionString = appHost.AppSettings
                     .GetString(configKeyPrefix +
-                    appSettingsConfigKeyRedisConnectionString);
+                    configKeyRedisConnectionString);
                 Container.Register<IRedisClientsManager>(c => new RedisManagerPool(appSettingsConfigValueRedisConnectionString));
                 Container.Register(c => c.Resolve<IRedisClientsManager>()
                     .GetCacheClient());
@@ -49,20 +48,28 @@ namespace Ace.Agent.BaseServices {
                 throw new Exception($"{RedisNotRunningExceptionMessage} on {Ex.Message}", Ex); }
             } 
 
+      // Validate the cache and the appSettings Config keys/values for the BaseService align
 
       // Key names in the cache for the Application's Base configuration settings consist of this namespace and the string .Config
       // This prefix is available as a static method on this class
       var cacheConfigKeys = cacheClient.GetKeysStartingWith(configKeyPrefix);
-      var appSettingsConfigKeys = AppHost.AppSettings.GetAllKeys();
+      var appSettingsConfigKeys = appHost.AppSettings.GetAllKeys();
       //var fullAppSettingsConfigKeys = appSettingsConfigKeys.Select(x => x.IndexOf(configKeyPrefix) >= 0? x: configKeyPrefix + x);
+      ///Temp:
+      MySqlConnectionString = appHost.AppSettings
+                    .GetString(configKeyPrefix +
+                    configKeyMySqlConnectionString);
+      RedisCacheConnectionString = appHost.AppSettings
+                    .GetString(configKeyPrefix +
+                    configKeyRedisConnectionString);
 
       // See if the MySQL configuration key exists, if so register MySQL as the RDBMS behind ORMLite
-      if (AppHost.AppSettings
-          .Exists(configKeyPrefix + appSettingsConfigKeyMySqlConnectionString))
+      if (appHost.AppSettings
+          .Exists(configKeyPrefix + configKeyMySqlConnectionString))
       {
-        var appSettingsConfigValueMySqlConnectionString = AppHost.AppSettings
+        var appSettingsConfigValueMySqlConnectionString = appHost.AppSettings
             .GetString(configKeyPrefix +
-            appSettingsConfigKeyMySqlConnectionString);
+            configKeyMySqlConnectionString);
         // Configure OrmLiteConnectionFactory and register it
         Container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(appSettingsConfigValueMySqlConnectionString, MySqlDialect.Provider));
         // Access the OrmLiteConnectionFactory
@@ -144,8 +151,8 @@ namespace Ace.Agent.BaseServices {
       gmb.AddGatewayEntryMonitor(gem);
       var gm = gmb.Build();
       GatewayMonitors.GatewayMonitorColl.Add("Manual", gm);
-      
-   //   GatewayMonitors.GatewayMonitorColl.Add("Manual", new GatewayMonitorBuilder().AddName("GoogleMapsGeoCoding").AddGatewayEntryMonitor(new GatewayEntryMonitorBuilder().AddName("GeoCode").Build()).Build());
+
+      //   GatewayMonitors.GatewayMonitorColl.Add("Manual", new GatewayMonitorBuilder().AddName("GoogleMapsGeoCoding").AddGatewayEntryMonitor(new GatewayEntryMonitorBuilder().AddName("GeoCode").Build()).Build());
 
       // Store the collection of Gateway Monitor in the Base Data structure
       // ToDo: support AppSettings to control the enable/disable of Postman
@@ -153,15 +160,15 @@ namespace Ace.Agent.BaseServices {
       //AppHost.Plugins.Add(new PostmanFeature());
 
 
-      // ToDo: support AppSettings to control the enable/disable of CorsFeature
+      // ToDo: support AppSettings to control the enable/disable of CORS Feature
       // Enable CORS support
-      AppHost.Plugins.Add(new CorsFeature(allowedMethods: "GET, POST, PUT, DELETE, OPTIONS",
+      appHost.Plugins.Add(new CorsFeature(allowedMethods: "GET, POST, PUT, DELETE, OPTIONS",
                                   allowedOrigins: "*",
                                   allowCredentials: true,
                                   allowedHeaders: "content-type, Authorization, Accept"));
 
       // ToDo: support AppSettings to control the enable/disable of Metadata Feature
-      AppHost.Config
+      appHost.Config
           .EnableFeatures = Feature.All
           .Remove(Feature.Metadata);
 
@@ -169,7 +176,7 @@ namespace Ace.Agent.BaseServices {
 #if Debug
       AppHost.Config.DebugMode = true;
 #else
-      AppHost.Config
+      appHost.Config
           .DebugMode = false;
 #endif
 
@@ -193,9 +200,9 @@ namespace Ace.Agent.BaseServices {
 
       #region string constants
       #region Configuration Key strings
-    public const string appSettingsConfigKeyAceAgentListeningOnString = "Ace.Agent.ListeningOn";
-    public const string appSettingsConfigKeyRedisConnectionString = "RedisConnectionString";
-    public const string appSettingsConfigKeyMySqlConnectionString = "MySqlConnectionString";
+    public const string configKeyAceAgentListeningOnString = "Ace.Agent.ListeningOn";
+    public const string configKeyRedisConnectionString = "RedisConnectionString";
+    public const string configKeyMySqlConnectionString = "MySqlConnectionString";
     #endregion Configuration Key strings
     #region Exception Messages (string constants)
     const string RedisNotRunningExceptionMessage = "Redis Connection string found, but Redis not running as cacheClient."; 
@@ -236,7 +243,7 @@ namespace Ace.Agent.BaseServices {
     #endregion private fields 
 
     #region Public Properties
-    public IAppHost AppHost { get; set; }
+
 
         public Funq.Container Container { get; set; }
 
@@ -245,7 +252,16 @@ namespace Ace.Agent.BaseServices {
             set;
         }
 
-
+    #region Configuration Data (Properties)
+    public string RedisCacheConnectionString {
+      get { return cacheClient.Get<string>(configKeyPrefix + configKeyRedisConnectionString); }
+      set { cacheClient.Set<string>(configKeyPrefix + configKeyRedisConnectionString, value); }
+    }
+    public string MySqlConnectionString {
+      get { return cacheClient.Get<string>(configKeyPrefix + configKeyMySqlConnectionString); }
+      set { cacheClient.Set<string>(configKeyPrefix + configKeyMySqlConnectionString, value); }
+    }
+    #endregion
     public IGatewayMonitors GatewayMonitors { get; set; }
     #endregion Public Properties
 

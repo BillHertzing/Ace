@@ -107,10 +107,18 @@ namespace Ace.Agent.BaseServices
       }
     #endregion
     #region Configuration Data
-    public object Post(BaseServicesConfigurationDataReqPayload request)
+    public object Post(BaseServicesConfigurationDataReqDTO request)
     {
+      var baseServicesData = HostContext.TryResolve<BaseServicesData>();
+      baseServicesData.RedisCacheConnectionString = request.RedisCacheConnectionString;
+      baseServicesData.MySqlConnectionString = request.MySqlConnectionString;
+      return new BaseServicesConfigurationDataRspDTO { RedisCacheConnectionString = baseServicesData.RedisCacheConnectionString, MySqlConnectionString = baseServicesData.MySqlConnectionString};
+    }
+    public object Get(BaseServicesConfigurationDataReqDTO request)
+    {
+      var baseServicesData = HostContext.TryResolve<BaseServicesData>();
       //RedisCacheConnectionString = request.RedisCacheConnectionString;
-      return new BaseServicesConfigurationDataRspPayload { RedisCacheConnectionString = "A HARDCODE sTRING"};
+      return new BaseServicesConfigurationDataRspDTO { RedisCacheConnectionString = baseServicesData.RedisCacheConnectionString, MySqlConnectionString = baseServicesData.MySqlConnectionString};
     }
     #endregion
     #region User Data

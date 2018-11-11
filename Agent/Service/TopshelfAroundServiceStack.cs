@@ -54,11 +54,11 @@ namespace Ace.AceService
             {
                 Log.Debug(" In TopShelfAroundServiceStackWrapper Start Method calling appHost.Init");
                 appHost.Init();
-        if (!appHost.AppSettings.Exists(BaseServicesData.appSettingsConfigKeyAceAgentListeningOnString) || (appHost.AppSettings.GetString(BaseServicesData.appSettingsConfigKeyAceAgentListeningOnString) == "") ) {
+        if (!appHost.AppSettings.Exists(BaseServicesData.configKeyAceAgentListeningOnString) || (appHost.AppSettings.GetString(BaseServicesData.configKeyAceAgentListeningOnString) == "") ) {
           throw new Exception(ListeningOnStringKeyOrValueNotFoundExceptionMessage);
         }
 
-                string listeningOn = appHost.AppSettings.GetString(BaseServicesData.appSettingsConfigKeyAceAgentListeningOnString);
+                string listeningOn = appHost.AppSettings.GetString(BaseServicesData.configKeyAceAgentListeningOnString);
                 Log.Debug($"In TopShelfAroundServiceStackWrapper Start Method calling appHost.Start, listeningOn {listeningOn}");
                 appHost.Start(listeningOn);
                 Log.Debug("In TopShelfAroundServiceStackWrapper Start Method calling Process.Start");

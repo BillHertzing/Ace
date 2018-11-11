@@ -56,13 +56,15 @@ namespace Ace.Agent.BaseServices
 
   #region Configuration Data
   [Route("/BaseServicesConfigurationData")]
-  public class BaseServicesConfigurationDataReqPayload : IReturn<BaseServicesConfigurationDataRspPayload>
+  public class BaseServicesConfigurationDataReqDTO : IReturn<BaseServicesConfigurationDataRspDTO>
   {
     public string RedisCacheConnectionString { get; set; }
+    public string MySqlConnectionString { get; set; }
   }
-  public class BaseServicesConfigurationDataRspPayload
+  public class BaseServicesConfigurationDataRspDTO
   {
     public string RedisCacheConnectionString { get; set; }
+    public string MySqlConnectionString { get; set; }
   }
 
   #endregion

@@ -13,13 +13,18 @@ else
     <label for="RedisCacheConnectionString">@labelForRedisCacheConnectionString</label>
     <input type="text" class="form-control" id="RedisCacheConnectionString" bind="@RedisCacheConnectionString" placeholder="@placeHolderForRedisCacheConnectionString" />
   </div>
+  <div>
+    <label for="MySqlConnectionString">@labelForMySqlConnectionString</label>
+    <input type="text" class="form-control" id="MySqlConnectionString" bind="@MySqlConnectionString" placeholder="@placeHolderForMySqlConnectionString" />
+  </div>
+  <button type="button" class="btn btn-default" onclick="@GetBaseServicesConfigurationData">@labelForGetBaseServicesConfigurationDataButton</button>
   <button type="button" class="btn btn-default" onclick="@PostBaseServicesConfigurationData">@labelForPostBaseServicesConfigurationDataButton</button>
-  @if (@BaseServicesConfigurationDataRspPayload == null)
+  @if (@BaseServicesConfigurationDataRspDTO == null)
   {
     <p>Configuration Information has not yet been submitted to Ace Commander</p>
   }
   else
   {
-    <p>PostBaseServicesConfigurationData returned @BaseServicesConfigurationDataRspPayload.RedisCacheConnectionString.ToString() </p>
+    <p>PostBaseServicesConfigurationData returned @BaseServicesConfigurationDataRspDTO.RedisCacheConnectionString.ToString() </p>
   }
 }

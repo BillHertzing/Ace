@@ -5,33 +5,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using Ace.Agent.RealEstateServices;
+using Ace.Agent.BaseServices;
 using Ace.Agent.GUIServices;
-using Ace.AceService.MinerServices.Plugin;
 using Funq;
 using ServiceStack;
-using ServiceStack.Caching;
 using ServiceStack.Configuration;
 using ServiceStack.Logging;
-using ServiceStack.Redis;
-using Ace.Agent.BaseServices;
 
 //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
 namespace Ace.AceService {
-
-  public class AppHost : AppSelfHostBase {
-
+    public class AppHost : AppSelfHostBase {
     #region string constants
     #region File Name string constants
     public const string agentSettingsTextFileNameString = "Agent.BaseServices.settings.txt";
     #endregion File Name string constants
     #endregion string constants
 
-
     static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
 
-    List<Task> longRunningTaskList;
+        List<Task> longRunningTaskList;
         Dictionary<string, System.Timers.Timer> timers;
+
         public AppHost() : base("AceService", typeof(BaseServices).Assembly) {
             Log.Debug("Entering AppHost Ctor");
             Log.Debug("Leaving AppHost Ctor");
@@ -63,7 +57,9 @@ namespace Ace.AceService {
     public override void Configure(Container container) {
         // inject the concrete logging implementation
         Log.Debug($"Entering AppHost.Configure method, container is {container.ToString()}");
-      // Read in the Application's base configuration settings. AppSettings is a first class object on the Container, so it will be auto-wired
+
+        // AppSettings is a first class object on the Container, so it will be auto-wired
+      // In any other assembly, AppSettings is read-only, so it must be populated in this assembly
       // Location of the configuration files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
 
       AppSettings = new MultiAppSettingsBuilder()
@@ -71,19 +67,23 @@ namespace Ace.AceService {
           //.Add??
           // Next in priority are any environment values that match any keys
           //.AddEnvironmentalVariables()
-          // Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
+          // Next in priority are any configuration settings in a text file.
+          // Location of the text file is relative to the current working directory at the point in time when this method executes.
           .AddTextFile(agentSettingsTextFileNameString)
-          // Next in priority are Configuration settings the App.config file (AKA AceAgent.exe.config at runtime)
+          // Next in priority are any configuration settings the application config file (AKA AceAgent.exe.config at runtime)
           .AddAppSettings()
           // Builtin (compiled in) have the lowest priority
           .AddDictionarySettings(DefaultConfiguration.Configuration())
           .Build();
 
-      // Create the BaseServices data structure and register it in the container
+        // Create the BaseServices data structure and register it in the container
+      //  The AppHost (here, ServiceStack running as a Windows service) has some configuration that is common
+      //  to both Frameworks (.Net and .Net Core), which will be setup in a common assembly, so this instance of
+      //  the appHost is being passed to the BaseServicesData constructor.
       var baseServicesData = new BaseServicesData(this);
-      container.Register<BaseServicesData>(c => baseServicesData);
-        // Create the basic services observable data structures based on the configuration settings
+        container.Register<BaseServicesData>(c => baseServicesData);
 
+      //ToDo: move the dictionarys and timers out of net47x assemblies and into the common assemblies
         // Add a dictionary of timers and a list to hold "long-running tasks" to the IoC container
       #region create a dictionary of timers and register it in the IoC container
         timers = new Dictionary<string, System.Timers.Timer>();
@@ -103,7 +103,7 @@ namespace Ace.AceService {
         timers.Add("longRunningTasksCheckTimer", longRunningTasksCheckTimer);
       #endregion create longRunningTasksCheckTimer, connect callback, and store in container's timers
 
-        // ToDo: Get the list of plugins to install from the configuration settings, currently hardcoded to load just the GUIServices
+        // ToDo: Get the list of plugins to install from the configuration settings, currently hardcoded
       // Create the list of PlugIns to load
       var plugInList = new List<IPlugin>() {
           //new RealEstateServicesPlugin(),
@@ -111,7 +111,7 @@ namespace Ace.AceService {
           new GUIServicesPlugin()
       };
 
-        // Load each plugin here. Note that plugins may add AppSettings specific to its needs
+        // Load each plugin here. 
         foreach(var pl in plugInList) {
             Plugins.Add(pl);
         }
@@ -140,9 +140,10 @@ namespace Ace.AceService {
         notifyIcon1.ContextMenu = contextMenu1;
         notifyIcon1.Visible = true;
 
-        //Log.Debug("Calling a Web Forms Application instance's static Run method");
-      //Application.Run();
-      //notifyIcon1.Visible = false;
+        // Log.Debug("Calling a Web Forms Application instance's static Run method");
+      // Application.Run();
+      // notifyIcon1.Visible = false;
+
       Log.Debug("NotifyIcon for AceCommander created");
         Log.Debug("Leaving AppHost.Configure");
     }
@@ -155,6 +156,8 @@ namespace Ace.AceService {
 
         // It is possible that the Stop method is called during service startup, because the service could be failing because of a problem during startup,
       //  so need to check that each of container's disposable items actually exist before disposing of them
+
+      // iterate everything in the Container that implements IDisposable, and dispose of it
 
         // Stop and dispose of all timers
         Dictionary<string, System.Timers.Timer> timers;

@@ -18,31 +18,37 @@ namespace Ace.AceGUI.Pages {
 
     #region string constants
     // Eventually replace with localization
+    #region Configuration Data (string constants)
     public const string labelForRedisCacheConnectionString = "Redis Cache Connection String";
-        public const string labelForPostBaseServicesConfigurationDataButton = "Post Base Services Configuration Data";
-        public const string labelForGetBaseServicesConfigurationDataButton = "Get Base Services Configuration Data";
         public const string placeHolderForRedisCacheConnectionString = "Localhost:6xxx";
-
-        public const string labelForLatitude = "Latitude";
+    public const string labelForMySqlConnectionString = "MySql Connection String";
+    public const string placeHolderForMySqlConnectionString = "Localhost:6xxx";
+    public const string labelForPostBaseServicesConfigurationDataButton = "Post Base Services Configuration Data";
+    public const string labelForGetBaseServicesConfigurationDataButton = "Get Base Services Configuration Data";
+    #endregion
+    #region Gateway serviced data (string constants)
+    public const string labelForLatitude = "Latitude";
         public const string labelForLongitude = "Longitude";
         public const string labelForAddress = "Address";
         public const string labelForAddressToLatLngButton = "Click to convert the Address to a Latitude and Longitude";
         public const string labelForLatLngToAddressButton = "Click to convert the Latitude and Longitude to an Address ";
-
         public const string latitudePlaceHolder = "Enter +- decimal number";
         public const string longitudePlaceHolder = "Enter +- decimal number";
         public const string addressPlaceHolder = "Enter full street address";
-
+    #endregion
+    #region Gateway definitions
     public const string labelForGatewayNameString = "Gateway Name";
     public const string placeHolderForGatewayNameString = "Enter the name of a Gateway to use for Lat/Lng to Address translation";
     public const string labelForGatewayEntryAPIKeyString = "API Key for Lat/Lng to Address translation";
     public const string placeHolderForGatewayEntryAPIKeyString = "Enter the API Key needed to use the Lat/Lng to Address translation service";
+    #endregion Gateway definitions
+
+    #region User data (string constants)
     public const string labelForPostBaseServicesUserDataButton = "Submit";
-
+    public const string labelForGetBaseServicesUserDataButton = "Get";
     public const string labelForUserRegistrationButton = "Register New User";
-
     #endregion string constants
-
+    #endregion
     #region Access Objects registerd in the DI container
     // This syntax adds to the class a Method that accesses the DI container, and retrieves the instance having the specified type from the DI container.
     // Access the builtin Blazor service that has registered a pre-configured and extended object as a HTTPClient type registered in the DI container
@@ -59,6 +65,13 @@ namespace Ace.AceGUI.Pages {
         get;
         set;
     }
+
+    //[Inject]
+    //protected SessionStorage sessionStorage;
+
+    //[Inject]
+    //protected LocalStorage localStorage;
+
     #endregion
 
     #region Page Initialization Handler
@@ -75,10 +88,7 @@ namespace Ace.AceGUI.Pages {
         Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesInitializationRspPayload>, BaseServicesInitializationRspPayload = {BaseServicesInitializationRspPayload}");
       Logger.LogDebug($"Leaving OnInitAsync");
     }
-    public BaseServicesInitializationRspPayload BaseServicesInitializationRspPayload {
-            get;
-            set;
-        }
+    public BaseServicesInitializationRspPayload BaseServicesInitializationRspPayload {            get;            set;        }
 
     #endregion
 
@@ -105,7 +115,6 @@ await HttpClient.PostJsonAsync<IsAliveRspPayload>("/IsAlive?format=json", isAliv
     protected async Task UserRegistration()
     {
       Logger.LogDebug($"Starting UserRegistration");
-
       //ServiceStack.Register registerDTO = new ServiceStack.Register();
       Register registerDTO = new Register();
       Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserRegistrationRspDTO> with registerDTO ={registerDTO}");
@@ -124,16 +133,31 @@ await HttpClient.PostJsonAsync<IsAliveRspPayload>("/IsAlive?format=json", isAliv
       // Create the payload for the Post
       // ToDo: Validators on the input field will make this better
       // ToDo: wrap in a try catch block and handle errors with a model dialog
-      BaseServicesConfigurationDataReqPayload baseServicesConfigurationDataReqPayload = new BaseServicesConfigurationDataReqPayload
+      BaseServicesConfigurationDataReqDTO baseServicesConfigurationDataReqDTO = new BaseServicesConfigurationDataReqDTO
       {RedisCacheConnectionString = this.RedisCacheConnectionString};
-      Logger.LogDebug($"Calling PostJsonAsync<BaseServicesConfigurationDataRspPayload> with BaseServicesConfigurationDataReqPayload = {baseServicesConfigurationDataReqPayload}");
-      BaseServicesConfigurationDataRspPayload =
-await HttpClient.PostJsonAsync<BaseServicesConfigurationDataRspPayload>("/BaseServicesConfigurationData?format=json", baseServicesConfigurationDataReqPayload);
-      Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesConfigurationDataRspPayload> with BaseServicesConfigurationDataRspPayload = {baseServicesConfigurationDataReqPayload}");
+      Logger.LogDebug($"Calling PostJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataReqDTO = {baseServicesConfigurationDataReqDTO}");
+      BaseServicesConfigurationDataRspDTO =
+await HttpClient.PostJsonAsync<BaseServicesConfigurationDataRspDTO>("/BaseServicesConfigurationData?format=json", baseServicesConfigurationDataReqDTO);
+      Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataRspDTO = {baseServicesConfigurationDataReqDTO}");
       Logger.LogDebug($"Leaving PostBaseServicesConfigurationData");
     }
-    public BaseServicesConfigurationDataRspPayload BaseServicesConfigurationDataRspPayload { get; set; }
+    public async Task GetBaseServicesConfigurationData()
+    {
+      Logger.LogDebug($"Starting GetBaseServicesConfigurationData");
+      // Create the payload for the Get
+      // ToDo: wrap in a try catch block and handle errors with a model dialog
+      BaseServicesConfigurationDataReqDTO baseServicesConfigurationDataReqDTO = new BaseServicesConfigurationDataReqDTO      { };
+      Logger.LogDebug($"Calling GetJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataReqDTO = {baseServicesConfigurationDataReqDTO}");
+      BaseServicesConfigurationDataRspDTO =
+await HttpClient.GetJsonAsync<BaseServicesConfigurationDataRspDTO>("/BaseServicesConfigurationData?format=json");
+      Logger.LogDebug($"Returned from GetJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataRspDTO = {baseServicesConfigurationDataReqDTO}");
+      RedisCacheConnectionString = BaseServicesConfigurationDataRspDTO.RedisCacheConnectionString;
+      MySqlConnectionString = BaseServicesConfigurationDataRspDTO.MySqlConnectionString;
+      Logger.LogDebug($"Leaving GetBaseServicesConfigurationData");
+    }
+    public BaseServicesConfigurationDataRspDTO BaseServicesConfigurationDataRspDTO { get; set; }
     public string RedisCacheConnectionString { get; set; }
+    public string MySqlConnectionString { get; set; }
 
     #endregion
     #region Post and Get User data
