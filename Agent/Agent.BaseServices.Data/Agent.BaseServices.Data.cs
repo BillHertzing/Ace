@@ -168,10 +168,11 @@ namespace Ace.Agent.BaseServices {
                                   allowedHeaders: "content-type, Authorization, Accept"));
 
       // ToDo: support AppSettings to control the enable/disable of Metadata Feature
+      /*
       appHost.Config
           .EnableFeatures = Feature.All
           .Remove(Feature.Metadata);
-
+      */
       // Turn debug mode for the ACEAgent depending if running in debug mode or release mode
 #if Debug
       AppHost.Config.DebugMode = true;

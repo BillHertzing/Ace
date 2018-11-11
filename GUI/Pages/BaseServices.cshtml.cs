@@ -126,6 +126,7 @@ await HttpClient.PostJsonAsync<IsAliveRspPayload>("/IsAlive?format=json", isAliv
     //ServiceStack.RegisterResponse RegisterResponseDTO { get; set; }
     RegisterResponse RegisterResponseDTO { get; set; }
     #endregion
+
     #region Post and Get Configuration data
     public async Task PostBaseServicesConfigurationData()
     {
@@ -160,6 +161,7 @@ await HttpClient.GetJsonAsync<BaseServicesConfigurationDataRspDTO>("/BaseService
     public string MySqlConnectionString { get; set; }
 
     #endregion
+
     #region Post and Get User data
     public async Task PostBaseServicesUserData()
     {
