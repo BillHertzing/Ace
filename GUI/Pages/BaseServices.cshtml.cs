@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 // Required for the logger/logging
 using Microsoft.Extensions.Logging;
-//using ServiceStack;
 
 namespace Ace.AceGUI.Pages {
     public class BaseServicesCodeBehind : BlazorComponent {
@@ -46,7 +45,6 @@ namespace Ace.AceGUI.Pages {
     #region User data (string constants)
     public const string labelForPostBaseServicesUserDataButton = "Submit";
     public const string labelForGetBaseServicesUserDataButton = "Get";
-    public const string labelForUserRegistrationButton = "Register New User";
     #endregion string constants
     #endregion
     #region Access Objects registerd in the DI container
@@ -109,22 +107,6 @@ await HttpClient.PostJsonAsync<IsAliveRspPayload>("/IsAlive?format=json", isAliv
             get;
             set;
         }
-    #endregion
-
-    #region User Registration
-    protected async Task UserRegistration()
-    {
-      Logger.LogDebug($"Starting UserRegistration");
-      //ServiceStack.Register registerDTO = new ServiceStack.Register();
-      Register registerDTO = new Register();
-      Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserRegistrationRspDTO> with registerDTO ={registerDTO}");
-      //RegisterResponseDTO = await HttpClient.PostJsonAsync<ServiceStack.RegisterResponse>("Register", registerDTO);
-      RegisterResponseDTO = await HttpClient.PostJsonAsync<RegisterResponse>("Register", registerDTO);
-      Logger.LogDebug($"Returned from PostJsonAsync<ServiceStack.RegisterResponse>, RegisterResponseDTO = {RegisterResponseDTO}");
-      Logger.LogDebug($"Leaving UserRegistration");
-    }
-    //ServiceStack.RegisterResponse RegisterResponseDTO { get; set; }
-    RegisterResponse RegisterResponseDTO { get; set; }
     #endregion
 
     #region Post and Get Configuration data
@@ -230,15 +212,6 @@ await HttpClient.PostJsonAsync<AddressToLatLngRspPayload>("/AddressToLatLng?form
             set;
         }
     #endregion
-
-    class Register
-    {
-      string Name { get; set; }
-    }
-    class RegisterResponse
-    {
-      string Result { get; set; }
-    }
 
   }
 }
