@@ -1,14 +1,47 @@
-# Ace
-Computer Control Center
+# Overview
+An Agent of technology to help make the world a better place. This is a project for people who want to use technology to make a difference for good in the world. The current state of the project relative to its goals is minuscule, but I hope that changes over the next decade or so.
 
-This is a project for people who want to use technology to make a difference for good in the world.
+If you want to know how to get started using the code in this repository, the Docs subfolder contains specific notes on building, installing and using this application.
 
-The Docs subfolder contains specific notes on building this application
+The project currently runs only on Windows 10. The goal is to have it also run on Linux, MaxOS, iOS, and Android.
 
-At the moment, it is a lot of ideas and some few lines of code in this repository.
+# Getting the application
+There is no NuGet package nor Chocolatey install package yet. Getting the source code from this repository and building it yourself is the only option now. Easier installation options are planned. Details on how to copy/fork, build, and debug the app can be found in the Doc subfolder.
 
-There are a lot of areas to be designed and implemented. A partial list includes.
+# Application Goals
+The eventual goals are to create software that resides on any/most/smart pieces of electronics, that communicates with nearby instances of itself, to provide a wide range of information services to, and to take action on the on behalf of, the end users. The application also provides information about the current user to nearby instances of the application and to 3rd party web sites. Detailed goals can be found in Goals.md in the Doc subfolder, however, the authoritative list of features that the agent will eventually provide can be found in the Repository's "Requested Features" project.'
 
+# Current features
+    * Agent runs on ServiceStack under Windows 10. It runs as a ConsoleApp or as a Windows service.
+	* Agent wraps ServiceStack in TopShelf to make it easier to distribute the app as a Windows Service.
+    * Agent provides the following basic (built-in) services
+        * Basic APIs (Rest)
+            * IsAlive
+			* GeoCode and reverse GeoCode
+        * Built-in cache for write-through storage of data, using Redis
+		* Connection to a MySql database, that has User and Role tables to support the concept of authorized users.
+			
+    * Agent uses a Plugin architecture to provide extensibility
+    * Agent implements configuration data, loaded from default compiled-in values, or from a text file, for both base services and Plugins.
+    * Agent implements configuration data, loaded from default compiled-in values, or from a text file.
+    * Basic implementation of Gateways for the Agent to get information from other 3rd party Web APIs.
+    * Blazor GUI for the Agent written as an application to be run in any browser that supports WASM.
+
+# Features actively under development
+     * Addition of ServiceStack JSONHttpClient to Blazor GUI
+	 * Addition of ServiceStack User and Roles tables to the MySQL database.
+	 * Addition of an implementation of configuration data loaded from Environment variables, specifically an API key
+	 * The use of usersecrets.json in a VS solution folder to set environment variables when the app is started by VS.
+	 * The addition to Gateways and GatewayEntries code to implement the concept of authorization to the 3rd party REST services. Initial implementation is to provide an APIKey for the Google Maps API when invoked to service the GeoCode and Reverse GeCode features of the Agent's basic Services. 
+
+# Current implementation details
+    * Entire solution is built with Visual Studio 2017 Version 15.8 
+	* Agent is running under .Net Framework 4.7.1.
+	* GUI is built against the .Net Standard 2.0  framework
+	* Common DTOs between GUI and Agent are built against both frameworks
+	
+# Future Goals
+Creating a large full capability application that will reach millions of people is a grand goal that will require the help and hard work of hundreds of people. This project is just the very start of such an ambitious project. There are a lot of areas in this project that still need to be designed and implemented. A partial list includes.
 * The core piece of software that will run on every kind of computer and mobile device.
 * The peer-to-peer mesh that will connect these processes to each other.
 * The plug-ins and data structures that will extend the core abilities.
@@ -23,26 +56,18 @@ There are a lot of areas to be designed and implemented. A partial list includes
 
 Each of these areas will need thoughtful design and implementation - All folks who would like to contribute to this are welcome!
 
-Starting with the core piece, called AceAgent, at this time (May 2018), there are efforts by language and OS vendors to 'write once, run everywhere", as there have been since computers were invented. The initial projects for AceAgent will be on Windows .Net, using Core and Standard as much as possible, and using code specific to Windows (AceService), Linux (AceDaemon), Android (AceTBD), and iOS (AceTBD) as necessary to when the needed functionality is not present in Core or Standard. Ports of the AceAgent's machine/OS dependent pieces to less common devices and OSs are encouraged.
+In the Docs subfolder are documents with information on designing these future goals.
 
-The peer-to-peer mesh as of May 22018 is a set of REST APIs that allow the agents to communicate with each other and to the GUI. Data Transfer Objects (DTOs) define the format of the data as it is communicated over these API endpoints. Messaging between the AceAgents and the AceGUIs will support normal REST APIs and Publish/Subscribe architectures as well. Ports of the peer-to-peer Publish/Subscribe mesh to multiple messaging brokers are encouraged.
-
-The GUI design can be done many different ways, and the project encourages many different implementations. The first GUI implementation and current primary GUI (May 2018) is written in C# and JS, using the Blazor project from Microsoft. As Blazor is experimental at this time, there may be a chance the technology will change or be superseded. But as Blazor holds forth the promise that all of the GUI can be written on C#, and that object definitions can be shared verbatim across the server and client sides of a communication channel, as well as define the DTOs that transport data across process and computer boundaries, this will be the technology for the initial implementation of the AceGUI. 
-
-AceCommander on GitHub has a "Features Request" project. It is moderated to prevent abuse. One of the features currently requested for AceCommander is that the "Features Request" ability be added to AceCommander itself. Also requested is that Feature Requests provide a clear set of guidelines for what should be considered "abuse" of the feature,
-
-One of the core tenants of this project is to quantify entities' reputation. Reputation should be enhanced by positive behaviours. Reputation should be reduced by negative behaviouors
-
-As part of Reputation, bullying is certainly considered negative behaviour. "Abuse" of any entity should be considered negative behaviour. So it is important that AceCommander reputation scores should react quickly to such allegations. However the allegations must be validateted. The reputation system needs to time-weight behaviour so that reputations might be smirched, and yet reputations must recover if allegations prove unfounded.
-
-Another part of the core is the cgame that rewards cooperative action. Intrinsic in this game is the reputation of the player's in-game avatars. It is the goal of the project that game creation should become a collabrotive effort among users interested in this feature.
-Feature request:
-personal fitness:
-Take picture of food/dinner from phone, estimate calories, add to daily food intake log.
-
-<H1> List of Open Source Libraries used by AceCommander
+# Dependencies
+## List of Open Source Libraries used by AceCommander
 - ServiceStack Version 5.1.1 (Community Edition) URL TBD
 - TopShelf TBD
 - MedallionShell
 - Swordfish
 - TimePeriodLibrary.NET
+- ATAP.Utilities.* Various packages from ATAP technology.
+
+
+
+
+
