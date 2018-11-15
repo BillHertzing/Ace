@@ -65,7 +65,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Releases", "Releases", "{BA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{10D21D00-59F6-481F-81D6-4A5764E3BCF4}"
 	ProjectSection(SolutionItems) = preProject
+		Doc\Architecture.MD = Doc\Architecture.MD
 		Doc\BuildingNotes.MD = Doc\BuildingNotes.MD
+		Doc\Goals.md = Doc\Goals.md
+		Doc\Overview.MD = Doc\Overview.MD
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUIServices", "GUIServices", "{2894C382-76E8-4B77-BFAE-3CF8433AFC55}"
