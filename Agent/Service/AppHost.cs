@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
@@ -17,8 +20,14 @@ namespace Ace.AceService {
     public class AppHost : AppSelfHostBase {
     #region string constants
     #region File Name string constants
-    public const string agentSettingsTextFileNameString = "Agent.BaseServices.settings.txt";
+    public const string agentSettingsTextFileNameString = "Agent.BaseServices.settings.txt"; 
+  //It would be nice if ServiceStack implemented the User Secrets pattern that ASP Core provides
+  // Without that, the following string constant identifies an Environmental variable that can be populated with the name of a file
+    public const string agentEnvironmentIndirectSettingsTextFileNameKey = "Agent.BaseServices.IndirectSettings.Path";
     #endregion File Name string constants
+    #region Exception Messages (string constants)
+    public const string cannotReadEnvironmentVariablesSecurityExceptionMessage = "Ace cannot read from the environment varialbes (Security)";
+      #endregion
     #endregion string constants
 
     static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
@@ -58,32 +67,48 @@ namespace Ace.AceService {
         // inject the concrete logging implementation
         Log.Debug($"Entering AppHost.Configure method, container is {container.ToString()}");
 
-        // AppSettings is a first class object on the Container, so it will be auto-wired
+      // AppSettings is a first class object on the Container, so it will be auto-wired
       // In any other assembly, AppSettings is read-only, so it must be populated in this assembly
       // Location of the configuration files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
 
-      AppSettings = new MultiAppSettingsBuilder()
-          // ToDo: Highest priority is any command line variable values that match any keys
-          //.Add??
-          // Next in priority are any environment values that match any keys
-          //.AddEnvironmentalVariables()
-          // Next in priority are any configuration settings in a text file.
-          // Location of the text file is relative to the current working directory at the point in time when this method executes.
-          .AddTextFile(agentSettingsTextFileNameString)
-          // Next in priority are any configuration settings the application config file (AKA AceAgent.exe.config at runtime)
-          .AddAppSettings()
-          // Builtin (compiled in) have the lowest priority
-          .AddDictionarySettings(DefaultConfiguration.Configuration())
-          .Build();
+      //It would be nice if ServiceStack implemented the User Secrets pattern that ASP Core provides
+      // The Environment variable may define the location of a text file to add to the AppSettings
+      string indirectSettingsTextFilepath;
+      try {
+        indirectSettingsTextFilepath = Environment.GetEnvironmentVariable(agentEnvironmentIndirectSettingsTextFileNameKey);
+          }
+      catch (SecurityException e) {
+        Log.Error($"{cannotReadEnvironmentVariablesSecurityExceptionMessage}: {e.Message}");
+        throw new SecurityException(cannotReadEnvironmentVariablesSecurityExceptionMessage, e);
+      }
 
-        // Create the BaseServices data structure and register it in the container
-      //  The AppHost (here, ServiceStack running as a Windows service) has some configuration that is common
-      //  to both Frameworks (.Net and .Net Core), which will be setup in a common assembly, so this instance of
-      //  the appHost is being passed to the BaseServicesData constructor.
-      var baseServicesData = new BaseServicesData(this);
+      // If the Environment variable does define a location for another text fle, ensure it can be read
+      // Create the AppSettingsBuilder, and add command line arguments to it
+      var multiAppSettingsBuilder = new MultiAppSettingsBuilder();
+      // Highest priority is any command line variable values, so add command line arguments to the AppSettingsBuilder
+      // ToDo: .Add??
+      // Next in priority are all environment values, put add environment values arguments to the AppSettingsBuilder
+      multiAppSettingsBuilder.AddEnvironmentalVariables();
+      // Next in priority are contents of any indirect files mentioned in the environment variables (e.g. User Secrets )
+      if (indirectSettingsTextFilepath != null) { multiAppSettingsBuilder.AddTextFile(indirectSettingsTextFilepath); }
+      // Next in priority are any configuration settings in a text file.
+      // Location of the text file is relative to the current working directory at the point in time when this method executes.
+      multiAppSettingsBuilder.AddTextFile(agentSettingsTextFileNameString)
+      // Next in priority are any configuration settings in the application config file (AKA AceAgent.exe.config at runtime)
+      .AddAppSettings()
+      // Builtin (compiled in) have the lowest priority
+      .AddDictionarySettings(DefaultConfiguration.Configuration());
+      //Build the AppSettings
+      AppSettings = multiAppSettingsBuilder.Build();
+
+    // Create the BaseServices data structure and register it in the container
+    //  The AppHost (here, ServiceStack running as a Windows service) has some configuration that is common
+    //  to both Frameworks (.Net and .Net Core), which will be setup in a common assembly, so this instance of
+    //  the appHost is being passed to the BaseServicesData constructor.
+    var baseServicesData = new BaseServicesData(this);
         container.Register<BaseServicesData>(c => baseServicesData);
 
-      //ToDo: move the dictionarys and timers out of net47x assemblies and into the common assemblies
+      //ToDo: move the dictionaries and timers out of net47x assemblies and into the common assemblies
         // Add a dictionary of timers and a list to hold "long-running tasks" to the IoC container
       #region create a dictionary of timers and register it in the IoC container
         timers = new Dictionary<string, System.Timers.Timer>();

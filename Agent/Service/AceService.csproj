@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net471</TargetFrameworks>
+    <UserSecretsId>E5D6C5E5-6E30-49EF-BE15-E1B7C377D2A7</UserSecretsId>
     <OutputType>Exe</OutputType>
     <RootNamespace>Ace.AceService</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -24,6 +25,7 @@
     <PackageReference Include="ServiceStack.Client" Version="5.4.1" />
     <PackageReference Include="ServiceStack.Redis" Version="5.4.1" />
     <PackageReference Include="Topshelf" Version="4.0.4" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0"/>
   </ItemGroup>
   
   <!-- .NET 4 or greater references, compilation flags and build options -->

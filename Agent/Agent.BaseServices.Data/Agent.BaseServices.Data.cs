@@ -113,6 +113,7 @@ namespace Ace.Agent.BaseServices {
     .Build();
 
       // temporary manually populate the collection with one Gateway
+      // Build a Gateway entry for Google Maps GeoCode and ReverseGeoCode REST endpoints
       var geb = new GatewayEntryBuilder();
       geb.AddName("ReverseGeoCode");
       geb.AddRUri("geocode/json");
@@ -128,13 +129,20 @@ namespace Ace.Agent.BaseServices {
 
       });
 
+      // Build a Gateway for Google Maps GeoCode Gateway
+      // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
+      string defaultAPIKey =appHost.AppSettings
+            .GetString(configKeyPrefix +
+            configKeyGoogleMapsAPIKey); 
       var gb = new GatewayBuilder();
-      gb.AddName("GoogleMapsGeoCoding");
-      gb.AddBaseUri(new Uri("https://maps.googleapis.com/maps/api"));
+      gb.AddName("GoogleMaps");
+      gb.AddBaseUri(new Uri("https://maps.googleapis.com/maps/api/"));
       gb.AddDefaultPolicy(defaultPolicy);
+      // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
+      gb.AddDefaultAPIKey(defaultAPIKey);
       gb.AddGatewayEntry(ge);
       var gw = gb.Build();
-      Gateways.Add("GoogleMapsGeoCoding", gw);
+      Gateways.Add("GoogleMaps", gw);
      //Gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().AddName("GoogleMapsGeoCoding").AddBaseUri(new Uri("https://maps.googleapis.com/maps/api").AddDefaultPolicy(new Polly.Policy()).Build());
 
       // Create a collection of GatewayMonitors for BaseServices based on the collection of Gateways defined by the Base services
@@ -204,6 +212,7 @@ namespace Ace.Agent.BaseServices {
     public const string configKeyAceAgentListeningOnString = "Ace.Agent.ListeningOn";
     public const string configKeyRedisConnectionString = "RedisConnectionString";
     public const string configKeyMySqlConnectionString = "MySqlConnectionString";
+    public const string configKeyGoogleMapsAPIKey = "GoogleMapsAPIKey";
     #endregion Configuration Key strings
     #region Exception Messages (string constants)
     const string RedisNotRunningExceptionMessage = "Redis Connection string found, but Redis not running as cacheClient."; 
