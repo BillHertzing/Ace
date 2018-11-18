@@ -134,6 +134,8 @@ namespace ATAP.Utilities.Http
     Type ReqDataPayloadType { get; set; }
     Type RspDataPayloadType { get; set; }
     string RUri { get;  }
+    // ToDo replace APIKEy auth with a more robust and extendable solution
+    string APIKey { get; set; }
   }
   public class GatewayEntry : IGatewayEntry
   {
@@ -150,6 +152,9 @@ namespace ATAP.Utilities.Http
     public Type RspDataPayloadType { get; set; }
 
     public string RUri { get=>rUri;  }
+    // ToDo replace APIKEy auth with a more robust and extendable solution
+    public string APIKey { get; set; }
+
   }
   public interface IGatewayEntryBuilder
   {
@@ -161,10 +166,14 @@ namespace ATAP.Utilities.Http
     string rUri;
     Type reqDataPayloadType;
     Type rspDataPayloadType;
+    // ToDo replace APIKEy auth with a more robust and extendable solution
+    string aPIKey;
+
     public GatewayEntry Build() {
       GatewayEntry ge = new GatewayEntry(name, rUri);
       ge.ReqDataPayloadType = reqDataPayloadType;
       ge.RspDataPayloadType = rspDataPayloadType;
+      ge.APIKey = aPIKey;
       return ge;
     }
     public GatewayEntryBuilder()
@@ -190,6 +199,12 @@ namespace ATAP.Utilities.Http
       this.rspDataPayloadType = rspDataPayloadType;
       return this;
     }
+    // ToDo replace APIKEy auth with a more robust and extendable solution
+    public GatewayEntryBuilder AddAPIKey(string aPIKey)
+    {
+      this.aPIKey = aPIKey;
+      return this;
+    }
     public static GatewayBuilder CreateNew()
     {
       return new GatewayBuilder();
@@ -204,6 +219,9 @@ namespace ATAP.Utilities.Http
     Policy DefaultPolicy { get; set; }
     string Name { get; }
     Dictionary<string, IGatewayEntry> GatewayEntries { get; set; }
+    // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
+    string DefaultAPIKey { get; set; }
+
   }
   public class Gateway : IGateway
   {
@@ -219,6 +237,9 @@ namespace ATAP.Utilities.Http
     public Uri BaseUri { get => baseUri; }
     public Policy DefaultPolicy { get; set; }
     public Dictionary<string, IGatewayEntry> GatewayEntries { get; set; }
+
+    // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
+    public string DefaultAPIKey { get; set; }
 
     public string GetJsonFromUrl(IGatewayEntry entry, Action<HttpWebRequest> requestFilter = null,
 Action<HttpWebResponse> responseFilter = null)
@@ -244,6 +265,8 @@ Action<HttpWebResponse> responseFilter = null)
     Uri baseUri;
     Policy defaultPolicy;
     Dictionary<string, IGatewayEntry> gatewayEntries;
+    // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
+    string defaultAPIKey;
 
     public GatewayBuilder AddName(string name) {
       this.name = name;
@@ -271,7 +294,12 @@ Action<HttpWebResponse> responseFilter = null)
       this.gatewayEntries.Add(gatewayEntry.Name, gatewayEntry);
       return this;
     }
-
+    // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
+    public GatewayBuilder AddDefaultAPIKey(string defaultAPIKey)
+    {
+      this.defaultAPIKey = defaultAPIKey;
+      return this;
+    }
     public GatewayBuilder()
     {
       gatewayEntries = new Dictionary<string, IGatewayEntry>();
@@ -282,6 +310,9 @@ Action<HttpWebResponse> responseFilter = null)
       Gateway g = new Gateway(name, baseUri);
       g.DefaultPolicy = this.defaultPolicy;
       g.GatewayEntries = this.gatewayEntries;
+      g.DefaultPolicy = this.defaultPolicy;
+      g.DefaultAPIKey = this.defaultAPIKey;
+      // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
       return g;
     }
     public static GatewayBuilder CreateNew()
