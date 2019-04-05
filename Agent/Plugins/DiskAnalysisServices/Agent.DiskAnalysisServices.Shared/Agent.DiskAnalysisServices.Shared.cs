@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Ace.Agent.Plugins.DiskAnalysisServices
+namespace Ace.Agent.DiskAnalysisServices
 {
   #region DiskAnalysisServicesConfigurationData
     public class DiskAnalysisServicesConfigurationData {
