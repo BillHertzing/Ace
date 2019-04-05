@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+  <preConditions>
+    <!-- These changes should only be run against a schema with major version 0 -->
+    <sqlCheck expectedResult="0">
+      SELECT NVL(MAX(id),0)
+      FROM databasechangelog
+      WHERE author='MajorVersion'
+    </sqlCheck>
+  </preConditions>
+  
+  <include file="FSEntities.xml" />
+  
+</databaseChangeLog>
