@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-<!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
+  <!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
   </PropertyGroup>
 
-<PropertyGroup>
+      <PropertyGroup>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
@@ -20,11 +20,12 @@
     <PackageLabel>NA</PackageLabel>
   </PropertyGroup>
 
-  <!-- Common for all TargetFrameworks references, compilation flags and build options -->
-  <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.*" />
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.*" />
- </ItemGroup>
-  
+      <ItemGroup>
+        <PackageReference Include="ServiceStack.Interfaces" Version="5.*" />
+      </ItemGroup>
 
+      <ItemGroup>
+        <ProjectReference Include="..\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
+      </ItemGroup>
+  
 </Project>

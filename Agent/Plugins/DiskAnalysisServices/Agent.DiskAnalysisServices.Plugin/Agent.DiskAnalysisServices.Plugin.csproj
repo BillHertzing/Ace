@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-<!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
+  <!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
   </PropertyGroup>
@@ -26,5 +26,16 @@
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.*" />
  </ItemGroup>
   
+  <ItemGroup>
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Interfaces\Agent.DiskAnalysisServices.Interfaces.csproj" />
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Data\Agent.DiskAnalysisServices.Data.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Agent.DiskAnalysisServices.settings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

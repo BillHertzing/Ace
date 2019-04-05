@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-<!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
   </PropertyGroup>
 
-<PropertyGroup>
+      <PropertyGroup>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
@@ -20,11 +19,15 @@
     <PackageLabel>NA</PackageLabel>
   </PropertyGroup>
 
-  <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.*" />
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.*" />
- </ItemGroup>
+    <PackageReference Include="ServiceStack" Version="5.4.1" />
+    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+  </ItemGroup>
   
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
+    <ProjectReference Include="..\Agent.RealEstateServices.Data\Agent.RealEstateServices.Data.csproj" />
+  </ItemGroup>
 
 </Project>
