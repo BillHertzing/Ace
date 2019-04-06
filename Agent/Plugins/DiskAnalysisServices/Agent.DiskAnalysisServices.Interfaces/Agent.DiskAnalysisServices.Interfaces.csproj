@@ -20,14 +20,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.4.1" />
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
-    <ProjectReference Include="..\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
-    <ProjectReference Include="..\Agent.RealEstateServices.Data\Agent.RealEstateServices.Data.csproj" />
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Data\Agent.DiskAnalysisServices.Data.csproj" />
   </ItemGroup>
 
 </Project>
