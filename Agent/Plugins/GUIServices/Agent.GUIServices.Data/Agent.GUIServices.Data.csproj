@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" >
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
   <PropertyGroup>
@@ -23,7 +23,7 @@
   
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.4.1" />
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
     <ProjectReference Include="..\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
     <ProjectReference Include="..\Agent.GUIServices.Interfaces\Agent.GUIServices.Interfaces.csproj" />
   </ItemGroup>

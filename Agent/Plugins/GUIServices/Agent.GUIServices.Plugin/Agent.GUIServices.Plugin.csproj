@@ -18,7 +18,7 @@
   </PropertyGroup>
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.4.1" />
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
     <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
     <ProjectReference Include="..\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
     <ProjectReference Include="..\Agent.GUIServices.Interfaces\Agent.GUIServices.Interfaces.csproj" />
