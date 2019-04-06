@@ -38,7 +38,7 @@
     <MSBuildCommunityTasksPath>$(SolutionBuildToolsBaseDir)MSBuildTasks.*\build</MSBuildCommunityTasksPath>
     <!-- bring in the build tasks extensions defined in the ATAP.Utilities.BuildTooling project-->
     <!-- ATAPBuildToolingConfiguration is normaly set to Release; use Debug if developing the BuildTooling assemblies and scripts -->
-	  <ATAPBuildToolingConfiguration>Release</ATAPBuildToolingConfiguration>
+	  <ATAPBuildToolingConfiguration>Debug</ATAPBuildToolingConfiguration>
     <!-- ATAPBuildToolingDebugVerbosity controls the level of details the Debug mode logging. If ATAPBuildToolingConfiguration is not Debug, this setting has no effect -->
     <!-- valid values for ATAPBuildToolingDebugVerbosity are trace -->
     <ATAPBuildToolingDebugVerbosity>Trace</ATAPBuildToolingDebugVerbosity>

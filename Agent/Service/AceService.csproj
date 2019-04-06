@@ -21,11 +21,11 @@
 
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.4.1" />
-    <PackageReference Include="ServiceStack.Client" Version="5.4.1" />
-    <PackageReference Include="ServiceStack.Redis" Version="5.4.1" />
-    <PackageReference Include="Topshelf" Version="4.0.4" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0"/>
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Client" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Redis" Version="5.5.1" />
+    <PackageReference Include="Topshelf" Version="4.2.0.205-develop" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
   
   <!-- .NET 4 or greater references, compilation flags and build options -->

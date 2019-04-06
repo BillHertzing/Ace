@@ -23,10 +23,10 @@
 
   <ItemGroup>
     <PackageReference Include="Polly" Version="6.1.0" />
-    <PackageReference Include="ServiceStack" Version="5.4.0" />
-    <PackageReference Include="ServiceStack.OrmLite.MySql" Version="5.4.0" />
-    <PackageReference Include="ServiceStack.Redis" Version="5.4.1" />
-    <PackageReference Include="ServiceStack.Server" Version="5.4.0" />
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.OrmLite.MySql" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Redis" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Server" Version="5.5.1" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
  </ItemGroup>
 

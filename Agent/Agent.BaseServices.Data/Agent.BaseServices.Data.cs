@@ -137,7 +137,7 @@ namespace Ace.Agent.BaseServices {
       var gb = new GatewayBuilder();
       gb.AddName("GoogleMaps");
       gb.AddBaseUri(new Uri("https://maps.googleapis.com/maps/api/"));
-      gb.AddDefaultPolicy(defaultPolicy);
+     //gb.AddDefaultPolicy(defaultPolicy);
       // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
       gb.AddDefaultAPIKey(defaultAPIKey);
       gb.AddGatewayEntry(ge);
