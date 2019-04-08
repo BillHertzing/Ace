@@ -11,45 +11,45 @@ namespace Ace.Agent.DiskAnalysisServices
   }
   public class DiskAnalysisServicesInitializationResponse
   {
-    public DiskAnalysisServicesInitializationResponse() : this(new DiskAnalysisServicesInitializationResponseData()) { }
-    public DiskAnalysisServicesInitializationResponse(DiskAnalysisServicesInitializationResponseData diskAnalysisServicesInitializationResponseData)
+    public DiskAnalysisServicesInitializationResponse() : this(new DiskAnalysisServicesInitializationResponsePayload()) { }
+    public DiskAnalysisServicesInitializationResponse(DiskAnalysisServicesInitializationResponsePayload diskAnalysisServicesInitializationResponseData)
     {
       DiskAnalysisServicesInitializationResponseData = diskAnalysisServicesInitializationResponseData;
     }
-    public DiskAnalysisServicesInitializationResponseData DiskAnalysisServicesInitializationResponseData { get; set; }
+    public DiskAnalysisServicesInitializationResponsePayload DiskAnalysisServicesInitializationResponseData { get; set; }
   }
   #endregion DiskAnalysisServicesInitialization
 
   #region SetDiskAnalysisServicesConfigurationData
   [Route("/SetDiskAnalysisServicesConfigurationData")]
-  public class SetDiskAnalysisServicesConfigurationDataRequest : IReturn<SetDiskAnalysisServicesConfigurationDataResponse>
+  public class SetDiskAnalysisServicesConfigurationDataRequest : IReturn<SetDiskAnalysisServicesConfigurationDataResponsePayload>
   {
-    public SetDiskAnalysisServicesConfigurationDataRequestData SetDiskAnalysisServicesConfigurationDataRequestData { get; set; }
+    public SetDiskAnalysisServicesConfigurationDataRequestPayload SetDiskAnalysisServicesConfigurationDataRequestData { get; set; }
   }
   #endregion SetDiskAnalysisServicesConfigurationData
   #region GetDiskAnalysisServicesConfigurationData
   [Route("/GetDiskAnalysisServicesConfigurationData")]
-  [Route("/GetDiskAnalysisServicesConfigurationData/{GetDiskAnalysisServicesConfigurationDataRequestData}")]
-  public class GetDiskAnalysisServicesConfigurationDataRequest : IReturn<GetDiskAnalysisServicesConfigurationDataResponse>
+  [Route("/GetDiskAnalysisServicesConfigurationData/{GetDiskAnalysisServicesConfigurationDataRequestPayload}")]
+  public class GetDiskAnalysisServicesConfigurationDataRequest : IReturn<GetDiskAnalysisServicesConfigurationDataResponsePayload>
   {
-    public GetDiskAnalysisServicesConfigurationDataRequestData GetDiskAnalysisServicesConfigurationDataRequestData { get; set; }
+    public GetDiskAnalysisServicesConfigurationDataRequestPayload GetDiskAnalysisServicesConfigurationDataRequestData { get; set; }
   }
   #endregion GetDiskAnalysisServicesConfigurationData
 
   #region SetDiskAnalysisServicesUserData
   [Route("/SetDiskAnalysisServicesUserData")]
-  [Route("/SetDiskAnalysisServicesUserData/{SetDiskAnalysisServicesUserDataRequestData}")]
-  public class SetDiskAnalysisServicesUserDataRequest : IReturn<SetDiskAnalysisServicesUserDataResponse>
+  [Route("/SetDiskAnalysisServicesUserData/{SetDiskAnalysisServicesUserRequestPayload}")]
+  public class SetDiskAnalysisServicesUserDataRequest : IReturn<SetDiskAnalysisServicesUserDataResponsePayload>
   {
-    public SetDiskAnalysisServicesUserDataRequestData SetDiskAnalysisServicesUserDataRequestData { get; set; }
+    public SetDiskAnalysisServicesUserDataRequestPayload SetDiskAnalysisServicesUserDataRequestData { get; set; }
   }
   #endregion SetDiskAnalysisServicesUserData
   #region GetDiskAnalysisServicesUserData
   [Route("/GetDiskAnalysisServicesUserData")]
-  [Route("/GetDiskAnalysisServicesUserData/{GetDiskAnalysisServicesUserDataRequestData}")]
-  public class GetDiskAnalysisServicesUserDataRequest : IReturn<GetDiskAnalysisServicesUserDataResponse>
+  [Route("/GetDiskAnalysisServicesUserData/{GetDiskAnalysisServicesUserDataRequestPayload}")]
+  public class GetDiskAnalysisServicesUserDataRequest : IReturn<GetDiskAnalysisServicesUserDataResponsePayload>
   {
-    public GetDiskAnalysisServicesUserDataRequestData GetDiskAnalysisServicesUserDataRequestData { get; set; }
+    public GetDiskAnalysisServicesUserDataRequestPayload GetDiskAnalysisServicesUserDataRequestData { get; set; }
   }
   #endregion SetDiskAnalysisServicesUserData
 

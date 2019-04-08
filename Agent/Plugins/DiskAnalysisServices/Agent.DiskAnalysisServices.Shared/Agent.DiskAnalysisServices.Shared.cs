@@ -66,12 +66,12 @@ namespace Ace.Agent.DiskAnalysisServices
   #endregion DiskAnalysisServicesReadDiskData
 
   #region DiskAnalysisServicesSetConfigurationData
-  public class SetDiskAnalysisServicesConfigurationDataRequestData
+  public class SetDiskAnalysisServicesConfigurationDataRequestPayload
   {
-    public SetDiskAnalysisServicesConfigurationDataRequestData() : this(new DiskAnalysisServicesConfigurationData(),
+    public SetDiskAnalysisServicesConfigurationDataRequestPayload() : this(new DiskAnalysisServicesConfigurationData(),
                                                                             false)
     { }
-    public SetDiskAnalysisServicesConfigurationDataRequestData(DiskAnalysisServicesConfigurationData diskAnalysisServicesConfigurationData, bool saveConfigurationData)
+    public SetDiskAnalysisServicesConfigurationDataRequestPayload(DiskAnalysisServicesConfigurationData diskAnalysisServicesConfigurationData, bool saveConfigurationData)
     {
       DiskAnalysisServicesConfigurationData = diskAnalysisServicesConfigurationData;
       SaveConfigurationData = saveConfigurationData;
@@ -82,10 +82,10 @@ namespace Ace.Agent.DiskAnalysisServices
     public bool SaveConfigurationData { get; set; }
   }
 
-  public class SetDiskAnalysisServicesConfigurationDataResponse
+  public class SetDiskAnalysisServicesConfigurationDataResponsePayload
   {
-    public SetDiskAnalysisServicesConfigurationDataResponse() : this(string.Empty) { }
-    public SetDiskAnalysisServicesConfigurationDataResponse(string result) { Result = result; }
+    public SetDiskAnalysisServicesConfigurationDataResponsePayload() : this(string.Empty) { }
+    public SetDiskAnalysisServicesConfigurationDataResponsePayload(string result) { Result = result; }
 
     public string Result { get; set; }
   }
@@ -93,19 +93,19 @@ namespace Ace.Agent.DiskAnalysisServices
   #endregion DiskAnalysisServicesSetConfigurationData
 
   #region DiskAnalysisServicesGetConfigurationData
-  public class GetDiskAnalysisServicesConfigurationDataRequestData
+  public class GetDiskAnalysisServicesConfigurationDataRequestPayload
   {
-    public GetDiskAnalysisServicesConfigurationDataRequestData() : this(string.Empty) { }
-    public GetDiskAnalysisServicesConfigurationDataRequestData(string placeholder) { Placeholder = placeholder; }
+    public GetDiskAnalysisServicesConfigurationDataRequestPayload() : this(string.Empty) { }
+    public GetDiskAnalysisServicesConfigurationDataRequestPayload(string placeholder) { Placeholder = placeholder; }
 
     public string Placeholder { get; set; }
   }
 
-  public class GetDiskAnalysisServicesConfigurationDataResponse
+  public class GetDiskAnalysisServicesConfigurationDataResponsePayload
   {
-    public GetDiskAnalysisServicesConfigurationDataResponse() : this(new DiskAnalysisServicesConfigurationData())
+    public GetDiskAnalysisServicesConfigurationDataResponsePayload() : this(new DiskAnalysisServicesConfigurationData())
     { }
-    public GetDiskAnalysisServicesConfigurationDataResponse(DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData)
+    public GetDiskAnalysisServicesConfigurationDataResponsePayload(DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData)
     { DiskAnalysisServicesConfigurationData = DiskAnalysisServicesConfigurationData; }
 
     public DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData { get; set; }
@@ -114,11 +114,11 @@ namespace Ace.Agent.DiskAnalysisServices
   #endregion DiskAnalysisServicesGetConfigurationData
 
   #region DiskAnalysisServicesSetUserData
-  public class SetDiskAnalysisServicesUserDataRequestData
+  public class SetDiskAnalysisServicesUserDataRequestPayload
   {
-    public SetDiskAnalysisServicesUserDataRequestData() : this(new DiskAnalysisServicesUserData(), false) { }
+    public SetDiskAnalysisServicesUserDataRequestPayload() : this(new DiskAnalysisServicesUserData(), false) { }
 
-    public SetDiskAnalysisServicesUserDataRequestData(DiskAnalysisServicesUserData DiskAnalysisServicesUserData, bool userDataSave)
+    public SetDiskAnalysisServicesUserDataRequestPayload(DiskAnalysisServicesUserData DiskAnalysisServicesUserData, bool userDataSave)
     {
       DiskAnalysisServicesUserData = DiskAnalysisServicesUserData;
       UserDataSave = userDataSave;
@@ -129,7 +129,7 @@ namespace Ace.Agent.DiskAnalysisServices
     public bool UserDataSave { get; set; }
   }
 
-  public class SetDiskAnalysisServicesUserDataResponse
+  public class SetDiskAnalysisServicesUserDataResponsePayload
   {
     public string Result { get; set; }
   }
@@ -137,18 +137,18 @@ namespace Ace.Agent.DiskAnalysisServices
   #endregion DiskAnalysisServicesSetUserData
 
   #region DiskAnalysisServicesGetUserData
-  public class GetDiskAnalysisServicesUserDataRequestData
+  public class GetDiskAnalysisServicesUserDataRequestPayload
   {
-    public GetDiskAnalysisServicesUserDataRequestData() : this(string.Empty) { }
-    public GetDiskAnalysisServicesUserDataRequestData(string placeholder) { Placeholder = placeholder; }
+    public GetDiskAnalysisServicesUserDataRequestPayload() : this(string.Empty) { }
+    public GetDiskAnalysisServicesUserDataRequestPayload(string placeholder) { Placeholder = placeholder; }
 
     public string Placeholder { get; set; }
   }
 
-  public class GetDiskAnalysisServicesUserDataResponse
+  public class GetDiskAnalysisServicesUserDataResponsePayload
   {
-    public GetDiskAnalysisServicesUserDataResponse() : this(new DiskAnalysisServicesUserData()) { }
-    public GetDiskAnalysisServicesUserDataResponse(DiskAnalysisServicesUserData DiskAnalysisServicesUserData)
+    public GetDiskAnalysisServicesUserDataResponsePayload() : this(new DiskAnalysisServicesUserData()) { }
+    public GetDiskAnalysisServicesUserDataResponsePayload(DiskAnalysisServicesUserData DiskAnalysisServicesUserData)
     { this.DiskAnalysisServicesUserData = DiskAnalysisServicesUserData; }
 
     public DiskAnalysisServicesUserData DiskAnalysisServicesUserData { get; set; }
@@ -203,12 +203,12 @@ namespace Ace.Agent.DiskAnalysisServices
     public DiskAnalysisServicesInitializationData DiskAnalysisServicesInitializationData { get; set; }
   }
 
-  public class DiskAnalysisServicesInitializationResponseData
+  public class DiskAnalysisServicesInitializationResponsePayload
   {
-    public DiskAnalysisServicesInitializationResponseData() : this(new DiskAnalysisServicesConfigurationData(),
+    public DiskAnalysisServicesInitializationResponsePayload() : this(new DiskAnalysisServicesConfigurationData(),
                                                                        new DiskAnalysisServicesUserData())
     { }
-    public DiskAnalysisServicesInitializationResponseData(DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData, DiskAnalysisServicesUserData DiskAnalysisServicesUserData)
+    public DiskAnalysisServicesInitializationResponsePayload(DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData, DiskAnalysisServicesUserData DiskAnalysisServicesUserData)
     {
       DiskAnalysisServicesConfigurationData = DiskAnalysisServicesConfigurationData;
       DiskAnalysisServicesUserData = DiskAnalysisServicesUserData;

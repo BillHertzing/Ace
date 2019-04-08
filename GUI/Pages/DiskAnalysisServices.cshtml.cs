@@ -84,16 +84,16 @@ namespace Ace.AceGUI.Pages {
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData = new DiskAnalysisServicesConfigurationData(Google_API_URI,
                                                                                                                                                 HomeAway_API_URI);
-            SetDiskAnalysisServicesConfigurationDataRequestData setDiskAnalysisServicesConfigurationDataRequestData = new SetDiskAnalysisServicesConfigurationDataRequestData(DiskAnalysisServicesConfigurationData,
+            SetDiskAnalysisServicesConfigurationDataRequestPayload setDiskAnalysisServicesConfigurationDataRequestData = new SetDiskAnalysisServicesConfigurationDataRequestPayload(DiskAnalysisServicesConfigurationData,
                                                                                                                                                                                           ConfigurationDataSave);
             SetDiskAnalysisServicesConfigurationDataRequest setDiskAnalysisServicesConfigurationDataRequest = new SetDiskAnalysisServicesConfigurationDataRequest();
             setDiskAnalysisServicesConfigurationDataRequest.SetDiskAnalysisServicesConfigurationDataRequestData = setDiskAnalysisServicesConfigurationDataRequestData;
             //var DiskAnalysisServicesConfigurationDataEncoded =  new FormUrlEncodedContent(DiskAnalysisServicesConfigurationData);
-            Logger.LogDebug($"Calling GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse> with SetDiskAnalysisServicesConfigurationDataRequestData = {setDiskAnalysisServicesConfigurationDataRequestData}");
+            Logger.LogDebug($"Calling GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponsePayload> with SetDiskAnalysisServicesConfigurationDataRequestPayload = {setDiskAnalysisServicesConfigurationDataRequestData}");
             SetDiskAnalysisServicesConfigurationDataResponse =
-await HttpClient.PostJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse>("/SetDiskAnalysisServicesConfigurationData?format=json",
+await HttpClient.PostJsonAsync<SetDiskAnalysisServicesConfigurationDataResponsePayload>("/SetDiskAnalysisServicesConfigurationData?format=json",
                                                                                      setDiskAnalysisServicesConfigurationDataRequest);
-            Logger.LogDebug($"Returned from GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse> with SetDiskAnalysisServicesConfigurationDataResponse = {SetDiskAnalysisServicesConfigurationDataResponse}");
+            Logger.LogDebug($"Returned from GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponsePayload> with SetDiskAnalysisServicesConfigurationDataResponsePayload = {SetDiskAnalysisServicesConfigurationDataResponse}");
             Logger.LogDebug($"Leaving SetDiskAnalysisServicesConfigurationData");
         }
 
@@ -101,16 +101,16 @@ await HttpClient.PostJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse>
             Logger.LogDebug($"Starting SetDiskAnalysisServicesUserData");
             // Create the payload for the Post
             DiskAnalysisServicesUserData diskAnalysisServicesUserData = new DiskAnalysisServicesUserData("placeholder");
-            SetDiskAnalysisServicesUserDataRequestData setDiskAnalysisServicesUserDataRequestData = new SetDiskAnalysisServicesUserDataRequestData(diskAnalysisServicesUserData,
+            SetDiskAnalysisServicesUserDataRequestPayload setDiskAnalysisServicesUserDataRequestData = new SetDiskAnalysisServicesUserDataRequestPayload(diskAnalysisServicesUserData,
 diskAnalysisServicesUserDataSave);
             SetDiskAnalysisServicesUserDataRequest setDiskAnalysisServicesUserDataRequest = new SetDiskAnalysisServicesUserDataRequest();
             setDiskAnalysisServicesUserDataRequest.SetDiskAnalysisServicesUserDataRequestData = setDiskAnalysisServicesUserDataRequestData;
-            Logger.LogDebug($"Calling PostJsonAsync<SetDiskAnalysisServicesUserDataResponse>");
+            Logger.LogDebug($"Calling PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>");
             SetDiskAnalysisServicesUserDataResponse =
-await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponse>("/SetDiskAnalysisServicesUserData?format=json",
+await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>("/SetDiskAnalysisServicesUserData?format=json",
                                                                             setDiskAnalysisServicesUserDataRequest);
-            Logger.LogDebug($"Returned from PostJsonAsync<SetDiskAnalysisServicesUserDataResponse>");
-            //Logger.LogDebug($"Returned from PostJsonAsync<SetDiskAnalysisServicesUserDataResponse> with SetDiskAnalysisServicesConfigurationDataResponse.Result = {SetDiskAnalysisServicesConfigurationDataResponse.Result}");
+            Logger.LogDebug($"Returned from PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>");
+            //Logger.LogDebug($"Returned from PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload> with SetDiskAnalysisServicesConfigurationDataResponsePayload.Result = {SetDiskAnalysisServicesConfigurationDataResponsePayload.Result}");
             Logger.LogDebug($"Leaving SetDiskAnalysisServicesUserData");
         }
 
@@ -143,7 +143,7 @@ await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponse>("/SetDis
 
         public bool UserDataSave { get; set; }
 
-        public SetDiskAnalysisServicesUserDataResponse SetDiskAnalysisServicesUserDataResponse {
+        public SetDiskAnalysisServicesUserDataResponsePayload SetDiskAnalysisServicesUserDataResponse {
             get;
             set;
         }
@@ -156,7 +156,7 @@ await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponse>("/SetDis
 
         public bool ConfigurationDataSave { get; set; }
 
-        public SetDiskAnalysisServicesConfigurationDataResponse SetDiskAnalysisServicesConfigurationDataResponse {
+        public SetDiskAnalysisServicesConfigurationDataResponsePayload SetDiskAnalysisServicesConfigurationDataResponse {
             get;
             set;
         }

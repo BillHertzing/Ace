@@ -33,7 +33,7 @@ namespace Ace.Agent.DiskAnalysisServices
       DiskAnalysisServicesUserData diskAnalysisServicesUserData = new DiskAnalysisServicesUserData(placeholderUserData);
 
       // Create and populate the Response data structure
-      DiskAnalysisServicesInitializationResponseData DiskAnalysisServicesInitializationResponseData = new DiskAnalysisServicesInitializationResponseData(diskAnalysisServicesConfigurationData, diskAnalysisServicesUserData);
+      DiskAnalysisServicesInitializationResponsePayload DiskAnalysisServicesInitializationResponseData = new DiskAnalysisServicesInitializationResponsePayload(diskAnalysisServicesConfigurationData, diskAnalysisServicesUserData);
       DiskAnalysisServicesInitializationResponse DiskAnalysisServicesInitializationResponse = new DiskAnalysisServicesInitializationResponse(DiskAnalysisServicesInitializationResponseData);
       // return information about this service/user/session
       Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {DiskAnalysisServicesInitializationResponse}");
@@ -43,7 +43,7 @@ namespace Ace.Agent.DiskAnalysisServices
     public object Post(SetDiskAnalysisServicesConfigurationDataRequest request)
     {
       Log.Debug("starting Post(SetDiskAnalysisServicesConfigurationDataRequest request)");
-      SetDiskAnalysisServicesConfigurationDataRequestData setDiskAnalysisServicesConfigurationDataRequestData = request.SetDiskAnalysisServicesConfigurationDataRequestData;
+      SetDiskAnalysisServicesConfigurationDataRequestPayload setDiskAnalysisServicesConfigurationDataRequestData = request.SetDiskAnalysisServicesConfigurationDataRequestData;
       DiskAnalysisServicesConfigurationData diskAnalysisServicesConfigurationData = setDiskAnalysisServicesConfigurationDataRequestData.DiskAnalysisServicesConfigurationData;
       Log.Debug($"You sent me DiskAnalysisServicesConfigurationData = {diskAnalysisServicesConfigurationData}");
       // Update the DiskAnalysisServicesConfigurationData in the Data assembly
@@ -51,19 +51,19 @@ namespace Ace.Agent.DiskAnalysisServices
       // return information about this service/user/session
       string result = "OK";
       Log.Debug($"leaving Any(SetDiskAnalysisServicesConfigurationDataRequest request), returning {result}");
-      return new SetDiskAnalysisServicesConfigurationDataResponse { Result = result };
+      return new SetDiskAnalysisServicesConfigurationDataResponsePayload { Result = result };
     }
     public object Post(SetDiskAnalysisServicesUserDataRequest request)
     {
       Log.Debug("starting Post(SetDiskAnalysisServicesUserDataRequest request)");
-      SetDiskAnalysisServicesUserDataRequestData setDiskAnalysisServicesUserDataRequestData = request.SetDiskAnalysisServicesUserDataRequestData;
+      SetDiskAnalysisServicesUserDataRequestPayload setDiskAnalysisServicesUserDataRequestData = request.SetDiskAnalysisServicesUserDataRequestData;
       DiskAnalysisServicesUserData DiskAnalysisServicesUserData = setDiskAnalysisServicesUserDataRequestData.DiskAnalysisServicesUserData;
       Log.Debug($"You sent me DiskAnalysisServicesUserData = {DiskAnalysisServicesUserData}");
       DiskAnalysisServicesUserData.Placeholder = DiskAnalysisServicesUserData.Placeholder;
       // return information about this service/user/session
       string result = "OK";
       Log.Debug($"leaving Post(SetDiskAnalysisServicesUserDataRequest request), returning {result}");
-      return new SetDiskAnalysisServicesConfigurationDataResponse { Result = result };
+      return new SetDiskAnalysisServicesConfigurationDataResponsePayload { Result = result };
     }
      public object Post(ReadDiskRequest request)
     {
