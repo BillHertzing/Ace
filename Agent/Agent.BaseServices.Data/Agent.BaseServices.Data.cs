@@ -24,8 +24,11 @@ namespace Ace.Agent.BaseServices {
       // ServiceStack by default will not allow downloading a static file with "json" extensions
       // Configure ServiceStack to allow the delivery of static files that end in json
       appHost.Config.AllowFileExtensions.Add("json");
+      // Hmm Allow DLLs seems to have gotten lost
+      appHost.Config.AllowFileExtensions.Add("dll");
 
-            // If the Redis configuration key exists, register Redis as a name:value pair cache
+
+      // If the Redis configuration key exists, register Redis as a name:value pair cache
       if (appHost.AppSettings
                 .Exists(configKeyPrefix + configKeyRedisConnectionString)) {
                 var appSettingsConfigValueRedisConnectionString = appHost.AppSettings

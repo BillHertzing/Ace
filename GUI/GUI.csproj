@@ -33,6 +33,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Agent\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
     <ProjectReference Include="..\Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
@@ -62,6 +64,15 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Pages\BaseServicesGeoLocation.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\DiskAnalysisServicesUserData.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\DiskAnalysisServicesConfigurationData.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\DiskAnalysisServices.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

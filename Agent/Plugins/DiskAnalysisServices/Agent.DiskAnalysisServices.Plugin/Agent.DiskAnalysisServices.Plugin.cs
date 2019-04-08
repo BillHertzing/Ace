@@ -93,7 +93,7 @@ namespace Ace.Agent.DiskAnalysisServices
 
       // Populate this Plugin's Gateways
       // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
-      var pluginGateways = new MultiGatewaysBuilder()
+      //var pluginGateways = new MultiGatewaysBuilder()
     // Command line flags have highest priority
     // next in priority are  Environment variables
     //.AddEnvironmentalVariables()
@@ -101,13 +101,13 @@ namespace Ace.Agent.DiskAnalysisServices
     //.AddTextFile(pluginGatewaysTextFileName)
     // Builtin (compiled in) have the lowest priority
     //.AddDictionarySettings(DefaultGateways.Configuration())
-    .Build();
+    //.Build();
 
 
 
       // Create a Gateways collection from the txt file
-      ConcurrentObservableDictionary<string, IGateway> gateways = new ConcurrentObservableDictionary<string, IGateway>();
-      gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().Build());
+      //ConcurrentObservableDictionary<string, IGateway> gateways = new ConcurrentObservableDictionary<string, IGateway>();
+      //gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().Build());
       // Create the Plugin's data structure. There should only be a single instance.
       // Every Property matching a ConfigKey gets/sets the value of the matching ConfigKey in the cache
       // ConfigKey Properties do not have to be set in the constructor because the cache was setup before calling the constructor
@@ -117,12 +117,12 @@ namespace Ace.Agent.DiskAnalysisServices
 
       // copy the most recent configuration settings to the Data
       // hmm should be a way to make sure the Data has a Property for each configuration setting, and to populate the initial Data with the cache value
-      DiskAnalysisServicesData.GoogleAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "GoogleAPIKeyEncrypted");
-      DiskAnalysisServicesData.HomeAwayAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "HomeAwayAPIKeyEncrypted");
-      DiskAnalysisServicesData.HomeAway_API_URI = cacheClient.Get<string>(configKeyPrefix + "HomeAway_API_URI");
-      DiskAnalysisServicesData.Google_API_URI = cacheClient.Get<string>(configKeyPrefix + "Google_API_URI");
-      DiskAnalysisServicesData.UriHomeAway_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriHomeAway_API_URI");
-      DiskAnalysisServicesData.UriGoogle_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriGoogle_API_URI");
+     // DiskAnalysisServicesData.GoogleAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "GoogleAPIKeyEncrypted");
+      //DiskAnalysisServicesData.HomeAwayAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "HomeAwayAPIKeyEncrypted");
+      //DiskAnalysisServicesData.HomeAway_API_URI = cacheClient.Get<string>(configKeyPrefix + "HomeAway_API_URI");
+     // DiskAnalysisServicesData.Google_API_URI = cacheClient.Get<string>(configKeyPrefix + "Google_API_URI");
+      //DiskAnalysisServicesData.UriHomeAway_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriHomeAway_API_URI");
+      //DiskAnalysisServicesData.UriGoogle_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriGoogle_API_URI");
 
       // and pass the Plugin's data structure to the container so it will be available to every other module and services
       appHost.GetContainer()

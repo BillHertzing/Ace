@@ -16,21 +16,24 @@ namespace Ace.Agent.DiskAnalysisServices
      public object Post(DiskAnalysisServicesInitializationRequest request)
     {
       Log.Debug("starting Post(DiskAnalysisServicesInitializationRequest request)");
-      DiskAnalysisServicesInitializationDataRequestData DiskAnalysisServicesInitializationDataRequestData = request.DiskAnalysisServicesInitializationDataRequestData;
+      DiskAnalysisServicesInitializationDataRequestData diskAnalysisServicesInitializationDataRequestData = request.DiskAnalysisServicesInitializationDataRequestData;
       //Log.Debug($"You sent me DiskAnalysisServicesInitializationDataRequestData = {DiskAnalysisServicesInitializationDataRequestData}");
       //Log.Debug($"You sent me DiskAnalysisServicesInitializationData = {DiskAnalysisServicesInitializationDataRequestData.DiskAnalysisServicesInitializationData}");
-      // Initialize a machine datastructure for this service/user/session/connection
-      // Initialize a user datastructure for this service/user/session/connection
+      // Initialize the plugin's datastructure for this service/user/session/connection
+      DiskAnalysisServicesInitializationData diskAnalysisServicesInitializationData = diskAnalysisServicesInitializationDataRequestData.DiskAnalysisServicesInitializationData;
 
-      // populate the ConfigurationData response structures
-      string placeholder = (DiskAnalysisServicesData.Placeholder != null) ? DiskAnalysisServicesData.Placeholder : "placeholderNotDefined";
-      DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData = new DiskAnalysisServicesConfigurationData(placeholder);
-      // populate the UserData response structures
-      string placeholderUserData = (DiskAnalysisServicesData.Placeholder != null) ? DiskAnalysisServicesData.Placeholder : "PlaceholderUserData needed";
-      DiskAnalysisServicesUserData DiskAnalysisServicesUserData = new DiskAnalysisServicesUserData(placeholderUserData);
+      // ToDo: populate the plugin's datastructure's post-initialization data fields
+      // Create and populate an instance of the DiskAnalysisServicesConfigurationData
+      //string placeholderConfigurationData = (DiskAnalysisServicesConfigurationData.Placeholder != null) ? DiskAnalysisServicesConfigurationData.Placeholder : "placeholderConfigurationNotDefined";
+      string placeholderConfigurationData = string.Empty;
+      DiskAnalysisServicesConfigurationData diskAnalysisServicesConfigurationData = new DiskAnalysisServicesConfigurationData(placeholderConfigurationData);
+      // Create and populate an instance of the DiskAnalysisServicesUserData
+      string placeholderUserData = string.Empty;
+      //string placeholderUserData = (DiskAnalysisServicesUserData.Placeholder != null) ? DiskAnalysisServicesUserData.Placeholder : "PlaceholderUserData needed";
+      DiskAnalysisServicesUserData diskAnalysisServicesUserData = new DiskAnalysisServicesUserData(placeholderUserData);
 
       // Create and populate the Response data structure
-      DiskAnalysisServicesInitializationResponseData DiskAnalysisServicesInitializationResponseData = new DiskAnalysisServicesInitializationResponseData(DiskAnalysisServicesConfigurationData, DiskAnalysisServicesUserData);
+      DiskAnalysisServicesInitializationResponseData DiskAnalysisServicesInitializationResponseData = new DiskAnalysisServicesInitializationResponseData(diskAnalysisServicesConfigurationData, diskAnalysisServicesUserData);
       DiskAnalysisServicesInitializationResponse DiskAnalysisServicesInitializationResponse = new DiskAnalysisServicesInitializationResponse(DiskAnalysisServicesInitializationResponseData);
       // return information about this service/user/session
       Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {DiskAnalysisServicesInitializationResponse}");
@@ -41,9 +44,10 @@ namespace Ace.Agent.DiskAnalysisServices
     {
       Log.Debug("starting Post(SetDiskAnalysisServicesConfigurationDataRequest request)");
       SetDiskAnalysisServicesConfigurationDataRequestData setDiskAnalysisServicesConfigurationDataRequestData = request.SetDiskAnalysisServicesConfigurationDataRequestData;
-      DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData = setDiskAnalysisServicesConfigurationDataRequestData.DiskAnalysisServicesConfigurationData;
-      Log.Debug($"You sent me DiskAnalysisServicesConfigurationData = {DiskAnalysisServicesConfigurationData}");
-      DiskAnalysisServicesData.Placeholder = DiskAnalysisServicesConfigurationData.Placeholder;
+      DiskAnalysisServicesConfigurationData diskAnalysisServicesConfigurationData = setDiskAnalysisServicesConfigurationDataRequestData.DiskAnalysisServicesConfigurationData;
+      Log.Debug($"You sent me DiskAnalysisServicesConfigurationData = {diskAnalysisServicesConfigurationData}");
+      // Update the DiskAnalysisServicesConfigurationData in the Data assembly
+      //DiskAnalysisServicesConfigurationData.Placeholder = diskAnalysisServicesConfigurationData.Placeholder;
       // return information about this service/user/session
       string result = "OK";
       Log.Debug($"leaving Any(SetDiskAnalysisServicesConfigurationDataRequest request), returning {result}");
@@ -55,7 +59,7 @@ namespace Ace.Agent.DiskAnalysisServices
       SetDiskAnalysisServicesUserDataRequestData setDiskAnalysisServicesUserDataRequestData = request.SetDiskAnalysisServicesUserDataRequestData;
       DiskAnalysisServicesUserData DiskAnalysisServicesUserData = setDiskAnalysisServicesUserDataRequestData.DiskAnalysisServicesUserData;
       Log.Debug($"You sent me DiskAnalysisServicesUserData = {DiskAnalysisServicesUserData}");
-      DiskAnalysisServicesData.Placeholder = DiskAnalysisServicesUserData.Placeholder;
+      DiskAnalysisServicesUserData.Placeholder = DiskAnalysisServicesUserData.Placeholder;
       // return information about this service/user/session
       string result = "OK";
       Log.Debug($"leaving Post(SetDiskAnalysisServicesUserDataRequest request), returning {result}");
@@ -75,7 +79,7 @@ namespace Ace.Agent.DiskAnalysisServices
       // update the Plugin Data Structure with the data from the response
       //DiskAnalysisServicesData.PluginRootCOD.Add("test1", 100);
       Log.Debug("leaving Post(ReadDiskRequest)");
-      ReadDiskResponseData ReadDiskResponseData = new ReadDiskResponseData("Placeholder);
+      ReadDiskResponseData ReadDiskResponseData = new ReadDiskResponseData("Placeholder");
       ReadDiskResponsePayload ReadDiskResponsePayload = new ReadDiskResponsePayload(ReadDiskResponseData);
       ReadDiskResponse ReadDiskResponse = new ReadDiskResponse();
       ReadDiskResponse.ReadDiskResponsePayload = ReadDiskResponsePayload;

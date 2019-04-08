@@ -10,6 +10,7 @@ using System.Timers;
 using System.Windows.Forms;
 using Ace.Agent.BaseServices;
 using Ace.Agent.GUIServices;
+using Ace.Agent.DiskAnalysisServices;
 using Funq;
 using ServiceStack;
 using ServiceStack.Configuration;
@@ -133,6 +134,7 @@ namespace Ace.AceService {
       var plugInList = new List<IPlugin>() {
           //new RealEstateServicesPlugin(),
           //new MinerServicesPlugin(),
+          new DiskAnalysisServicesPlugin(),
           new GUIServicesPlugin()
       };
 

@@ -66,6 +66,7 @@
     <ProjectReference Include="..\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj" />
     <ProjectReference Include="..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
     <ProjectReference Include="..\Common\PlugIns\MinerServices\AceService.MinerServices.Plugin\AceService.MinerServices.Plugin.csproj" />
+    <ProjectReference Include="..\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Plugin\Agent.DiskAnalysisServices.Plugin.csproj" />
     <ProjectReference Include="..\PlugIns\GUIServices\Agent.GUIServices.Plugin\Agent.GUIServices.Plugin.csproj" />
     <ProjectReference Include="..\PlugIns\RealEstateServices\Agent.RealEstateServices.Plugin\Agent.RealEstateServices.Plugin.csproj" />
   </ItemGroup>

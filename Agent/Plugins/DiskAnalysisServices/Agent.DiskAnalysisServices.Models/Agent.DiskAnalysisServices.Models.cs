@@ -3,6 +3,23 @@ using ServiceStack;
 
 namespace Ace.Agent.DiskAnalysisServices
 {
+  #region DiskAnalysisServicesInitialization
+  [Route("/DiskAnalysisServicesInitialization")]
+  public class DiskAnalysisServicesInitializationRequest : IReturn<DiskAnalysisServicesInitializationResponse>
+  {
+    public DiskAnalysisServicesInitializationDataRequestData DiskAnalysisServicesInitializationDataRequestData { get; set; }
+  }
+  public class DiskAnalysisServicesInitializationResponse
+  {
+    public DiskAnalysisServicesInitializationResponse() : this(new DiskAnalysisServicesInitializationResponseData()) { }
+    public DiskAnalysisServicesInitializationResponse(DiskAnalysisServicesInitializationResponseData diskAnalysisServicesInitializationResponseData)
+    {
+      DiskAnalysisServicesInitializationResponseData = diskAnalysisServicesInitializationResponseData;
+    }
+    public DiskAnalysisServicesInitializationResponseData DiskAnalysisServicesInitializationResponseData { get; set; }
+  }
+  #endregion DiskAnalysisServicesInitialization
+
   #region SetDiskAnalysisServicesConfigurationData
   [Route("/SetDiskAnalysisServicesConfigurationData")]
   public class SetDiskAnalysisServicesConfigurationDataRequest : IReturn<SetDiskAnalysisServicesConfigurationDataResponse>
@@ -35,22 +52,6 @@ namespace Ace.Agent.DiskAnalysisServices
     public GetDiskAnalysisServicesUserDataRequestData GetDiskAnalysisServicesUserDataRequestData { get; set; }
   }
   #endregion SetDiskAnalysisServicesUserData
-
-  #region DiskAnalysisServicesInitialization
-  [Route("/DiskAnalysisServicesInitialization")]
-  public class DiskAnalysisServicesInitializationRequest : IReturn<DiskAnalysisServicesInitializationResponse>
-  {
-    public DiskAnalysisServicesInitializationDataRequestData DiskAnalysisServicesInitializationDataRequestData { get; set; }
-  }
-  public class DiskAnalysisServicesInitializationResponse
-  {
-    public DiskAnalysisServicesInitializationResponse() : this( new DiskAnalysisServicesInitializationResponseData()) { }
-    public DiskAnalysisServicesInitializationResponse(DiskAnalysisServicesInitializationResponseData DiskAnalysisServicesInitializationResponseData) {
-      DiskAnalysisServicesInitializationResponseData = DiskAnalysisServicesInitializationResponseData;
-    }
-    public DiskAnalysisServicesInitializationResponseData DiskAnalysisServicesInitializationResponseData { get; set; }
-  }
-  #endregion DiskAnalysisServicesInitialization
 
   #region ReadDisk
   [Route("/ReadDisk")]

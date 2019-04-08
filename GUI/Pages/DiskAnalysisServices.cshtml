@@ -1,0 +1,26 @@
+@page "/DiskAnalysisServices"
+@inherits Ace.AceGUI.Pages.DiskAnalysisServicesCodeBehind
+<h1>AceCommander Disk Analysis Services</h1>
+
+@if (@DiskAnalysisServicesInitializationResponse == null)
+{
+  <p><em>Loading (Calling onInitAsync)</em></p>
+}
+else
+{
+  <hr />
+  <button type="button" class="btn btn-default" onclick="@DiskAnalysis">Submit</button>
+
+  @if (@DiskAnalysisResponse == null)
+  {
+    <p>DiskAnalysis Information has not yet been submitted to Ace Commander</p>
+  }
+  else
+  {
+    <p>DiskAnalysis returned @DiskAnalysisResponse.ToString() </p>
+  }
+
+
+
+}
+
