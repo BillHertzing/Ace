@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.Extensions.Logging;
 
 namespace Ace.AceGUI.Pages {
-    public class DiskAnalysisServicesCodeBehind : BlazorComponent {
+    public class DiskAnalysisServicesCodeBehind : ComponentBase
+  {
         public const string labelForDiskAnalysisConfigurationDataSave = "save the DiskAnalysis Configuration data?";
         public const string labelForDiskAnalysisConfigurationDataPlaceholder = "Placeholder";
         // Eventually replace with localization

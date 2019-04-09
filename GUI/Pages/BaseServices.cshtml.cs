@@ -6,12 +6,13 @@ using Ace.Agent.BaseServices;
 using Blazor.Extensions.Logging;
 // Required for Blazor
 using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 // Required for the logger/logging
 using Microsoft.Extensions.Logging;
 
 namespace Ace.AceGUI.Pages {
-    public class BaseServicesCodeBehind : BlazorComponent {
+    public class BaseServicesCodeBehind : ComponentBase
+  {
     #region Configuration Data
     #endregion
 

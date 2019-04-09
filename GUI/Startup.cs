@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Blazor.Builder;
+using Microsoft.AspNetCore.Components.Builder;
+using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 // Both are required for the logger/logging
@@ -21,7 +22,7 @@ namespace GUI
       );
     }
 
-    public void Configure(IBlazorApplicationBuilder app)
+    public void Configure(IComponentsApplicationBuilder app)
     {
       app.AddComponent<App>("app");
     }

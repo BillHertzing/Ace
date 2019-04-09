@@ -16,7 +16,8 @@ using Microsoft.Extensions.Logging;
 //using ServiceStack.Auth
 
 namespace Ace.AceGUI.Pages {
-  public class BaseServicesUserRegistrationCodeBehind : BlazorComponent {
+  public class BaseServicesUserRegistrationCodeBehind : ComponentBase
+  {
    
     #region string constants
     // Eventually replace with localization

@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.Extensions.Logging;
 
 namespace Ace.AceGUI.Pages {
-    public class RealEstateServicesCodeBehind : BlazorComponent {
+    public class RealEstateServicesCodeBehind : ComponentBase
+  {
         public const string labelForConfigurationDataSave = "save the Configuration data?";
         public const string labelForGoogle_API_URI = "Enter Google API URI string";
         // Eventually replace with localization
