@@ -17,6 +17,8 @@ namespace Ace.AceGUI.Pages {
         // Eventually replace with localization
         public const string labelForSavingDiskAnalysisConfigurationDataPlaceholder = "save the DiskAnalysisConfigurationDataPlaceholder for this application?";
         public const string labelForSavingDiskAnalysisUserDataPlaceholder = "save the User data?";
+    // Add constant structures for configuration data and user data to be used when the GUI is displayed before it can initialize with the agent
+    // Eventually localized
 
     // This syntax adds to the class a Method that accesses the DI container, and retrieves the instance having the specified type from the DI container. In this case, we are accessing a builtin Blazor service that has registered a pre-configured and extended object as a HTTPClient type. This method call returns that object from the DI container  
     [Inject]
@@ -30,32 +32,14 @@ namespace Ace.AceGUI.Pages {
             Logger.LogDebug($"Starting OnInitAsync");
 
             DiskAnalysisServicesInitializationData diskAnalysisServicesInitializationData = new DiskAnalysisServicesInitializationData();
-            DiskAnalysisServicesInitializationDataRequestData diskAnalysisServicesInitializationDataRequestData = new DiskAnalysisServicesInitializationDataRequestData(DiskAnalysisServicesInitializationData);
-            Logger.LogDebug($"Calling PostJsonAsync<DiskAnalysisServicesInitializationResponse> with DiskAnalysisServicesInitializationDataRequestData ={DiskAnalysisServicesInitializationDataRequestData}");
+            DiskAnalysisServicesInitializationRequestPayload diskAnalysisServicesInitializationRequestPayload = new DiskAnalysisServicesInitializationRequestPayload(diskAnalysisServicesInitializationData);
+            Logger.LogDebug($"Calling PostJsonAsync<DiskAnalysisServicesInitializationResponse> with DiskAnalysisServicesInitializationRequestPayload ={diskAnalysisServicesInitializationData}");
             DiskAnalysisServicesInitializationResponse = await HttpClient.PostJsonAsync<DiskAnalysisServicesInitializationResponse>("DiskAnalysisServicesInitialization",
-                                                                                                                                            DiskAnalysisServicesInitializationDataRequestData);
-            Logger.LogDebug($"Returned from GetJsonAsync<DiskAnalysisServicesInitializationResponse>, DiskAnalysisServicesInitializationResponse = {DiskAnalysisServicesInitializationResponse}, DiskAnalysisServicesInitializationResponseData = {DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponseData}");
-            Google_API_URI = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponseData
-                .DiskAnalysisServicesConfigurationData
-                .Google_API_URI;
-            HomeAway_API_URI = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponseData
-                .DiskAnalysisServicesConfigurationData
-                .HomeAway_API_URI;
-            //decrypt
-            GoogleAPIKey = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponseData
-                .DiskAnalysisServicesUserData
-                .GoogleAPIKeyEncrypted;
-            //decrypt
-            GoogleAPIKeyPassPhrase = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponseData
-                .DiskAnalysisServicesUserData
-                .GoogleAPIKeyPassPhrase;
-            HomeAwayAPIKey = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponseData
-                .DiskAnalysisServicesUserData
-                .HomeAwayAPIKeyEncrypted;
-            HomeAwayAPIKeyPassPhrase = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponseData
-                .DiskAnalysisServicesUserData
-                .HomeAwayAPIKeyPassPhrase;
-
+                                                                                                                                            diskAnalysisServicesInitializationData);
+            Logger.LogDebug($"Returned from GetJsonAsync<DiskAnalysisServicesInitializationResponse>, DiskAnalysisServicesInitializationResponse = {DiskAnalysisServicesInitializationResponse}, DiskAnalysisServicesInitializationResponsePayload = {DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload}, DiskAnalysisServicesConfigurationData = {DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload.DiskAnalysisServicesConfigurationData}, DiskAnalysisServicesUserData = {DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload.DiskAnalysisServicesUserData}");
+      DiskAnalysisServicesUserData = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload.DiskAnalysisServicesUserData;
+      DiskAnalysisServicesConfigurationData = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload.DiskAnalysisServicesConfigurationData;
+      //ToDo: trigger screen refresh
             Logger.LogDebug($"Leaving OnInitAsync");
         }
 
@@ -63,16 +47,18 @@ namespace Ace.AceGUI.Pages {
             Logger.LogDebug($"Starting ReadDisk");
 
       // Create the payload for  the Post
-      ReadDiskRequestData readDiskRequestData = new ReadDiskRequestData(new ReadDiskParameters("placeholder"));
-
-            ReadDiskRequest ReadDiskRequest = new ReadDiskRequest();
-            ReadDiskRequest.ReadDiskRequestPayload = ReadDiskRequestPayload;
+      ReadDiskRequestData readDiskRequestData = new ReadDiskRequestData("placeholder");
+      //ToDo: add a cancellation token
+      ReadDiskRequestPayload readDiskRequestPayload = new ReadDiskRequestPayload(readDiskRequestData);
+            ReadDiskRequest readDiskRequest = new ReadDiskRequest();
             Logger.LogDebug($"Calling PostJsonAsync<ReadDiskResponse>");
-            ReadDiskResponse =
+      ReadDiskResponse readDiskResponse =
     await HttpClient.PostJsonAsync<ReadDiskResponse>("/ReadDisk?format=json",
-                                                           ReadDiskRequest);
+                                                           readDiskRequest);
             Logger.LogDebug($"Returned from PostJsonAsync<ReadDiskResponse>");
             // Do something with the results
+            // This should be a URL and and ID for connecting to a SSE, and the next step
+            // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
 
             Logger.LogDebug($"Leaving ReadDisk");
         }
@@ -82,29 +68,24 @@ namespace Ace.AceGUI.Pages {
             // Create the payload for the Post
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
-            DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData = new DiskAnalysisServicesConfigurationData(Google_API_URI,
-                                                                                                                                                HomeAway_API_URI);
-            SetDiskAnalysisServicesConfigurationDataRequestPayload setDiskAnalysisServicesConfigurationDataRequestData = new SetDiskAnalysisServicesConfigurationDataRequestPayload(DiskAnalysisServicesConfigurationData,
-                                                                                                                                                                                          ConfigurationDataSave);
+            SetDiskAnalysisServicesConfigurationDataRequestPayload setDiskAnalysisServicesConfigurationRequestPayload = new SetDiskAnalysisServicesConfigurationDataRequestPayload(DiskAnalysisServicesConfigurationData, ConfigurationDataSave);
             SetDiskAnalysisServicesConfigurationDataRequest setDiskAnalysisServicesConfigurationDataRequest = new SetDiskAnalysisServicesConfigurationDataRequest();
-            setDiskAnalysisServicesConfigurationDataRequest.SetDiskAnalysisServicesConfigurationDataRequestData = setDiskAnalysisServicesConfigurationDataRequestData;
-            //var DiskAnalysisServicesConfigurationDataEncoded =  new FormUrlEncodedContent(DiskAnalysisServicesConfigurationData);
-            Logger.LogDebug($"Calling GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponsePayload> with SetDiskAnalysisServicesConfigurationDataRequestPayload = {setDiskAnalysisServicesConfigurationDataRequestData}");
-            SetDiskAnalysisServicesConfigurationDataResponse =
-await HttpClient.PostJsonAsync<SetDiskAnalysisServicesConfigurationDataResponsePayload>("/SetDiskAnalysisServicesConfigurationData?format=json",
+            setDiskAnalysisServicesConfigurationDataRequest.SetDiskAnalysisServicesConfigurationDataRequestPayload = setDiskAnalysisServicesConfigurationRequestPayload;
+            Logger.LogDebug($"Calling GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse> with SetDiskAnalysisServicesConfigurationDataRequest = {setDiskAnalysisServicesConfigurationDataRequest}");
+      SetDiskAnalysisServicesConfigurationDataResponse setDiskAnalysisServicesConfigurationDataResponse =
+await HttpClient.PostJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse>("/SetDiskAnalysisServicesConfigurationData?format=json",
                                                                                      setDiskAnalysisServicesConfigurationDataRequest);
-            Logger.LogDebug($"Returned from GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponsePayload> with SetDiskAnalysisServicesConfigurationDataResponsePayload = {SetDiskAnalysisServicesConfigurationDataResponse}");
+            Logger.LogDebug($"Returned from GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse> with setDiskAnalysisServicesConfigurationDataResponse = {setDiskAnalysisServicesConfigurationDataResponse}");
             Logger.LogDebug($"Leaving SetDiskAnalysisServicesConfigurationData");
         }
 
         public async Task SetDiskAnalysisServicesUserData() {
             Logger.LogDebug($"Starting SetDiskAnalysisServicesUserData");
             // Create the payload for the Post
-            DiskAnalysisServicesUserData diskAnalysisServicesUserData = new DiskAnalysisServicesUserData("placeholder");
-            SetDiskAnalysisServicesUserDataRequestPayload setDiskAnalysisServicesUserDataRequestData = new SetDiskAnalysisServicesUserDataRequestPayload(diskAnalysisServicesUserData,
-diskAnalysisServicesUserDataSave);
+           SetDiskAnalysisServicesUserDataRequestPayload setDiskAnalysisServicesUserRequestPayload = new SetDiskAnalysisServicesUserDataRequestPayload(DiskAnalysisServicesUserData,
+UserDataSave);
             SetDiskAnalysisServicesUserDataRequest setDiskAnalysisServicesUserDataRequest = new SetDiskAnalysisServicesUserDataRequest();
-            setDiskAnalysisServicesUserDataRequest.SetDiskAnalysisServicesUserDataRequestData = setDiskAnalysisServicesUserDataRequestData;
+            setDiskAnalysisServicesUserDataRequest.SetDiskAnalysisServicesUserDataRequestPayload = setDiskAnalysisServicesUserRequestPayload;
             Logger.LogDebug($"Calling PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>");
             SetDiskAnalysisServicesUserDataResponse =
 await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>("/SetDiskAnalysisServicesUserData?format=json",
@@ -122,24 +103,9 @@ await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>("
         set;
     }
 
-    #region PropertiesUserData
-        public string GoogleAPIKeyPassPhrase { get; set; }
+    #region DiskAnalysisServicesUserData
+    public DiskAnalysisServicesUserData DiskAnalysisServicesUserData { get; set; }
 
-        public string GoogleAPIKeyPassPhrasePlaceHolder { get; set; } = placeHolderForGoogleAPIKeyPassPhrase;
-
-        public bool GoogleAPIKeyPassPhraseSave { get; set; }
-
-        public string HomeAwayAPIKeyPassPhrase { get; set; }
-
-        public string HomeAwayAPIKeyPassPhrasePlaceHolder { get; set; } = placeHolderForHomeAwayAPIKeyPassPhrase;
-
-        public string HomeAwayAPIKey { get; set; }
-
-        public string HomeAwayAPIKeyPlaceHolder { get; set; } = placeHolderForHomeAwayAPIKey;
-
-        public string GoogleAPIKey { get; set; }
-
-        public string GoogleAPIKeyPlaceHolder { get; set; } = placeHolderForGoogleAPIKey;
 
         public bool UserDataSave { get; set; }
 
@@ -147,12 +113,10 @@ await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>("
             get;
             set;
         }
-    #endregion PropertiesUserData
+    #endregion DiskAnalysisServicesUserData
 
-    #region PropertiesConfigurationData
-    public string HomeAway_API_URI { get; set; }
-
-        public string Google_API_URI { get; set; }
+    #region ConfigurationData
+    public DiskAnalysisServicesConfigurationData DiskAnalysisServicesConfigurationData { get; set; } = new DiskAnalysisServicesConfigurationData();
 
         public bool ConfigurationDataSave { get; set; }
 
@@ -162,12 +126,12 @@ await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>("
         }
     #endregion PropertiesConfigurationData
 
-    #region PropertiesInitialization
+    #region Initialization
     public DiskAnalysisServicesInitializationResponse DiskAnalysisServicesInitializationResponse { get; set; }
 
         public bool DiskAnalysisServicesInitializationResponseOK = false;
         public string DiskAnalysisServicesInitializationRequestParameters = "None";
-    #endregion PropertiesInitialization
+    #endregion Initialization
 
     #region ReadDisk
         public ReadDiskResponse ReadDiskResponse {
