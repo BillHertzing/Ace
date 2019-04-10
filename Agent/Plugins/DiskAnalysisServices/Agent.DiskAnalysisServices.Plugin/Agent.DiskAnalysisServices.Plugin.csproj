@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
+  </PropertyGroup>
+
+<PropertyGroup>
+    <OutputType>Library</OutputType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
+	<!-- Assembly, File, and Package Information for this assembly-->
+    <!-- Build and revision are created based on date-->
+    <MajorVersion>1</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <!-- Current Lifecycle stage for this assembly-->
+    <PackageLifeCycleStage>Production</PackageLifeCycleStage>
+    <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
+    <PackageLabel>NA</PackageLabel>
+  </PropertyGroup>
+
+  <!-- Common for all TargetFrameworks references, compilation flags and build options -->
+  <ItemGroup>
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
+    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+ </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Interfaces\Agent.DiskAnalysisServices.Interfaces.csproj" />
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Data\Agent.DiskAnalysisServices.Data.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Agent.DiskAnalysisServices.settings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

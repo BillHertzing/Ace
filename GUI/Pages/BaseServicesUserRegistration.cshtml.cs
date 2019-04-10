@@ -3,10 +3,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Ace.Agent.BaseServices;
 // Required for the logger/logging
-using Blazor.Extensions.Logging;
+//using Blazor.Extensions.Logging;
 // Required for Blazor
 using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 // Required for the logger/logging
 using Microsoft.Extensions.Logging;
 // This is the area common in master branch for rebasing branches for adding ServiceStack text and ServiceStack JsonHttpClient
@@ -16,7 +16,8 @@ using Microsoft.Extensions.Logging;
 //using ServiceStack.Auth
 
 namespace Ace.AceGUI.Pages {
-  public class BaseServicesUserRegistrationCodeBehind : BlazorComponent {
+  public class BaseServicesUserRegistrationCodeBehind : ComponentBase
+  {
    
     #region string constants
     // Eventually replace with localization
@@ -48,8 +49,8 @@ namespace Ace.AceGUI.Pages {
     #region Page Initialization Handler
     protected override async Task OnInitAsync() {
       // There is currently no need to initialize state or call the Agent during this components initialization, but keep the logging statements here to better understand component/page flow
-      Logger.LogDebug($"Starting OnInitAsync");
-      Logger.LogDebug($"Leaving OnInitAsync");
+      //Logger.LogDebug($"Starting OnInitAsync");
+      //Logger.LogDebug($"Leaving OnInitAsync");
     }
     public BaseServicesInitializationRspPayload BaseServicesInitializationRspPayload { get; set; }
     #endregion
@@ -57,16 +58,16 @@ namespace Ace.AceGUI.Pages {
     #region User Registration Methods and Properties
     protected async Task UserRegistrationSubmit()
     {
-      Logger.LogDebug($"Starting UserRegistrationSubmit");
+      //Logger.LogDebug($"Starting UserRegistrationSubmit");
       //ServiceStack.Register registerDTO = new ServiceStack.Register();
       Register registerDTO = new Register();
       registerDTO.Name = UserName;
-      Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserRegistrationRspDTO> with registerDTO ={registerDTO}");
+      //Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserRegistrationRspDTO> with registerDTO ={registerDTO}");
       //RegisterResponseDTO = await HttpClient.PostJsonAsync<ServiceStack.RegisterResponse>("Register", registerDTO);
       RegisterResponseDTO = await HttpClient.PostJsonAsync<RegisterResponse>("Register", registerDTO);
-      Logger.LogDebug($"Returned from PostJsonAsync<ServiceStack.RegisterResponse>, RegisterResponseDTO = {RegisterResponseDTO}");
+      //Logger.LogDebug($"Returned from PostJsonAsync<ServiceStack.RegisterResponse>, RegisterResponseDTO = {RegisterResponseDTO}");
       BaseServicesUserRegistrationRspDTOExpanded = RegisterResponseDTO.ToString();
-      Logger.LogDebug($"Leaving UserRegistrationSubmit");
+      //Logger.LogDebug($"Leaving UserRegistrationSubmit");
     }
     //ServiceStack.RegisterResponse RegisterResponseDTO { get; set; }
     RegisterResponse RegisterResponseDTO { get; set; }

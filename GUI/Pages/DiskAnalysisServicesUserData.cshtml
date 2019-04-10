@@ -1,0 +1,32 @@
+@page "/UserData"
+@inherits Ace.AceGUI.Pages.DiskAnalysisServicesCodeBehind
+<h1>AceCommander Disk Analysis Services User Data</h1>
+
+@if (@InitializationResponse == null)
+{
+  <p><em>Loading (Calling onInitAsync)</em></p>
+}
+else
+{
+  <h2>User Data</h2>
+  <div>
+    <label for="UserData">@labelForUserData</label>
+    <input type="text" class="form-control" id="UserData" bind="@UserData.Placeholder"  />
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" bind="@UserDataSave" /> @labelForUserDataSave
+    </label>
+  </div>
+  <button type="button" class="btn btn-default" onclick="@SetUserData">Submit</button>
+
+  @if (@SetUserDataResponse == null)
+  {
+  <p>User Information has not yet been submitted to Ace Commander</p>
+  }
+  else
+  {
+  <p>SetUserData returned @SetUserDataResponse.Result.ToString() </p>
+  }
+}
+

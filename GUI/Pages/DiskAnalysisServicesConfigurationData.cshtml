@@ -1,0 +1,31 @@
+@page "/ConfigurationData"
+@inherits Ace.AceGUI.Pages.DiskAnalysisServicesCodeBehind
+<h1>AceCommander DiskAnalysisServices Configuration Data</h1>
+
+@if (@InitializationResponse == null)
+{
+<p><em>Loading (Calling onInitAsync)</em></p>
+}
+else
+{
+<h2>Configuration Data</h2>
+<div>
+  <label for="ConfigurationData">@labelForConfigurationData</label>
+  <input type="text" class="form-control" id="ConfigurationData" bind="@ConfigurationData.Placeholder" />
+</div>
+<div class="checkbox">
+  <label for="ConfigurationDataSave">@labelForConfigurationDataSave</label>> 
+    <input type="checkbox" id="ConfigurationDataSave" bind="@ConfigurationDataSave" /> 
+
+</div>
+<button type="button" class="btn btn-default" onclick="@SetConfigurationData">Submit</button>
+@if (@SetConfigurationDataResponse == null)
+  {
+<p>Configuration Information has not yet been submitted to Ace Commander</p>
+  }
+  else
+  {
+<p>SetConfigurationData returned @SetConfigurationDataResponse.Result.ToString() </p>
+  }
+}
+

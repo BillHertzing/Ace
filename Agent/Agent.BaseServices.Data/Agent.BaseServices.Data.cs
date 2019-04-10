@@ -20,12 +20,13 @@ namespace Ace.Agent.BaseServices {
             Log.Debug("Entering BaseServicesData ctor");
             Container = appHost.GetContainer();
 
-      // Blazor as of version 0.5.0 expects to be able to download a static file with the extensions "json"
-      // ServiceStack by default will not allow downloading a static file with "json" extensions
-      // Configure ServiceStack to allow the delivery of static files that end in json
+      // Blazor requires the delivery of static files ending in certain file suffixs.
+      // SS disallows many of these by default, so here we tell SS to allow certain file suffixs
+      appHost.Config.AllowFileExtensions.Add("dll");
       appHost.Config.AllowFileExtensions.Add("json");
+      appHost.Config.AllowFileExtensions.Add("pdb");
 
-            // If the Redis configuration key exists, register Redis as a name:value pair cache
+      // If the Redis configuration key exists, register Redis as a name:value pair cache
       if (appHost.AppSettings
                 .Exists(configKeyPrefix + configKeyRedisConnectionString)) {
                 var appSettingsConfigValueRedisConnectionString = appHost.AppSettings

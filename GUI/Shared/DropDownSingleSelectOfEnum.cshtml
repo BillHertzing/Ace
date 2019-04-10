@@ -2,14 +2,18 @@
   // Display a single-select list of an enumeration, using an overloaded .ToString() static extension that looks for certain atrributes like [Description] and [LocalizedDescription] on the enum's values
 *@
 @using ATAP.Utilities.ComputerInventory.Enumerations;
-@using Microsoft.AspNetCore.Blazor.Components
+@using Microsoft.AspNetCore.Blazor;
+@using Microsoft.AspNetCore.Components;
 
+<!-- in V0.9.0, this produces an error about "can't convert form string to a member of a genreic list"
 <select name=@name bind="@eList" onchange="@ChangeCurrentlySelectedValue">
   @foreach (var e in eList)
   {
     @OptionLine(e)
   }
 </select>
+end the portion commented out to make v.0.9.0 work...  -->
+
 <hr />
 Region For Debugging Only
 <br />

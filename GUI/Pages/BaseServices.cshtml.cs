@@ -3,15 +3,16 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Ace.Agent.BaseServices;
 // Required for the logger/logging
-using Blazor.Extensions.Logging;
+//using Blazor.Extensions.Logging;
 // Required for Blazor
 using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 // Required for the logger/logging
 using Microsoft.Extensions.Logging;
 
 namespace Ace.AceGUI.Pages {
-    public class BaseServicesCodeBehind : BlazorComponent {
+    public class BaseServicesCodeBehind : ComponentBase
+  {
     #region Configuration Data
     #endregion
 
@@ -74,17 +75,17 @@ namespace Ace.AceGUI.Pages {
 
     #region Page Initialization Handler
     protected override async Task OnInitAsync() {
-      Logger.LogDebug($"Starting OnInitAsync");
-      //Logger.LogDebug($"Initializing IServiceClient");
+      //Logger.LogDebug($"Starting OnInitAsync");
+      ////Logger.LogDebug($"Initializing IServiceClient");
       //IServiceClient client = new JsonHttpClient("http://localhost:21100");
-      //Logger.LogDebug($"client is null: {client == null}");
+      ////Logger.LogDebug($"client is null: {client == null}");
       BaseServicesInitializationReqPayload baseServicesInitializationReqPayload = new BaseServicesInitializationReqPayload();
 
-        Logger.LogDebug($"Calling PostJsonAsync<BaseServicesInitializationRspPayload> with baseServicesInitializationReqPayload ={baseServicesInitializationReqPayload}");
+        //Logger.LogDebug($"Calling PostJsonAsync<BaseServicesInitializationRspPayload> with baseServicesInitializationReqPayload ={baseServicesInitializationReqPayload}");
         BaseServicesInitializationRspPayload = await HttpClient.PostJsonAsync<BaseServicesInitializationRspPayload>("BaseServicesInitialization",
                                                                                                                     baseServicesInitializationReqPayload);
-        Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesInitializationRspPayload>, BaseServicesInitializationRspPayload = {BaseServicesInitializationRspPayload}");
-      Logger.LogDebug($"Leaving OnInitAsync");
+        //Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesInitializationRspPayload>, BaseServicesInitializationRspPayload = {BaseServicesInitializationRspPayload}");
+      //Logger.LogDebug($"Leaving OnInitAsync");
     }
     public BaseServicesInitializationRspPayload BaseServicesInitializationRspPayload {            get;            set;        }
 
@@ -92,16 +93,16 @@ namespace Ace.AceGUI.Pages {
 
     #region IsAlive
     public async Task IsAlive() {
-        Logger.LogDebug($"Starting IsAlive");
+        //Logger.LogDebug($"Starting IsAlive");
         // Create the payload for the Post
         // ToDo: Validators on the input field will make this better
         // ToDo: wrap in a try catch block and handle errors with a model dialog
         IsAliveReqPayload isAliveReqPayload = new IsAliveReqPayload { };
-        Logger.LogDebug($"Calling PostJsonAsync<isAliveRspPayload> with IsAliveReqPayload = {isAliveReqPayload}");
+        //Logger.LogDebug($"Calling PostJsonAsync<isAliveRspPayload> with IsAliveReqPayload = {isAliveReqPayload}");
         IsAliveRspPayload =
 await HttpClient.PostJsonAsync<IsAliveRspPayload>("/IsAlive?format=json", isAliveReqPayload);
-        Logger.LogDebug($"Returned from PostJsonAsync<LatLngToAddressRspPayload> with LatLngToAddressRspPayload = {LatLngToAddressRspPayload}");
-        Logger.LogDebug($"Leaving IsAlive");
+        //Logger.LogDebug($"Returned from PostJsonAsync<LatLngToAddressRspPayload> with LatLngToAddressRspPayload = {LatLngToAddressRspPayload}");
+        //Logger.LogDebug($"Leaving IsAlive");
     }
         public IsAliveRspPayload IsAliveRspPayload {
             get;
@@ -112,31 +113,31 @@ await HttpClient.PostJsonAsync<IsAliveRspPayload>("/IsAlive?format=json", isAliv
     #region Post and Get Configuration data
     public async Task PostBaseServicesConfigurationData()
     {
-      Logger.LogDebug($"Starting PostBaseServicesConfigurationData");
+      //Logger.LogDebug($"Starting PostBaseServicesConfigurationData");
       // Create the payload for the Post
       // ToDo: Validators on the input field will make this better
       // ToDo: wrap in a try catch block and handle errors with a model dialog
       BaseServicesConfigurationDataReqDTO baseServicesConfigurationDataReqDTO = new BaseServicesConfigurationDataReqDTO
       {RedisCacheConnectionString = this.RedisCacheConnectionString};
-      Logger.LogDebug($"Calling PostJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataReqDTO = {baseServicesConfigurationDataReqDTO}");
+      //Logger.LogDebug($"Calling PostJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataReqDTO = {baseServicesConfigurationDataReqDTO}");
       BaseServicesConfigurationDataRspDTO =
 await HttpClient.PostJsonAsync<BaseServicesConfigurationDataRspDTO>("/BaseServicesConfigurationData?format=json", baseServicesConfigurationDataReqDTO);
-      Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataRspDTO = {baseServicesConfigurationDataReqDTO}");
-      Logger.LogDebug($"Leaving PostBaseServicesConfigurationData");
+      //Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataRspDTO = {baseServicesConfigurationDataReqDTO}");
+      //Logger.LogDebug($"Leaving PostBaseServicesConfigurationData");
     }
     public async Task GetBaseServicesConfigurationData()
     {
-      Logger.LogDebug($"Starting GetBaseServicesConfigurationData");
+      //Logger.LogDebug($"Starting GetBaseServicesConfigurationData");
       // Create the payload for the Get
       // ToDo: wrap in a try catch block and handle errors with a model dialog
       BaseServicesConfigurationDataReqDTO baseServicesConfigurationDataReqDTO = new BaseServicesConfigurationDataReqDTO      { };
-      Logger.LogDebug($"Calling GetJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataReqDTO = {baseServicesConfigurationDataReqDTO}");
+      //Logger.LogDebug($"Calling GetJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataReqDTO = {baseServicesConfigurationDataReqDTO}");
       BaseServicesConfigurationDataRspDTO =
 await HttpClient.GetJsonAsync<BaseServicesConfigurationDataRspDTO>("/BaseServicesConfigurationData?format=json");
-      Logger.LogDebug($"Returned from GetJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataRspDTO = {baseServicesConfigurationDataReqDTO}");
+      //Logger.LogDebug($"Returned from GetJsonAsync<BaseServicesConfigurationDataRspDTO> with BaseServicesConfigurationDataRspDTO = {baseServicesConfigurationDataReqDTO}");
       RedisCacheConnectionString = BaseServicesConfigurationDataRspDTO.RedisCacheConnectionString;
       MySqlConnectionString = BaseServicesConfigurationDataRspDTO.MySqlConnectionString;
-      Logger.LogDebug($"Leaving GetBaseServicesConfigurationData");
+      //Logger.LogDebug($"Leaving GetBaseServicesConfigurationData");
     }
     public BaseServicesConfigurationDataRspDTO BaseServicesConfigurationDataRspDTO { get; set; }
     public string RedisCacheConnectionString { get; set; }
@@ -147,19 +148,19 @@ await HttpClient.GetJsonAsync<BaseServicesConfigurationDataRspDTO>("/BaseService
     #region Post and Get User data
     public async Task PostBaseServicesUserData()
     {
-      Logger.LogDebug($"Starting PostBaseServicesUserData");
+      //Logger.LogDebug($"Starting PostBaseServicesUserData");
       // Create the payload for the Post
       // ToDo: Validators on the input field will make this better
       // ToDo: wrap in a try catch block and handle errors with a model dialog
       BaseServicesUserDataReqPayload baseServicesUserDataReqPayload = new BaseServicesUserDataReqPayload
       { GatewayNameString = this.GatewayNameString, GatewayEntryAPIKeyString = this.GatewayEntryAPIKeyString };
-      Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserDataRspPayload> with BaseServicesUserDataReqPayload = {baseServicesUserDataReqPayload}");
+      //Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserDataRspPayload> with BaseServicesUserDataReqPayload = {baseServicesUserDataReqPayload}");
       BaseServicesUserDataRspPayload = new BaseServicesUserDataRspPayload { GatewayEntryAPIKeyString = this.GatewayEntryAPIKeyString };
 await HttpClient.PostJsonAsync<BaseServicesUserDataRspPayload>("/BaseServicesUserData?format=json", baseServicesUserDataReqPayload);
-      Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesUserDataRspPayload> with BaseServicesUserDataRspPayload = {baseServicesUserDataReqPayload}");
+      //Logger.LogDebug($"Returned from PostJsonAsync<BaseServicesUserDataRspPayload> with BaseServicesUserDataRspPayload = {baseServicesUserDataReqPayload}");
       this.GatewayNameString = BaseServicesUserDataRspPayload.GatewayNameString;
       this.GatewayEntryAPIKeyString = BaseServicesUserDataRspPayload.GatewayEntryAPIKeyString;
-      Logger.LogDebug($"Leaving PostBaseServicesUserData");
+      //Logger.LogDebug($"Leaving PostBaseServicesUserData");
     }
     public BaseServicesUserDataRspPayload BaseServicesUserDataRspPayload { get; set; }
     public string GatewayNameString { get; set; }
@@ -169,34 +170,34 @@ await HttpClient.PostJsonAsync<BaseServicesUserDataRspPayload>("/BaseServicesUse
 
     #region Lat/Lng to Address and Address to Lat/Lng
     public async Task LatLngToAddress() {
-        Logger.LogDebug($"Starting LatLngToAddress");
+        //Logger.LogDebug($"Starting LatLngToAddress");
         // Create the payload for the Post
         // ToDo: Validators on the input field will make this better
         // ToDo: wrap in a try catch block and handle errors with a model dialog
         LatLngToAddressReqPayload latLngToAddressReqPayload = new LatLngToAddressReqPayload { Latitude = this.Latitude
             , Longitude = this.Longitude
         };
-        Logger.LogDebug($"Calling PostJsonAsync<LatLngToAddressRspPayload> with LatLngToAddressReqPayload = {latLngToAddressReqPayload}");
+        //Logger.LogDebug($"Calling PostJsonAsync<LatLngToAddressRspPayload> with LatLngToAddressReqPayload = {latLngToAddressReqPayload}");
         LatLngToAddressRspPayload =
 await HttpClient.PostJsonAsync<LatLngToAddressRspPayload>("/LatLngToAddress?format=json", latLngToAddressReqPayload);
-        Logger.LogDebug($"Returned from PostJsonAsync<LatLngToAddressRspPayload> with LatLngToAddressRspPayload = {LatLngToAddressRspPayload}");
-        Logger.LogDebug($"Leaving LatLngToAddress");
+        //Logger.LogDebug($"Returned from PostJsonAsync<LatLngToAddressRspPayload> with LatLngToAddressRspPayload = {LatLngToAddressRspPayload}");
+        //Logger.LogDebug($"Leaving LatLngToAddress");
     }
 
         public async Task AddressToLatLng() {
-            Logger.LogDebug($"Starting AddressToLatLng");
+            //Logger.LogDebug($"Starting AddressToLatLng");
             // Create the payload for the Post
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             AddressToLatLngReqPayload addressToLatLngReqPayload = new AddressToLatLngReqPayload { Address = this.Address
             };
-            Logger.LogDebug($"Calling PostJsonAsync<AddressToLatLngRspPayload> with AddressToLatLngReqPayload = {addressToLatLngReqPayload}");
+            //Logger.LogDebug($"Calling PostJsonAsync<AddressToLatLngRspPayload> with AddressToLatLngReqPayload = {addressToLatLngReqPayload}");
             AddressToLatLngRspPayload =
 await HttpClient.PostJsonAsync<AddressToLatLngRspPayload>("/AddressToLatLng?format=json", addressToLatLngReqPayload);
-            Logger.LogDebug($"Returned from PostJsonAsync<AddressToLatLngRspPayload> with AddressToLatLngRspPayload = {AddressToLatLngRspPayload.ToString()}");
+            //Logger.LogDebug($"Returned from PostJsonAsync<AddressToLatLngRspPayload> with AddressToLatLngRspPayload = {AddressToLatLngRspPayload.ToString()}");
             Latitude = AddressToLatLngRspPayload.Latitude;
             Longitude = AddressToLatLngRspPayload.Longitude;
-            Logger.LogDebug($"Leaving AddressToLatLng");
+            //Logger.LogDebug($"Leaving AddressToLatLng");
         }
 
         public string Latitude { get; set; }

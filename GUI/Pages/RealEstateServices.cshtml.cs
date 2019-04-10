@@ -4,14 +4,15 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Ace.Agent.RealEstateServices;
 // Required for the logger/logging
-using Blazor.Extensions.Logging;
+//using Blazor.Extensions.Logging;
 // Required for Blazor
 using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
 namespace Ace.AceGUI.Pages {
-    public class RealEstateServicesCodeBehind : BlazorComponent {
+    public class RealEstateServicesCodeBehind : ComponentBase
+  {
         public const string labelForConfigurationDataSave = "save the Configuration data?";
         public const string labelForGoogle_API_URI = "Enter Google API URI string";
         // Eventually replace with localization
@@ -49,14 +50,14 @@ namespace Ace.AceGUI.Pages {
     }
 
         protected override async Task OnInitAsync() {
-            Logger.LogDebug($"Starting OnInitAsync");
+            //Logger.LogDebug($"Starting OnInitAsync");
 
             RealEstateServicesInitializationData RealEstateServicesInitializationData = new RealEstateServicesInitializationData();
             RealEstateServicesInitializationDataRequestData RealEstateServicesInitializationDataRequestData = new RealEstateServicesInitializationDataRequestData(RealEstateServicesInitializationData);
-            Logger.LogDebug($"Calling PostJsonAsync<RealEstateServicesInitializationResponse> with RealEstateServicesInitializationDataRequestData ={RealEstateServicesInitializationDataRequestData}");
+            //Logger.LogDebug($"Calling PostJsonAsync<RealEstateServicesInitializationResponse> with RealEstateServicesInitializationDataRequestData ={RealEstateServicesInitializationDataRequestData}");
             RealEstateServicesInitializationResponse = await HttpClient.PostJsonAsync<RealEstateServicesInitializationResponse>("RealEstateServicesInitialization",
                                                                                                                                             RealEstateServicesInitializationDataRequestData);
-            Logger.LogDebug($"Returned from GetJsonAsync<RealEstateServicesInitializationResponse>, RealEstateServicesInitializationResponse = {RealEstateServicesInitializationResponse}, RealEstateServicesInitializationResponseData = {RealEstateServicesInitializationResponse.RealEstateServicesInitializationResponseData}");
+            //Logger.LogDebug($"Returned from GetJsonAsync<RealEstateServicesInitializationResponse>, RealEstateServicesInitializationResponse = {RealEstateServicesInitializationResponse}, RealEstateServicesInitializationResponseData = {RealEstateServicesInitializationResponse.RealEstateServicesInitializationResponseData}");
             Google_API_URI = RealEstateServicesInitializationResponse.RealEstateServicesInitializationResponseData
                 .RealEstateServicesConfigurationData
                 .Google_API_URI;
@@ -78,13 +79,13 @@ namespace Ace.AceGUI.Pages {
                 .RealEstateServicesUserData
                 .HomeAwayAPIKeyPassPhrase;
 
-            Logger.LogDebug($"Leaving OnInitAsync");
+            //Logger.LogDebug($"Leaving OnInitAsync");
         }
 
         public async Task PropertySearch() {
-            Logger.LogDebug($"Starting PropertySearch");
-      Logger.LogDebug($"MinBedrooms = {MinBedrooms}, MaxBedrooms = {MaxBedrooms}, MinBathrooms = {MinBathrooms}, MaxBathrooms = {MaxBathrooms}, Lat = {Lat}, Lng = {Lng}, DistanceInKm = {DistanceInKm}");
-      Logger.LogDebug($"Availability = {Availability}, Details = {Details}, Location = {Location}, Rates = {Rates}, Sites = {Sites}");
+            //Logger.LogDebug($"Starting PropertySearch");
+      //Logger.LogDebug($"MinBedrooms = {MinBedrooms}, MaxBedrooms = {MaxBedrooms}, MinBathrooms = {MinBathrooms}, MaxBathrooms = {MaxBathrooms}, Lat = {Lat}, Lng = {Lng}, DistanceInKm = {DistanceInKm}");
+      //Logger.LogDebug($"Availability = {Availability}, Details = {Details}, Location = {Location}, Rates = {Rates}, Sites = {Sites}");
       // Create the payload for  the Post
       PropertySearchRequestData propertySearchRequestData = new PropertySearchRequestData(new SearchParameters(MinBedrooms,
                                                                                                                      MaxBedrooms,
@@ -99,18 +100,18 @@ namespace Ace.AceGUI.Pages {
 
             PropertySearchRequest propertySearchRequest = new PropertySearchRequest();
             propertySearchRequest.PropertySearchRequestPayload = propertySearchRequestPayload;
-            Logger.LogDebug($"Calling PostJsonAsync<PropertySearchResponse>");
+            //Logger.LogDebug($"Calling PostJsonAsync<PropertySearchResponse>");
             PropertySearchResponse =
     await HttpClient.PostJsonAsync<PropertySearchResponse>("/PropertySearch?format=json",
                                                            propertySearchRequest);
-            Logger.LogDebug($"Returned from PostJsonAsync<PropertySearchResponse>");
+            //Logger.LogDebug($"Returned from PostJsonAsync<PropertySearchResponse>");
             // Do something with the results
 
-            Logger.LogDebug($"Leaving PropertySearch");
+            //Logger.LogDebug($"Leaving PropertySearch");
         }
 
         public async Task SetRealEstateServicesConfigurationData() {
-            Logger.LogDebug($"Starting SetRealEstateServicesConfigurationData");
+            //Logger.LogDebug($"Starting SetRealEstateServicesConfigurationData");
             // Create the payload for the Post
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
@@ -121,16 +122,16 @@ namespace Ace.AceGUI.Pages {
             SetRealEstateServicesConfigurationDataRequest setRealEstateServicesConfigurationDataRequest = new SetRealEstateServicesConfigurationDataRequest();
             setRealEstateServicesConfigurationDataRequest.SetRealEstateServicesConfigurationDataRequestData = setRealEstateServicesConfigurationDataRequestData;
             //var RealEstateServicesConfigurationDataEncoded =  new FormUrlEncodedContent(RealEstateServicesConfigurationData);
-            Logger.LogDebug($"Calling GetJsonAsync<SetRealEstateServicesConfigurationDataResponse> with SetRealEstateServicesConfigurationDataRequestData = {setRealEstateServicesConfigurationDataRequestData}");
+            //Logger.LogDebug($"Calling GetJsonAsync<SetRealEstateServicesConfigurationDataResponse> with SetRealEstateServicesConfigurationDataRequestData = {setRealEstateServicesConfigurationDataRequestData}");
             SetRealEstateServicesConfigurationDataResponse =
 await HttpClient.PostJsonAsync<SetRealEstateServicesConfigurationDataResponse>("/SetRealEstateServicesConfigurationData?format=json",
                                                                                      setRealEstateServicesConfigurationDataRequest);
-            Logger.LogDebug($"Returned from GetJsonAsync<SetRealEstateServicesConfigurationDataResponse> with SetRealEstateServicesConfigurationDataResponse = {SetRealEstateServicesConfigurationDataResponse}");
-            Logger.LogDebug($"Leaving SetRealEstateServicesConfigurationData");
+            //Logger.LogDebug($"Returned from GetJsonAsync<SetRealEstateServicesConfigurationDataResponse> with SetRealEstateServicesConfigurationDataResponse = {SetRealEstateServicesConfigurationDataResponse}");
+            //Logger.LogDebug($"Leaving SetRealEstateServicesConfigurationData");
         }
 
         public async Task SetRealEstateServicesUserData() {
-            Logger.LogDebug($"Starting SetRealEstateServicesUserData");
+            //Logger.LogDebug($"Starting SetRealEstateServicesUserData");
             // Create the payload for  the Post
             RealEstateServicesUserData RealEstateServicesUserData = new RealEstateServicesUserData(GoogleAPIKey,
                                                                                                                      HomeAwayAPIKey,
@@ -140,13 +141,13 @@ await HttpClient.PostJsonAsync<SetRealEstateServicesConfigurationDataResponse>("
                                                                                                                                                                UserDataSave);
             SetRealEstateServicesUserDataRequest setRealEstateServicesUserDataRequest = new SetRealEstateServicesUserDataRequest();
             setRealEstateServicesUserDataRequest.SetRealEstateServicesUserDataRequestData = setRealEstateServicesUserDataRequestData;
-            Logger.LogDebug($"Calling PostJsonAsync<SetRealEstateServicesUserDataResponse>");
+            //Logger.LogDebug($"Calling PostJsonAsync<SetRealEstateServicesUserDataResponse>");
             SetRealEstateServicesUserDataResponse =
 await HttpClient.PostJsonAsync<SetRealEstateServicesUserDataResponse>("/SetRealEstateServicesUserData?format=json",
                                                                             setRealEstateServicesUserDataRequest);
-            Logger.LogDebug($"Returned from PostJsonAsync<SetRealEstateServicesUserDataResponse>");
-            //Logger.LogDebug($"Returned from PostJsonAsync<SetRealEstateServicesUserDataResponse> with SetRealEstateServicesConfigurationDataResponse.Result = {SetRealEstateServicesConfigurationDataResponse.Result}");
-            Logger.LogDebug($"Leaving SetRealEstateServicesUserData");
+            //Logger.LogDebug($"Returned from PostJsonAsync<SetRealEstateServicesUserDataResponse>");
+            ////Logger.LogDebug($"Returned from PostJsonAsync<SetRealEstateServicesUserDataResponse> with SetRealEstateServicesConfigurationDataResponse.Result = {SetRealEstateServicesConfigurationDataResponse.Result}");
+            //Logger.LogDebug($"Leaving SetRealEstateServicesUserData");
         }
 
     // Access the Logging extensions registered in the DI container
