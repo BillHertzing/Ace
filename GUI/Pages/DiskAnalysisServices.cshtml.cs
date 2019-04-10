@@ -21,9 +21,9 @@ namespace Ace.AceGUI.Pages
     public const string labelForUserDataSave = "save the User Data?";
     // Add constant structures for configuration data and user data to be used when the GUI is displayed before it can initialize with the agent
     // Eventually localized
-    public static DiskAnalysisServicesConfigurationData configurationDataPlaceholder = new DiskAnalysisServicesConfigurationData("Configuration Data pre-init placeholder");
+    public static ConfigurationData configurationDataPlaceholder = new ConfigurationData("Configuration Data pre-init placeholder");
 
-    public static DiskAnalysisServicesUserData userDataPlaceholder = new DiskAnalysisServicesUserData("User Data pre-init placeholder");
+    public static UserData userDataPlaceholder = new UserData("User Data pre-init placeholder");
 
     // This syntax adds to the class a Method that accesses the DI container, and retrieves the instance having the specified type from the DI container. In this case, we are accessing a builtin Blazor service that has registered a pre-configured and extended object as a HTTPClient type. This method call returns that object from the DI container  
     [Inject]
@@ -44,14 +44,18 @@ namespace Ace.AceGUI.Pages
     {
       //Logger.LogDebug($"Starting OnInitAsync");
 
-      DiskAnalysisServicesInitializationData diskAnalysisServicesInitializationData = new DiskAnalysisServicesInitializationData();
-      DiskAnalysisServicesInitializationRequestPayload diskAnalysisServicesInitializationRequestPayload = new DiskAnalysisServicesInitializationRequestPayload(diskAnalysisServicesInitializationData);
-      //Logger.LogDebug($"Calling PostJsonAsync<DiskAnalysisServicesInitializationResponse> with DiskAnalysisServicesInitializationRequestPayload ={diskAnalysisServicesInitializationData}");
-      DiskAnalysisServicesInitializationResponse = await HttpClient.PostJsonAsync<DiskAnalysisServicesInitializationResponse>("DiskAnalysisServicesInitialization",
-                                                                                                                                      diskAnalysisServicesInitializationData);
-      //Logger.LogDebug($"Returned from GetJsonAsync<DiskAnalysisServicesInitializationResponse>, DiskAnalysisServicesInitializationResponse = {DiskAnalysisServicesInitializationResponse}, DiskAnalysisServicesInitializationResponsePayload = {DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload}, DiskAnalysisServicesConfigurationData = {DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload.DiskAnalysisServicesConfigurationData}, DiskAnalysisServicesUserData = {DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload.DiskAnalysisServicesUserData}");
-      UserData = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload.DiskAnalysisServicesUserData;
-      ConfigurationData = DiskAnalysisServicesInitializationResponse.DiskAnalysisServicesInitializationResponsePayload.DiskAnalysisServicesConfigurationData;
+      InitializationData initializationData = new InitializationData();
+      InitializationRequestPayload initializationRequestPayload = new InitializationRequestPayload(initializationData);
+      InitializationRequest = new InitializationRequest() { InitializationRequestPayload = initializationRequestPayload } ;
+      //Logger.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest ={InitializationRequest}");
+      InitializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>("DiskAnalysisServicesInitialization",
+                                InitializationRequest);
+      //Logger.LogDebug($"Returned from GetJsonAsync<InitializationResponse>, InitializationResponse = {initializationResponse}");
+      InitializationResponsePayload initializationResponsePayload = InitializationResponse.InitializationResponsePayload;
+      //Logger.LogDebug($"InitializationResponsePayload = {initializationResponsePayload}");
+      ConfigurationData configurationData = initializationResponsePayload.ConfigurationData;
+      //Logger.LogDebug($"ConfigurationData = {configurationData}");
+      UserData userData = initializationResponsePayload.UserData;
       //ToDo: trigger screen refresh
       //Logger.LogDebug($"Leaving OnInitAsync");
     }
@@ -79,67 +83,68 @@ namespace Ace.AceGUI.Pages
 
     public async Task SetConfigurationData()
     {
-      //Logger.LogDebug($"Starting SetDiskAnalysisServicesConfigurationData");
+      //Logger.LogDebug($"Starting SetConfigurationData");
       // Create the payload for the Post
       // ToDo: Validators on the input field will make this better
       // ToDo: wrap in a try catch block and handle errors with a model dialog
-      SetDiskAnalysisServicesConfigurationDataRequestPayload setDiskAnalysisServicesConfigurationRequestPayload = new SetDiskAnalysisServicesConfigurationDataRequestPayload(ConfigurationData, ConfigurationDataSave);
-      SetDiskAnalysisServicesConfigurationDataRequest setDiskAnalysisServicesConfigurationDataRequest = new SetDiskAnalysisServicesConfigurationDataRequest();
-      setDiskAnalysisServicesConfigurationDataRequest.SetDiskAnalysisServicesConfigurationDataRequestPayload = setDiskAnalysisServicesConfigurationRequestPayload;
-      //Logger.LogDebug($"Calling GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse> with SetDiskAnalysisServicesConfigurationDataRequest = {setDiskAnalysisServicesConfigurationDataRequest}");
-      SetDiskAnalysisServicesConfigurationDataResponse setDiskAnalysisServicesConfigurationDataResponse =
-await HttpClient.PostJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse>("/SetDiskAnalysisServicesConfigurationData?format=json",
-                                                                                     setDiskAnalysisServicesConfigurationDataRequest);
-      //Logger.LogDebug($"Returned from GetJsonAsync<SetDiskAnalysisServicesConfigurationDataResponse> with setDiskAnalysisServicesConfigurationDataResponse = {setDiskAnalysisServicesConfigurationDataResponse}");
-      //Logger.LogDebug($"Leaving SetDiskAnalysisServicesConfigurationData");
+      SetConfigurationDataRequestPayload setDiskAnalysisServicesConfigurationRequestPayload = new SetConfigurationDataRequestPayload(ConfigurationData, ConfigurationDataSave);
+      SetConfigurationDataRequest setConfigurationDataRequest = new SetConfigurationDataRequest();
+      setConfigurationDataRequest.SetConfigurationDataRequestPayload = setDiskAnalysisServicesConfigurationRequestPayload;
+      //Logger.LogDebug($"Calling GetJsonAsync<SetConfigurationDataResponse> with SetConfigurationDataRequest = {setConfigurationDataRequest}");
+      SetConfigurationDataResponse setConfigurationDataResponse =
+await HttpClient.PostJsonAsync<SetConfigurationDataResponse>("/SetConfigurationData?format=json",
+                                                                                     setConfigurationDataRequest);
+      //Logger.LogDebug($"Returned from GetJsonAsync<SetConfigurationDataResponse> with setConfigurationDataResponse = {setConfigurationDataResponse}");
+      //Logger.LogDebug($"Leaving SetConfigurationData");
     }
 
     public async Task SetUserData()
     {
-      //Logger.LogDebug($"Starting SetDiskAnalysisServicesUserData");
+      //Logger.LogDebug($"Starting SetUserData");
       // Create the payload for the Post
-      SetDiskAnalysisServicesUserDataRequestPayload setDiskAnalysisServicesUserRequestPayload = new SetDiskAnalysisServicesUserDataRequestPayload(UserData,
+      SetUserDataRequestPayload setDiskAnalysisServicesUserRequestPayload = new SetUserDataRequestPayload(UserData,
 UserDataSave);
-      SetDiskAnalysisServicesUserDataRequest setDiskAnalysisServicesUserDataRequest = new SetDiskAnalysisServicesUserDataRequest();
-      setDiskAnalysisServicesUserDataRequest.SetDiskAnalysisServicesUserDataRequestPayload = setDiskAnalysisServicesUserRequestPayload;
-      //Logger.LogDebug($"Calling PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>");
+      SetUserDataRequest setUserDataRequest = new SetUserDataRequest();
+      setUserDataRequest.SetUserDataRequestPayload = setDiskAnalysisServicesUserRequestPayload;
+      //Logger.LogDebug($"Calling PostJsonAsync<SetUserDataResponsePayload>");
       SetUserDataResponse =
-await HttpClient.PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>("/SetDiskAnalysisServicesUserData?format=json",
-                                                                      setDiskAnalysisServicesUserDataRequest);
-      //Logger.LogDebug($"Returned from PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload>");
-      ////Logger.LogDebug($"Returned from PostJsonAsync<SetDiskAnalysisServicesUserDataResponsePayload> with SetDiskAnalysisServicesConfigurationDataResponsePayload.Result = {SetDiskAnalysisServicesConfigurationDataResponsePayload.Result}");
-      //Logger.LogDebug($"Leaving SetDiskAnalysisServicesUserData");
+await HttpClient.PostJsonAsync<SetUserDataResponsePayload>("/SetUserData?format=json",
+                                                                      setUserDataRequest);
+      //Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponsePayload>");
+      ////Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponsePayload> with SetConfigurationDataResponsePayload.Result = {SetConfigurationDataResponsePayload.Result}");
+      //Logger.LogDebug($"Leaving SetUserData");
     }
 
 
     #region UserData
-    public DiskAnalysisServicesUserData UserData { get; set; } = userDataPlaceholder;
+    public UserData UserData { get; set; } = userDataPlaceholder;
 
 
     public bool UserDataSave { get; set; }
 
-    public SetDiskAnalysisServicesUserDataResponsePayload SetUserDataResponse {
+    public SetUserDataResponsePayload SetUserDataResponse {
       get;
       set;
     }
-    #endregion DiskAnalysisServicesUserData
+    #endregion UserData
 
     #region ConfigurationData
-    public DiskAnalysisServicesConfigurationData ConfigurationData { get; set; } = configurationDataPlaceholder;
+    public ConfigurationData ConfigurationData { get; set; } = configurationDataPlaceholder;
 
     public bool ConfigurationDataSave { get; set; }
 
-    public SetDiskAnalysisServicesConfigurationDataResponsePayload SetConfigurationDataResponse {
+    public SetConfigurationDataResponsePayload SetConfigurationDataResponse {
       get;
       set;
     }
     #endregion ConfigurationData
 
     #region Initialization
-    public DiskAnalysisServicesInitializationResponse DiskAnalysisServicesInitializationResponse { get; set; }
+    public InitializationRequest InitializationRequest { get; set; }
+    public InitializationResponse InitializationResponse { get; set; }
 
-    public bool DiskAnalysisServicesInitializationResponseOK = false;
-    public string DiskAnalysisServicesInitializationRequestParameters = "None";
+    public bool InitializationResponseOK = false;
+    public string InitializationRequestParameters = "None";
     #endregion Initialization
 
     #region ReadDisk

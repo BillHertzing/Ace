@@ -3,74 +3,95 @@ using ServiceStack;
 
 namespace Ace.Agent.DiskAnalysisServices
 {
-  #region DiskAnalysisServicesInitializationRequest, DiskAnalysisServicesInitializationResponse, and Route for DiskAnalysisServicesInitialization
+  #region InitializationRequest, InitializationResponse, and Route for DiskAnalysisServicesInitialization
   [Route("/DiskAnalysisServicesInitialization")]
-  public class DiskAnalysisServicesInitializationRequest : IReturn<DiskAnalysisServicesInitializationResponse>
+  public class InitializationRequest : IReturn<InitializationResponse>
   {
-    public DiskAnalysisServicesInitializationRequestPayload DiskAnalysisServicesInitializationRequestPayload { get; set; }
+    public InitializationRequestPayload InitializationRequestPayload { get; set; }
   }
-  public class DiskAnalysisServicesInitializationResponse
+  public class InitializationResponse
   {
-    public DiskAnalysisServicesInitializationResponse() : this(new DiskAnalysisServicesInitializationResponsePayload()) { }
-    public DiskAnalysisServicesInitializationResponse(DiskAnalysisServicesInitializationResponsePayload diskAnalysisServicesInitializationResponsePayload)
+    public InitializationResponse() : this(new InitializationResponsePayload()) { }
+    public InitializationResponse(InitializationResponsePayload initializationResponsePayload)
     {
-      DiskAnalysisServicesInitializationResponsePayload = diskAnalysisServicesInitializationResponsePayload;
+      InitializationResponsePayload = initializationResponsePayload;
     }
-    public DiskAnalysisServicesInitializationResponsePayload DiskAnalysisServicesInitializationResponsePayload { get; set; }
+    public InitializationResponsePayload InitializationResponsePayload { get; set; }
   }
-  #endregion DiskAnalysisServicesInitializationRequest, DiskAnalysisServicesInitializationResponse, and Route for DiskAnalysisServicesInitialization
+  #endregion InitializationRequest, InitializationResponse, and Route for DiskAnalysisServicesInitialization
 
-  #region SetDiskAnalysisServicesConfigurationDataRequest, SetDiskAnalysisServicesConfigurationDataResponse, and Route for SetDiskAnalysisServicesConfigurationData
+  #region SetConfigurationDataRequest, SetConfigurationDataResponse, and Route for SetDiskAnalysisServicesConfigurationData
   [Route("/SetDiskAnalysisServicesConfigurationData")]
-  public class SetDiskAnalysisServicesConfigurationDataRequest : IReturn<SetDiskAnalysisServicesConfigurationDataResponsePayload>
+  public class SetConfigurationDataRequest : IReturn<SetConfigurationDataResponse>
   {
-    public SetDiskAnalysisServicesConfigurationDataRequestPayload SetDiskAnalysisServicesConfigurationDataRequestPayload { get; set; }
+    public SetConfigurationDataRequestPayload SetConfigurationDataRequestPayload { get; set; }
   }
-  public class SetDiskAnalysisServicesConfigurationDataResponse
+  public class SetConfigurationDataResponse
   {
-    public SetDiskAnalysisServicesConfigurationDataResponse() : this(new SetDiskAnalysisServicesConfigurationDataResponsePayload()) { }
-    public SetDiskAnalysisServicesConfigurationDataResponse(SetDiskAnalysisServicesConfigurationDataResponsePayload setDiskAnalysisServicesConfigurationDataResponsePayload)
+    public SetConfigurationDataResponse() : this(new SetConfigurationDataResponsePayload()) { }
+    public SetConfigurationDataResponse(SetConfigurationDataResponsePayload setConfigurationDataResponsePayload)
     {
-      SetDiskAnalysisServicesConfigurationDataResponsePayload = setDiskAnalysisServicesConfigurationDataResponsePayload;
+      SetConfigurationDataResponsePayload = setConfigurationDataResponsePayload;
     }
-    public SetDiskAnalysisServicesConfigurationDataResponsePayload SetDiskAnalysisServicesConfigurationDataResponsePayload { get; set; }
+    public SetConfigurationDataResponsePayload SetConfigurationDataResponsePayload { get; set; }
   }
-  #endregion SetDiskAnalysisServicesConfigurationDataRequest, SetDiskAnalysisServicesConfigurationDataResponse, and Route for SetDiskAnalysisServicesConfigurationData
+  #endregion SetConfigurationDataRequest, SetConfigurationDataResponse, and Route for SetDiskAnalysisServicesConfigurationData
 
-  #region GetDiskAnalysisServicesConfigurationDataRequest, GetDiskAnalysisServicesConfigurationDataResponse, and Route for GetDiskAnalysisServicesConfigurationDataRequest
+  #region GetConfigurationDataRequest, GetConfigurationDataResponse, and Route for GetDiskAnalysisServicesConfigurationDataRequest
   [Route("/GetDiskAnalysisServicesConfigurationData")]
   [Route("/GetDiskAnalysisServicesConfigurationData/{GetDiskAnalysisServicesConfigurationDataRequestPayload}")]
-  public class GetDiskAnalysisServicesConfigurationDataRequest : IReturn<GetDiskAnalysisServicesConfigurationDataResponse>
+  public class GetConfigurationDataRequest : IReturn<GetConfigurationDataResponse>
   {
-    public GetDiskAnalysisServicesConfigurationDataRequestPayload GetDiskAnalysisServicesConfigurationDataRequestPayload { get; set; }
+    public GetConfigurationDataRequestPayload GetConfigurationDataRequestPayload { get; set; }
   }
-  public class GetDiskAnalysisServicesConfigurationDataResponse
+  public class GetConfigurationDataResponse
   {
-    public GetDiskAnalysisServicesConfigurationDataResponse() : this(new GetDiskAnalysisServicesConfigurationDataResponsePayload()) { }
-    public GetDiskAnalysisServicesConfigurationDataResponse(GetDiskAnalysisServicesConfigurationDataResponsePayload getDiskAnalysisServicesConfigurationDataResponsePayload)
+    public GetConfigurationDataResponse() : this(new GetConfigurationDataResponsePayload()) { }
+    public GetConfigurationDataResponse(GetConfigurationDataResponsePayload getConfigurationDataResponsePayload)
     {
-      GetDiskAnalysisServicesConfigurationDataResponsePayload = getDiskAnalysisServicesConfigurationDataResponsePayload;
+      GetConfigurationDataResponsePayload = getConfigurationDataResponsePayload;
     }
-    public GetDiskAnalysisServicesConfigurationDataResponsePayload GetDiskAnalysisServicesConfigurationDataResponsePayload { get; set; }
+    public GetConfigurationDataResponsePayload GetConfigurationDataResponsePayload { get; set; }
   }
   #endregion GetDiskAnalysisServicesConfigurationDataRequest, GetDiskAnalysisServicesConfigurationDataResponse, and Route for GetDiskAnalysisServicesConfigurationDataRequest
 
-  #region SetDiskAnalysisServicesUserDataRequest and Route for SetDiskAnalysisServicesUserData
+  #region SetUserDataRequest, SetUserDataResponse and Route for SetDiskAnalysisServicesUserData
   [Route("/SetDiskAnalysisServicesUserData")]
-  [Route("/SetDiskAnalysisServicesUserData/{SetDiskAnalysisServicesUserRequestPayload}")]
-  public class SetDiskAnalysisServicesUserDataRequest : IReturn<SetDiskAnalysisServicesUserDataResponsePayload>
+  [Route("/SetDiskAnalysisServicesUserData/{SetUserRequestPayload}")]
+  public class SetUserDataRequest : IReturn<SetUserDataResponse>
   {
-    public SetDiskAnalysisServicesUserDataRequestPayload SetDiskAnalysisServicesUserDataRequestPayload { get; set; }
+    public SetUserDataRequestPayload SetUserDataRequestPayload { get; set; }
   }
-  #endregion SetDiskAnalysisServicesUserDataRequest and Route for SetDiskAnalysisServicesUserData
-  #region GetDiskAnalysisServicesUserDataRequest and Route for GetDiskAnalysisServicesUserData
+
+  public class SetUserDataResponse
+  {
+    public SetUserDataResponse() : this(new SetUserDataResponsePayload()) { }
+    public SetUserDataResponse(SetUserDataResponsePayload setUserDataResponsePayload)
+    {
+      SetUserDataResponsePayload = setUserDataResponsePayload;
+    }
+    public SetUserDataResponsePayload SetUserDataResponsePayload { get; set; }
+  }
+  #endregion SetUserDataRequest, SetUserDataResponse and Route for SetDiskAnalysisServicesUserData
+
+  #region GetUserDataRequest, GetUserDataResponse and Route for GetDiskAnalysisServicesUserData
   [Route("/GetDiskAnalysisServicesUserData")]
   [Route("/GetDiskAnalysisServicesUserData/{GetDiskAnalysisServicesUserDataRequestPayload}")]
-  public class GetDiskAnalysisServicesUserDataRequest : IReturn<GetDiskAnalysisServicesUserDataResponsePayload>
+  public class GetUserDataRequest : IReturn<GetUserDataResponse>
   {
-    public GetDiskAnalysisServicesUserDataRequestPayload GetDiskAnalysisServicesUserRequestPayload { get; set; }
+    public GetUserDataRequestPayload GetUserDataRequestPayload { get; set; }
   }
-  #endregion GetDiskAnalysisServicesUserDataRequest and Route for GetDiskAnalysisServicesUserData
+
+  public class GetUserDataResponse
+  {
+    public GetUserDataResponse() : this(new GetUserDataResponsePayload()) { }
+    public GetUserDataResponse(GetUserDataResponsePayload getUserDataResponsePayload)
+    {
+      GetUserDataResponsePayload = getUserDataResponsePayload;
+    }
+    public GetUserDataResponsePayload GetUserDataResponsePayload { get; set; }
+  }
+  #endregion GetUserDataRequest, GetUserDataResponsePayload and Route for GetDiskAnalysisServicesUserData
 
   #region ReadDiskRequest, ReadDiskResponse, and Route for ReadDisk
   [Route("/ReadDisk")]

@@ -71,10 +71,10 @@
     <Content Update="Pages\BaseServicesGeoLocation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\DiskAnalysisServicesUserData.cshtml">
+    <Content Update="Pages\UserData.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\DiskAnalysisServicesConfigurationData.cshtml">
+    <Content Update="Pages\ConfigurationData.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Pages\DiskAnalysisServices.cshtml">

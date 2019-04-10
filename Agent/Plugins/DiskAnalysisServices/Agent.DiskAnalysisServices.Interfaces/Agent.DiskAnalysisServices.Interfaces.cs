@@ -12,59 +12,65 @@ namespace Ace.Agent.DiskAnalysisServices
   public class DiskAnalysisServices : Service
   {
     public static ILog Log = LogManager.GetLogger(typeof(DiskAnalysisServices));
-    
-     public object Post(DiskAnalysisServicesInitializationRequest request)
-    {
-      Log.Debug("starting Post(DiskAnalysisServicesInitializationRequest request)");
-      DiskAnalysisServicesInitializationRequestPayload diskAnalysisServicesInitializationRequestPayload = request.DiskAnalysisServicesInitializationRequestPayload;
-      //Log.Debug($"You sent me DiskAnalysisServicesInitializationRequestPayload = {diskAnalysisServicesInitializationRequestPayload}");
-      //Log.Debug($"You sent me DiskAnalysisServicesInitializationData = {diskAnalysisServicesInitializationRequestPayload.DiskAnalysisServicesInitializationData}");
-      // Initialize the plugin's data structures for this service/user/session/connection
-      DiskAnalysisServicesInitializationData diskAnalysisServicesInitializationData = diskAnalysisServicesInitializationRequestPayload.DiskAnalysisServicesInitializationData;
 
-      // ToDo: populate the plugin's data structure's post-initialization data fields
-      // Create and populate an instance of the DiskAnalysisServicesConfigurationData
-      //string placeholderConfigurationData = (DiskAnalysisServicesConfigurationData.Placeholder != null) ? DiskAnalysisServicesConfigurationData.Placeholder : "placeholderConfigurationNotDefined";
-      string placeholderConfigurationData = string.Empty;
-      DiskAnalysisServicesConfigurationData diskAnalysisServicesConfigurationData = new DiskAnalysisServicesConfigurationData(placeholderConfigurationData);
-      // Create and populate an instance of the DiskAnalysisServicesUserData
-      string placeholderUserData = string.Empty;
-      //string placeholderUserData = (DiskAnalysisServicesUserData.Placeholder != null) ? DiskAnalysisServicesUserData.Placeholder : "PlaceholderUserData needed";
-      DiskAnalysisServicesUserData diskAnalysisServicesUserData = new DiskAnalysisServicesUserData(placeholderUserData);
+    public object Post(InitializationRequest request)
+    {
+      Log.Debug("starting Post(InitializationRequest request)");
+      InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;
+      Log.Debug($"You sent me InitializationRequestPayload = {initializationRequestPayload}");
+      Log.Debug($"You sent me InitializationData = {initializationRequestPayload.InitializationData}");
+      // Initialize the plugin's data structures for this service/user/session/connection
+      // ToDo: Figure out if the Initialization request from the GUI has any impact on the configuration or user data structures
+      InitializationData initializationData = initializationRequestPayload.InitializationData;
+
+      // Copy the Plugin's current ConfigurationData structure to the response
+      //ToDo: this is merly a placeholder until ConfigurationData is figured out
+      ConfigurationData configurationData = new ConfigurationData(DiskAnalysisServicesData.PluginRootCOD.Keys.ToString());
+      // Copy the Plugin's current UserData structure to the response
+      //ToDo: this is merly a placeholder until UserData  is figured out
+      UserData userData = new UserData(DiskAnalysisServicesData.PluginRootCOD.Values.ToString());
 
       // Create and populate the Response data structure
-      DiskAnalysisServicesInitializationResponsePayload diskAnalysisServicesInitializationResponseData = new DiskAnalysisServicesInitializationResponsePayload(diskAnalysisServicesConfigurationData, diskAnalysisServicesUserData);
-      DiskAnalysisServicesInitializationResponse DiskAnalysisServicesInitializationResponse = new DiskAnalysisServicesInitializationResponse(diskAnalysisServicesInitializationResponseData);
+      InitializationResponsePayload initializationResponsePayload = new InitializationResponsePayload(configurationData, userData);
+      InitializationResponse initializationResponse = new InitializationResponse(initializationResponsePayload);
       // return information about this service/user/session
-      Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {DiskAnalysisServicesInitializationResponse}");
-      return DiskAnalysisServicesInitializationResponse;
+      Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {initializationResponse}");
+      return initializationResponse;
     }
 
-    public object Post(SetDiskAnalysisServicesConfigurationDataRequest request)
+    public object Post(SetConfigurationDataRequest request)
     {
-      Log.Debug("starting Post(SetDiskAnalysisServicesConfigurationDataRequest request)");
-      SetDiskAnalysisServicesConfigurationDataRequestPayload setDiskAnalysisServicesConfigurationDataRequestPayload = request.SetDiskAnalysisServicesConfigurationDataRequestPayload;
-      DiskAnalysisServicesConfigurationData diskAnalysisServicesConfigurationData = setDiskAnalysisServicesConfigurationDataRequestPayload.DiskAnalysisServicesConfigurationData;
-      Log.Debug($"You sent me DiskAnalysisServicesConfigurationData = {diskAnalysisServicesConfigurationData}");
-      // Update the DiskAnalysisServicesConfigurationData in the Data assembly
+      Log.Debug("starting Post(SetConfigurationDataRequest request)");
+      Log.Debug($"You sent me SetConfigurationDataRequest = {request}");
+      SetConfigurationDataRequestPayload setConfigurationDataRequestPayload = request.SetConfigurationDataRequestPayload;
+      Log.Debug($"You sent me SetConfigurationDataRequestPayload = {setConfigurationDataRequestPayload}");
+      ConfigurationData configurationData = setConfigurationDataRequestPayload.ConfigurationData;
+      // ToDo: action to take if "save" is false
+      // ToDo: Action to ttake if "save" is true
+      // ToDo: Update the DiskAnalysisServicesConfigurationData in the Data assembly
       // DiskAnalysisServicesConfigurationData.Placeholder = diskAnalysisServicesConfigurationData.Placeholder;
       // return information about this service/user/session
       string result = "OK";
-      Log.Debug($"leaving Any(SetDiskAnalysisServicesConfigurationDataRequest request), returning {result}");
-      return new SetDiskAnalysisServicesConfigurationDataResponsePayload { Result = result };
+      Log.Debug($"leaving Any(SetConfigurationDataRequest request), returning {result}");
+      return new SetConfigurationDataResponse(new SetConfigurationDataResponsePayload(result));
     }
-    public object Post(SetDiskAnalysisServicesUserDataRequest request)
+    public object Post(SetUserDataRequest request)
     {
-      Log.Debug("starting Post(SetDiskAnalysisServicesUserDataRequest request)");
-      SetDiskAnalysisServicesUserDataRequestPayload setDiskAnalysisServicesUserDataRequestPayload = request.SetDiskAnalysisServicesUserDataRequestPayload;
-      DiskAnalysisServicesUserData diskAnalysisServicesUserData = setDiskAnalysisServicesUserDataRequestPayload.DiskAnalysisServicesUserData;
-      Log.Debug($"You sent me DiskAnalysisServicesUserData = {diskAnalysisServicesUserData}");
+      Log.Debug("starting Post(SetUserDataRequest request)");
+      Log.Debug($"You sent me SetUserDataRequest = {request}");
+      SetUserDataRequestPayload setUserDataRequestPayload = request.SetUserDataRequestPayload;
+      Log.Debug($"You sent me SetUserDataRequestPayload = {setUserDataRequestPayload}");
+      UserData userData = setUserDataRequestPayload.UserData;
+      Log.Debug($"You sent me UserData = {userData}");
+      // ToDo: action to take if "save" is false
+      // ToDo: Action to ttake if "save" is true
+      // ToDo: Update the DiskAnalysisServicesConfigurationData (COD and its subscribers) in the Data assembly
       // return information about this service/user/session
       string result = "OK";
-      Log.Debug($"leaving Post(SetDiskAnalysisServicesUserDataRequest request), returning {result}");
-      return new SetDiskAnalysisServicesConfigurationDataResponsePayload { Result = result };
+      Log.Debug($"leaving Post(SetUserDataRequest request), returning {result}");
+      return new SetUserDataResponse(new SetUserDataResponsePayload(result));
     }
-     public object Post(ReadDiskRequest request)
+    public object Post(ReadDiskRequest request)
     {
       Log.Debug("starting Post(ReadDiskRequest)");
       ReadDiskRequestPayload readDiskRequestPayload = request.ReadDiskRequestPayload;

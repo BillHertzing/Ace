@@ -1,8 +1,8 @@
-@page "/DiskAnalysisServicesConfigurationData"
+@page "/ConfigurationData"
 @inherits Ace.AceGUI.Pages.DiskAnalysisServicesCodeBehind
 <h1>AceCommander DiskAnalysisServices Configuration Data</h1>
 
-@if (@DiskAnalysisServicesInitializationResponse == null)
+@if (@InitializationResponse == null)
 {
 <p><em>Loading (Calling onInitAsync)</em></p>
 }
@@ -25,7 +25,7 @@ else
   }
   else
   {
-<p>SetDiskAnalysisServicesConfigurationData returned @SetConfigurationDataResponse.Result.ToString() </p>
+<p>SetConfigurationData returned @SetConfigurationDataResponse.Result.ToString() </p>
   }
 }
 
