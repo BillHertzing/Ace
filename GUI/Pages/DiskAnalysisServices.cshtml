@@ -9,15 +9,15 @@
 else
 {
   <hr />
-  <button type="button" class="btn btn-default" onclick="@DiskAnalysis">Submit</button>
+  <button type="button" class="btn btn-default" onclick="@ReadDisk">Read Disk</button>
 
-  @if (@DiskAnalysisResponse == null)
+  @if (@ReadDiskResponse == null)
   {
-    <p>DiskAnalysis Information has not yet been submitted to Ace Commander</p>
+    <p>ReadDisk request has not yet been submitted to Ace Commander</p>
   }
   else
   {
-    <p>DiskAnalysis returned @DiskAnalysisResponse.ToString() </p>
+    <p>ReadDisk returned @ReadDiskResponse.ToString() </p>
   }
 
 

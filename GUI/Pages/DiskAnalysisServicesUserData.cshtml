@@ -10,23 +10,23 @@ else
 {
   <h2>User Data</h2>
   <div>
-    <label for="DiskAnalysisServicesUserDataPlaceholder">@labelForDiskAnalysisServicesUserDataPlaceholder</label>
-    <input type="text" class="form-control" id="DiskAnalysisServicesUserDataPlaceholder" bind="@DiskAnalysisServicesUserDataPlaceholder" placeholder="@placeHolderForDiskAnalysisServicesUserDataPlaceholder" />
+    <label for="UserData">@labelForUserData</label>
+    <input type="text" class="form-control" id="UserData" bind="@UserData.Placeholder"  />
   </div>
   <div class="checkbox">
     <label>
-      <input type="checkbox" bind="@DiskAnalysisServicesUserDataSave" /> @labelForDiskAnalysisServicesUserDataSave
+      <input type="checkbox" bind="@UserDataSave" /> @labelForUserDataSave
     </label>
   </div>
-  <button type="button" class="btn btn-default" onclick="@SetDiskAnalysisServicesUserData">Submit</button>
+  <button type="button" class="btn btn-default" onclick="@SetUserData">Submit</button>
 
-  @if (@SetDiskAnalysisServicesUserDataResponse == null)
+  @if (@SetUserDataResponse == null)
   {
   <p>User Information has not yet been submitted to Ace Commander</p>
   }
   else
   {
-  <p>SetDiskAnalysisServicesUserData returned @SetDiskAnalysisServicesUserDataResponse.Result.ToString() </p>
+  <p>SetUserData returned @SetUserDataResponse.Result.ToString() </p>
   }
 }
 

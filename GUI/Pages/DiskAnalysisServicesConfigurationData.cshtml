@@ -8,24 +8,24 @@
 }
 else
 {
-<h2>User Data</h2>
+<h2>Configuration Data</h2>
 <div>
-  <label for="DiskAnalysisServicesConfigurationDataPlaceholder">@labelForDiskAnalysisServicesConfigurationDataPlaceholder</label>
-  <input type="text" class="form-control" id="DiskAnalysisServicesConfigurationDataPlaceholder" bind="@DiskAnalysisServicesConfigurationDataPlaceholder" placeholder="@placeHolderForDiskAnalysisServicesConfigurationDataPlaceholder" />
+  <label for="ConfigurationData">@labelForConfigurationData</label>
+  <input type="text" class="form-control" id="ConfigurationData" bind="@ConfigurationData.Placeholder" />
 </div>
 <div class="checkbox">
-  <label>
-    <input type="checkbox" bind="@DiskAnalysisServicesConfigurationDataSave" /> @labelForDiskAnalysisServicesConfigurationDataSave
-  </label>
+  <label for="ConfigurationDataSave">@labelForConfigurationDataSave</label>> 
+    <input type="checkbox" id="ConfigurationDataSave" bind="@ConfigurationDataSave" /> 
+
 </div>
-<button type="button" class="btn btn-default" onclick="@SetDiskAnalysisServicesConfigurationData">Submit</button>
-@if (@SetDiskAnalysisServicesConfigurationDataResponse == null)
+<button type="button" class="btn btn-default" onclick="@SetConfigurationData">Submit</button>
+@if (@SetConfigurationDataResponse == null)
   {
 <p>Configuration Information has not yet been submitted to Ace Commander</p>
   }
   else
   {
-<p>SetDiskAnalysisServicesConfigurationData returned @SetDiskAnalysisServicesConfigurationDataResponse.Result.ToString() </p>
+<p>SetDiskAnalysisServicesConfigurationData returned @SetConfigurationDataResponse.Result.ToString() </p>
   }
 }
 

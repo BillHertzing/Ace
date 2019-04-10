@@ -219,8 +219,8 @@ namespace Ace.Agent.DiskAnalysisServices
   public class ReadDiskResponsePayload
   {
     public ReadDiskResponsePayload() { }
-    public ReadDiskResponsePayload(ReadDiskResponseData ReadDiskResponseData)
-    { ReadDiskResponseData = ReadDiskResponseData; }
+    public ReadDiskResponsePayload(ReadDiskResponseData readDiskResponseData)
+    { ReadDiskResponseData = readDiskResponseData; }
 
     public ReadDiskResponseData ReadDiskResponseData { get; set; }
   }
