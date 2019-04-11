@@ -9,6 +9,11 @@ using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
 // Required for the logger/logging
 using Microsoft.Extensions.Logging;
+// This is the area common in master branch for rebasing branches for adding ServiceStack text and ServiceStack JsonHttpClient
+//using ServiceStack;
+//using ServiceStack.Text
+using ServiceStack;
+//using ServiceStack.Auth
 
 namespace Ace.AceGUI.Pages {
     public class BaseServicesCodeBehind : ComponentBase
@@ -48,6 +53,7 @@ namespace Ace.AceGUI.Pages {
     public const string labelForGetBaseServicesUserDataButton = "Get";
     #endregion string constants
     #endregion
+
     #region Access Objects registerd in the DI container
     // This syntax adds to the class a Method that accesses the DI container, and retrieves the instance having the specified type from the DI container.
     // Access the builtin Blazor service that has registered a pre-configured and extended object as a HTTPClient type registered in the DI container
@@ -70,6 +76,8 @@ namespace Ace.AceGUI.Pages {
 
     //[Inject]
     //protected LocalStorage localStorage;
+
+    IServiceClient client = new JsonHttpClient("http://localhost:21100");
 
     #endregion
 

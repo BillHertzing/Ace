@@ -30,6 +30,7 @@
     <PackageReference Include="ATAP.Utilities.RealEstate.Enumerations" Version="1.0.0" />
     <PackageReference Include="MedallionShell" Version="1.5.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview3.19153.1" />
+    <PackageReference Include="ServiceStack.HttpClient.Core" Version="5.5.1" />
     
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
     <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
