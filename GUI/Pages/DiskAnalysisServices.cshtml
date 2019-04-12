@@ -9,7 +9,7 @@
 else
 {
   <hr />
-  <button type="button" class="btn btn-default" onclick="@ReadDisk">Read Disk</button>
+  <button id="btnReadDisk" type="button" class="btn btn-default" onclick="@(async () => await ReadDisk(0))">Read Disk</button>
 
   @if (@ReadDiskResponse == null)
   {
@@ -17,7 +17,7 @@ else
   }
   else
   {
-    <p>ReadDisk returned @ReadDiskResponse.ToString() </p>
+    <p>ReadDisk returned @ReadDiskResponse.ReadDiskResponsePayload.ReadDiskResponseData.ToString() </p>
   }
 
 

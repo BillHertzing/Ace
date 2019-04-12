@@ -5,7 +5,8 @@ using Swordfish.NET.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.Collections.Generic;
-
+using ATAP.Utilities.FileSystem;
+using ATAP.Utilities.FileSystem.Enumerations;
 namespace Ace.Agent.DiskAnalysisServices
 
 {
@@ -76,6 +77,7 @@ namespace Ace.Agent.DiskAnalysisServices
       ReadDiskRequestPayload readDiskRequestPayload = request.ReadDiskRequestPayload;
       ReadDiskRequestData readDiskRequestData = readDiskRequestPayload.ReadDiskRequestData;
       // Setup the long-running task that will read the disk and update the plugin's COD data structure
+      int longRunningTaskID = 1;
       // Setup the SSE receiver that will monitor the long-running task
       // return to the caller the callback URL and the ID to allow the caller to connect to teh SSE that monitors the taks and the data 
       // Long running task: Async Call the PowerShell script to read the disk
@@ -83,12 +85,16 @@ namespace Ace.Agent.DiskAnalysisServices
       // ToDo: figure out how to integrate a CancellationToken
       // Long running task: update the Plugin Data Structure with the data from the response
       // Long running task: setup the DiskAnalysisServicesData.PluginRootCOD.Add("test1", 100);
-      ReadDiskResponseData readDiskResponseData = new ReadDiskResponseData("Placeholder");
+      // Temp: Call ReadDisk
+      AnalyzeDisk analyzeDisk = new AnalyzeDisk();
+      ReadDiskResult readDiskResult = analyzeDisk.ReadDisk("create"); ;
+      // End of Temp block
+      ReadDiskResponseData readDiskResponseData = new ReadDiskResponseData(longRunningTaskID);
       ReadDiskResponsePayload readDiskResponsePayload = new ReadDiskResponsePayload(readDiskResponseData);
-      ReadDiskResponse ReadDiskResponse = new ReadDiskResponse();
-      ReadDiskResponse.ReadDiskResponsePayload = readDiskResponsePayload;
+      ReadDiskResponse readDiskResponse = new ReadDiskResponse(readDiskResponsePayload);
       Log.Debug("Leaving Post(ReadDiskRequest)");
-      return ReadDiskResponse;
+      //return readDiskResponse;
+      return new ReadDiskResponse(new ReadDiskResponsePayload(new ReadDiskResponseData(longRunningTaskID)));
     }
     public DiskAnalysisServicesData DiskAnalysisServicesData { get; set; }
   }

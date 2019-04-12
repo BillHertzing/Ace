@@ -43,7 +43,7 @@ namespace Ace.AceGUI.Pages
     protected override async Task OnInitAsync()
     {
       //Logger.LogDebug($"Starting OnInitAsync");
-
+      Console.WriteLine($"Starting OnInitAsync");
       InitializationData initializationData = new InitializationData();
       InitializationRequestPayload initializationRequestPayload = new InitializationRequestPayload(initializationData);
       InitializationRequest = new InitializationRequest() { InitializationRequestPayload = initializationRequestPayload } ;
@@ -60,21 +60,22 @@ namespace Ace.AceGUI.Pages
       //Logger.LogDebug($"Leaving OnInitAsync");
     }
 
-    public async Task ReadDisk()
+    public async Task ReadDisk(int dummyint)
     {
       //Logger.LogDebug($"Starting ReadDisk");
-
+      //Console.WriteLine("Starting ReadDisk");
       // Create the payload for  the Post
       ReadDiskRequestData readDiskRequestData = new ReadDiskRequestData("placeholder");
       //ToDo: add a cancellation token
       ReadDiskRequestPayload readDiskRequestPayload = new ReadDiskRequestPayload(readDiskRequestData);
-      ReadDiskRequest readDiskRequest = new ReadDiskRequest();
+      ReadDiskRequest readDiskRequest = new ReadDiskRequest(readDiskRequestPayload);
       //Logger.LogDebug($"Calling PostJsonAsync<ReadDiskResponse>");
-      ReadDiskResponse readDiskResponse =
+      // change the ReadDisk button's color
+      ReadDiskResponse =
     await HttpClient.PostJsonAsync<ReadDiskResponse>("/ReadDisk?format=json",
                                                            readDiskRequest);
       //Logger.LogDebug($"Returned from PostJsonAsync<ReadDiskResponse>");
-      // Do something with the results
+      
       // This should be a URL and and ID for connecting to a SSE, and the next step
       // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
 
@@ -108,7 +109,7 @@ UserDataSave);
       setUserDataRequest.SetUserDataRequestPayload = setDiskAnalysisServicesUserRequestPayload;
       //Logger.LogDebug($"Calling PostJsonAsync<SetUserDataResponsePayload>");
       SetUserDataResponse =
-await HttpClient.PostJsonAsync<SetUserDataResponsePayload>("/SetUserData?format=json",
+await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetUserData?format=json",
                                                                       setUserDataRequest);
       //Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponsePayload>");
       ////Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponsePayload> with SetConfigurationDataResponsePayload.Result = {SetConfigurationDataResponsePayload.Result}");
@@ -122,7 +123,7 @@ await HttpClient.PostJsonAsync<SetUserDataResponsePayload>("/SetUserData?format=
 
     public bool UserDataSave { get; set; }
 
-    public SetUserDataResponsePayload SetUserDataResponse {
+    public SetUserDataResponse SetUserDataResponse {
       get;
       set;
     }

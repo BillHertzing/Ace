@@ -98,10 +98,12 @@ namespace Ace.Agent.DiskAnalysisServices
   [Route("/ReadDisk/{Filters}")]
   public class ReadDiskRequest : IReturn<ReadDiskResponse>
   {
+    public ReadDiskRequest(ReadDiskRequestPayload readDiskRequestPayload) { ReadDiskRequestPayload = readDiskRequestPayload; }
     public ReadDiskRequestPayload ReadDiskRequestPayload { get; set; }
   }
   public class ReadDiskResponse
   {
+    public ReadDiskResponse(ReadDiskResponsePayload readDiskResponsePayload) { ReadDiskResponsePayload = readDiskResponsePayload; }
     public ReadDiskResponsePayload ReadDiskResponsePayload { get; set; }
   }
   #endregion ReadDiskRequest, ReadDiskResponse, and Route for ReadDisk

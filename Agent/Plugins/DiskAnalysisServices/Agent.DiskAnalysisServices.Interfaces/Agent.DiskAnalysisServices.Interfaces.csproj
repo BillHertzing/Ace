@@ -25,6 +25,8 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\..\ATAP.Utilities.FileSystem.Enumerations\ATAP.Utilities.FileSystem.Enumerations.csproj" />
+    <ProjectReference Include="..\..\..\ATAP.Utilities.FileSystem\ATAP.Utilities.FileSystem.csproj" />
     <ProjectReference Include="..\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
     <ProjectReference Include="..\Agent.DiskAnalysisServices.Data\Agent.DiskAnalysisServices.Data.csproj" />
   </ItemGroup>

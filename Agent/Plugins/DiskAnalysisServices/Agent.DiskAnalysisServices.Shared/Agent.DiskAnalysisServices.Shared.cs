@@ -45,7 +45,7 @@ namespace Ace.Agent.DiskAnalysisServices
   #region ReadDiskRequestData and ReadDiskResponseData
   public class ReadDiskRequestData
   {
-    public ReadDiskRequestData() { }
+    public ReadDiskRequestData(): this(string.Empty) { }
     public ReadDiskRequestData(string placeholder)
     {
       Placeholder = placeholder;
@@ -56,13 +56,13 @@ namespace Ace.Agent.DiskAnalysisServices
 
   public class ReadDiskResponseData
   {
-    public ReadDiskResponseData() { }
-    public ReadDiskResponseData(string result)
+    public ReadDiskResponseData() : this(-1) { }
+    public ReadDiskResponseData(int longRunningTaskID)
     {
-      Result = result;
+      LongRunningTaskID = longRunningTaskID;
     }
 
-    string Result { get; set; }
+    public int LongRunningTaskID { get; set; }
   }
   #endregion ReadDiskRequestData and ReadDiskResponseData
 
@@ -208,10 +208,10 @@ namespace Ace.Agent.DiskAnalysisServices
   #region ReadDiskRequestPayload and ReadDiskResponsePayload
   public class ReadDiskRequestPayload
   {
-    public ReadDiskRequestPayload() { }
+    public ReadDiskRequestPayload() : this(new ReadDiskRequestData()) { }
     public ReadDiskRequestPayload(ReadDiskRequestData readDiskRequestData)
     {
-      this.ReadDiskRequestData = readDiskRequestData;
+      ReadDiskRequestData = readDiskRequestData;
     }
 
     public ReadDiskRequestData ReadDiskRequestData { get; set; }
@@ -219,9 +219,9 @@ namespace Ace.Agent.DiskAnalysisServices
 
   public class ReadDiskResponsePayload
   {
-    public ReadDiskResponsePayload() { }
+    public ReadDiskResponsePayload() : this(new ReadDiskResponseData()) { }
     public ReadDiskResponsePayload(ReadDiskResponseData readDiskResponseData)
-    { this.ReadDiskResponseData = readDiskResponseData; }
+    { ReadDiskResponseData = readDiskResponseData; }
 
     public ReadDiskResponseData ReadDiskResponseData { get; set; }
   }
