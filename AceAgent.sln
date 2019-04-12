@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI.csproj", "{722E51FC-A9FB-4B6D-AA10-DFD8D2C137B1}"
 EndProject
@@ -105,6 +105,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.DiskAnalysisServices.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.DiskAnalysisServices.Shared", "Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj", "{D9248A1A-2B3D-4015-B885-F71AA3EE649D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.FileSystem", "Agent\ATAP.Utilities.FileSystem\ATAP.Utilities.FileSystem.csproj", "{C554EC8F-A55C-4FBF-B606-2712A0DC78E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.FileSystem.Enumerations", "Agent\ATAP.Utilities.FileSystem.Enumerations\ATAP.Utilities.FileSystem.Enumerations.csproj", "{56653330-FDD9-45C2-8FF1-EBD423B60786}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -203,6 +207,14 @@ Global
 		{D9248A1A-2B3D-4015-B885-F71AA3EE649D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9248A1A-2B3D-4015-B885-F71AA3EE649D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9248A1A-2B3D-4015-B885-F71AA3EE649D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C554EC8F-A55C-4FBF-B606-2712A0DC78E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C554EC8F-A55C-4FBF-B606-2712A0DC78E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C554EC8F-A55C-4FBF-B606-2712A0DC78E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C554EC8F-A55C-4FBF-B606-2712A0DC78E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56653330-FDD9-45C2-8FF1-EBD423B60786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56653330-FDD9-45C2-8FF1-EBD423B60786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56653330-FDD9-45C2-8FF1-EBD423B60786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56653330-FDD9-45C2-8FF1-EBD423B60786}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -241,6 +253,8 @@ Global
 		{F2C3747C-4DA7-428C-8DDC-F33F27247B26} = {F16EF490-DC68-4DD0-B76E-6587390E2765}
 		{D09B47C8-2C8A-49D4-B6BA-2A5E7EAFA839} = {F16EF490-DC68-4DD0-B76E-6587390E2765}
 		{D9248A1A-2B3D-4015-B885-F71AA3EE649D} = {F16EF490-DC68-4DD0-B76E-6587390E2765}
+		{C554EC8F-A55C-4FBF-B606-2712A0DC78E5} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
+		{56653330-FDD9-45C2-8FF1-EBD423B60786} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44B34B59-441A-460C-85B9-364D0E4153F9}
