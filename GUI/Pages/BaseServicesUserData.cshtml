@@ -2,28 +2,26 @@
 @inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
 <h1>AceCommander Base Services UserData</h1>
 
-@if (@BaseServicesInitializationRspPayload == null)
+@if (@InitializationResponse == null)
 {
-<p>Loading (Calling onInitAsync)</p>
+  <p>Loading (Calling onInitAsync)</p>
 }
 else
 {
-<h2>User Data</h2>
-<div>
-  <label for="GatewayEntryAPIKeyString">@labelForGatewayEntryAPIKeyString</label>
-  <input type="text" class="form-control" id="GatewayEntryAPIKeyString" bind="@GatewayEntryAPIKeyString" placeholder="@placeHolderForGatewayEntryAPIKeyString" />
-</div>
-<div>
-  <label for="GatewayNameString">@labelForGatewayNameString</label>
-  <input type="text" class="form-control" id="GatewayEntryNameString" bind="@GatewayNameString" placeholder="@placeHolderForGatewayNameString" />
-</div>
-<button type="button" class="btn btn-default" onclick="@PostBaseServicesUserData">@labelForPostBaseServicesUserDataButton</button>
-@if (@BaseServicesUserDataRspPayload == null)
+  if (@UserData == null)
   {
-<p>User Data has not yet been submitted to Ace Commander</p>
+    <p>User Data has not yet been retrieved from Ace Commander</p>
   }
   else
   {
-<p>PostBaseServicesUserDat returned @BaseServicesUserDataRspPayload.ToString() </p>
+  <div>
+    <label for="GatewayEntryAPIKeyString">@labelForGatewayEntryAPIKeyString</label>
+    <input type="text" class="form-control" id="GatewayEntryAPIKeyString" bind="@UserData.GatewayEntryAPIKeyString" placeholder="@placeHolderForGatewayEntryAPIKeyString" />
+  </div>
+  <div>
+    <label for="GatewayNameString">@labelForGatewayNameString</label>
+    <input type="text" class="form-control" id="GatewayEntryNameString" bind="@UserData.GatewayNameString" placeholder="@placeHolderForGatewayNameString" />
+  </div>
+  <button type="button" class="btn btn-default" onclick="async () => await PostGetBaseServicesUserData(0)">@labelForPostBaseServicesUserDataButton</button>
   }
 }

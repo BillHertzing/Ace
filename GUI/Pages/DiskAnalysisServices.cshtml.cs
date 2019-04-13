@@ -60,28 +60,6 @@ namespace Ace.AceGUI.Pages
       //Logger.LogDebug($"Leaving OnInitAsync");
     }
 
-    public async Task ReadDisk(int dummyint)
-    {
-      //Logger.LogDebug($"Starting ReadDisk");
-      //Console.WriteLine("Starting ReadDisk");
-      // Create the payload for  the Post
-      ReadDiskRequestData readDiskRequestData = new ReadDiskRequestData("placeholder");
-      //ToDo: add a cancellation token
-      ReadDiskRequestPayload readDiskRequestPayload = new ReadDiskRequestPayload(readDiskRequestData);
-      ReadDiskRequest readDiskRequest = new ReadDiskRequest(readDiskRequestPayload);
-      //Logger.LogDebug($"Calling PostJsonAsync<ReadDiskResponse>");
-      // change the ReadDisk button's color
-      ReadDiskResponse =
-    await HttpClient.PostJsonAsync<ReadDiskResponse>("/ReadDisk?format=json",
-                                                           readDiskRequest);
-      //Logger.LogDebug($"Returned from PostJsonAsync<ReadDiskResponse>");
-      
-      // This should be a URL and and ID for connecting to a SSE, and the next step
-      // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
-
-      //Logger.LogDebug($"Leaving ReadDisk");
-    }
-
     public async Task SetConfigurationData()
     {
       //Logger.LogDebug($"Starting SetConfigurationData");
@@ -103,56 +81,90 @@ await HttpClient.PostJsonAsync<SetConfigurationDataResponse>("/SetConfigurationD
     {
       //Logger.LogDebug($"Starting SetUserData");
       // Create the payload for the Post
-      SetUserDataRequestPayload setDiskAnalysisServicesUserRequestPayload = new SetUserDataRequestPayload(UserData,
+      SetUserDataRequestPayload setUserDataRequestPayload = new SetUserDataRequestPayload(UserData,
 UserDataSave);
-      SetUserDataRequest setUserDataRequest = new SetUserDataRequest();
-      setUserDataRequest.SetUserDataRequestPayload = setDiskAnalysisServicesUserRequestPayload;
+      SetUserDataRequest  = new SetUserDataRequest(setUserDataRequestPayload);
+
       //Logger.LogDebug($"Calling PostJsonAsync<SetUserDataResponsePayload>");
       SetUserDataResponse =
 await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetUserData?format=json",
-                                                                      setUserDataRequest);
+                                                                      SetUserDataRequest);
       //Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponsePayload>");
       ////Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponsePayload> with SetConfigurationDataResponsePayload.Result = {SetConfigurationDataResponsePayload.Result}");
       //Logger.LogDebug($"Leaving SetUserData");
     }
 
+    public async Task ReadDisk(int dummyint)
+    {
+      //Logger.LogDebug($"Starting ReadDisk");
+      //Console.WriteLine("Starting ReadDisk");
+      // Create the payload for  the Post
+      ReadDiskRequestData readDiskRequestData = new ReadDiskRequestData("placeholder");
+      //ToDo: add a cancellation token
+      ReadDiskRequestPayload readDiskRequestPayload = new ReadDiskRequestPayload(readDiskRequestData);
+      ReadDiskRequest readDiskRequest = new ReadDiskRequest(readDiskRequestPayload);
+      //Logger.LogDebug($"Calling PostJsonAsync<ReadDiskResponse>");
+      // change the ReadDisk button's color
+      ReadDiskResponse =
+    await HttpClient.PostJsonAsync<ReadDiskResponse>("/ReadDisk?format=json",
+                                                           readDiskRequest);
+      //Logger.LogDebug($"Returned from PostJsonAsync<ReadDiskResponse>");
+      ReadDiskLongRunningTaskID = ReadDiskResponse.ReadDiskResponsePayload.ReadDiskResponseData.LongRunningTaskID;
+      // This should be a URL and and ID for connecting to a SSE, and the next step
+      // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
 
-    #region UserData
-    public UserData UserData { get; set; } = userDataPlaceholder;
-
-
-    public bool UserDataSave { get; set; }
-
-    public SetUserDataResponse SetUserDataResponse {
-      get;
-      set;
+      //Logger.LogDebug($"Leaving ReadDisk");
     }
-    #endregion UserData
 
-    #region ConfigurationData
-    public ConfigurationData ConfigurationData { get; set; } = configurationDataPlaceholder;
+    public async Task GetLongRunningTaskState(int longRunningTaskID)
+    {
+      //Logger.LogDebug($"Starting GetLongRunningTaskState");
+      //ToDo: add a cancellation token
+      //Logger.LogDebug($"Calling PostJsonAsync<ReadDiskResponse>");
+      // change the ReadDisk button's color
+      GetLongRunningTaskStateResponse =
+    await HttpClient.PostJsonAsync<GetLongRunningTaskStateResponse>("/GetLongRunningTaskState?format=json",
+                                                           new GetLongRunningTaskStateRequest(longRunningTaskID));
+      //Logger.LogDebug($"Returned from PostJsonAsync<ReadDiskResponse>");
+      ReadDiskLongRunningTaskState = GetLongRunningTaskStateResponse.LongRunningTaskState;
+      // This should be a URL and and ID for connecting to a SSE, and the next step
+      // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
 
-    public bool ConfigurationDataSave { get; set; }
-
-    public SetConfigurationDataResponsePayload SetConfigurationDataResponse {
-      get;
-      set;
+      //Logger.LogDebug($"Leaving ReadDisk");
     }
-    #endregion ConfigurationData
 
-    #region Initialization
+    #region Properties:Initialization
     public InitializationRequest InitializationRequest { get; set; }
     public InitializationResponse InitializationResponse { get; set; }
 
     public bool InitializationResponseOK = false;
     public string InitializationRequestParameters = "None";
-    #endregion Initialization
+    #endregion Properties:Initialization
 
-    #region ReadDisk
-    public ReadDiskResponse ReadDiskResponse {
-      get;
-      set;
-    }
-    #endregion ReadDisk
+    #region Properties:UserData
+    public UserData UserData { get; set; } = userDataPlaceholder;
+
+    public bool UserDataSave { get; set; }
+
+    public SetUserDataRequest SetUserDataRequest { get; set; }
+    public SetUserDataResponse SetUserDataResponse { get; set; }
+    #endregion Properties:UserData
+
+    #region Properties:ConfigurationData
+    public ConfigurationData ConfigurationData { get; set; } = configurationDataPlaceholder;
+
+    public bool ConfigurationDataSave { get; set; }
+
+    public SetConfigurationDataResponsePayload SetConfigurationDataResponse { get; set; }
+    #endregion Properties:ConfigurationData
+
+    #region Properties:ReadDisk
+    public ReadDiskResponse ReadDiskResponse { get; set; }
+    public int ReadDiskLongRunningTaskID { get; set; }
+    #endregion Properties:ReadDisk
+    #region Properties:GetLongRunningTaskState
+    public GetLongRunningTaskStateResponse GetLongRunningTaskStateResponse { get; set; }
+    public string ReadDiskLongRunningTaskState { get; set; }
+    #endregion Properties:GetLongRunningTaskState
   }
 }

@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Agent\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />

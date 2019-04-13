@@ -52,7 +52,7 @@ namespace Ace.AceGUI.Pages {
       //Logger.LogDebug($"Starting OnInitAsync");
       //Logger.LogDebug($"Leaving OnInitAsync");
     }
-    public BaseServicesInitializationRspPayload BaseServicesInitializationRspPayload { get; set; }
+    public InitializationResponse BaseServicesInitializationRspPayload { get; set; }
     #endregion
 
     #region User Registration Methods and Properties

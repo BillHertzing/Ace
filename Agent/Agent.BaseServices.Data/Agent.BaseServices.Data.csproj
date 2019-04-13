@@ -31,6 +31,7 @@
  </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />
     <ProjectReference Include="..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
   </ItemGroup>
 

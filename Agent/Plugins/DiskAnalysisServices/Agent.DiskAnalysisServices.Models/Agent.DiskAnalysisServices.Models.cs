@@ -60,6 +60,11 @@ namespace Ace.Agent.DiskAnalysisServices
   [Route("/SetDiskAnalysisServicesUserData/{SetUserRequestPayload}")]
   public class SetUserDataRequest : IReturn<SetUserDataResponse>
   {
+    public SetUserDataRequest() : this(new SetUserDataRequestPayload()) { }
+    public SetUserDataRequest(SetUserDataRequestPayload setUserDataRequestPayload)
+    {
+      SetUserDataRequestPayload = setUserDataRequestPayload;
+    }
     public SetUserDataRequestPayload SetUserDataRequestPayload { get; set; }
   }
 
@@ -103,10 +108,35 @@ namespace Ace.Agent.DiskAnalysisServices
   }
   public class ReadDiskResponse
   {
+    public ReadDiskResponse() : this(new ReadDiskResponsePayload()) { }
     public ReadDiskResponse(ReadDiskResponsePayload readDiskResponsePayload) { ReadDiskResponsePayload = readDiskResponsePayload; }
     public ReadDiskResponsePayload ReadDiskResponsePayload { get; set; }
   }
   #endregion ReadDiskRequest, ReadDiskResponse, and Route for ReadDisk
+
+  #region GetLongRunningTaskStateRequest, GetLongRunningTaskStateResponse and Route for GetLongRunningTaskState
+  [Route("/GetLongRunningTaskState")]
+  [Route("/GetLongRunningTaskState/{LongRunningTaskID}")]
+  public class GetLongRunningTaskStateRequest : IReturn<SetUserDataResponse>
+  {
+    public GetLongRunningTaskStateRequest() : this(0) { }
+    public GetLongRunningTaskStateRequest(int longRunningTaskID)
+    {
+      LongRunningTaskID = longRunningTaskID;
+    }
+    public int LongRunningTaskID { get; set; }
+  }
+
+  public class GetLongRunningTaskStateResponse
+  {
+    public GetLongRunningTaskStateResponse() : this("DefaultTaskState") { }
+    public GetLongRunningTaskStateResponse(string longRunningTaskState)
+    {
+      LongRunningTaskState = longRunningTaskState;
+    }
+    public string LongRunningTaskState { get; set; }
+  }
+  #endregion GetLongRunningTaskStateRequest, GetLongRunningTaskStateResponse and Route for GetLongRunningTaskState
 
   /*
   #region Monitor Data Structures

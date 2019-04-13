@@ -2,12 +2,13 @@
 @inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
 <h1>AceCommander Base Services</h1>
 
-@if (@BaseServicesInitializationRspPayload == null)
+@if (@InitializationResponse == null)
 {
-  <p>Loading (Calling onInitAsync)</p>
+  <p><em>Loading (Calling onInitAsync)</em></p>
 }
 else
 {
+
   @if (@IsAliveRspPayload == null)
   {
     <p>Getting IsAlive..</p>

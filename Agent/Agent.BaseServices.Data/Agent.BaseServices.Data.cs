@@ -13,12 +13,15 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using ServiceStack.Auth;
 
-namespace Ace.Agent.BaseServices {
-    public class BaseServicesData : IDisposable {
-        // Constructor with just AppHost parameter
-        public BaseServicesData(IAppHost appHost) {
-            Log.Debug("Entering BaseServicesData ctor");
-            Container = appHost.GetContainer();
+namespace Ace.Agent.BaseServices
+{
+  public class BaseServicesData : IDisposable
+  {
+    // Constructor with just AppHost parameter
+    public BaseServicesData(IAppHost appHost)
+    {
+      Log.Debug("Entering BaseServicesData ctor");
+      Container = appHost.GetContainer();
 
       // Blazor requires the delivery of static files ending in certain file suffixs.
       // SS disallows many of these by default, so here we tell SS to allow certain file suffixs
@@ -28,26 +31,33 @@ namespace Ace.Agent.BaseServices {
 
       // If the Redis configuration key exists, register Redis as a name:value pair cache
       if (appHost.AppSettings
-                .Exists(configKeyPrefix + configKeyRedisConnectionString)) {
-                var appSettingsConfigValueRedisConnectionString = appHost.AppSettings
-                    .GetString(configKeyPrefix +
-                    configKeyRedisConnectionString);
-                Container.Register<IRedisClientsManager>(c => new RedisManagerPool(appSettingsConfigValueRedisConnectionString));
-                Container.Register(c => c.Resolve<IRedisClientsManager>()
-                    .GetCacheClient());
-                cacheClient = Container.Resolve<ICacheClient>();
-            } else {
-                throw new NotImplementedException(RedisConnectionStringKeyNotFoundExceptionMessage);
-            }
+                .Exists(configKeyPrefix + configKeyRedisConnectionString))
+      {
+        var appSettingsConfigValueRedisConnectionString = appHost.AppSettings
+            .GetString(configKeyPrefix +
+            configKeyRedisConnectionString);
+        Container.Register<IRedisClientsManager>(c => new RedisManagerPool(appSettingsConfigValueRedisConnectionString));
+        Container.Register(c => c.Resolve<IRedisClientsManager>()
+            .GetCacheClient());
+        cacheClient = Container.Resolve<ICacheClient>();
+      }
+      else
+      {
+        throw new NotImplementedException(RedisConnectionStringKeyNotFoundExceptionMessage);
+      }
 
-            // Ensure that the cacheClient is running
-            try
-            {
-              var test = cacheClient.GetKeysStartingWith(configKeyPrefix);
-            } catch ( ServiceStack.Redis.RedisException Ex){
-              if (Ex.InnerException.Message.Contains(ListeningServiceNotRunningInnerExceptionMessage) ) {
-                throw new Exception($"{RedisNotRunningExceptionMessage} on {Ex.Message}", Ex); }
-            } 
+      // Ensure that the cacheClient is running
+      try
+      {
+        var test = cacheClient.GetKeysStartingWith(configKeyPrefix);
+      }
+      catch (ServiceStack.Redis.RedisException Ex)
+      {
+        if (Ex.InnerException.Message.Contains(ListeningServiceNotRunningInnerExceptionMessage))
+        {
+          throw new Exception($"{RedisNotRunningExceptionMessage} on {Ex.Message}", Ex);
+        }
+      }
 
       // Validate the cache and the appSettings Config keys/values for the BaseService align
 
@@ -95,6 +105,9 @@ namespace Ace.Agent.BaseServices {
         throw new NotImplementedException(MySqlConnectionStringKeyNotFoundExceptionMessage);
       }
 
+      // Populate the ConfigurationData property
+      ConfigurationData = new ConfigurationData(RedisCacheConnectionString, MySqlConnectionString);
+
       // Register an Auth Repository
       Container.Register<IAuthRepository>(c => new OrmLiteAuthRepository(c.Resolve<IDbConnectionFactory>()));
       /// Create the  UserAuth and UserAuthDetails tables in the RDBMS if they do not already exist
@@ -132,26 +145,26 @@ namespace Ace.Agent.BaseServices {
 
       // Build a Gateway for Google Maps GeoCode Gateway
       // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
-      string defaultAPIKey =appHost.AppSettings
+      string defaultAPIKey = appHost.AppSettings
             .GetString(configKeyPrefix +
-            configKeyGoogleMapsAPIKey); 
+            configKeyGoogleMapsAPIKey);
       var gb = new GatewayBuilder();
       gb.AddName("GoogleMaps");
       gb.AddBaseUri(new Uri("https://maps.googleapis.com/maps/api/"));
-     //gb.AddDefaultPolicy(defaultPolicy);
+      //gb.AddDefaultPolicy(defaultPolicy);
       // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
       gb.AddDefaultAPIKey(defaultAPIKey);
       gb.AddGatewayEntry(ge);
       var gw = gb.Build();
       Gateways.Add("GoogleMaps", gw);
-     //Gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().AddName("GoogleMapsGeoCoding").AddBaseUri(new Uri("https://maps.googleapis.com/maps/api").AddDefaultPolicy(new Polly.Policy()).Build());
+      //Gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().AddName("GoogleMapsGeoCoding").AddBaseUri(new Uri("https://maps.googleapis.com/maps/api").AddDefaultPolicy(new Polly.Policy()).Build());
 
       // Create a collection of GatewayMonitors for BaseServices based on the collection of Gateways defined by the Base services
       var gatewayMonitorsBuilder = new GatewayMonitorsBuilder("Base");
       //gatewayMonitorsBuilder.AddGatewayMonitor(new GatewayMonitor(Gateways.Get("GoogleMapsGeoCoding")));
       GatewayMonitors = gatewayMonitorsBuilder.Build();
       // temporary manually populate the collection with one GatewayMonitor
-      
+
       var gemb = new GatewayEntryMonitorBuilder();
       gemb.AddName("GeoCode");
       var gem = gemb.Build();
@@ -164,6 +177,9 @@ namespace Ace.Agent.BaseServices {
       //   GatewayMonitors.GatewayMonitorColl.Add("Manual", new GatewayMonitorBuilder().AddName("GoogleMapsGeoCoding").AddGatewayEntryMonitor(new GatewayEntryMonitorBuilder().AddName("GeoCode").Build()).Build());
 
       // Store the collection of Gateway Monitor in the Base Data structure
+
+      // Populate the specific per-user data instance for this user
+      UserData = new UserData();
       // ToDo: support AppSettings to control the enable/disable of Postman
       // Enable Postman integration
       //AppHost.Plugins.Add(new PostmanFeature());
@@ -192,31 +208,31 @@ namespace Ace.Agent.BaseServices {
 
 
       Log.Debug("Leaving BaseServicesData ctor");
-        }
-        // constructor with event handlers
-        /*
-        public BaseServicesData(IAppHost appHost, ConcurrentObservableDictionary<string, GatewayMonitor> baseCOD, NotifyCollectionChangedEventHandler onBaseCODCollectionChanged, PropertyChangedEventHandler onBaseCODPropertyChanged) {
-            Log.Debug("Entering BaseServicesData ctor");
-            cacheClient = appHost.GetContainer()
-                .Resolve<ICacheClient>();
-            GatewayMonitorCOD = baseCOD;
-            this.onBaseCODCollectionChanged = onBaseCODCollectionChanged;
-            this.onBaseCODPropertyChanged = onBaseCODPropertyChanged;
-            GatewayMonitorCOD.CollectionChanged += this.onBaseCODCollectionChanged;
-            GatewayMonitorCOD.PropertyChanged += this.onBaseCODPropertyChanged;
-            Log.Debug("Leaving BaseServicesData ctor");
-        }
-    */
+    }
+    // constructor with event handlers
+    /*
+    public BaseServicesData(IAppHost appHost, ConcurrentObservableDictionary<string, GatewayMonitor> baseCOD, NotifyCollectionChangedEventHandler onBaseCODCollectionChanged, PropertyChangedEventHandler onBaseCODPropertyChanged) {
+        Log.Debug("Entering BaseServicesData ctor");
+        cacheClient = appHost.GetContainer()
+            .Resolve<ICacheClient>();
+        GatewayMonitorCOD = baseCOD;
+        this.onBaseCODCollectionChanged = onBaseCODCollectionChanged;
+        this.onBaseCODPropertyChanged = onBaseCODPropertyChanged;
+        GatewayMonitorCOD.CollectionChanged += this.onBaseCODCollectionChanged;
+        GatewayMonitorCOD.PropertyChanged += this.onBaseCODPropertyChanged;
+        Log.Debug("Leaving BaseServicesData ctor");
+    }
+*/
 
-      #region string constants
-      #region Configuration Key strings
+    #region string constants
+    #region Configuration Key strings
     public const string configKeyAceAgentListeningOnString = "Ace.Agent.ListeningOn";
     public const string configKeyRedisConnectionString = "RedisConnectionString";
     public const string configKeyMySqlConnectionString = "MySqlConnectionString";
     public const string configKeyGoogleMapsAPIKey = "GoogleMapsAPIKey";
     #endregion Configuration Key strings
     #region Exception Messages (string constants)
-    const string RedisNotRunningExceptionMessage = "Redis Connection string found, but Redis not running as cacheClient."; 
+    const string RedisNotRunningExceptionMessage = "Redis Connection string found, but Redis not running as cacheClient.";
     const string RedisConnectionStringKeyNotFoundExceptionMessage = "RedisConnectionString Key not found in Application's Configuration settings and no other ICache implemenation is supported. Add the RedisConnectionString Key and Value to the Application Configuration, and retry.";
     const string MySqlConnectionStringKeyNotFoundExceptionMessage = "MySqlConnectionString Key not found in Application's Configuration settings and no other ORMLite implemenation is supported. Add the MySqlConnectionString Key and Value to the Application Configuration, and retry.";
     const string ListeningServiceNotRunningInnerExceptionMessage = "No connection could be made because the target machine actively refused it ";
@@ -236,8 +252,8 @@ namespace Ace.Agent.BaseServices {
             .DeclaringType
             .Namespace +
         ".Config.";
-        // Create a logger for this class
-        public static ILog Log = LogManager.GetLogger(typeof(BaseServicesData));
+    // Create a logger for this class
+    public static ILog Log = LogManager.GetLogger(typeof(BaseServicesData));
 
     #endregion static fields
 
@@ -247,23 +263,20 @@ namespace Ace.Agent.BaseServices {
     ICacheClient cacheClient;
 
     NotifyCollectionChangedEventHandler onBaseCODCollectionChanged;
-        PropertyChangedEventHandler onBaseCODPropertyChanged;
+    PropertyChangedEventHandler onBaseCODPropertyChanged;
 
-        NotifyCollectionChangedEventHandler onNestedCollectionChanged;
-        PropertyChangedEventHandler onNestedPropertyChanged;
+    NotifyCollectionChangedEventHandler onNestedCollectionChanged;
+    PropertyChangedEventHandler onNestedPropertyChanged;
     #endregion private fields 
 
-    #region Public Properties
+    #region Properties
+    #region Properties:Container
+    public Funq.Container Container { get; set; }
+    #endregion
+    public IGateways Gateways { get; set; }
 
-
-        public Funq.Container Container { get; set; }
-
-        public IGateways Gateways {
-            get;
-            set;
-        }
-
-    #region Configuration Data (Properties)
+    #region Properties:Configuration Data
+    public ConfigurationData ConfigurationData;
     public string RedisCacheConnectionString {
       get { return cacheClient.Get<string>(configKeyPrefix + configKeyRedisConnectionString); }
       set { cacheClient.Set<string>(configKeyPrefix + configKeyRedisConnectionString, value); }
@@ -273,11 +286,16 @@ namespace Ace.Agent.BaseServices {
       set { cacheClient.Set<string>(configKeyPrefix + configKeyMySqlConnectionString, value); }
     }
     #endregion
+    #region Properties:UserData
+    public UserData UserData;
+
+    #endregion
     public IGatewayMonitors GatewayMonitors { get; set; }
-    #endregion Public Properties
+    #endregion 
 
     #region IDisposable Support
-    public void TearDown() {
+    public void TearDown()
+    {
       //TearDownGateways
       //TearDownGatewayMonitors
       /*
@@ -302,32 +320,36 @@ enumerator.Dispose();
 
     bool disposedValue = false; // To detect redundant calls
 
-        protected virtual void Dispose(bool disposing) {
-            if(!disposedValue) {
-                if(disposing) {
-                    // dispose managed state (managed objects).
-                    TearDown();
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-        // TODO: set large fields to null.
-
-                disposedValue = true;
-            }
+    protected virtual void Dispose(bool disposing)
+    {
+      if (!disposedValue)
+      {
+        if (disposing)
+        {
+          // dispose managed state (managed objects).
+          TearDown();
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+        // TODO: set large fields to null.
+
+        disposedValue = true;
+      }
+    }
+
+    // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
     // ~WithObservableConcurrentDictionaryAndEventHandlers() {
     //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
     //   Dispose(false);
     // }
     // This code added to correctly implement the disposable pattern.
-    public void Dispose() {
-        // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        Dispose(true);
-        // TODO: uncomment the following line if the finalizer is overridden above.
-        // GC.SuppressFinalize(this);
+    public void Dispose()
+    {
+      // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+      Dispose(true);
+      // TODO: uncomment the following line if the finalizer is overridden above.
+      // GC.SuppressFinalize(this);
     }
     #endregion
-    }
+  }
 }

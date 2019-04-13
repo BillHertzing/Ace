@@ -2,29 +2,26 @@
 @inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
 <h1>AceCommander Base Services Configuration Settings</h1>
 
-@if (@BaseServicesInitializationRspPayload == null)
+@if (@InitializationResponse == null)
 {
   <p>Loading (Calling onInitAsync)</p>
 }
 else
 {
-  <h2>Configuration Data</h2>
-  <div>
-    <label for="RedisCacheConnectionString">@labelForRedisCacheConnectionString</label>
-    <input type="text" class="form-control" id="RedisCacheConnectionString" bind="@RedisCacheConnectionString" placeholder="@placeHolderForRedisCacheConnectionString" />
-  </div>
-  <div>
-    <label for="MySqlConnectionString">@labelForMySqlConnectionString</label>
-    <input type="text" class="form-control" id="MySqlConnectionString" bind="@MySqlConnectionString" placeholder="@placeHolderForMySqlConnectionString" />
-  </div>
-  <button type="button" class="btn btn-default" onclick="@GetBaseServicesConfigurationData">@labelForGetBaseServicesConfigurationDataButton</button>
-  <button type="button" class="btn btn-default" onclick="@PostBaseServicesConfigurationData">@labelForPostBaseServicesConfigurationDataButton</button>
-  @if (@BaseServicesConfigurationDataRspDTO == null)
+  @if (@ConfigurationData == null)
   {
-    <p>Configuration Information has not yet been submitted to Ace Commander</p>
+    <p>Configuration Information has not yet been retrieved from Ace Commander</p>
   }
   else
   {
-    <p>PostBaseServicesConfigurationData returned @BaseServicesConfigurationDataRspDTO.RedisCacheConnectionString.ToString() </p>
+    <div>
+      <label for="RedisCacheConnectionString">@labelForRedisCacheConnectionString</label>
+      <input type="text" class="form-control" id="RedisCacheConnectionString" bind="@ConfigurationData.RedisCacheConnectionString" placeholder="@placeHolderForRedisCacheConnectionString" />
+    </div>
+    <div>
+      <label for="MySqlConnectionString">@labelForMySqlConnectionString</label>
+      <input type="text" class="form-control" id="MySqlConnectionString" bind="@ConfigurationData.MySqlConnectionString" placeholder="@placeHolderForMySqlConnectionString" />
+    </div>
+    <button type="button" class="btn btn-default" onclick="async () => await PostGetBaseServicesConfigurationData(0)">@labelForPostGetBaseServicesConfigurationData</button>
   }
 }

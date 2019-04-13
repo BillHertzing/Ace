@@ -17,7 +17,11 @@ else
   }
   else
   {
-    <p>ReadDisk returned @ReadDiskResponse.ReadDiskResponsePayload.ReadDiskResponseData.ToString() </p>
+    <p>ReadDiskLongRunningTaskID =  @ReadDiskLongRunningTaskID.ToString() </p>
+
+    <p>The state of the ReadDiskLongRunningTask is: @ReadDiskLongRunningTaskState</p>
+    <button id="btnGetLongRunningTaskState" type="button" class="btn btn-default" onclick="@(async () => await GetLongRunningTaskState(@ReadDiskLongRunningTaskID))">Read Disk</button>
+
   }
 
 
