@@ -116,7 +116,7 @@ await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetUserData?format=json",
       //Logger.LogDebug($"Leaving ReadDisk");
     }
 
-    public async Task GetLongRunningTaskState(int longRunningTaskID)
+    public async Task GetLongRunningTaskState(Guid longRunningTaskID)
     {
       //Logger.LogDebug($"Starting GetLongRunningTaskState");
       //ToDo: add a cancellation token
@@ -160,7 +160,7 @@ await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetUserData?format=json",
 
     #region Properties:ReadDisk
     public ReadDiskResponse ReadDiskResponse { get; set; }
-    public int ReadDiskLongRunningTaskID { get; set; }
+    public Guid ReadDiskLongRunningTaskID { get; set; }
     #endregion Properties:ReadDisk
     #region Properties:GetLongRunningTaskState
     public GetLongRunningTaskStateResponse GetLongRunningTaskStateResponse { get; set; }

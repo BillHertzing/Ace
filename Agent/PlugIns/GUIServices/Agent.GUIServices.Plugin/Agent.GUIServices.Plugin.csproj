@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>Ace.AceService.BaseServices.Interfaces</RootNamespace>
+    <RootNamespace>Ace.AceService.GUIServices.Plugin</RootNamespace>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
@@ -14,16 +14,18 @@
     <PackageLifeCycleStage>Production</PackageLifeCycleStage>
     <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
     <PackageLabel>NA</PackageLabel>
+
   </PropertyGroup>
-  
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.5.1" />
-    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.5.1" />
-    <ProjectReference Include="..\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj" />
-    <ProjectReference Include="..\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+    <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
+    <ProjectReference Include="..\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
+    <ProjectReference Include="..\Agent.GUIServices.Interfaces\Agent.GUIServices.Interfaces.csproj" />
+    <ProjectReference Include="..\Agent.GUIServices.Data\Agent.GUIServices.Data.csproj" />
   </ItemGroup>
-  
+
   <!-- .NET 4 or greater references, compilation flags and build options -->
   <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
     <Reference Include="mscorlib" />
@@ -41,6 +43,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Security" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Agent.GUIServices.settings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

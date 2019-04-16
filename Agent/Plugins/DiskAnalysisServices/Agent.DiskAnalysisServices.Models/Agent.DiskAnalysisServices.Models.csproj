@@ -22,9 +22,12 @@
 
       <ItemGroup>
         <PackageReference Include="ServiceStack.Interfaces" Version="5.5.1" />
+        <PackageReference Include="ServiceStack.Text" Version="5.5.1" />
+        <PackageReference Include="ServiceStack.Text.Core" Version="5.5.1" />
       </ItemGroup>
 
       <ItemGroup>
+        <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
         <ProjectReference Include="..\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
       </ItemGroup>
   

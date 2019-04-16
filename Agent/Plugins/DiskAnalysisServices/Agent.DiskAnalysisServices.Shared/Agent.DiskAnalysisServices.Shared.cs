@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ATAP.Utilities.ComputerInventory;
 
 namespace Ace.Agent.DiskAnalysisServices
 {
@@ -42,29 +43,29 @@ namespace Ace.Agent.DiskAnalysisServices
   }
   #endregion InitializationData
 
-  #region ReadDiskRequestData and ReadDiskResponseData
-  public class ReadDiskRequestData
+  #region DiskDriveToDBGraphRequestData and DiskDriveToDBGraphResponseData
+  public class DiskDriveToDBGraphRequestData
   {
-    public ReadDiskRequestData(): this(string.Empty) { }
-    public ReadDiskRequestData(string placeholder)
+    public DiskDriveToDBGraphRequestData(): this(new DiskDrivePartitionDriveLetterIdentifier()) { }
+    public DiskDriveToDBGraphRequestData(DiskDrivePartitionDriveLetterIdentifier diskDrivePartitionDriveLetterIdentifier)
     {
-      Placeholder = placeholder;
+            DiskDrivePartitionDriveLetterIdentifier=diskDrivePartitionDriveLetterIdentifier;
     }
 
-    public string Placeholder { get; set; }
+    public DiskDrivePartitionDriveLetterIdentifier DiskDrivePartitionDriveLetterIdentifier { get; set; }
   }
 
-  public class ReadDiskResponseData
+  public class DiskDriveToDBGraphResponseData
   {
-    public ReadDiskResponseData() : this(-1) { }
-    public ReadDiskResponseData(int longRunningTaskID)
+    public DiskDriveToDBGraphResponseData() : this(new List<Guid>()) { }
+    public DiskDriveToDBGraphResponseData(IEnumerable<Guid> longRunningTaskIDs)
     {
-      LongRunningTaskID = longRunningTaskID;
+      LongRunningTaskIDs = longRunningTaskIDs;
     }
 
-    public int LongRunningTaskID { get; set; }
+    public IEnumerable<Guid> LongRunningTaskIDs { get; set; }
   }
-  #endregion ReadDiskRequestData and ReadDiskResponseData
+  #endregion
 
   #region SetDiskAnalysisServicesConfigurationDataRequestPayload and SetDiskAnalysisServicesConfigurationDataResponsePayload
   #region SetConfigurationDataRequestPayload

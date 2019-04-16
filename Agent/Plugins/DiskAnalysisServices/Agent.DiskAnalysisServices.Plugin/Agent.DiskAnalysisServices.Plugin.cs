@@ -126,7 +126,7 @@ namespace Ace.Agent.DiskAnalysisServices
 
       // and pass the Plugin's data structure to the container so it will be available to every other module and services
       appHost.GetContainer()
-      .Register<DiskAnalysisServicesData>(x => DiskAnalysisServicesData);
+      .Register<DiskAnalysisServicesData>(c => DiskAnalysisServicesData);
 
 
 

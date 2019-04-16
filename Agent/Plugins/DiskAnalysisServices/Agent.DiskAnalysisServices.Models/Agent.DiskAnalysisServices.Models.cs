@@ -1,5 +1,8 @@
 using System;
 using ServiceStack;
+using ServiceStack.Text;
+using ATAP.Utilities.ComputerInventory;
+using System.Collections.Generic;
 
 namespace Ace.Agent.DiskAnalysisServices
 {
@@ -96,35 +99,34 @@ namespace Ace.Agent.DiskAnalysisServices
     }
     public GetUserDataResponsePayload GetUserDataResponsePayload { get; set; }
   }
-  #endregion GetUserDataRequest, GetUserDataResponsePayload and Route for GetDiskAnalysisServicesUserData
+    #endregion GetUserDataRequest, GetUserDataResponsePayload and Route for GetDiskAnalysisServicesUserData
 
-  #region ReadDiskRequest, ReadDiskResponse, and Route for ReadDisk
-  [Route("/ReadDisk")]
-  [Route("/ReadDisk/{Filters}")]
-  public class ReadDiskRequest : IReturn<ReadDiskResponse>
+    #region DiskDriveManyToDBGraphRequest, DiskDriveManyToDBGraphResponse, and Route for DiskDriveManyToDBGraph
+    [Route("/DiskDriveManyToDBGraph")]
+  [Route("/DiskDriveManyToDBGraph/{DiskDriveAndPartitionSpecification}")]
+  public class DiskDriveManyToDBGraphRequest : IReturn<DiskDriveManyToDBGraphResponse>
   {
-    public ReadDiskRequest(ReadDiskRequestPayload readDiskRequestPayload) { ReadDiskRequestPayload = readDiskRequestPayload; }
-    public ReadDiskRequestPayload ReadDiskRequestPayload { get; set; }
+    public DiskDriveManyToDBGraphRequest(IEnumerable<DiskDrivePartitionDriveLetterIdentifier> diskDrivePartitionDriveLetterIdentifiers) { DiskDrivePartitionDriveLetterIdentifiers=diskDrivePartitionDriveLetterIdentifiers; }
+    public IEnumerable<DiskDrivePartitionDriveLetterIdentifier> DiskDrivePartitionDriveLetterIdentifiers { get; set; }
   }
-  public class ReadDiskResponse
-  {
-    public ReadDiskResponse() : this(new ReadDiskResponsePayload()) { }
-    public ReadDiskResponse(ReadDiskResponsePayload readDiskResponsePayload) { ReadDiskResponsePayload = readDiskResponsePayload; }
-    public ReadDiskResponsePayload ReadDiskResponsePayload { get; set; }
+  public class DiskDriveManyToDBGraphResponse {
+    public DiskDriveManyToDBGraphResponse() : this(new DiskDriveToDBGraphResponseData()) { }
+    public DiskDriveManyToDBGraphResponse(DiskDriveToDBGraphResponseData diskDriveManyToDBGraphResponseData) { DiskDriveManyToDBGraphResponseData=diskDriveManyToDBGraphResponseData; }
+    public DiskDriveToDBGraphResponseData DiskDriveManyToDBGraphResponseData { get; set; }
   }
-  #endregion ReadDiskRequest, ReadDiskResponse, and Route for ReadDisk
+  #endregion 
 
   #region GetLongRunningTaskStateRequest, GetLongRunningTaskStateResponse and Route for GetLongRunningTaskState
   [Route("/GetLongRunningTaskState")]
   [Route("/GetLongRunningTaskState/{LongRunningTaskID}")]
   public class GetLongRunningTaskStateRequest : IReturn<SetUserDataResponse>
   {
-    public GetLongRunningTaskStateRequest() : this(0) { }
-    public GetLongRunningTaskStateRequest(int longRunningTaskID)
+    public GetLongRunningTaskStateRequest() : this(Guid.Empty) { }
+    public GetLongRunningTaskStateRequest(Guid longRunningTaskID)
     {
       LongRunningTaskID = longRunningTaskID;
     }
-    public int LongRunningTaskID { get; set; }
+    public Guid LongRunningTaskID { get; set; }
   }
 
   public class GetLongRunningTaskStateResponse

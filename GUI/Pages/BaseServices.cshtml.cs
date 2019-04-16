@@ -14,8 +14,6 @@ namespace Ace.AceGUI.Pages
 {
   public class BaseServicesCodeBehind : ComponentBase
   {
-    #region Configuration Data
-    #endregion
 
     #region StringConstants
     // Eventually replace with localization
@@ -37,6 +35,7 @@ namespace Ace.AceGUI.Pages
     public const string longitudePlaceHolder = "Enter +- decimal number";
     public const string addressPlaceHolder = "Enter full street address";
     #endregion
+
     #region Gateway definitions
     public const string labelForGatewayNameString = "Gateway Name";
     public const string placeHolderForGatewayNameString = "Enter the name of a Gateway to use for Lat/Lng to Address translation";

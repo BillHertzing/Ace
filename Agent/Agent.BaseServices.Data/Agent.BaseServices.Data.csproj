@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
   <PropertyGroup>
@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Polly" Version="6.1.0" />
+    <PackageReference Include="Polly" Version="6.1.2" />
     <PackageReference Include="ServiceStack" Version="5.5.1" />
     <PackageReference Include="ServiceStack.OrmLite.MySql" Version="5.5.1" />
     <PackageReference Include="ServiceStack.Redis" Version="5.5.1" />
@@ -31,8 +31,8 @@
  </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />
-    <ProjectReference Include="..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
   </ItemGroup>
 
   <ItemGroup>

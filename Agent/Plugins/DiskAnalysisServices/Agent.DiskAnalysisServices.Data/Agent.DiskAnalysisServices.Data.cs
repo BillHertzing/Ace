@@ -6,6 +6,7 @@ using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.Logging;
 using Swordfish.NET.Collections;
+using Ace.Agent.BaseServices;
 
 namespace Ace.Agent.DiskAnalysisServices
 {
@@ -41,6 +42,7 @@ namespace Ace.Agent.DiskAnalysisServices
         public DiskAnalysisServicesData(IAppHost appHost, ConcurrentObservableDictionary<string, decimal> pluginRootCOD, NotifyCollectionChangedEventHandler onPluginRootCODCollectionChanged, PropertyChangedEventHandler onPluginRootCODPropertyChanged) {
       
             cacheClient = appHost.GetContainer().Resolve<ICacheClient>();
+            BaseServicesData=appHost.GetContainer().Resolve<BaseServicesData>();
             PluginRootCOD = pluginRootCOD;
             this.onPluginRootCODCollectionChanged = onPluginRootCODCollectionChanged;
             this.onPluginRootCODPropertyChanged = onPluginRootCODPropertyChanged;
@@ -48,7 +50,7 @@ namespace Ace.Agent.DiskAnalysisServices
             pluginRootCOD.PropertyChanged += this.onPluginRootCODPropertyChanged;
         }
 
-
+        public BaseServicesData BaseServicesData { get; set; }
         public ConcurrentObservableDictionary<string, decimal> PluginRootCOD { get; set; }
 
     #region IDisposable Support
