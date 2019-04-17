@@ -6,8 +6,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using Itenso.TimePeriod;
 using System.Threading.Tasks;
-// ToDo: figure out logging for the ATAP libraires, this is only temporary
-using ServiceStack.Logging;
 using System.Threading;
 using ATAP.Utilities.Database.Enumerations;
 using ServiceStack.Text;
@@ -62,36 +60,61 @@ namespace ATAP.Utilities.ComputerInventory {
 
     [Serializable]
     public class MainBoard : ISerializable {
-        //readonly MainBoardMaker maker;
 
-        //readonly string socket;
+        public MainBoard() :this (MainBoardMaker.Generic, CPUSocket.Generic) {}
+
+        public MainBoard(MainBoardMaker maker, CPUSocket cPUSocket) {
+            Maker=maker;
+            CPUSocket=cPUSocket;
+        }
 
         MainBoard(SerializationInfo info, StreamingContext ctxt) {
             ///ToDo: figure out why the static extension method found in utilities.Enumerations doesn't work
             //this.maker = MainBoardMaker.ToEnum<MainBoardMaker>(info.GetString("Maker"));
             Maker=(MainBoardMaker)Enum.Parse(typeof(MainBoardMaker), info.GetString("Maker"), true);
-            Socket=info.GetString("Socket");
-        }
-
-        public MainBoard(MainBoardMaker maker, string socket) {
-            Maker=maker;
-            Socket=socket;
+            CPUSocket=(CPUSocket)Enum.Parse(typeof(CPUSocket), info.GetString("CPUSocket"), true);
         }
 
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("Maker", this.Maker.ToString());
-            info.AddValue("Socket", this.Socket);
+            info.AddValue("Maker", Maker.ToString());
+            info.AddValue("CPUSocket", CPUSocket.ToString());
         }
 
         public MainBoardMaker Maker { get; set; }
 
-        public string Socket { get; set; }
+        public CPUSocket CPUSocket { get; set; }
 
         public override bool Equals(Object obj) {
             if (obj==null)
                 return false;
 
             MainBoard id = obj as MainBoard;
+            if (id==null)
+                return false;
+            return (Maker==id.Maker && CPUSocket == id.CPUSocket);
+        }
+
+        //ToDo: add CPUSocket field, figure out how to hash together two fields
+        public override int GetHashCode() {
+            return Maker.GetHashCode();
+        }
+    }
+
+    [Serializable]
+    public class CPU {
+
+        public CPU() : this(CPUMaker.Generic) {}
+        public CPU(CPUMaker maker) {
+            Maker=maker;
+        }
+        public CPUMaker Maker { get; set; }
+
+        //ToDo: investigate if overrrides for Equals and hash Code is needed anywhere
+        public override bool Equals(Object obj) {
+            if (obj==null)
+                return false;
+
+            CPU id = obj as CPU;
             if (id==null)
                 return false;
 
@@ -104,31 +127,6 @@ namespace ATAP.Utilities.ComputerInventory {
     }
 
     [Serializable]
-    public class CPU {
-        CPUMaker maker;
-        //public CPU() : this(CPUMaker.Generic) {}
-        public CPU(CPUMaker maker) {
-            this.maker=maker;
-        }
-        public CPUMaker Maker => maker;
-
-        public override bool Equals(Object obj) {
-            if (obj==null)
-                return false;
-
-            CPU id = obj as CPU;
-            if (id==null)
-                return false;
-
-            return (maker==id.Maker);
-        }
-
-        public override int GetHashCode() {
-            return maker.GetHashCode();
-        }
-    }
-
-    [Serializable]
     //ToDo: figure out how to conditionally compile in the dependency of ComputerHardware on a class library that only supports .Net Framework Full
 #if NETFUL
   public class ComputerHardware : OpenHardwareMonitor.Hardware.Computer {
@@ -137,32 +135,34 @@ namespace ATAP.Utilities.ComputerInventory {
 #endif
   {
         // A very generic list of computer hardware
-        public ComputerHardware(ILog log = null) : this(new MainBoard(MainBoardMaker.Generic, "dummy"),
+        public ComputerHardware() : this(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic),
             new List<CPUMaker>() { CPUMaker.Generic },
-            new List<DiskInfoEx>() { new DiskInfoEx() }, new TimeBlock(DateTime.UtcNow, true), log) { }
+            new List<DiskInfoEx>() { new DiskInfoEx() }, 
+            new TimeBlock(DateTime.UtcNow, true)) { }
 
         // Created on demand to match a specific computerName
-        public ComputerHardware(string computerName, ILog log = null) {
+        public ComputerHardware(string computerName) {
             if (!computerName.Trim().ToLowerInvariant().Equals("localhost"))
                 throw new NotImplementedException("ComputerName other than localhost is not supported");
             // ToDo: Query WMI or Configuration data for real details
             // Temp: hardcode for laptop
             var diskInfoExs = new List<DiskInfoEx>() { new DiskInfoEx(), new DiskInfoEx(), new DiskInfoEx() };
-            new ComputerHardware(new MainBoard(MainBoardMaker.Generic, "dummy"), new List<CPUMaker> { CPUMaker.Intel }, diskInfoExs, new TimeBlock(DateTime.UtcNow, true));
+            new ComputerHardware(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic), new List<CPUMaker> { CPUMaker.Intel }, diskInfoExs, new TimeBlock(DateTime.UtcNow, true));
         }
 
-        public ComputerHardware(MainBoard mainboard, IEnumerable<CPUMaker> cPUs, IEnumerable<DiskInfoEx> diskInfoExs, ILog log = null) : this(mainboard, cPUs, diskInfoExs, new TimeBlock(DateTime.UtcNow, true), log) { }
+        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IList<DiskInfoEx> diskInfoExs) : this(mainboard, cPUs, diskInfoExs, new TimeBlock(DateTime.UtcNow, true)) { }
 
-        public ComputerHardware(MainBoard mainboard, IEnumerable<CPUMaker> cPUs, IEnumerable<DiskInfoEx> diskInfoExs, TimeBlock moment, ILog log = null) {
+        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IList<DiskInfoEx> diskInfoExs, TimeBlock moment) {
             MainBoard=mainboard??throw new ArgumentNullException(nameof(mainboard));
             CPUs=cPUs??throw new ArgumentNullException(nameof(cPUs));
             DiskInfoExs=diskInfoExs??throw new ArgumentNullException(nameof(diskInfoExs));
             Moment=moment??throw new ArgumentNullException(nameof(moment));
-            Log=log;
         }
 
+
         /*
-            public ComputerHardware(CPU[] cPUs, MainBoard mainBoard, VideoCard[] videoCards, TimeBlock moment) {
+        // ToDo: Invstigate the following, it is from old code that uses a .NetFull HW library to query info about a pyhsical computer 
+        public ComputerHardware(CPU[] cPUs, MainBoard mainBoard, VideoCard[] videoCards, TimeBlock moment) {
                 isMainboardEnabled=true;
                 isCPUsEnabled=true;
                 isVideoCardsEnabled=true;
@@ -200,12 +200,10 @@ namespace ATAP.Utilities.ComputerInventory {
         */
 
         #region Properties
-        #region Properties:class logger
-        public ILog Log;
-        #endregion
+  
         public MainBoard MainBoard { get; set; }
-        public IEnumerable<CPUMaker> CPUs { get; set; }
-        public IEnumerable<DiskInfoEx> DiskInfoExs { get; set; }
+        public IList<CPUMaker> CPUs { get; set; }
+        public IList<DiskInfoEx> DiskInfoExs { get; set; }
         public TimeBlock Moment { get; set; }
 
         /*
@@ -259,52 +257,19 @@ namespace ATAP.Utilities.ComputerInventory {
         */
         public ComputerInventory() : this(new ComputerHardware()) {
         }
-        public ComputerInventory(string computerName, ILog log = null) {
+        public ComputerInventory(string computerName) {
             ComputerName=computerName??throw new ArgumentNullException(nameof(computerName));
             if (!ComputerName.Trim().ToLowerInvariant().Equals("localhost"))
                 throw new NotImplementedException("ComputerName other than localhost is not supported");
-            ComputerHardware = new ComputerHardware(computerName, log);
+            ComputerHardware = new ComputerHardware(computerName);
         }
 
-        public ComputerInventory(ComputerHardware computerHardware, ILog log = null) {
-            Log=log;
+        public ComputerInventory(ComputerHardware computerHardware) {
             ComputerHardware=computerHardware??throw new ArgumentNullException(nameof(computerHardware));
         }
 
-        // populate a list of PartitionInfoEx with information about the actual partitions on a DiskDrive
-        // pass in an Action that will populate a storage location with the information
-        public async Task PopulatePartitionInfoExs(CrudType cRUD, DiskInfoEx diskInfoEx, Action<DiskInfoEx> storePartitionInfoExs) {
-            Log.Debug($"starting PopulatePartitionInfoExs: cRUD = {cRUD.ToString()}, diskInfoEx = {diskInfoEx.Dump()}");
-
-            // ToDo: Get the list of partitions from the Disk hardware
-            await new Task(() => Thread.Sleep(500));
-            // Until real partitions are available, mock up the current laptop configuration as of 4/15/19
-            // No partitions on drives 0 and 1, and one partition on drive 2, one drive letter E
-            var partitionInfoExs = new List<PartitionInfoEx>();
-            switch (diskInfoEx.DriveNumber) {
-                case 2: {
-                    var partitionInfoEx = new PartitionInfoEx() {
-                        PartitionIdentityId=0,
-                        PartitionGuid=Guid.NewGuid(),
-                        DriveLetters=new List<string>() { "E" }
-                    };
-                    partitionInfoExs.Add(partitionInfoEx);
-                    break;
-                }
-                default:
-                    break;
-            }
-            storePartitionInfoExs.Invoke(diskInfoEx);
-            // ToDo: see if the disk already has partitions in the DB
-            var dBPartitions = new List<PartitionInfoEx>();
-
-            Log.Debug($"leaving PopulatePartitionInfoExs");
-        }
-
         #region Properties
-        #region Properties:class logger
-        public ILog Log;
-        #endregion
+ 
         public string ComputerName { get; set; }
         ComputerHardware ComputerHardware { get; set; }
         //ComputerSoftware ComputerSoftware { get; set; }

@@ -24,23 +24,24 @@ namespace Ace.Agent.DiskAnalysisServices {
 
         public object Post(InitializationRequest request) {
             Log.Debug("starting Post(InitializationRequest request)");
+            /* Currently Initialization Request sends no data
             InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;
             Log.Debug($"You sent me InitializationRequestPayload = {initializationRequestPayload}");
             Log.Debug($"You sent me InitializationData = {initializationRequestPayload.InitializationData}");
             // Initialize the plugin's data structures for this service/user/session/connection
             // ToDo: Figure out if the Initialization request from the GUI has any impact on the configuration or user data structures
             InitializationData initializationData = initializationRequestPayload.InitializationData;
-
+            */
             // Copy the Plugin's current ConfigurationData structure to the response
             //ToDo: this is merly a placeholder until ConfigurationData is figured out
-            ConfigurationData configurationData = new ConfigurationData(DiskAnalysisServicesData.PluginRootCOD.Keys.ToString());
+            ConfigurationData configurationData = DiskAnalysisServicesData.ConfigurationData;
             // Copy the Plugin's current UserData structure to the response
             //ToDo: this is merly a placeholder until UserData  is figured out
             UserData userData = new UserData(DiskAnalysisServicesData.PluginRootCOD.Values.ToString());
 
             // Create and populate the Response data structure
             InitializationResponsePayload initializationResponsePayload = new InitializationResponsePayload(configurationData, userData);
-            InitializationResponse initializationResponse = new InitializationResponse(initializationResponsePayload);
+            InitializationResponse initializationResponse = new InitializationResponse(DiskAnalysisServicesData.ConfigurationData, DiskAnalysisServicesData.UserData);
             // return information about this service/user/session
             Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {initializationResponse}");
             return initializationResponse;
@@ -48,19 +49,18 @@ namespace Ace.Agent.DiskAnalysisServices {
 
         public object Post(SetConfigurationDataRequest request) {
             Log.Debug("starting Post(SetConfigurationDataRequest request)");
-            Log.Debug($"You sent me SetConfigurationDataRequest = {request}");
-            SetConfigurationDataRequestPayload setConfigurationDataRequestPayload = request.SetConfigurationDataRequestPayload;
-            Log.Debug($"You sent me SetConfigurationDataRequestPayload = {setConfigurationDataRequestPayload}");
-            ConfigurationData configurationData = setConfigurationDataRequestPayload.ConfigurationData;
-            // ToDo: action to take if "save" is false
-            // ToDo: Action to ttake if "save" is true
-            // ToDo: Update the DiskAnalysisServicesConfigurationData in the Data assembly
-            // DiskAnalysisServicesConfigurationData.Placeholder = diskAnalysisServicesConfigurationData.Placeholder;
+            Log.Debug($"You sent me SetConfigurationDataRequest = {request.Dump<SetConfigurationDataRequest>()}");
+            if (request.ConfigurationDataSave) {
+                // Action to take if "save" is true
+                DiskAnalysisServicesData.ConfigurationData=request.ConfigurationData;
+            }
+            //} else { // Action to take if "save" is false }
             // return information about this service/user/session
             string result = "OK";
             Log.Debug($"leaving Any(SetConfigurationDataRequest request), returning {result}");
             return new SetConfigurationDataResponse(new SetConfigurationDataResponsePayload(result));
         }
+
         public object Post(SetUserDataRequest request) {
             Log.Debug("starting Post(SetUserDataRequest request)");
             Log.Debug($"You sent me SetUserDataRequest = {request}");
@@ -76,8 +76,8 @@ namespace Ace.Agent.DiskAnalysisServices {
             Log.Debug($"leaving Post(SetUserDataRequest request), returning {result}");
             return new SetUserDataResponse(new SetUserDataResponsePayload(result));
         }
-        public async Task<object> Post(DiskDriveManyToDBGraphRequest request) {
-            Log.Debug("starting Post(DiskDriveManyToDBGraphRequest)");
+        public async Task<object> Post(DiskDrivesToDBGraphRequest request) {
+            Log.Debug("starting Post(DiskDrivesToDBGraphRequest)");
             var diskDrivePartitionDriveLetterIdentifiers = request.DiskDrivePartitionDriveLetterIdentifiers;
             //ToDo: Create an association between the remote cancellation token and a new cancellation token, and record this in the RemoteToLocalCancellationToken dictionary in the Container
 

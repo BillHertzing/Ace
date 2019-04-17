@@ -7,14 +7,14 @@ namespace Ace.Agent.DiskAnalysisServices
   #region ConfigurationData
   public class ConfigurationData
   {
-    public ConfigurationData() : this(string.Empty) { }
+    public ConfigurationData() : this(4095) { }
 
-    public ConfigurationData(string placeholder)
+    public ConfigurationData(int blockSize)
     {
-      Placeholder = placeholder;
+            BlockSize=blockSize;
     }
 
-    public string Placeholder { get; set; }
+    public int BlockSize { get; set; }
   }
   #endregion ConfigurationData
 
@@ -34,15 +34,19 @@ namespace Ace.Agent.DiskAnalysisServices
   #region InitializationData
   public class InitializationData
   {
-    public InitializationData() : this(string.Empty) { }
+    public InitializationData() : this(new ConfigurationData(), new UserData()) { }
 
-    public InitializationData(string placeholder)
-    { Placeholder = placeholder; }
+        public InitializationData(ConfigurationData configurationData, UserData userData) {
+            ConfigurationData=configurationData;
+            UserData=userData;
+        }
 
-    public string Placeholder { get; set; }
-  }
-  #endregion InitializationData
+        public ConfigurationData ConfigurationData { get; set; }
+        public UserData UserData { get; set; }
+    }
+    #endregion InitializationData
 
+    /* obsolete
   #region DiskDriveToDBGraphRequestData and DiskDriveToDBGraphResponseData
   public class DiskDriveToDBGraphRequestData
   {
@@ -66,10 +70,10 @@ namespace Ace.Agent.DiskAnalysisServices
     public IEnumerable<Guid> LongRunningTaskIDs { get; set; }
   }
   #endregion
-
-  #region SetDiskAnalysisServicesConfigurationDataRequestPayload and SetDiskAnalysisServicesConfigurationDataResponsePayload
-  #region SetConfigurationDataRequestPayload
-  public class SetConfigurationDataRequestPayload
+    */
+    #region SetDiskAnalysisServicesConfigurationDataRequestPayload and SetDiskAnalysisServicesConfigurationDataResponsePayload
+    #region SetConfigurationDataRequestPayload
+    public class SetConfigurationDataRequestPayload
   {
     public SetConfigurationDataRequestPayload() : this(new ConfigurationData(),
                                                                             false)
@@ -206,6 +210,7 @@ namespace Ace.Agent.DiskAnalysisServices
   }
   #endregion InitializationRequestPayload and InitializationResponsePayload
 
+    /*
   #region ReadDiskRequestPayload and ReadDiskResponsePayload
   public class ReadDiskRequestPayload
   {
@@ -228,6 +233,6 @@ namespace Ace.Agent.DiskAnalysisServices
   }
 
   #endregion ReadDiskRequestPayload and ReadDiskResponsePayload
-
+    */
 
 }

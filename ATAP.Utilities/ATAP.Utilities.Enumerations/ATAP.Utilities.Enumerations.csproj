@@ -22,17 +22,5 @@
 
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Polly" Version="6.1.2" />
-    <PackageReference Include="ServiceStack" Version="5.5.1" />
-    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.5.1" />
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
-    <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
-    <ProjectReference Include="..\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
-  </ItemGroup>
 
 </Project>

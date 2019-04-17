@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>Ace.AceService.GUIServices.Plugin</RootNamespace>
@@ -19,7 +19,7 @@
   <!-- Common for all TargetFrameworks references, compilation flags and build options -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.5.1" />
-    <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
     <ProjectReference Include="..\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
     <ProjectReference Include="..\Agent.GUIServices.Interfaces\Agent.GUIServices.Interfaces.csproj" />
     <ProjectReference Include="..\Agent.GUIServices.Data\Agent.GUIServices.Data.csproj" />

@@ -26,7 +26,9 @@
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
  </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
     <ProjectReference Include="..\..\..\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj" />
+    <ProjectReference Include="..\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
   </ItemGroup>
   
 

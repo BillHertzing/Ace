@@ -48,12 +48,17 @@ namespace Ace.Agent.DiskAnalysisServices
             this.onPluginRootCODPropertyChanged = onPluginRootCODPropertyChanged;
             pluginRootCOD.CollectionChanged += this.onPluginRootCODCollectionChanged;
             pluginRootCOD.PropertyChanged += this.onPluginRootCODPropertyChanged;
+            // ToDo: Get the Configuration data into the COD, and populate it from "plugin configuration data load"
+            ConfigurationData=new DiskAnalysisServices.ConfigurationData(4096);
+            UserData=new DiskAnalysisServices.UserData();
         }
 
         public BaseServicesData BaseServicesData { get; set; }
         public ConcurrentObservableDictionary<string, decimal> PluginRootCOD { get; set; }
+        public ConfigurationData ConfigurationData { get; set; }
+        public UserData UserData { get; set; }
 
-    #region IDisposable Support
+        #region IDisposable Support
         public void TearDown() {
             PluginRootCOD.CollectionChanged -= this.onPluginRootCODCollectionChanged;
             PluginRootCOD.PropertyChanged -= this.onPluginRootCODPropertyChanged;

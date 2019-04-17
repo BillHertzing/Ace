@@ -10,7 +10,7 @@ using ATAP.Utilities.ComputerInventory.Enumerations;
 namespace Ace.Agent.BaseServices {
 
     public partial class BaseServicesData {
-        ComputerInventory ComputerInventory { get; set; }
+        public ComputerInventory ComputerInventory { get; set; }
     }
 }
 
