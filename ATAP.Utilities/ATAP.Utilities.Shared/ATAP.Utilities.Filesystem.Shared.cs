@@ -4,7 +4,18 @@ using System.IO;
 using System.Text;
 
 namespace ATAP.Utilities.Filesystem {
-    public class DirectoryInfoEx {
+    public interface IDirectoryInfoEx {
+        DirectoryInfo DirectoryInfo { get; set; }
+        Guid DirectoryInfoGuid { get; set; }
+        long DirectoryInfoId { get; set; }
+        IEnumerable<Exception> Exceptions { get; set; }
+
+        bool Equals(DirectoryInfoEx other);
+        bool Equals(object obj);
+        int GetHashCode();
+    }
+
+    public class DirectoryInfoEx : IEquatable<DirectoryInfoEx>, IDirectoryInfoEx {
         public DirectoryInfoEx() : this(-1, Guid.Empty, new DirectoryInfo(string.Empty), new List<Exception>()) { }
         public DirectoryInfoEx(long directoryInfoId, Guid directoryInfoGuid, DirectoryInfo directoryInfo, IEnumerable<Exception> exceptions) {
             DirectoryInfoId=directoryInfoId;
@@ -12,10 +23,39 @@ namespace ATAP.Utilities.Filesystem {
             DirectoryInfo=directoryInfo;
             Exceptions=exceptions;
         }
-        public long DirectoryInfoId;
-        public Guid DirectoryInfoGuid;
+        public long DirectoryInfoId { get; set; }
+        public Guid DirectoryInfoGuid { get; set; }
         public DirectoryInfo DirectoryInfo { get; set; }
-        public IEnumerable<Exception> Exceptions;
+        public IEnumerable<Exception> Exceptions { get; set; }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as DirectoryInfoEx);
+        }
+
+        public bool Equals(DirectoryInfoEx other) {
+            return other!=null&&
+                   DirectoryInfoId==other.DirectoryInfoId&&
+                   DirectoryInfoGuid.Equals(other.DirectoryInfoGuid)&&
+                   EqualityComparer<DirectoryInfo>.Default.Equals(DirectoryInfo, other.DirectoryInfo)&&
+                   EqualityComparer<IEnumerable<Exception>>.Default.Equals(Exceptions, other.Exceptions);
+        }
+
+        public override int GetHashCode() {
+            var hashCode = -741419411;
+            hashCode=hashCode*-1521134295+DirectoryInfoId.GetHashCode();
+            hashCode=hashCode*-1521134295+EqualityComparer<Guid>.Default.GetHashCode(DirectoryInfoGuid);
+            hashCode=hashCode*-1521134295+EqualityComparer<DirectoryInfo>.Default.GetHashCode(DirectoryInfo);
+            hashCode=hashCode*-1521134295+EqualityComparer<IEnumerable<Exception>>.Default.GetHashCode(Exceptions);
+            return hashCode;
+        }
+
+        public static bool operator ==(DirectoryInfoEx left, DirectoryInfoEx right) {
+            return EqualityComparer<DirectoryInfoEx>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(DirectoryInfoEx left, DirectoryInfoEx right) {
+            return !(left==right);
+        }
     }
 
     public interface IDirectoryInfoExContainer {

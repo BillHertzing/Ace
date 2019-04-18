@@ -13,6 +13,7 @@ using ATAP.Utilities.FileSystem.Enumerations;
 using ATAP.Utilities.ComputerInventory;
 using ATAP.Utilities.ComputerInventory.Enumerations;
 using ATAP.Utilities.Database.Enumerations;
+using ATAP.Utilities.DiskDrive;
 
 // ToDo: figure out logging for the ATAP libraires, this is only temporary
 using ServiceStack.Logging;
@@ -149,7 +150,7 @@ namespace ATAP.Utilities.FileSystem {
                 // Get FileInfo and Hash Files here. Create as many tasks and FileInfoEx containers as there are files
                 List<Task<FileInfoEx>> taskList = new List<Task<FileInfoEx>>();
                 foreach (var f in files) {
-                    taskList.Add(PopulateFileInfoExASync(f, AsyncFileReadBlocksize));
+                    taskList.Add(PopulateFileInfoExAsync(f, AsyncFileReadBlocksize));
                 }
                 // wait for all to finish
                 await Task.WhenAll(taskList);
@@ -181,7 +182,7 @@ namespace ATAP.Utilities.FileSystem {
             }
         }
 
-        public async Task<FileInfoEx> PopulateFileInfoExASync(string path, int blocksize) {
+        public async Task<FileInfoEx> PopulateFileInfoExAsync(string path, int blocksize) {
             FileInfoEx fileInfoEx = new FileInfoEx(path, -1, Guid.Empty, new List<Exception>());
             try {
                 // read all bytes and generate the hash for the file
@@ -238,30 +239,6 @@ namespace ATAP.Utilities.FileSystem {
     }
 
 
-    public class AnalyzeOneDiskDriveResult {
-        public AnalyzeOneDiskDriveResult() : this(new DiskInfoEx(), new List<PartitionInfoEx>(), new List<DirectoryInfoEx>(),
-          new List<FileInfoEx>(), new List<string>(), new List<string>(), new List<Exception>(), new TimeSpan()) { }
-
-        public AnalyzeOneDiskDriveResult(DiskInfoEx diskInfoEx, List<PartitionInfoEx> partitionInfoExs, List<DirectoryInfoEx> directoryInfoExs, List<FileInfoEx> fileInfoExs,
-          List<string> nodeInserts, List<string> edgeInserts, List<Exception> exceptions, TimeSpan elapsedTime) {
-            DiskInfoEx=diskInfoEx;
-            PartitionInfoExs=partitionInfoExs;
-            DirectoryInfoExs=directoryInfoExs;
-            FileInfoExs=fileInfoExs;
-            NodeInserts=nodeInserts;
-            EdgeInserts=edgeInserts;
-            Exceptions=exceptions;
-            ElapsedTime=elapsedTime;
-        }
-        public DiskInfoEx DiskInfoEx { get; set; }
-        public IList<PartitionInfoEx> PartitionInfoExs { get; set; }
-        public IList<DirectoryInfoEx> DirectoryInfoExs { get; set; }
-        public IList<FileInfoEx> FileInfoExs { get; set; }
-        public IList<string> NodeInserts { get; set; }
-        public IList<string> EdgeInserts { get; set; }
-        public IList<Exception> Exceptions { get; set; }
-        public TimeSpan ElapsedTime { get; set; }
-    }
 
 
 }

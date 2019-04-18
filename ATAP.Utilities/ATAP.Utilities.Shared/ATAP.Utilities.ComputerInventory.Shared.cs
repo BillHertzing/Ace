@@ -9,47 +9,12 @@ using System.Threading.Tasks;
 using System.Threading;
 using ATAP.Utilities.Database.Enumerations;
 using ServiceStack.Text;
+using ATAP.Utilities.DiskDrive;
 
 namespace ATAP.Utilities.ComputerInventory {
 
 
-    public class DiskInfoEx {
-        public DiskInfoEx() : this(-1, -1, Guid.Empty, DiskDriveMaker.Generic, DiskDriveType.Generic, string.Empty, new List<PartitionInfoEx>(), new List<Exception>()) { }
-        public DiskInfoEx(int driveNumber, long diskDriveDBIdentityId, Guid diskDriveGuid, DiskDriveMaker diskDriveMaker, DiskDriveType diskDriveType, string serialNumber, IEnumerable<PartitionInfoEx> partitionInfoExs, IEnumerable<Exception> exceptions) {
-            DriveNumber=driveNumber;
-            DiskDriveDBIdentityId=diskDriveDBIdentityId;
-            DiskDriveGuid=diskDriveGuid;
-            DiskDriveMaker=diskDriveMaker;
-            DiskDriveType=diskDriveType;
-            SerialNumber=serialNumber;
-            Exceptions=exceptions;
-            PartitionInfoExs=partitionInfoExs;
-        }
-        public int DriveNumber;
-        public long DiskDriveDBIdentityId;
-        public Guid DiskDriveGuid;
-        public DiskDriveMaker DiskDriveMaker { get; set; }
-        public DiskDriveType DiskDriveType { get; set; }
-        public string SerialNumber { get; set; }
-        public IEnumerable<PartitionInfoEx> PartitionInfoExs;
-        public IEnumerable<Exception> Exceptions;
-    }
-
-    public class PartitionInfoEx {
-        public PartitionInfoEx() : this(-1, Guid.Empty, new List<string>(), new List<Exception>()) { }
-        public PartitionInfoEx(long partitionIdentityId, Guid partitionGuid, IEnumerable<string> driveLetters, IEnumerable<Exception> exceptions) {
-            PartitionIdentityId=partitionIdentityId;
-            PartitionGuid=partitionGuid;
-            DriveLetters=driveLetters;
-            Exceptions=exceptions;
-        }
-        public long PartitionIdentityId;
-        public Guid PartitionGuid;
-        public IEnumerable<string> DriveLetters { get; set; }
-        public IEnumerable<Exception> Exceptions;
-    }
-
-   
+    
     public class DiskDrivePartitionDriveLetterIdentifier {
         public DiskDrivePartitionDriveLetterIdentifier() : this(new Dictionary<Guid, IDictionary<Guid, string>>()) { }
         public DiskDrivePartitionDriveLetterIdentifier(IDictionary<Guid, IDictionary<Guid, string>> diskDrivePartitionInfoGuidsDriveLetterStrings) { DiskDrivePartitionInfoGuidsDriveLetterStrings=diskDrivePartitionInfoGuidsDriveLetterStrings; }
@@ -131,7 +96,7 @@ namespace ATAP.Utilities.ComputerInventory {
 #if NETFUL
   public class ComputerHardware : OpenHardwareMonitor.Hardware.Computer {
 #else
-    public class ComputerHardware
+    public class ComputerHardware : IDiskInfoExsContainer, IEquatable<ComputerHardware>
 #endif
   {
         // A very generic list of computer hardware
@@ -150,9 +115,9 @@ namespace ATAP.Utilities.ComputerInventory {
             new ComputerHardware(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic), new List<CPUMaker> { CPUMaker.Intel }, diskInfoExs, new TimeBlock(DateTime.UtcNow, true));
         }
 
-        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IList<DiskInfoEx> diskInfoExs) : this(mainboard, cPUs, diskInfoExs, new TimeBlock(DateTime.UtcNow, true)) { }
+        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, List<DiskInfoEx> diskInfoExs) : this(mainboard, cPUs, diskInfoExs, new TimeBlock(DateTime.UtcNow, true)) { }
 
-        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IList<DiskInfoEx> diskInfoExs, TimeBlock moment) {
+        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, List<DiskInfoEx> diskInfoExs, TimeBlock moment) {
             MainBoard=mainboard??throw new ArgumentNullException(nameof(mainboard));
             CPUs=cPUs??throw new ArgumentNullException(nameof(cPUs));
             DiskInfoExs=diskInfoExs??throw new ArgumentNullException(nameof(diskInfoExs));
@@ -203,8 +168,41 @@ namespace ATAP.Utilities.ComputerInventory {
   
         public MainBoard MainBoard { get; set; }
         public IList<CPUMaker> CPUs { get; set; }
-        public IList<DiskInfoEx> DiskInfoExs { get; set; }
+        public List<DiskInfoEx> DiskInfoExs { get; set; }
         public TimeBlock Moment { get; set; }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as ComputerHardware);
+        }
+
+        public bool Equals(ComputerHardware other) {
+            return other!=null&&
+                   EqualityComparer<MainBoard>.Default.Equals(MainBoard, other.MainBoard)&&
+                   EqualityComparer<IList<CPUMaker>>.Default.Equals(CPUs, other.CPUs)&&
+                   EqualityComparer<List<DiskInfoEx>>.Default.Equals(DiskInfoExs, other.DiskInfoExs)&&
+                   EqualityComparer<TimeBlock>.Default.Equals(Moment, other.Moment);
+        }
+
+        public bool Equals(DiskInfoExsContainer other) {
+            throw new NotImplementedException();
+        }
+
+        public override int GetHashCode() {
+            var hashCode = 1924731101;
+            hashCode=hashCode*-1521134295+EqualityComparer<MainBoard>.Default.GetHashCode(MainBoard);
+            hashCode=hashCode*-1521134295+EqualityComparer<IList<CPUMaker>>.Default.GetHashCode(CPUs);
+            hashCode=hashCode*-1521134295+EqualityComparer<List<DiskInfoEx>>.Default.GetHashCode(DiskInfoExs);
+            hashCode=hashCode*-1521134295+EqualityComparer<TimeBlock>.Default.GetHashCode(Moment);
+            return hashCode;
+        }
+
+        public static bool operator ==(ComputerHardware left, ComputerHardware right) {
+            return EqualityComparer<ComputerHardware>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(ComputerHardware left, ComputerHardware right) {
+            return !(left==right);
+        }
 
         /*
         #if NETFUL
@@ -271,7 +269,7 @@ namespace ATAP.Utilities.ComputerInventory {
         #region Properties
  
         public string ComputerName { get; set; }
-        ComputerHardware ComputerHardware { get; set; }
+        public ComputerHardware ComputerHardware { get; set; }
         //ComputerSoftware ComputerSoftware { get; set; }
         //ComputerProcesses ComputerProcesses { get; set; }
         #endregion

@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 using Funq;
 using System.Threading;
 using Ace.Agent.BaseServices;
+using ATAP.Utilities.LongRunningTasks;
+using ATAP.Utilities.TypedGuids;
+using ATAP.Utilities.DiskAnalysis;
+using ATAP.Utilities.DiskDrive;
 
 namespace Ace.Agent.DiskAnalysisServices {
 
@@ -49,7 +53,7 @@ namespace Ace.Agent.DiskAnalysisServices {
 
         public object Post(SetConfigurationDataRequest request) {
             Log.Debug("starting Post(SetConfigurationDataRequest request)");
-            Log.Debug($"You sent me SetConfigurationDataRequest = {request.Dump<SetConfigurationDataRequest>()}");
+            Log.Debug($"You sent me SetConfigurationDataRequest = {request}");
             if (request.ConfigurationDataSave) {
                 // Action to take if "save" is true
                 DiskAnalysisServicesData.ConfigurationData=request.ConfigurationData;
@@ -76,44 +80,68 @@ namespace Ace.Agent.DiskAnalysisServices {
             Log.Debug($"leaving Post(SetUserDataRequest request), returning {result}");
             return new SetUserDataResponse(new SetUserDataResponsePayload(result));
         }
-        public async Task<object> Post(DiskDrivesToDBGraphRequest request) {
-            Log.Debug("starting Post(DiskDrivesToDBGraphRequest)");
-            var diskDrivePartitionDriveLetterIdentifiers = request.DiskDrivePartitionDriveLetterIdentifiers;
+        public async Task<object> Post(WalkDiskDriveRequest request) {
+            Log.Debug("starting Post(WalkDiskDriveRequest)");
+            var diskAnalysis = new DiskAnalysis(Log);
+
             //ToDo: Create an association between the remote cancellation token and a new cancellation token, and record this in the RemoteToLocalCancellationToken dictionary in the Container
 
-            // Setup the long-running task that will read the disk and update the plugin's data structures
-            // Create a lambda that will update SQLServerDB
+            // Setup the long-running task that will read one or more disk drives and CRUD a collection of DiskDriveInfoEx records, and optionally CRUD a DB Representation of that collection
 
-            // Make a DB Representation of all the file system entities on one or more of the diskdrives in the current ComputerInventory
+            // Make a DB Representation of one or more disk drives and the partitions on those disk drives
+            // Create multiple lambdas that will update SQLServerDB
             // The CRUD value comes in the request
-            // The DiskDriveNumbers come in the request
-            // The Partition Identifiers for each DiskDriveNumber come in the request
-            // The current ComputerInventory is in the DiskAnalysisServicesData.BaseServciesData.ComputerInventory
-            // 
+            // If a DiskDriveNumber comes in the request, then Walk one disk drive
+            // If a DiskDrivePartitionIdentifier comes in the request, then Walk the drives and prtitions specified
+
+            // There is a collection of DiskDriveInfoEx records in the ComputerInventory.ComputerHardware property of the BaseServicesData instance, which can be accessed through the DiskAnalysisServicesData.BaseServciesData property of teh DiskAnalysisServicesData instance.     
+
+            // Reading the actual Disk Drives connected to a named computer (localhost or a remote computer) can create a collection of DiskDriveInfoEx records
+
+            // Reading a file formated to follow the conventions of the Configuration data for ComputerHardware can create a collection of DiskDriveInfoEx records
             // ToDo: figure out library Logging so that we don't need to pass a Log instance to the library
-            var analyzeDisk = new AnalyzeDisk(4095,Log);
-            //ToDo: if the request's data is null, analyze all physical disks, else analyze the list of physical disks sent with the request
-            var task = await analyzeDisk.DiskDriveManyToDBGraphAsync(diskDrivePartitionDriveLetterIdentifiers, DiskAnalysisServicesData.BaseServicesData.ComputerInventory, CrudType.Create, (r) => {
-                Log.Debug($"starting recordRoot Lambda, r = {r}");
-            });
-            // Record this task (plus additional information about it) in the longRunningTasks dictionary in the Container
-            var longRunningTaskID = Guid.NewGuid();
-            var lRTaskInfo = new LRTaskInfo(longRunningTaskID, task);
-            DiskAnalysisServicesData.BaseServicesData.LongRunningTasks.Add(lRTaskInfo.ID, lRTaskInfo);
 
-            // Setup the SSE receiver that will monitor the long-running task
-            // return to the caller the callback URL and the longRunningTaskID to allow the caller to connect to the SSE that monitors the task and the data structures it updates
-            // ToDo: figure out how to integrate a CancellationToken
-            // Long running task: update the Plugin Data Structure with the data from the response
-            // Long running task: setup the DiskAnalysisServicesData.PluginRootCOD.Add("test1", 100);
+            //ToDo: Better switch on exactly what to Walk, - local machine, remote machine, configuraiotn data, hypothetical data.
+            // if the request's data is null, analyze all physical disks, else analyze the list of physical disks sent with the request
 
-            var diskDriveToDBGraphTasks = new List<Guid>();
-            diskDriveToDBGraphTasks.Add(longRunningTaskID);
-            var DiskDriveToDBGraphResponse = new DiskDriveToDBGraphResponseData(diskDriveToDBGraphTasks);
-            Log.Debug($"Leaving Post(DiskDriveManyToDBGraphRequest), DiskDriveToDBGraphResponse = {DiskDriveToDBGraphResponse.Dump()}");
-            //return DiskDriveToDBGraphResponse;
-            return DiskDriveToDBGraphResponse;
-        }
+            // Create new Id for this LongRunningTask
+            Id<LongRunningTaskInfo> longRunningTaskID = new Id<LongRunningTaskInfo>(Guid.NewGuid());
+            // Create a new result container instance holding a new result instance for this task and add it to the Plugin's data structure 
+            DiskAnalysisServicesData.WalkDiskDriveResultContainers.Add(longRunningTaskID, new WalkDiskDriveResultContainer(new WalkDiskDriveResult()));
+            LongRunningTaskInfo longRunningTaskInfo = new LongRunningTaskInfo() { Id=longRunningTaskID };
+            if (request.DiskDriveNumber.HasValue) {
+                longRunningTaskInfo.LRTask=new Task(() => {
+                    diskAnalysis.WalkDiskDrive(
+request.DiskDriveNumber.GetValueOrDefault(), 
+DiskAnalysisServicesData.BaseServicesData.ComputerInventory.ComputerHardware, 
+DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID], 
+(crud, r) => {
+    Log.Debug($"starting recordRoot Lambda, r = {r}");
+});
+                });
+
+            } else if (request.DiskDrivePartitionIdentifier!=null) {
+                longRunningTaskInfo.LRTask=new Task(() => {
+                    diskAnalysis.WalkDiskDrive(request.DiskDrivePartitionIdentifier, DiskAnalysisServicesData.BaseServicesData.ComputerInventory.ComputerHardware, DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID],
+                (crud, r) => {
+                    Log.Debug($"starting recordRoot Lambda, r = {r}");
+                });
+                });
+                } else { throw new InvalidOperationException("WalkDiskDriveParmatersNotUnderstood"); }
+
+
+                // Record this task (plus additional information about it) in the longRunningTasks dictionary in the BaseServicesData found in the Container
+
+                // ToDo: Setup the SSE receiver that will monitor the long-running task
+                // ToDo: return to the caller the callback URL and the longRunningTaskID to allow the caller to connect to the SSE that monitors the task and the data structures it updates
+                // ToDo: figure out how to integrate a CancellationToken
+                DiskAnalysisServicesData.BaseServicesData.LongRunningTasks.Add(longRunningTaskID, longRunningTaskInfo);
+
+                var walkDiskDriveResponse = new WalkDiskDriveResponse(new List<Id<LongRunningTaskInfo>>() { longRunningTaskID });
+                Log.Debug($"Leaving Post(WalkDiskDriveRequest), walkDiskDriveResponse = {walkDiskDriveResponse}");
+                //return DiskDriveToDBGraphResponse;
+                return walkDiskDriveResponse;
+            }
         public DiskAnalysisServicesData DiskAnalysisServicesData { get; set; }
 
         public Funq.Container Container { get; set; }

@@ -1,8 +1,11 @@
 // Required for the HttpClient
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ace.Agent.DiskAnalysisServices;
+using ATAP.Utilities.LongRunningTasks;
+using ATAP.Utilities.TypedGuids;
 // Required for the logger/logging
 //using Blazor.Extensions.Logging;
 // Required for Blazor
@@ -93,37 +96,35 @@ namespace Ace.AceGUI.Pages {
             //Logger.LogDebug($"Leaving SetUserData");
         }
 
-        public async Task ReadDisk(int dummyint) {
+        public async Task WalkDiskDrive(int diskNumber) {
             //Logger.LogDebug($"Starting ReadDisk");
-            //Console.WriteLine("Starting ReadDisk");
-            // Create the payload for  the Post
-            ReadDiskRequestData readDiskRequestData = new ReadDiskRequestData("placeholder");
             //ToDo: add a cancellation token
-            ReadDiskRequestPayload readDiskRequestPayload = new ReadDiskRequestPayload(readDiskRequestData);
-            ReadDiskRequest readDiskRequest = new ReadDiskRequest(readDiskRequestPayload);
+            
+            WalkDiskDriveRequest walkDiskDriveRequest = new WalkDiskDriveRequest(diskNumber,null);
             //Logger.LogDebug($"Calling PostJsonAsync<ReadDiskResponse>");
-            // change the ReadDisk button's color
-            ReadDiskResponse=
-          await HttpClient.PostJsonAsync<ReadDiskResponse>("/ReadDisk?format=json",
-                                                                 readDiskRequest);
+            // ToDo: deactivate the WalkDiskDrive button
+            WalkDiskDriveResponse=
+          await HttpClient.PostJsonAsync<WalkDiskDriveResponse>("/WalkDiskDrive?format=json",
+                                                                 walkDiskDriveRequest);
             //Logger.LogDebug($"Returned from PostJsonAsync<ReadDiskResponse>");
-            ReadDiskLongRunningTaskID=ReadDiskResponse.ReadDiskResponsePayload.ReadDiskResponseData.LongRunningTaskID;
+            WalkDiskDriveLongRunningTaskIDs=WalkDiskDriveResponse.LongRunningTaskIDs;
             // This should be a URL and and ID for connecting to a SSE, and the next step
             // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
+            // ToDo: deactivate the WalkDiskDrive button
 
             //Logger.LogDebug($"Leaving ReadDisk");
         }
 
-        public async Task GetLongRunningTaskState(Guid longRunningTaskID) {
+        public async Task GetLongRunningTaskState(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) {
             //Logger.LogDebug($"Starting GetLongRunningTaskState");
             //ToDo: add a cancellation token
             //Logger.LogDebug($"Calling PostJsonAsync<ReadDiskResponse>");
             // change the ReadDisk button's color
             GetLongRunningTaskStateResponse=
           await HttpClient.PostJsonAsync<GetLongRunningTaskStateResponse>("/GetLongRunningTaskState?format=json",
-                                                                 new GetLongRunningTaskStateRequest(longRunningTaskID));
+                                                                 new GetLongRunningTaskStateRequest(longRunningTaskIDs));
             //Logger.LogDebug($"Returned from PostJsonAsync<ReadDiskResponse>");
-            ReadDiskLongRunningTaskState=GetLongRunningTaskStateResponse.LongRunningTaskState;
+            WalkDiskDriveLongRunningTaskState=GetLongRunningTaskStateResponse.LongRunningTaskState;
             // This should be a URL and and ID for connecting to a SSE, and the next step
             // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
 
@@ -155,13 +156,14 @@ namespace Ace.AceGUI.Pages {
         public SetConfigurationDataResponsePayload SetConfigurationDataResponse { get; set; }
         #endregion Properties:ConfigurationData
 
-        #region Properties:ReadDisk
-        public ReadDiskResponse ReadDiskResponse { get; set; }
-        public Guid ReadDiskLongRunningTaskID { get; set; }
-        #endregion Properties:ReadDisk
+        #region Properties:WalkDiskDrive
+        public WalkDiskDriveResponse WalkDiskDriveResponse { get; set; }
+        public List<Id<LongRunningTaskInfo>> WalkDiskDriveLongRunningTaskIDs { get; set; }
+        #endregion
+
         #region Properties:GetLongRunningTaskState
         public GetLongRunningTaskStateResponse GetLongRunningTaskStateResponse { get; set; }
-        public string ReadDiskLongRunningTaskState { get; set; }
-        #endregion Properties:GetLongRunningTaskState
+        public string WalkDiskDriveLongRunningTaskState { get; set; }
+        #endregion
     }
 }

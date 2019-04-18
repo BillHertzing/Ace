@@ -12,6 +12,10 @@ using ATAP.Utilities.Database.Enumerations;
 using ServiceStack.Text;
 // ToDo: figure out logging for the ATAP libraires, this is only temporary
 using ServiceStack.Logging;
+using ATAP.Utilities.DiskDrive;
+using ATAP.Utilities.Filesystem;
+using ATAP.Utilities.FileSystem;
+
 namespace ATAP.Utilities.ComputerInventory {
 
     public class ComputerInventoryAnalysis {
@@ -19,60 +23,24 @@ namespace ATAP.Utilities.ComputerInventory {
             Log=log;
         }
 
-        // populate a list of DiskInfoEx with information about the actual drives connected to the computer
-        // pass in an Action that will populate a storage location with the information
-        public async Task PopulateDiskInfoExs(IEnumerable<int> diskNumbers, CrudType cRUD, Action<IEnumerable<DiskInfoEx>> storeDiskInfoExs, Action<DiskInfoEx> storePartitionInfoExs) {
-            Log.Debug($"starting PopulateDiskInfoExs: cRUD = {cRUD.ToString()}, diskNumbers = {diskNumbers.Dump()}");
-            var diskInfoExs = new List<DiskInfoEx>();
-            foreach (var d in diskNumbers) {
-                var diskInfoEx = new DiskInfoEx();
-                // ToDo: get from current ComputerInventory
-                diskInfoEx.DriveNumber=d;
-                diskInfoEx.DiskDriveMaker=DiskDriveMaker.Generic; // ToDo: read disk diskDriveMaker via WMI
-                diskInfoEx.DiskDriveType=DiskDriveType.Generic; // ToDo: read disk diskDriveType via WMI
-                diskInfoEx.SerialNumber="DummyDiskSerialNumber"; // ToDo: read disk serial number via WMI
-                await PopulatePartitionInfoExs(cRUD, diskInfoEx, storePartitionInfoExs); // wait for the 
-                diskInfoExs.Add(diskInfoEx);
-            }
-
-            // Store the information using the Action delegate
-            storeDiskInfoExs.Invoke(diskInfoExs);
-            // Todo: see if the DiskDriveMaker and SerialNumber already exist in the DB
-            // async (cRUD, diskInfoEx) => { await Task.Yield(); }
-            // Task< DiskInfoEx> t = await DBFetch.Invoke(cRUD, diskInfoEx);
-            // diskInfoEx = await DBFetch.Invoke(cRUD, diskInfoEx);
-            Log.Debug($"leaving PopulateDiskInfoExs");
-        }
-
-        // populate a list of PartitionInfoEx with information about the actual partitions on a DiskDrive
-        // pass in an Action that will populate a storage location with the information
-        public async Task PopulatePartitionInfoExs(CrudType cRUD, DiskInfoEx diskInfoEx, Action<DiskInfoEx> storePartitionInfoExs) {
-            Log.Debug($"starting PopulatePartitionInfoExs: cRUD = {cRUD.ToString()}, diskInfoEx = {diskInfoEx.Dump()}");
-
-            // ToDo: Get the list of partitions from the Disk hardware
-            await new Task(() => Thread.Sleep(500));
-            // Until real partitions are available, mock up the current laptop configuration as of 4/15/19
-            // No partitions on drives 0 and 1, and one partition on drive 2, one drive letter E
-            var partitionInfoExs = new List<PartitionInfoEx>();
-            switch (diskInfoEx.DriveNumber) {
-                case 2: {
-                    var partitionInfoEx = new PartitionInfoEx() {
-                        PartitionIdentityId=0,
-                        PartitionGuid=Guid.NewGuid(),
-                        DriveLetters=new List<string>() { "E" }
-                    };
-                    partitionInfoExs.Add(partitionInfoEx);
-                    break;
+        public async Task WalkDiskDriveAndFilesystemAsync(int diskNumber, int asyncFileReadBlocksize, IDiskInfoExsContainer diskInfoExsContainer, WalkDiskDriveResultContainer walkDiskDriveResultContainer, IWalkFilesystemResultContainer walkFilesystemResultContainer, Action<string> recordRoot = null, Action<string[]> recordSubdir = null) {
+            Log.Debug($"starting WalkDiskDriveAndFilesystemAsync: diskNumber = {diskNumber}");
+            //ToDo: Add some validation to ensure the diskInfoEx has "good" data
+            //
+            DiskAnalysis.DiskAnalysis dda = new DiskAnalysis.DiskAnalysis(Log);
+            await dda.WalkDiskDrive(diskNumber, diskInfoExsContainer, walkDiskDriveResultContainer);
+            FilesystemAnalysis fsa = new FilesystemAnalysis(Log, asyncFileReadBlocksize);
+            foreach (var d in diskInfoExsContainer.DiskInfoExs) {
+                foreach (var p in d.PartitionInfoExs) {
+                    foreach (var driveLetter in p.DriveLetters) {
+                        string root = $"{driveLetter}:/";
+                        await fsa.WalkFileSystem(root, walkFilesystemResultContainer, recordRoot, recordSubdir);
+                    }
                 }
-                default:
-                    break;
             }
-            storePartitionInfoExs.Invoke(diskInfoEx);
-            // ToDo: see if the disk already has partitions in the DB
-            var dBPartitions = new List<PartitionInfoEx>();
-
-            Log.Debug($"leaving PopulatePartitionInfoExs");
+            Log.Debug($"leaving WalkDiskDriveAndFilesystemAsync: diskNumber = {diskNumber}");
         }
+
 
         #region Properties
         #region Properties:class logger

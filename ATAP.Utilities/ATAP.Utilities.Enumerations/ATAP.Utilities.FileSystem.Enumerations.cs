@@ -8,5 +8,7 @@ namespace ATAP.Utilities.FileSystem.Enumerations {
         [Description("MD5")]
         MD5
     }
+
+
 }
 

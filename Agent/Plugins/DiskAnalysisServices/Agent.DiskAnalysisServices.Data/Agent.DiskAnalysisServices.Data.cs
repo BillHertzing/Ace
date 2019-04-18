@@ -10,25 +10,33 @@ using Ace.Agent.BaseServices;
 
 namespace Ace.Agent.DiskAnalysisServices
 {
-    public class DiskAnalysisServicesData : IDisposable {
-    #region string constants
-    #region Configuration Key strings
-    #endregion Configuration Key strings
-    #region Exception Messages (string constants)
-    #endregion Exception Messages (string constants)
-    #region File Name string constants
-    #endregion File Name string constants
-    #endregion string constants
+    public partial class DiskAnalysisServicesData : IDisposable {
+        #region string constants
+        #region Configuration Key strings
+        #endregion Configuration Key strings
+        #region Exception Messages (string constants)
+        #endregion Exception Messages (string constants)
+        #region File Name string constants
+        #endregion File Name string constants
+        #endregion string constants
 
-    // Surface the configKeyPrefix for this namespace
-    public static string configKeyPrefix =
+        #region PublicStaticFields
+        #region PublicStaticFields:configKeyPrefix
+        // Surface the configKeyPrefix for this namespace
+        public static string configKeyPrefix =
     MethodBase
     .GetCurrentMethod()
                 .DeclaringType
                 .Namespace +
             ".Config";
+        #endregion
+        #region PublicStaticFields:Logger
         // Create a logger for this class
         public static ILog Log = LogManager.GetLogger(typeof(DiskAnalysisServicesData));
+        #endregion
+        #endregion
+
+
         // private field for the cacheClient, populated by the constructor
         ICacheClient cacheClient;
 
@@ -51,12 +59,16 @@ namespace Ace.Agent.DiskAnalysisServices
             // ToDo: Get the Configuration data into the COD, and populate it from "plugin configuration data load"
             ConfigurationData=new DiskAnalysisServices.ConfigurationData(4096);
             UserData=new DiskAnalysisServices.UserData();
+            ConstructDiskAnalysisData();
         }
 
+        #region PublicProperties
         public BaseServicesData BaseServicesData { get; set; }
         public ConcurrentObservableDictionary<string, decimal> PluginRootCOD { get; set; }
         public ConfigurationData ConfigurationData { get; set; }
         public UserData UserData { get; set; }
+
+        #endregion
 
         #region IDisposable Support
         public void TearDown() {

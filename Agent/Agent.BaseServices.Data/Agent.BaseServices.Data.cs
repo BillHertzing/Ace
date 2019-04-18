@@ -15,6 +15,8 @@ using ServiceStack.Auth;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
+using ATAP.Utilities.LongRunningTasks;
+using ATAP.Utilities.TypedGuids;
 
 namespace Ace.Agent.BaseServices {
     public partial class BaseServicesData : IDisposable {
@@ -100,8 +102,8 @@ namespace Ace.Agent.BaseServices {
             #region create a dictionary of tasks that is intended to hold "long running" tasks
             // put it into a property, and register the list in the IoC container
             
-            LongRunningTasks = new Dictionary<Guid,LRTaskInfo>();
-            Container.Register<Dictionary<Guid, LRTaskInfo>>(c => LongRunningTasks);
+            LongRunningTasks = new Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
+            Container.Register<Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>>(c => LongRunningTasks);
             #endregion create a list of tasks that is intended to hold "long running" tasks and register the list in the IoC container
 
             // Add a timer to check the status of long running tasks, and attach a callback to the timer
@@ -230,20 +232,20 @@ namespace Ace.Agent.BaseServices {
             Log.Debug("Leaving BaseServicesData ctor");
         }
     */
-    // ToDo: figure out how to create/access a method to add a task to the LongRuningTasks dictionary in the container
-    /*
-        public Guid AddLongRunningTask(LRTaskInfo lRTaskInfo, bool newID = true) {
-            if (newID)
-                lRTaskInfo.ID=Guid.NewGuid();
-            Container.Resolve(typeof(Dictionary<Guid, LRTaskInfo>)) as Dictionary<Guid, LRTaskInfo>.Add(lRTaskInfo.ID, lRTaskInfo);
-            return lRTaskInfo.ID;
-        }
-        public Guid AddLongRunningTask(Task task) {
-            LRTaskInfo lRTaskInfo = new LRTaskInfo(Guid.NewGuid(), task);
-            Container.Resolve(typeof(Dictionary<Guid, LRTaskInfo>)) as Dictionary<Guid, LRTaskInfo>.Add(lRTaskInfo.ID, lRTaskInfo);
-            return lRTaskInfo.ID;
-        }
-        */
+        // ToDo: figure out how to create/access a method to add a task to the LongRuningTasks dictionary in the container
+        /*
+            public Id<LongRunningTaskInfo> AddLongRunningTask(LongRunningTaskInfo longRunningTaskInfo, bool newID = true) {
+                if (newID)
+                    longRunningTaskInfo.ID=Guid.NewGuid();
+                Container.Resolve(typeof(Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>)) as Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>.Add(longRunningTaskInfo.ID, longRunningTaskInfo);
+                return longRunningTaskInfo.ID;
+            }
+            public Id<LongRunningTaskInfo> AddLongRunningTask(Task task) {
+                LongRunningTaskInfo longRunningTaskInfo = new LongRunningTaskInfo(Id<LongRunningTaskInfo>.NewGuid(), task);
+                Container.Resolve(typeof(Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>)) as Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>.Add(longRunningTaskInfo.ID, longRunningTaskInfo);
+                return longRunningTaskInfo.ID;
+            }
+            */
 
         #region EventHandlers
         void LongRunningTasksCheckTimer_Elapsed(object sender, ElapsedEventArgs e) {
@@ -251,8 +253,8 @@ namespace Ace.Agent.BaseServices {
             Dictionary<string, System.Timers.Timer> timers = Container.TryResolve(typeof(Dictionary<string, System.Timers.Timer>)) as Dictionary<string, System.Timers.Timer>;
             timers[LongRunningTasksCheckTimerName].Stop();
             //Log.Debug("checking for existence of any longRunningTasks");
-            Dictionary<Guid, LRTaskInfo> longRunningTaskList = Container.Resolve(typeof(Dictionary<Guid, LRTaskInfo>)) as Dictionary<Guid, LRTaskInfo>;
-            //Log.Debug($"There are {longRunningTaskList.Count} tasks in the longRunningTaskList");
+            Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> longRunningTaskList = Container.Resolve(typeof(Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>)) as Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>;
+            Log.Debug($"in LongRunningTasksCheckTimer_Elapsed: There are {longRunningTaskList.Count} tasks in the longRunningTaskList");
             timers[LongRunningTasksCheckTimerName].Start();
             //Log.Debug("Leaving the appHost.LongRunningTasksCheckTimer_Elapsed Method");
         }

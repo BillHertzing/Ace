@@ -3,6 +3,9 @@ using ServiceStack;
 using ServiceStack.Text;
 using ATAP.Utilities.ComputerInventory;
 using System.Collections.Generic;
+using ATAP.Utilities.LongRunningTasks;
+using ATAP.Utilities.TypedGuids;
+using ATAP.Utilities.DiskDrive;
 
 namespace Ace.Agent.DiskAnalysisServices {
     #region InitializationRequest, InitializationResponse, and Route for DiskAnalysisServicesInitialization
@@ -89,16 +92,21 @@ namespace Ace.Agent.DiskAnalysisServices {
     #endregion GetUserDataRequest, GetUserDataResponsePayload and Route for GetDiskAnalysisServicesUserData
 
     #region DiskDrivesToDBGraphRequest, DiskDrivesToDBGraphResponse, and Route for DiskDrivesToDBGraph
-    [Route("/DiskDrivesToDBGraph")]
-    [Route("/DiskDrivesToDBGraph/{DiskDrivePartitionDriveLetterIdentifier}")]
-    public class DiskDrivesToDBGraphRequest : IReturn<DiskDrivesToDBGraphResponse> {
-        public DiskDrivesToDBGraphRequest(DiskDrivePartitionDriveLetterIdentifier diskDrivePartitionDriveLetterIdentifiers) { DiskDrivePartitionDriveLetterIdentifiers=diskDrivePartitionDriveLetterIdentifiers; }
-        public DiskDrivePartitionDriveLetterIdentifier DiskDrivePartitionDriveLetterIdentifiers { get; set; }
+    [Route("/WalkDiskDrive")]
+    //[Route("/WalkDiskDrive/{DiskDriveNumber}")]
+    //[Route("/WalkDiskDrive/{DiskDrivePartitionIdentifier}")]
+    public class WalkDiskDriveRequest : IReturn<WalkDiskDriveResponse> {
+        public WalkDiskDriveRequest(int? diskNumber, DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) { DiskDriveNumber=diskNumber;
+            DiskDrivePartitionIdentifier= diskDrivePartitionIdentifier;
+        }
+        public WalkDiskDriveRequest(DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) { }
+        public int? DiskDriveNumber { get; set; }
+        public DiskDrivePartitionIdentifier DiskDrivePartitionIdentifier { get; set; }
     }
-    public class DiskDrivesToDBGraphResponse {
-        public DiskDrivesToDBGraphResponse() : this(new List<Guid>()) { }
-        public DiskDrivesToDBGraphResponse(IEnumerable<Guid> longRunningTaskIDs) { LongRunningTaskIDs=longRunningTaskIDs; }
-        public IEnumerable<Guid> LongRunningTaskIDs { get; set; }
+    public class WalkDiskDriveResponse {
+        public WalkDiskDriveResponse() : this(new List<Id<LongRunningTaskInfo>>()) { }
+        public WalkDiskDriveResponse(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) { LongRunningTaskIDs=longRunningTaskIDs; }
+        public List<Id<LongRunningTaskInfo>> LongRunningTaskIDs { get; set; }
     }
     #endregion
 
@@ -106,11 +114,11 @@ namespace Ace.Agent.DiskAnalysisServices {
     [Route("/GetLongRunningTaskState")]
     [Route("/GetLongRunningTaskState/{LongRunningTaskID}")]
     public class GetLongRunningTaskStateRequest : IReturn<SetUserDataResponse> {
-        public GetLongRunningTaskStateRequest() : this(Guid.Empty) { }
-        public GetLongRunningTaskStateRequest(Guid longRunningTaskID) {
-            LongRunningTaskID=longRunningTaskID;
+        //public GetLongRunningTaskStateRequest() : this(Guid.Empty) { }
+        public GetLongRunningTaskStateRequest(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) {
+            LongRunningTaskIDs=longRunningTaskIDs;
         }
-        public Guid LongRunningTaskID { get; set; }
+        public List<Id<LongRunningTaskInfo>> LongRunningTaskIDs { get; set; }
     }
 
     public class GetLongRunningTaskStateResponse {
