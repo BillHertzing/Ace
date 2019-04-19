@@ -1,4 +1,4 @@
-@using ATAP.Utilities.ComputerInventory.Enumerations;
+@using ATAP.Utilities.ComputerInventory.Enumerations
 @page "/ComputerInventory.Hardware"
 <h1>ComputerInventory CPUMaker and MainBoardMaker</h1>
 <DropDownSingleSelectOfEnum name="cPUMakerDropDownSingleSelect" ref="cPUMakerDropDownSingleSelect" enumType="ATAP.Utilities.ComputerInventory.Enumerations.CPUMaker, ATAP.Utilities.ComputerInventory.Enumerations" initialSelectedValue=@CPUMaker.Intel />

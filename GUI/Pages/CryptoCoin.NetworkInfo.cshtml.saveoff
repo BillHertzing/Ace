@@ -1,5 +1,4 @@
-@using ATAP.Utilities.CryptoCoin.Enumerations;
-@using ATAP.Utilities.CryptoCoin.Models;
+// removed refedrences to ATAP Cryptocoin libraries
 @using Itenso.TimePeriod;
 @page "/HashRateDisplay"
 

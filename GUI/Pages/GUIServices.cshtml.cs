@@ -1,7 +1,7 @@
 // Required for the HttpClient
 using System.Net.Http;
 using System.Threading.Tasks;
-using Ace.Agent.GUIServices;
+// using Ace.Agent.GUIServices;
 // Required for the logger/logging
 //using Blazor.Extensions.Logging;
 using Microsoft.AspNetCore.Blazor;
@@ -24,9 +24,9 @@ namespace Ace.AceGUI.Pages
     {
 
       //Logger.LogDebug($"starting GUIServices.OnInitAsync");
-      VerifyGUIResponse verifyGUIResponse = await HttpClient.GetJsonAsync<VerifyGUIResponse>("/VerifyGUI?format=json");
+      //VerifyGUIResponse verifyGUIResponse = await HttpClient.GetJsonAsync<VerifyGUIResponse>("/VerifyGUI?format=json");
       //Logger.LogDebug($"GUIServices.OnInitAsyncGetJsonAsync returned {verifyGUIResponse.Result}");
-      verifyGUIResult = verifyGUIResponse.Result;
+      //verifyGUIResult = verifyGUIResponse.Result;
       //Logger.LogDebug($"leaving GUIServices.OnInitAsync");
     }
     // Access the Logging extensions registered in the DI container

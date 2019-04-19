@@ -20,8 +20,4 @@
     <PackageLabel>NA</PackageLabel>
   </PropertyGroup>
 
-      <ItemGroup>
-        <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
-      </ItemGroup>
-
 </Project>

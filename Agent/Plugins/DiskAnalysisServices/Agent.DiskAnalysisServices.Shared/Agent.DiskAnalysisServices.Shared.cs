@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using ATAP.Utilities.ComputerInventory;
+
 
 namespace Ace.Agent.DiskAnalysisServices
 {
@@ -46,31 +46,6 @@ namespace Ace.Agent.DiskAnalysisServices
     }
     #endregion InitializationData
 
-    /* obsolete
-  #region DiskDriveToDBGraphRequestData and DiskDriveToDBGraphResponseData
-  public class DiskDriveToDBGraphRequestData
-  {
-    public DiskDriveToDBGraphRequestData(): this(new DiskDrivePartitionDriveLetterIdentifier()) { }
-    public DiskDriveToDBGraphRequestData(DiskDrivePartitionDriveLetterIdentifier diskDrivePartitionDriveLetterIdentifier)
-    {
-            DiskDrivePartitionDriveLetterIdentifier=diskDrivePartitionDriveLetterIdentifier;
-    }
-
-    public DiskDrivePartitionDriveLetterIdentifier DiskDrivePartitionDriveLetterIdentifier { get; set; }
-  }
-
-  public class DiskDriveToDBGraphResponseData
-  {
-    public DiskDriveToDBGraphResponseData() : this(new List<Guid>()) { }
-    public DiskDriveToDBGraphResponseData(IEnumerable<Guid> longRunningTaskIDs)
-    {
-      LongRunningTaskIDs = longRunningTaskIDs;
-    }
-
-    public IEnumerable<Guid> LongRunningTaskIDs { get; set; }
-  }
-  #endregion
-    */
     #region SetDiskAnalysisServicesConfigurationDataRequestPayload and SetDiskAnalysisServicesConfigurationDataResponsePayload
     #region SetConfigurationDataRequestPayload
     public class SetConfigurationDataRequestPayload
