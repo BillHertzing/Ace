@@ -42,10 +42,11 @@ namespace Ace.Agent.DiskAnalysisServices {
             // Copy the Plugin's current UserData structure to the response
             //ToDo: this is merly a placeholder until UserData  is figured out
             UserData userData = new UserData(DiskAnalysisServicesData.PluginRootCOD.Values.ToString());
-
+            //ToDO: remove this temporary delay
+            Thread.Sleep(5000);
             // Create and populate the Response data structure
             InitializationResponsePayload initializationResponsePayload = new InitializationResponsePayload(configurationData, userData);
-            InitializationResponse initializationResponse = new InitializationResponse(DiskAnalysisServicesData.ConfigurationData, DiskAnalysisServicesData.UserData);
+            InitializationResponse initializationResponse = new InitializationResponse(initializationResponsePayload);
             // return information about this service/user/session
             Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {initializationResponse}");
             return initializationResponse;

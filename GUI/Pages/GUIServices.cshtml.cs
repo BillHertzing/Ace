@@ -30,9 +30,11 @@ namespace Ace.AceGUI.Pages
       //Logger.LogDebug($"leaving GUIServices.OnInitAsync");
     }
     // Access the Logging extensions registered in the DI container
+    /*
     [Inject]
     protected ILogger<BaseServicesCodeBehind> Logger {
       get; set;
     }
+        */
   }
 }

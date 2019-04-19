@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace Ace.Agent.RealEstateServices
 {
-  #region RealEstateServicesConfigurationData
-    public class RealEstateServicesConfigurationData {
-        public RealEstateServicesConfigurationData() : this(string.Empty, string.Empty) { }
-        public RealEstateServicesConfigurationData(string google_API_URI, string homeAway_API_URI) {
+ 
+    #region ConfigurationData
+    public class ConfigurationData {
+        public ConfigurationData() : this(string.Empty, string.Empty) { }
+        public ConfigurationData(string google_API_URI, string homeAway_API_URI) {
             Google_API_URI = google_API_URI;
             HomeAway_API_URI = homeAway_API_URI;
         }
@@ -16,12 +17,12 @@ namespace Ace.Agent.RealEstateServices
         public string HomeAway_API_URI { get; set; }
     }
 
-  #endregion RealEstateServicesConfigurationData
+    #endregion
 
-  #region RealEstateServicesUserData
-  public class RealEstateServicesUserData {
-      public RealEstateServicesUserData() : this(string.Empty, string.Empty, string.Empty, string.Empty) { }
-      public RealEstateServicesUserData(string googleAPIKeyEncrypted, string homeAwayAPIKeyEncrypted, string googleAPIKeyPassPhrase, string homeAwayAPIKeyPassPhrase) {
+    #region UserData
+    public class UserData {
+      public UserData() : this(string.Empty, string.Empty, string.Empty, string.Empty) { }
+      public UserData(string googleAPIKeyEncrypted, string homeAwayAPIKeyEncrypted, string googleAPIKeyPassPhrase, string homeAwayAPIKeyPassPhrase) {
           GoogleAPIKeyEncrypted = googleAPIKeyEncrypted;
           HomeAwayAPIKeyEncrypted = homeAwayAPIKeyEncrypted;
           GoogleAPIKeyPassPhrase = googleAPIKeyPassPhrase;
@@ -37,10 +38,26 @@ namespace Ace.Agent.RealEstateServices
       public string HomeAwayAPIKeyPassPhrase { get; set; }
   }
 
-  #endregion RealEstateServicesUserData
+    #endregion
 
-  #region PropertySearchPayload
-  public class PropertySearchRequestData {
+    #region InitializationData
+    public class InitializationData {
+        public InitializationData() : this(new ConfigurationData(), new UserData()) { }
+
+        public InitializationData(ConfigurationData configurationData, UserData userData) {
+            ConfigurationData=configurationData;
+            UserData=userData;
+        }
+
+        public ConfigurationData ConfigurationData { get; set; }
+        public UserData UserData { get; set; }
+    }
+    #endregion InitializationData
+
+    
+
+    #region PropertySearchPayload
+    public class PropertySearchRequestData {
       public PropertySearchRequestData() { }
       public PropertySearchRequestData(SearchParameters searchParameters, ListingParameters listingParameters) {
           SearchParameters = searchParameters;
@@ -139,142 +156,8 @@ namespace Ace.Agent.RealEstateServices
 
   #endregion RealEstateServicesPropertySearchData
 
-  #region RealEstateServicesSetConfigurationData
-  public class SetRealEstateServicesConfigurationDataRequestData {
-      public SetRealEstateServicesConfigurationDataRequestData() : this(new RealEstateServicesConfigurationData(),
-                                                                              false)
-      { }
-      public SetRealEstateServicesConfigurationDataRequestData(RealEstateServicesConfigurationData realEstateServicesConfigurationData, bool saveConfigurationData) {
-          RealEstateServicesConfigurationData = realEstateServicesConfigurationData;
-          SaveConfigurationData = saveConfigurationData;
-      }
 
-      public RealEstateServicesConfigurationData RealEstateServicesConfigurationData { get; set; }
 
-      public bool SaveConfigurationData { get; set; }
-  }
-
-    public class SetRealEstateServicesConfigurationDataResponse {
-        public SetRealEstateServicesConfigurationDataResponse() : this(string.Empty) { }
-        public SetRealEstateServicesConfigurationDataResponse(string result) { Result = result; }
-
-        public string Result { get; set; }
-    }
-
-  #endregion RealEstateServicesSetConfigurationData
-
-  #region RealEstateServicesGetConfigurationData
-  public class GetRealEstateServicesConfigurationDataRequestData {
-      public GetRealEstateServicesConfigurationDataRequestData() : this(string.Empty) { }
-      public GetRealEstateServicesConfigurationDataRequestData(string placeholder) { Placeholder = placeholder; }
-
-      public string Placeholder { get; set; }
-  }
-
-    public class GetRealEstateServicesConfigurationDataResponse {
-        public GetRealEstateServicesConfigurationDataResponse() : this(new RealEstateServicesConfigurationData())
-        { }
-        public GetRealEstateServicesConfigurationDataResponse(RealEstateServicesConfigurationData realEstateServicesConfigurationData)
-        { RealEstateServicesConfigurationData = realEstateServicesConfigurationData; }
-
-        public RealEstateServicesConfigurationData RealEstateServicesConfigurationData { get; set; }
-    }
-
-  #endregion RealEstateServicesGetConfigurationData
-
-  #region RealEstateServicesSetUserData
-  public class SetRealEstateServicesUserDataRequestData {
-      public SetRealEstateServicesUserDataRequestData() : this(new RealEstateServicesUserData(), false) { }
-
-      public SetRealEstateServicesUserDataRequestData(RealEstateServicesUserData realEstateServicesUserData, bool userDataSave) {
-          RealEstateServicesUserData = realEstateServicesUserData;
-          UserDataSave = userDataSave;
-      }
-
-      public RealEstateServicesUserData RealEstateServicesUserData { get; set; }
-
-      public bool UserDataSave { get; set; }
-  }
-
-    public class SetRealEstateServicesUserDataResponse {
-        public string Result { get; set; }
-    }
-
-  #endregion RealEstateServicesSetUserData
-
-  #region RealEstateServicesGetUserData
-  public class GetRealEstateServicesUserDataRequestData {
-      public GetRealEstateServicesUserDataRequestData() : this(string.Empty) { }
-      public GetRealEstateServicesUserDataRequestData(string placeholder) { Placeholder = placeholder; }
-
-      public string Placeholder { get; set; }
-  }
-
-    public class GetRealEstateServicesUserDataResponse {
-        public GetRealEstateServicesUserDataResponse() : this(new RealEstateServicesUserData()) { }
-        public GetRealEstateServicesUserDataResponse(RealEstateServicesUserData RealEstateServicesUserData)
-        { this.RealEstateServicesUserData = RealEstateServicesUserData; }
-
-        public RealEstateServicesUserData RealEstateServicesUserData { get; set; }
-    }
-
-  #endregion RealEstateServicesGetUserData
-
-  #region RealEstateServicesPropertySearch
-  public class PropertySearchRequestPayload {
-      public PropertySearchRequestPayload() { }
-      public PropertySearchRequestPayload(PropertySearchRequestData propertySearchRequestData, bool savePropertySearchData) {
-      PropertySearchRequestData = propertySearchRequestData;
-          SavePropertySearchData = savePropertySearchData;
-      }
-
-      public PropertySearchRequestData PropertySearchRequestData { get; set; }
-
-      public bool SavePropertySearchData { get; set; }
-  }
-
-    public class PropertySearchResponsePayload {
-        public PropertySearchResponsePayload() { }
-        public PropertySearchResponsePayload(PropertySearchResponseData propertySearchResponseData)
-        { PropertySearchResponseData = propertySearchResponseData; }
-
-        public PropertySearchResponseData PropertySearchResponseData { get; set; }
-    }
-
-  #endregion RealEstateServicesPropertySearch
-
-  #region RealEstateServicesDoInitialization
-  public class RealEstateServicesInitializationData {
-      public RealEstateServicesInitializationData() : this(string.Empty) { }
-
-      public RealEstateServicesInitializationData(string placeholder)
-      { Placeholder = placeholder; }
-
-      public string Placeholder { get; set; }
-  }
-
-    public class RealEstateServicesInitializationDataRequestData {
-        public RealEstateServicesInitializationDataRequestData() : this(new RealEstateServicesInitializationData())
-        { }
-        public RealEstateServicesInitializationDataRequestData(RealEstateServicesInitializationData realEstateServicesInitializationData)
-        { RealEstateServicesInitializationData = realEstateServicesInitializationData; }
-
-        public RealEstateServicesInitializationData RealEstateServicesInitializationData { get; set; }
-    }
-
-    public class RealEstateServicesInitializationResponseData {
-        public RealEstateServicesInitializationResponseData() : this(new RealEstateServicesConfigurationData(),
-                                                                           new RealEstateServicesUserData())
-        { }
-        public RealEstateServicesInitializationResponseData(RealEstateServicesConfigurationData realEstateServicesConfigurationData, RealEstateServicesUserData realEstateServicesUserData) {
-            RealEstateServicesConfigurationData = realEstateServicesConfigurationData;
-            RealEstateServicesUserData = realEstateServicesUserData;
-        }
-
-        public RealEstateServicesConfigurationData RealEstateServicesConfigurationData { get; set; }
-
-        public RealEstateServicesUserData RealEstateServicesUserData { get; set; }
-    }
-  #endregion RealEstateServicesDoInitialization
+  
 }
 

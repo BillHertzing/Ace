@@ -45,18 +45,18 @@ namespace Ace.AceGUI.Pages {
             //Logger.LogDebug($"Starting OnInitAsync");
             Console.WriteLine($"Starting OnInitAsync");
             InitializationData initializationData = new InitializationData();
-            /* may be obsolete 
+            
             InitializationRequestPayload initializationRequestPayload = new InitializationRequestPayload(initializationData);
-            InitializationRequest=new InitializationRequest() { InitializationRequestPayload=initializationRequestPayload };
-            */
+            InitializationRequest=new InitializationRequest(initializationRequestPayload);
+            
             InitializationRequest=new InitializationRequest();
             //Logger.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest ={InitializationRequest}");
             InitializationResponse=await HttpClient.PostJsonAsync<InitializationResponse>("DiskAnalysisServicesInitialization",
                                 InitializationRequest);
-            //Logger.LogDebug($"Returned from GetJsonAsync<InitializationResponse>, InitializationResponse = {InitializationResponse}, InitializationData = {InitializationResponse.InitializationData}, ConfigurationData = {InitializationResponse.InitializationData.ConfigurationData}, UserData = {InitializationResponse.InitializationData.UserData}");
+            //Logger.LogDebug($"Returned from GetJsonAsync<InitializationResponse>, InitializationResponse = {InitializationResponse}");
 
-            ConfigurationData=InitializationResponse.ConfigurationData;
-            UserData=InitializationResponse.UserData;
+            ConfigurationData=InitializationResponse.InitializationResponsePayload.ConfigurationData;
+            UserData=InitializationResponse.InitializationResponsePayload.UserData;
             //ToDo: trigger screen refresh ?
             //Logger.LogDebug($"Leaving OnInitAsync");
         }

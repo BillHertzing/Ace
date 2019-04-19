@@ -42,6 +42,8 @@
     <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
     
