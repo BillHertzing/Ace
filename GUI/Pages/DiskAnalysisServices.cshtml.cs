@@ -51,7 +51,7 @@ namespace Ace.AceGUI.Pages {
             
             InitializationRequest=new InitializationRequest();
             //Logger.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest ={InitializationRequest}");
-            InitializationResponse=await HttpClient.PostJsonAsync<InitializationResponse>("DiskAnalysisServicesInitialization",
+            InitializationResponse=await HttpClient.PostJsonAsync<InitializationResponse>("/DiskAnalysisServicesInitialization",
                                 InitializationRequest);
             //Logger.LogDebug($"Returned from GetJsonAsync<InitializationResponse>, InitializationResponse = {InitializationResponse}");
 

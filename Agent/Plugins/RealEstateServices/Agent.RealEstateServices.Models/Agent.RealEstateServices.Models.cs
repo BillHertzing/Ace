@@ -30,8 +30,7 @@ namespace Ace.Agent.RealEstateServices {
  
     }
     public class InitializationResponsePayload {
-        public InitializationResponsePayload() : this(new ConfigurationData(),
-                                                                           new UserData()) { }
+        public InitializationResponsePayload() : this(new ConfigurationData(), new UserData()) { }
 
         public InitializationResponsePayload(ConfigurationData configurationData, UserData userData) {
             ConfigurationData=configurationData??throw new ArgumentNullException(nameof(configurationData));

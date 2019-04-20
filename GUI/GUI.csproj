@@ -52,6 +52,9 @@
 
 
   <ItemGroup>
+    <Content Update="Pages\BaseServicesTaskStatus.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\BaseServicesUserRegistration.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

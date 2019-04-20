@@ -49,15 +49,13 @@ namespace Ace.AceGUI.Pages {
 
         protected override async Task OnInitAsync() {
             //Logger.LogDebug($"Starting OnInitAsync");
-
-            var initializationRequestPayload = new InitializationRequestPayload();
-            var initializationRequest = new InitializationRequest(initializationRequestPayload);
+            var initializationRequest = new InitializationRequest(new InitializationRequestPayload());
             //Logger.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest ={initializationRequest}");
-            InitializationResponse=await HttpClient.PostJsonAsync<InitializationResponse>("RealEstateServicesInitialization", initializationRequest);
+            var initializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>("/RealEstateServicesInitialization", initializationRequest);
             //Logger.LogDebug($"Returned from GetJsonAsync<InitializationResponse>, initializationResponse = {initializationResponse}");
-            ConfigurationData=InitializationResponse.InitializationResponsePayload.ConfigurationData;
-            UserData=InitializationResponse.InitializationResponsePayload.UserData;
-            // ToDo: Design better security for the API keys on the client (e.g, keep only tokens on the client, or, make the user enter the API keys on the client,a nd only keep them there (per user?)
+            ConfigurationData=initializationResponse.InitializationResponsePayload.ConfigurationData;
+            UserData=initializationResponse.InitializationResponsePayload.UserData;
+            // ToDo: Design better security for the API keys on the client (e.g, keep only tokens on the client, or, make the user enter the API keys on the client, and only keep them there (per user?)
             GoogleAPIKey=UserData.GoogleAPIKeyEncrypted;
             //GoogleAPIKeyPassPhrase=UserData.GoogleAPIKeyPassPhrase;
             HomeAwayAPIKey=UserData.HomeAwayAPIKeyEncrypted;
@@ -75,7 +73,7 @@ namespace Ace.AceGUI.Pages {
             var setConfigurationDataRequestPayload = new SetConfigurationDataRequestPayload(ConfigurationData, ConfigurationDataSave);
             var setConfigurationDataRequest = new SetConfigurationDataRequest(setConfigurationDataRequestPayload);
             //Logger.LogDebug($"Calling GetJsonAsync<SetRealEstateServicesConfigurationDataResponse> with 
-            SetConfigurationDataResponse =
+            SetConfigurationDataResponse=
 await HttpClient.PostJsonAsync<SetConfigurationDataResponse>("/SetRealEstateServicesConfigurationData",
                                                                                      setConfigurationDataRequest);
             //Logger.LogDebug($"Returned from GetJsonAsync<SetConfigurationDataResponse> with setConfigurationDataResponse.Result = {setConfigurationDataResponse.Result}");
@@ -88,7 +86,7 @@ await HttpClient.PostJsonAsync<SetConfigurationDataResponse>("/SetRealEstateServ
             var setUserDataRequestPayload = new SetUserDataRequestPayload(UserData, UserDataSave);
             var setUserDataRequest = new SetUserDataRequest(setUserDataRequestPayload);
             //Logger.LogDebug($"Calling PostJsonAsync<SetRealEstateServicesUserDataResponse>");
-            var setUserDataResponse =
+            SetUserDataResponse=
 await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetRealEstateServicesUserData?format=json",
                                                                             setUserDataRequest);
             //Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponse>");
@@ -135,7 +133,8 @@ await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetRealEstateServicesUserD
         */
 
         #region Properties:Initialization
-        public InitializationResponse InitializationResponse { get; set; } = null;
+            public InitializationResponse InitializationResponse { get; set; }
+
         #endregion
         #region Properties:UserData
         public UserData UserData { get; set; } = new UserData() { GoogleAPIKeyPassPhrase=placeHolderForGoogleAPIKeyPassPhrase, HomeAwayAPIKeyPassPhrase=placeHolderForHomeAwayAPIKeyPassPhrase };
@@ -151,17 +150,17 @@ await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetRealEstateServicesUserD
 
         public bool UserDataSave { get; set; }
 
+        public SetUserDataResponse SetUserDataResponse { get; set; }
         #endregion PropertiesUserData
-
         #region Properties:ConfigurationData
         public ConfigurationData ConfigurationData { get; set; } = new ConfigurationData() {
-        Google_API_URI = placeHolderForGoogle_API_URI,
-        HomeAway_API_URI = placeHolderForHomeAway_API_URI};
-        public SetConfigurationDataResponse SetConfigurationDataResponse { get; set; }
+            Google_API_URI=placeHolderForGoogle_API_URI,
+            HomeAway_API_URI=placeHolderForHomeAway_API_URI
+        };
         public bool ConfigurationDataSave { get; set; }
+        public SetConfigurationDataResponse SetConfigurationDataResponse { get; set; }
         #endregion
 
-     
         #region PropertySearch
         public int MinBedrooms { get; set; }
 

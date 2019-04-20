@@ -109,6 +109,7 @@ namespace Ace.AceService {
             //  The AppHost (here, ServiceStack running as a Windows service) has some configuration that is common
             //  to both Frameworks (.Net and .Net Core), which will be setup in a common assembly, so this instance of
             //  the appHost is being passed to the BaseServicesData constructor.
+            //  this also registers a BaseServicesData instance in the container 
             var baseServicesData = new BaseServicesData(this);
             container.Register<BaseServicesData>(c => baseServicesData);
 

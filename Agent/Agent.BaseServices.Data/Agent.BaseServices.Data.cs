@@ -67,6 +67,10 @@ namespace Ace.Agent.BaseServices {
                           .GetString(configKeyPrefix+
                           configKeyRedisConnectionString);
             // At this point the Redis cache should match the current run's AppConfigurationSettings 
+            // Populate the ConfigurationData structure in the BaseServicesData instance
+            
+            ConfigurationData=new ConfigurationData(RedisCacheConnectionString, MySqlConnectionString);
+
 
             // See if the MySQL configuration key exists, if so register MySQL as the RDBMS behind ORMLite
             if (appHost.AppSettings
@@ -109,14 +113,13 @@ namespace Ace.Agent.BaseServices {
             // Add a timer to check the status of long running tasks, and attach a callback to the timer
             #region create longRunningTasksCheckTimer, connect callback, and store in container's timers
             Log.Debug("In BaseServicesData .ctor: creating longRunningTasksCheckTimer");
-            var longRunningTasksCheckTimer = new System.Timers.Timer(1000);
+            var longRunningTasksCheckTimer = new System.Timers.Timer(10000);
             longRunningTasksCheckTimer.AutoReset=true;
             longRunningTasksCheckTimer.Elapsed+=new ElapsedEventHandler(LongRunningTasksCheckTimer_Elapsed);
             timers.Add(LongRunningTasksCheckTimerName, longRunningTasksCheckTimer);
             #endregion create longRunningTasksCheckTimer, connect callback, and store in container's timers
 
-            // Populate the ConfigurationData property
-            // ConfigurationData=new ConfigurationData(RedisCacheConnectionString, MySqlConnectionString);
+
 
             // Register an Auth Repository
             Container.Register<IAuthRepository>(c => new OrmLiteAuthRepository(c.Resolve<IDbConnectionFactory>()));

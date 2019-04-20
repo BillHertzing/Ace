@@ -34,7 +34,7 @@ namespace Ace.Agent.DiskAnalysisServices
     // AppSettings will be auto-wired by ServiceStack to the IAppSettings in the IOC
     public IAppSettings AppSettings { get; set; }
 
-    public Funq.Container Container { get; set; }
+
     public IAppHost appHost { get; set; }
     // Declare Event Handlers for the Plugin Root COD
     // These event handler will be attached/detached from the ObservableConcurrentDictionary via that class' constructor and dispose method
