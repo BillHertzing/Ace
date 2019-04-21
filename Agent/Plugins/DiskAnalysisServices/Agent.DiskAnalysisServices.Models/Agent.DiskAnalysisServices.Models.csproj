@@ -26,6 +26,7 @@
 
       <ItemGroup>
         <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
+        <ProjectReference Include="..\..\..\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />
         <ProjectReference Include="..\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
       </ItemGroup>
   

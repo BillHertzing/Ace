@@ -16,8 +16,10 @@ namespace Ace.Agent.RealEstateServices {
     }
 
     public class InitializationRequestPayload {
-        public InitializationRequestPayload()  { }
+        public InitializationRequestPayload() : this(new Agent.BaseServices.InitializationData()) { }
+        public InitializationRequestPayload(Agent.BaseServices.InitializationData initializationData) { InitializationData=initializationData; }
 
+        public Agent.BaseServices.InitializationData InitializationData { get; set; }
     }
     public class InitializationResponse {
         public InitializationResponse() : this(new InitializationResponsePayload()) { }

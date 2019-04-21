@@ -3,7 +3,7 @@
 <h1>AceCommander Disk Drive and Filesystem Analysis Services</h1>
 
 @if (@InitializationResponse==null) {
-    <p><em>Loading (Calling onInitAsync)</em></p>
+    <p><em>Loading (The page load is calling onInitAsync, which has not yet returned a value for Initialization Response)</em></p>
 } else {
     <hr />
     <button id="btnReadDisk" type="button" class="btn btn-default" onclick="@(async () => await WalkDiskDrive(2))">Walk Disk Drive (hardcoded drive 2)</button>

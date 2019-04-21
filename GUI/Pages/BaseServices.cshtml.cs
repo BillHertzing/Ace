@@ -1,4 +1,5 @@
 // Required for the HttpClient
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,10 +78,11 @@ namespace Ace.AceGUI.Pages {
             ////IServiceClient client = new JsonHttpClient("http://localhost:21100");
             ////Log.LogDebug($"client is null: {client == null}");
 
-            InitializationRequest=new InitializationRequest(new InitializationRequestPayload());
+
+            var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new InitializationData("BaseVersionXX", "MachineIDXX","userIDxx")));
             //Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest = {InitializationRequest}");
             var initializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>("/BaseServicesInitialization",
-                                                                                                                        InitializationRequest);
+                                                                                                                        initializationRequest);
             //Log.LogDebug($"Returned from PostJsonAsync<InitializationResponse>, InitializationResponse = {InitializationResponse}");
             ConfigurationData=initializationResponse.InitializationResponsePayload.ConfigurationData;
             UserData=initializationResponse.InitializationResponsePayload.UserData;
@@ -213,11 +215,9 @@ namespace Ace.AceGUI.Pages {
         public UserData UserData { get; set; }
         #endregion
         #region Properties:InitializationData
-        public InitializationRequest InitializationRequest { get; set; }
-        public InitializationRequestPayload InitializationRequestPayload { get; set; }
         public InitializationResponse InitializationResponse { get; set; }
         public InitializationResponsePayload InitializationResponsePayload { get; set; }
-        public InitializationData InitializationData { get; set; }
+
         #endregion
         #endregion
 

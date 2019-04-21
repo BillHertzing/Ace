@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.DiskDrive;
+using Ace.Agent.BaseServices;
 
 namespace Ace.Agent.DiskAnalysisServices {
 

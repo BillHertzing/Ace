@@ -11,16 +11,14 @@ namespace Ace.Agent.BaseServices {
 
         #region  Interfaces:GetConfigurationDataRequest
         public object Post(GetConfigurationDataRequest request) {
-            var baseServicesData = HostContext.TryResolve<BaseServicesData>();
-            GetConfigurationDataResponse getConfigurationDataResponse = new GetConfigurationDataResponse(baseServicesData.ConfigurationData);
+            GetConfigurationDataResponse getConfigurationDataResponse = new GetConfigurationDataResponse(BaseServicesData.ConfigurationData);
             return getConfigurationDataResponse;
         }
         #endregion
 
         #region Interfaces:GetUserDataRequest
         public object Post(GetUserDataRequest request) {
-            var baseServicesData = HostContext.TryResolve<BaseServicesData>();
-            GetUserDataResponse getUserDataResponse = new GetUserDataResponse(baseServicesData.UserData);
+            GetUserDataResponse getUserDataResponse = new GetUserDataResponse(BaseServicesData.UserData);
             return getUserDataResponse;
         }
         #endregion
@@ -145,6 +143,7 @@ namespace Ace.Agent.BaseServices {
         }
         #endregion
 
+        // ServiceStack will autowire this property with the corresponding instance from the DI Container
         public BaseServicesData BaseServicesData { get; set; }
         /*
         public object Any(BaseServicePutConfiguration request) {

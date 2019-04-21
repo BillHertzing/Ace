@@ -43,17 +43,13 @@ namespace Ace.AceGUI.Pages {
 
         protected override async Task OnInitAsync() {
             //Logger.LogDebug($"Starting OnInitAsync");
-            Console.WriteLine($"Starting OnInitAsync");
-            InitializationData initializationData = new InitializationData();
-            
-            InitializationRequestPayload initializationRequestPayload = new InitializationRequestPayload(initializationData);
-            InitializationRequest=new InitializationRequest(initializationRequestPayload);
-            
-            InitializationRequest=new InitializationRequest();
-            //Logger.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest ={InitializationRequest}");
+            // Console.WriteLine($"Starting OnInitAsync");
+
+            var initializationRequest=new InitializationRequest(new InitializationRequestPayload(new Ace.Agent.BaseServices.InitializationData()));
+            //Logger.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest ={initializationRequest}");
             InitializationResponse=await HttpClient.PostJsonAsync<InitializationResponse>("/DiskAnalysisServicesInitialization",
-                                InitializationRequest);
-            //Logger.LogDebug($"Returned from GetJsonAsync<InitializationResponse>, InitializationResponse = {InitializationResponse}");
+                                initializationRequest);
+            //Logger.LogDebug($"Returned from GetJsonAsync<Agent.BaseServices.InitializationResponse>, InitializationResponse = {InitializationResponse}");
 
             ConfigurationData=InitializationResponse.InitializationResponsePayload.ConfigurationData;
             UserData=InitializationResponse.InitializationResponsePayload.UserData;

@@ -110,6 +110,7 @@ namespace Ace.AceService {
             //  to both Frameworks (.Net and .Net Core), which will be setup in a common assembly, so this instance of
             //  the appHost is being passed to the BaseServicesData constructor.
             //  this also registers a BaseServicesData instance in the container 
+            // ToDo: implement Singleton pattern for BaseServicesData in the DI Container
             var baseServicesData = new BaseServicesData(this);
             container.Register<BaseServicesData>(c => baseServicesData);
 
@@ -136,7 +137,8 @@ namespace Ace.AceService {
             var longRunningTasksCheckTimer = timers[Ace.Agent.BaseServices.BaseServicesData.LongRunningTasksCheckTimerName];
             longRunningTasksCheckTimer.Start();
 
-            // create a NotifyIcon
+            /* 
+            // ToDo: create a NotifyIcon equivalent for a Windows Service or Linux Daemon. Notifiy Icon itself will not work, as that is for WinForms only
             Log.Debug("in AppHost.Configure: Create a NotifyIcon for AceCommander");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -152,12 +154,11 @@ namespace Ace.AceService {
             notifyIcon1.Text="AceCommander";
             notifyIcon1.ContextMenu=contextMenu1;
             notifyIcon1.Visible=true;
-
             // Log.Debug("Calling a Web Forms Application instance's static Run method");
             // Application.Run();
             // notifyIcon1.Visible = false;
-
             Log.Debug("NotifyIcon for AceCommander created");
+            */
             Log.Debug("Leaving AppHost.Configure");
         }
         /// <summary>

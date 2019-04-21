@@ -28,7 +28,7 @@ namespace ATAP.Utilities.ComputerInventory {
             //ToDo: Add some validation to ensure the diskInfoEx has "good" data
             //
             DiskAnalysis.DiskAnalysis dda = new DiskAnalysis.DiskAnalysis(Log);
-            await dda.WalkDiskDrive(diskNumber, diskInfoExsContainer, walkDiskDriveResultContainer);
+            await dda.WalkDiskDrive(diskNumber, diskInfoExsContainer, walkDiskDriveResultContainer).ConfigureAwait(false);
             FilesystemAnalysis fsa = new FilesystemAnalysis(Log, asyncFileReadBlocksize);
             foreach (var d in diskInfoExsContainer.DiskInfoExs) {
                 foreach (var p in d.PartitionInfoExs) {

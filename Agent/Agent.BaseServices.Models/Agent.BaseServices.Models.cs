@@ -14,7 +14,13 @@ namespace Ace.Agent.BaseServices {
     }
 
     public class InitializationRequestPayload {
-        public InitializationRequestPayload() { }
+        public InitializationRequestPayload() : this (new InitializationData()) { }
+
+        public InitializationRequestPayload(InitializationData initializationData) {
+            InitializationData=initializationData??throw new ArgumentNullException(nameof(initializationData));
+        }
+
+        InitializationData InitializationData { get; set; }
 
     }
     public class InitializationResponse {

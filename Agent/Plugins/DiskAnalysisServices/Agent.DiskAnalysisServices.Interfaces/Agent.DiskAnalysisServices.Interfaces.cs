@@ -28,14 +28,12 @@ namespace Ace.Agent.DiskAnalysisServices {
 
         public object Post(InitializationRequest request) {
             Log.Debug("starting Post(InitializationRequest request)");
-            /* Currently Initialization Request sends no data
             InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;
             Log.Debug($"You sent me InitializationRequestPayload = {initializationRequestPayload}");
             Log.Debug($"You sent me InitializationData = {initializationRequestPayload.InitializationData}");
             // Initialize the plugin's data structures for this service/user/session/connection
             // ToDo: Figure out if the Initialization request from the GUI has any impact on the configuration or user data structures
             InitializationData initializationData = initializationRequestPayload.InitializationData;
-            */
             // Copy the Plugin's current ConfigurationData structure to the response
             //ToDo: this is merly a placeholder until ConfigurationData is figured out
             ConfigurationData configurationData = DiskAnalysisServicesData.ConfigurationData;
@@ -118,7 +116,7 @@ DiskAnalysisServicesData.BaseServicesData.ComputerInventory.ComputerHardware,
 DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID], 
 (crud, r) => {
     Log.Debug($"starting recordRoot Lambda, r = {r}");
-});
+}).ConfigureAwait(false);
                 });
 
             } else if (request.DiskDrivePartitionIdentifier!=null) {
@@ -126,7 +124,7 @@ DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID],
                     diskAnalysis.WalkDiskDrive(request.DiskDrivePartitionIdentifier, DiskAnalysisServicesData.BaseServicesData.ComputerInventory.ComputerHardware, DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID],
                 (crud, r) => {
                     Log.Debug($"starting recordRoot Lambda, r = {r}");
-                });
+                }).ConfigureAwait(false);
                 });
                 } else { throw new InvalidOperationException("WalkDiskDriveParmatersNotUnderstood"); }
 
@@ -137,8 +135,16 @@ DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID],
                 // ToDo: return to the caller the callback URL and the longRunningTaskID to allow the caller to connect to the SSE that monitors the task and the data structures it updates
                 // ToDo: figure out how to integrate a CancellationToken
                 DiskAnalysisServicesData.BaseServicesData.LongRunningTasks.Add(longRunningTaskID, longRunningTaskInfo);
+            // Start teh task running
+            try {
+                DiskAnalysisServicesData.BaseServicesData.LongRunningTasks[longRunningTaskID].LRTask.Start();
 
-                var walkDiskDriveResponse = new WalkDiskDriveResponse(new List<Id<LongRunningTaskInfo>>() { longRunningTaskID });
+            }
+            catch (Exception e) when (e is InvalidOperationException||e is ObjectDisposedException) {
+                Log.Debug($"Exception when trying to start the WalkDiskDrive task, message is {e.Message}");
+                // ToDo: need to be sure that the when.any loop and GetLongRunningtasksStatus can handle a taskinfo in these states;
+                
+            }            var walkDiskDriveResponse = new WalkDiskDriveResponse(new List<Id<LongRunningTaskInfo>>() { longRunningTaskID });
                 Log.Debug($"Leaving Post(WalkDiskDriveRequest), walkDiskDriveResponse = {walkDiskDriveResponse}");
                 //return DiskDriveToDBGraphResponse;
                 return walkDiskDriveResponse;

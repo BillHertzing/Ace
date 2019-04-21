@@ -40,21 +40,7 @@ namespace Ace.Agent.RealEstateServices
 
     #endregion
 
-    #region InitializationData
-    public class InitializationData {
-        public InitializationData() : this(new ConfigurationData(), new UserData()) { }
-
-        public InitializationData(ConfigurationData configurationData, UserData userData) {
-            ConfigurationData=configurationData;
-            UserData=userData;
-        }
-
-        public ConfigurationData ConfigurationData { get; set; }
-        public UserData UserData { get; set; }
-    }
-    #endregion InitializationData
-
-    
+  
 
     #region PropertySearchPayload
     public class PropertySearchRequestData {
