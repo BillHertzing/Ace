@@ -1,13 +1,12 @@
-﻿using ATAP.Utilities.ComputerInventory.Enumerations;
+﻿
 using ATAP.Utilities.TypedGuids;
-using ATAP.Utilities.FileSystem.Enumerations;
-using ATAP.Utilities.DiskDrive.Enumerations;
+
+using ATAP.Utilities.ComputerHardware.Enumerations;
 
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
+
 
 namespace ATAP.Utilities.DiskDrive {
     public interface IDiskInfoEx {

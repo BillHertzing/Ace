@@ -11,7 +11,7 @@ using ServiceStack.Text;
 using ATAP.Utilities.FileSystem.Enumerations;
 // Local feed of packages still in development is not working, so put the ComputerInventory types into FileSystem.Enumerations
 using ATAP.Utilities.ComputerInventory;
-using ATAP.Utilities.ComputerInventory.Enumerations;
+using ATAP.Utilities.ComputerHardware.Enumerations;
 using ATAP.Utilities.Database.Enumerations;
 using ATAP.Utilities.DiskDrive;
 

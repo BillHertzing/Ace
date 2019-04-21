@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using ATAP.Utilities.ComputerInventory;
-using ATAP.Utilities.ComputerInventory.Enumerations;
+using ATAP.Utilities.ComputerHardware.Enumerations;
 using ATAP.Utilities.FileSystem;
 using ATAP.Utilities.FileSystem.Enumerations;
 using ATAP.Utilities.Database.Enumerations;

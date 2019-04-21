@@ -1,4 +1,4 @@
-using ATAP.Utilities.ComputerInventory.Enumerations;
+using ATAP.Utilities.ComputerHardware.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

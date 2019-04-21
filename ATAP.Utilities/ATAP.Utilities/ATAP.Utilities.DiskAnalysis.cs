@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using ServiceStack.Logging;
 using ServiceStack.Text;
 using ATAP.Utilities.ComputerInventory;
-using ATAP.Utilities.ComputerInventory.Enumerations;
+using ATAP.Utilities.ComputerHardware.Enumerations;
 using ATAP.Utilities.Database.Enumerations;
 using ATAP.Utilities.DiskDrive;
-using ATAP.Utilities.DiskDrive.Enumerations;
 using ATAP.Utilities.TypedGuids;
 
 namespace ATAP.Utilities.DiskAnalysis {

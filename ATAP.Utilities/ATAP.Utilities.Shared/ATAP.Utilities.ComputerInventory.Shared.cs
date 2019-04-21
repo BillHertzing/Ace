@@ -1,4 +1,4 @@
-using ATAP.Utilities.ComputerInventory.Enumerations;
+using ATAP.Utilities.ComputerHardware.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,13 +8,12 @@ using Itenso.TimePeriod;
 using System.Threading.Tasks;
 using System.Threading;
 using ATAP.Utilities.Database.Enumerations;
-using ServiceStack.Text;
 using ATAP.Utilities.DiskDrive;
 
 namespace ATAP.Utilities.ComputerInventory {
 
 
-    
+
     public class DiskDrivePartitionDriveLetterIdentifier {
         public DiskDrivePartitionDriveLetterIdentifier() : this(new Dictionary<Guid, IDictionary<Guid, string>>()) { }
         public DiskDrivePartitionDriveLetterIdentifier(IDictionary<Guid, IDictionary<Guid, string>> diskDrivePartitionInfoGuidsDriveLetterStrings) { DiskDrivePartitionInfoGuidsDriveLetterStrings=diskDrivePartitionInfoGuidsDriveLetterStrings; }
@@ -22,73 +21,43 @@ namespace ATAP.Utilities.ComputerInventory {
     }
 
 
-
+    // ToDo: remove this stub and integrate a ComputerSoftware type for the GUI (non-observable)
     [Serializable]
-    public class MainBoard : ISerializable {
+    public class ComputerSoftware {
+        // ToDo implement OS when the bug in dot net core is fixed. this type cannot be serialized by newtonSoft in dot net core v2
 
-        public MainBoard() :this (MainBoardMaker.Generic, CPUSocket.Generic) {}
 
-        public MainBoard(MainBoardMaker maker, CPUSocket cPUSocket) {
-            Maker=maker;
-            CPUSocket=cPUSocket;
+
+        public string Placeholder;
+
+        public ComputerSoftware() : this("NotImplemented") {
         }
 
-        MainBoard(SerializationInfo info, StreamingContext ctxt) {
-            ///ToDo: figure out why the static extension method found in utilities.Enumerations doesn't work
-            //this.maker = MainBoardMaker.ToEnum<MainBoardMaker>(info.GetString("Maker"));
-            Maker=(MainBoardMaker)Enum.Parse(typeof(MainBoardMaker), info.GetString("Maker"), true);
-            CPUSocket=(CPUSocket)Enum.Parse(typeof(CPUSocket), info.GetString("CPUSocket"), true);
+        public ComputerSoftware(string placeholder) {
+            Placeholder=placeholder??throw new ArgumentNullException(nameof(placeholder));
         }
+        //public OperatingSystem OS { get; set; }
 
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue("Maker", Maker.ToString());
-            info.AddValue("CPUSocket", CPUSocket.ToString());
-        }
+        //public List<ComputerSoftwareDriver> ComputerSoftwareDrivers { get; set; }
 
-        public MainBoardMaker Maker { get; set; }
-
-        public CPUSocket CPUSocket { get; set; }
-
-        public override bool Equals(Object obj) {
-            if (obj==null)
-                return false;
-
-            MainBoard id = obj as MainBoard;
-            if (id==null)
-                return false;
-            return (Maker==id.Maker && CPUSocket == id.CPUSocket);
-        }
-
-        //ToDo: add CPUSocket field, figure out how to hash together two fields
-        public override int GetHashCode() {
-            return Maker.GetHashCode();
-        }
+        //public List<ComputerSoftwareProgram> ComputerSoftwarePrograms { get; set; }
     }
+    // ToDo: remove this stub and integrate a ComputerSoftware type for the GUI (non-observable)
 
-    [Serializable]
-    public class CPU {
+    public class ComputerProcesses {
+        // ToDo implement OS when the bug in dot net core is fixed. this type cannot be serialized by newtonSoft in dot net core v2
 
-        public CPU() : this(CPUMaker.Generic) {}
-        public CPU(CPUMaker maker) {
-            Maker=maker;
-        }
-        public CPUMaker Maker { get; set; }
 
-        //ToDo: investigate if overrrides for Equals and hash Code is needed anywhere
-        public override bool Equals(Object obj) {
-            if (obj==null)
-                return false;
 
-            CPU id = obj as CPU;
-            if (id==null)
-                return false;
+        public string Placeholder;
 
-            return (Maker==id.Maker);
+        public ComputerProcesses() : this("NotImplemented") {
         }
 
-        public override int GetHashCode() {
-            return Maker.GetHashCode();
+        public ComputerProcesses(string placeholder) {
+            Placeholder=placeholder??throw new ArgumentNullException(nameof(placeholder));
         }
+
     }
 
     [Serializable]
@@ -102,7 +71,7 @@ namespace ATAP.Utilities.ComputerInventory {
         // A very generic list of computer hardware
         public ComputerHardware() : this(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic),
             new List<CPUMaker>() { CPUMaker.Generic },
-            new List<DiskInfoEx>() { new DiskInfoEx() }, 
+            new List<DiskInfoEx>() { new DiskInfoEx() },
             new TimeBlock(DateTime.UtcNow, true)) { }
 
         // Created on demand to match a specific computerName
@@ -165,7 +134,7 @@ namespace ATAP.Utilities.ComputerInventory {
         */
 
         #region Properties
-  
+
         public MainBoard MainBoard { get; set; }
         public IList<CPUMaker> CPUs { get; set; }
         public List<DiskInfoEx> DiskInfoExs { get; set; }
@@ -244,129 +213,28 @@ namespace ATAP.Utilities.ComputerInventory {
         #endregion
     }
 
-  public enum DiskDriveType {
-    //ToDo: Add [LocalizedDescription("Generic", typeof(Resource))]
-    [Description("Generic")]
-    Generic,
-    [Description("SSD")]
-    SSD,
-    [Description("HDD")]
-    HDD
-  }
-  
-      public enum GPUMaker
-    {
-        //ToDo: Add [LocalizedDescription("Generic", typeof(Resource))]
-        [Description("Generic")]
-        Generic,
-        [Description("AMD")]
-        AMD,
-        [Description("NVIDEA")]
-        NVIDEA
-    }
-
-    public enum VideoCardMaker
-    {
-        //ToDo: Add [LocalizedDescription("Generic", typeof(Resource))]
-        [Description("Generic")]
-        Generic,
-        [Description("ASUS")]
-        ASUS,
-        [Description("EVGA")]
-        EVGA,
-        [Description("MSI")]
-        MSI,
-        [Description("PowerColor")]
-        PowerColor
-    }
-
-    public enum MainBoardMaker
-    {
-        //ToDo: Add [LocalizedDescription("Generic", typeof(Resource))]
-        [Description("Generic")]
-        Generic,
-        [Description("ASUS")]
-        ASUS,
-        [Description("MSI")]
-        MSI
-    }
-
-    public enum CPUMaker
-    {
-        //ToDo: Add [LocalizedDescription("Generic", typeof(Resource))]
-        [Description("Generic")]
-        Generic,
-        [Description("Intel")]
-        Intel,
-        [Description("AMD")]
-        AMD
-    }
-
-    public enum VideoCardMemoryMaker
-    {
-        //ToDo: Add [LocalizedDescription("Generic", typeof(Resource))]
-        [Description("Generic")]
-        Generic,
-        [Description("Elpida")]
-        Elpida,
-        [Description("Hynix")]
-        Hynix,
-        [Description("Samsung")]
-        Samsung
-    }
-
-  public enum DiskDriveMaker {
-    //ToDo: Add [LocalizedDescription("Generic", typeof(Resource))]
-    [Description("Generic")]
-    Generic,
-    [Description("Samsung")]
-    Samsung,
-    [Description("Seagate")]
-    Seagate,
-    [Description("WesternDigital")]
-    WesternDigital,
-    [Description("Maxtor")]
-    Maxtor,
-    [Description("Hitachi")]
-    Hitachi
-  }
-  public enum DiskDriveType {
-    //ToDo: Add [LocalizedDescription("Generic", typeof(Resource))]
-    [Description("Generic")]
-    Generic,
-    [Description("SSD")]
-    SSD,
-    [Description("HDD")]
-    HDD
-  }
     public class ComputerInventory {
 
-        /*
-        public ComputerInventory(ComputerHardware computerHardware, ComputerSoftware computerSoftware, ComputerProcesses computerProcesses) {
-            this.computerHardware=computerHardware??throw new ArgumentNullException(nameof(computerHardware));
-            this.computerSoftware=computerSoftware??throw new ArgumentNullException(nameof(computerSoftware));
-            this.computerProcesses=computerProcesses??throw new ArgumentNullException(nameof(computerProcesses));
-        }
-        */
-        public ComputerInventory() : this(new ComputerHardware()) {
-        }
-        public ComputerInventory(string computerName) {
+        public ComputerInventory() : this(new ComputerHardware(), new ComputerSoftware(), new ComputerProcesses(), "generic") { }
+
+        public ComputerInventory(ComputerHardware computerHardware, ComputerSoftware computerSoftware, ComputerProcesses computerProcesses, string computerName) {
+            ComputerHardware=computerHardware??throw new ArgumentNullException(nameof(computerHardware));
+            ComputerSoftware=computerSoftware??throw new ArgumentNullException(nameof(computerSoftware));
+            ComputerProcesses=computerProcesses??throw new ArgumentNullException(nameof(computerProcesses));
             ComputerName=computerName??throw new ArgumentNullException(nameof(computerName));
-            if (!ComputerName.Trim().ToLowerInvariant().Equals("localhost"))
-                throw new NotImplementedException("ComputerName other than localhost is not supported");
-            ComputerHardware = new ComputerHardware(computerName);
         }
 
-        public ComputerInventory(ComputerHardware computerHardware) {
-            ComputerHardware=computerHardware??throw new ArgumentNullException(nameof(computerHardware));
-        }
 
         #region Properties
- 
-        public string ComputerName { get; set; }
+
         public ComputerHardware ComputerHardware { get; set; }
-        //ComputerSoftware ComputerSoftware { get; set; }
-        //ComputerProcesses ComputerProcesses { get; set; }
+
+        public ComputerSoftware ComputerSoftware { get; set; }
+
+        public ComputerProcesses ComputerProcesses { get; set; }
+
+        public string ComputerName { get; set; }
+
         #endregion
 
     }

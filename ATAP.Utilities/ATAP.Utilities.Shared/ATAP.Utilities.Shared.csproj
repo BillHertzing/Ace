@@ -23,6 +23,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ATAP.Utilities.ComputerInventory.ProcessInfo.Shared.cs.ToDo" />
+    <None Remove="ATAP.Utilities.ComputerInventory.SoftwareInfo.Shared.cs.ToDo" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ServiceStack.Text" Version="5.5.1" />
     <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
   </ItemGroup>
