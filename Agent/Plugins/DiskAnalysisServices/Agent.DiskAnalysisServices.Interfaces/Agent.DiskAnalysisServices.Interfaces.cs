@@ -91,16 +91,16 @@ namespace Ace.Agent.DiskAnalysisServices {
             // Create multiple lambdas that will update SQLServerDB
             // The CRUD value comes in the request
             // If a DiskDriveNumber comes in the request, then Walk one disk drive
-            // If a DiskDrivePartitionIdentifier comes in the request, then Walk the drives and prtitions specified
+            // If a DiskDrivePartitionIdentifier comes in the request, then Walk the drives and partitions specified
 
-            // There is a collection of DiskDriveInfoEx records in the ComputerInventory.ComputerHardware property of the BaseServicesData instance, which can be accessed through the DiskAnalysisServicesData.BaseServciesData property of teh DiskAnalysisServicesData instance.     
+            // There is a collection of DiskDriveInfoEx records in the ComputerInventory.ComputerHardware property of the BaseServicesData instance, which can be accessed through the DiskAnalysisServicesData.BaseServicesData property of the DiskAnalysisServicesData instance.     
 
             // Reading the actual Disk Drives connected to a named computer (localhost or a remote computer) can create a collection of DiskDriveInfoEx records
 
             // Reading a file formated to follow the conventions of the Configuration data for ComputerHardware can create a collection of DiskDriveInfoEx records
             // ToDo: figure out library Logging so that we don't need to pass a Log instance to the library
 
-            //ToDo: Better switch on exactly what to Walk, - local machine, remote machine, configuraiotn data, hypothetical data.
+            //ToDo: Better switch on exactly what to Walk, - local machine, remote machine, configuration data, hypothetical data.
             // if the request's data is null, analyze all physical disks, else analyze the list of physical disks sent with the request
 
             // Create new Id for this LongRunningTask
@@ -135,7 +135,8 @@ DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID],
                 // ToDo: return to the caller the callback URL and the longRunningTaskID to allow the caller to connect to the SSE that monitors the task and the data structures it updates
                 // ToDo: figure out how to integrate a CancellationToken
                 DiskAnalysisServicesData.BaseServicesData.LongRunningTasks.Add(longRunningTaskID, longRunningTaskInfo);
-            // Start teh task running
+            // record the TaskID and task info into the LookupDiskDriveAnalysisResultsCOD
+            // Start the task running
             try {
                 DiskAnalysisServicesData.BaseServicesData.LongRunningTasks[longRunningTaskID].LRTask.Start();
 

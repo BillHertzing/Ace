@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using ATAP.Utilities.Database.Enumerations;
 using ATAP.Utilities.DiskDrive;
+using ATAP.Utilities.TypedGuids;
+using Swordfish.NET.Collections;
 
 namespace ATAP.Utilities.ComputerInventory {
 
@@ -65,37 +67,29 @@ namespace ATAP.Utilities.ComputerInventory {
 #if NETFUL
   public class ComputerHardware : OpenHardwareMonitor.Hardware.Computer {
 #else
-    public class ComputerHardware : IDiskInfoExsContainer, IEquatable<ComputerHardware>
+    public class ComputerHardware : IDiskDriveInfoExs, IEquatable<ComputerHardware>
 #endif
   {
-        // A very generic list of computer hardware
+        // A very generic list of computer hardware with no disk drives
         public ComputerHardware() : this(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic),
             new List<CPUMaker>() { CPUMaker.Generic },
-            new List<DiskInfoEx>() { new DiskInfoEx() },
+            new DiskDriveInfoExs(),
             new TimeBlock(DateTime.UtcNow, true)) { }
 
-        // Created on demand to match a specific computerName
-        public ComputerHardware(string computerName) {
-            if (!computerName.Trim().ToLowerInvariant().Equals("localhost"))
-                throw new NotImplementedException("ComputerName other than localhost is not supported");
-            // ToDo: Query WMI or Configuration data for real details
-            // Temp: hardcode for laptop
-            var diskInfoExs = new List<DiskInfoEx>() { new DiskInfoEx(), new DiskInfoEx(), new DiskInfoEx() };
-            new ComputerHardware(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic), new List<CPUMaker> { CPUMaker.Intel }, diskInfoExs, new TimeBlock(DateTime.UtcNow, true));
-        }
+        
 
-        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, List<DiskInfoEx> diskInfoExs) : this(mainboard, cPUs, diskInfoExs, new TimeBlock(DateTime.UtcNow, true)) { }
+        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IDiskDriveInfoExs diskDriveInfoExs) : this(mainboard, cPUs, diskDriveInfoExs, new TimeBlock(DateTime.UtcNow, true)) { }
 
-        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, List<DiskInfoEx> diskInfoExs, TimeBlock moment) {
+        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IDiskDriveInfoExs diskDriveInfoExs, TimeBlock moment) {
             MainBoard=mainboard??throw new ArgumentNullException(nameof(mainboard));
             CPUs=cPUs??throw new ArgumentNullException(nameof(cPUs));
-            DiskInfoExs=diskInfoExs??throw new ArgumentNullException(nameof(diskInfoExs));
+            var ddicod = diskDriveInfoExs??throw new ArgumentNullException(nameof(diskDriveInfoExs));var 
+            DiskDriveInfoExCOD=diskDriveInfoExs.DiskDriveInfoExCOD??throw new ArgumentNullException(nameof(diskDriveInfoExs.DiskDriveInfoExCOD));
             Moment=moment??throw new ArgumentNullException(nameof(moment));
         }
 
-
         /*
-        // ToDo: Invstigate the following, it is from old code that uses a .NetFull HW library to query info about a pyhsical computer 
+        // ToDo: Investigate the following, it is from old code that uses a .NetFull HW library to query info about a physical computer 
         public ComputerHardware(CPU[] cPUs, MainBoard mainBoard, VideoCard[] videoCards, TimeBlock moment) {
                 isMainboardEnabled=true;
                 isCPUsEnabled=true;
@@ -134,10 +128,9 @@ namespace ATAP.Utilities.ComputerInventory {
         */
 
         #region Properties
-
         public MainBoard MainBoard { get; set; }
         public IList<CPUMaker> CPUs { get; set; }
-        public List<DiskInfoEx> DiskInfoExs { get; set; }
+        public ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx> DiskDriveInfoExCOD { get; set; }
         public TimeBlock Moment { get; set; }
 
         public override bool Equals(object obj) {
@@ -148,7 +141,7 @@ namespace ATAP.Utilities.ComputerInventory {
             return other!=null&&
                    EqualityComparer<MainBoard>.Default.Equals(MainBoard, other.MainBoard)&&
                    EqualityComparer<IList<CPUMaker>>.Default.Equals(CPUs, other.CPUs)&&
-                   EqualityComparer<List<DiskInfoEx>>.Default.Equals(DiskInfoExs, other.DiskInfoExs)&&
+                   EqualityComparer<ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx>>.Default.Equals(DiskDriveInfoExCOD, other.DiskDriveInfoExCOD)&&
                    EqualityComparer<TimeBlock>.Default.Equals(Moment, other.Moment);
         }
 
@@ -160,7 +153,7 @@ namespace ATAP.Utilities.ComputerInventory {
             var hashCode = 1924731101;
             hashCode=hashCode*-1521134295+EqualityComparer<MainBoard>.Default.GetHashCode(MainBoard);
             hashCode=hashCode*-1521134295+EqualityComparer<IList<CPUMaker>>.Default.GetHashCode(CPUs);
-            hashCode=hashCode*-1521134295+EqualityComparer<List<DiskInfoEx>>.Default.GetHashCode(DiskInfoExs);
+            hashCode=hashCode*-1521134295+EqualityComparer<ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx>>.Default.GetHashCode(DiskDriveInfoExCOD);
             hashCode=hashCode*-1521134295+EqualityComparer<TimeBlock>.Default.GetHashCode(Moment);
             return hashCode;
         }

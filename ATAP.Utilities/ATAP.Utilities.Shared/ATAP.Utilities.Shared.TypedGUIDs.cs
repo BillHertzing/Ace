@@ -9,12 +9,12 @@ namespace ATAP.Utilities.TypedGuids {
         private readonly Guid _value;
         public Id(string value) {
             var val = Guid.Parse(value);
-            CheckValue(val);
+            //CheckValue(val);
             _value=val;
         }
 
         public Id(Guid value) {
-            CheckValue(value);
+            //CheckValue(value);
             _value=value;
         }
 

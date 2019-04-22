@@ -20,6 +20,7 @@ using ServiceStack.Logging;
 using ATAP.Utilities.Filesystem;
 using System.Linq;
 using System.Security.Cryptography;
+using ATAP.Utilities.TypedGuids;
 
 namespace ATAP.Utilities.FileSystem {
     public static class ExceptionErrorMessages {
@@ -46,7 +47,7 @@ namespace ATAP.Utilities.FileSystem {
         } else {
             // Todo: see if the DiskDriveMaker and SerialNumber already exist in the DB
             // async (cRUD, diskInfoEx) => { await Task.Yield(); }
-            // Task< DiskInfoEx> t = await DBFetch.Invoke(cRUD, diskInfoEx);
+            // Task< DiskDriveInfoEx> t = await DBFetch.Invoke(cRUD, diskInfoEx);
             // diskInfoEx = await DBFetch.Invoke(cRUD, diskInfoEx);
             if (false) {
                 // already exist in DB, get ID and GUID from DB
@@ -183,13 +184,19 @@ namespace ATAP.Utilities.FileSystem {
         }
 
         public async Task<FileInfoEx> PopulateFileInfoExAsync(string path, int blocksize) {
-            FileInfoEx fileInfoEx = new FileInfoEx(path, -1, Guid.Empty, new List<Exception>());
+            FileInfoEx fileInfoEx = new FileInfoEx() {
+                Path = path,
+                FileInfoId=new Id<FileInfoEx>(Guid.NewGuid()),
+                FileInfoDbId=new Id<FileInfoEx>(Guid.Empty),
+                Exceptions =  new List<Exception>()
+                 };
             try {
                 // read all bytes and generate the hash for the file
                 using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, blocksize, true)) // true means use IO async operations
                 {
-                    // ToDo: move the instance of the md5 hasher out of the task, but ensure the implementation of the instance is thread-safeand can be reused
+                    // ToDo: move the instance of the md5 hasher out of the task, but ensure the implementation of the instance is thread-safe and can be reused
                     // ToDo: The MD5 hasher found in the AnalyzeDisk properties cannot be reused after the call to TransformFinalBlock
+                    //ToDo: The MD5Cng implementation is not available on netstandard2.0
                     using (var md5 = System.Security.Cryptography.MD5.Create()) {
                         byte[] buffer = new byte[blocksize];
                         int bytesRead;

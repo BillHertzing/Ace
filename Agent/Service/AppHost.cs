@@ -27,7 +27,7 @@ namespace Ace.AceService {
         public const string agentEnvironmentIndirectSettingsTextFileNameKey = "Agent.BaseServices.IndirectSettings.Path";
         #endregion
         #region Exception Messages (string constants)
-        public const string cannotReadEnvironmentVariablesSecurityExceptionMessage = "Ace cannot read from the environment varialbes (Security)";
+        public const string cannotReadEnvironmentVariablesSecurityExceptionMessage = "Ace cannot read from the environment variables (Security)";
         #endregion
         #endregion
 
@@ -43,9 +43,9 @@ namespace Ace.AceService {
 
         // Stop the entire program
         void menuItem1_Click(object Sender, EventArgs e) {
-            Log.Debug("AceCommander NotifyIcon menuItem1_Click event handdler started");
+            Log.Debug("AceCommander NotifyIcon menuItem1_Click event handler started");
             this.Stop();
-            Log.Debug("AceCommander NotifyIcon menuItem1_Click event handdler started");
+            Log.Debug("AceCommander NotifyIcon menuItem1_Click event handler started");
         }
 
         /// <summary>
@@ -85,18 +85,18 @@ namespace Ace.AceService {
             // Next in priority are contents of any indirect files mentioned in the environment variables (e.g. User Secrets )
             if (indirectSettingsTextFilepath!=null) { multiAppSettingsBuilder.AddTextFile(indirectSettingsTextFilepath); }
             // Next in priority are any configuration settings in a text file named on the command line.
-            // ToDo: if a configuration settings text file is specified on the command line, ensure we have peermission to read it
+            // ToDo: if a configuration settings text file is specified on the command line, ensure we have permission to read it
             // ToDo: append AddTextFile for configuration settings in a text file specified on the command line to the AppSettingsBuilder
             // Next in priority are any configuration settings in a text file named as a constant string in the app.
             // Location of the text file is relative to the current working directory at the point in time when this method executes.
-            // If this file does not exisit, it is not considered an error, but if it does exist, not having read permission is an error
+            // If this file does not exist, it is not considered an error, but if it does exist, not having read permission is an error
             // ToDo: if a configuration settings text file is specified as a constant string in the app, ensure we have permission to read it
             // ToDo: if it exists, append AddTextFile for configuration settings in a text file specified as a constant string in the app to the AppSettingsBuilder
             multiAppSettingsBuilder.AddTextFile(agentSettingsTextFileNameString);
             // Next in priority are any configuration settings in the application config file (AKA AceAgent.exe.config at runtime)
             // Location of the application config file is relative to the current working directory at the point in time when this method executes.
-            // If this file does not exisit, it is not considered an error, but if it does exist, not having read permission is an error
-            // ToDo: if a application config file file is specified as a constant string in the app, ensure we have permission to read it
+            // If this file does not exist, it is not considered an error, but if it does exist, not having read permission is an error
+            // ToDo: if a application config file  is specified as a constant string in the app, ensure we have permission to read it
             // ToDo: if it exists, append AddTextFile for configuration settings in a text file specified as a constant string in the app to the AppSettingsBuilder
             multiAppSettingsBuilder.AddAppSettings()
             // Builtin (compiled in) configuration settings have the lowest priority

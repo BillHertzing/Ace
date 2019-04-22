@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
 // Required for the Log/logging
 using Microsoft.Extensions.Logging;
+// Required for ComputerInventory used in BaseServices
+using ATAP.Utilities.DiskDrive;
 
 namespace Ace.AceGUI.Pages {
     public partial class BaseServicesCodeBehind : ComponentBase {
@@ -86,6 +88,7 @@ namespace Ace.AceGUI.Pages {
             //Log.LogDebug($"Returned from PostJsonAsync<InitializationResponse>, InitializationResponse = {InitializationResponse}");
             ConfigurationData=initializationResponse.InitializationResponsePayload.ConfigurationData;
             UserData=initializationResponse.InitializationResponsePayload.UserData;
+            PartitionInfoExs=new PartitionInfoExs();
             //Log.LogDebug($"Leaving OnInitAsync");
         }
         #endregion
@@ -217,7 +220,9 @@ namespace Ace.AceGUI.Pages {
         #region Properties:InitializationData
         public InitializationResponse InitializationResponse { get; set; }
         public InitializationResponsePayload InitializationResponsePayload { get; set; }
-
+        #endregion
+        #region Properties:PartitionInfoExs
+        public PartitionInfoExs PartitionInfoExs { get; set; }
         #endregion
         #endregion
 

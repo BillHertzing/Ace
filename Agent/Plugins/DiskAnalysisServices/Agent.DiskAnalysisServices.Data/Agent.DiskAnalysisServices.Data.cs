@@ -57,16 +57,15 @@ namespace Ace.Agent.DiskAnalysisServices
             pluginRootCOD.CollectionChanged += this.onPluginRootCODCollectionChanged;
             pluginRootCOD.PropertyChanged += this.onPluginRootCODPropertyChanged;
             // ToDo: Get the Configuration data into the COD, and populate it from "plugin configuration data load"
-            ConfigurationData=new DiskAnalysisServices.ConfigurationData(4096);
-            UserData=new DiskAnalysisServices.UserData();
-            ConstructDiskAnalysisData();
+            ConstructConfigurationData();
+            ConstructUserData();
+            ConstructDiskDriveAnalysisData();
+            ConstructFilesystemAnalysisData();
         }
 
         #region PublicProperties
         public BaseServicesData BaseServicesData { get; set; }
         public ConcurrentObservableDictionary<string, decimal> PluginRootCOD { get; set; }
-        public ConfigurationData ConfigurationData { get; set; }
-        public UserData UserData { get; set; }
 
         #endregion
 
@@ -99,6 +98,8 @@ enumerator.Dispose();
                 if(disposing) {
                     // dispose managed state (managed objects).
                     TearDown();
+                    TearDownDiskDriveAnalysisData();
+                    TearDownFilesystemAnalysisData();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

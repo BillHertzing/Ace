@@ -25,8 +25,10 @@ namespace Ace.Agent.BaseServices {
             Log.Debug("Entering BaseServicesData .ctor");
             Container=appHost.GetContainer();
 
-            // Blazor requires the delivery of static files ending in certain file suffixs.
-            // SS disallows many of these by default, so here we tell SS to allow certain file suffixs
+            // At this point, appHost.AppSettings has all of the data read in from the various Configuration sources (environment, command line, indirect file, direct file, compiled in)
+
+            // Blazor requires the delivery of static files ending in certain file suffixes.
+            // SS disallows many of these by default, so here we tell SS to allow certain file suffixes
             appHost.Config.AllowFileExtensions.Add("dll");
             appHost.Config.AllowFileExtensions.Add("json");
             appHost.Config.AllowFileExtensions.Add("pdb");
@@ -57,20 +59,26 @@ namespace Ace.Agent.BaseServices {
             // This prefix is available as a static method on this class
             var cacheConfigKeysForThisNamespace = cacheClient.GetKeysStartingWith(configKeyPrefix);
             //var appSettingsConfigKeysForThisNamespace = appHost.AppSettings.GetAllKeys().Select(x => x.IndexOf(configKeyPrefix) >= 0? x: configKeyPrefix + x);
-            //ToDo: record any discrepencies, and report them in a log, and also report to the GUI when BaseServices get initialized.
+            //ToDo: record any discrepancies, and report them in a log, and also report to the GUI when BaseServices get initialized.
 
-            ///Temp: This stores the values from the AppSettings into the CacheClient (Redis currently) via the properties setter for teh following Config settings
+            ///Temp: This stores the values from the AppSettings into the CacheClient (Redis currently) via the properties setter for the following Config settings
             MySqlConnectionString=appHost.AppSettings
                           .GetString(configKeyPrefix+
                           configKeyMySqlConnectionString);
             RedisCacheConnectionString=appHost.AppSettings
                           .GetString(configKeyPrefix+
                           configKeyRedisConnectionString);
+            // ToDo: Instead of single keys, a magic function that reads the set of keys in each , recursively, and compares those sets, and the values of the keys present in both
             // At this point the Redis cache should match the current run's AppConfigurationSettings 
+
+
+
             // Populate the ConfigurationData structure in the BaseServicesData instance
-            
+
             ConfigurationData=new ConfigurationData(RedisCacheConnectionString, MySqlConnectionString);
 
+            // Populate the ComputerInventory structure with localhost data
+            ComputerInventory=new ATAP.Utilities.ComputerInventory.ComputerInventory().FromComputerName("localhost");
 
             // See if the MySQL configuration key exists, if so register MySQL as the RDBMS behind ORMLite
             if (appHost.AppSettings
