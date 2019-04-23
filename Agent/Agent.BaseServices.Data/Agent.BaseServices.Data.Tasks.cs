@@ -12,6 +12,12 @@ namespace Ace.Agent.BaseServices {
         #region Properties:LongRunningTasks
         public Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LongRunningTasks { get; set; }
         #endregion
+		
+		void ConstructLongRunningTasks() {
+			            LongRunningTasks = new Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
+            Container.Register<Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>>(c => LongRunningTasks);
+
+		}
     }
 
 }

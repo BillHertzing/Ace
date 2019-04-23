@@ -23,63 +23,9 @@ using ATAP.Utilities.DiskDrive;
 namespace Ace.Agent.DiskAnalysisServices {
 
 
-    public class DiskAnalysisServices : Service {
-        public static ServiceStack.Logging.ILog Log = LogManager.GetLogger(typeof(DiskAnalysisServices));
+    public partial class DiskAnalysisServices : Service {
 
-        public object Post(InitializationRequest request) {
-            Log.Debug("starting Post(InitializationRequest request)");
-            InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;
-            Log.Debug($"You sent me InitializationRequestPayload = {initializationRequestPayload}");
-            Log.Debug($"You sent me InitializationData = {initializationRequestPayload.InitializationData}");
-            // Initialize the plugin's data structures for this service/user/session/connection
-            // ToDo: Figure out if the Initialization request from the GUI has any impact on the configuration or user data structures
-            InitializationData initializationData = initializationRequestPayload.InitializationData;
-            // Copy the Plugin's current ConfigurationData structure to the response
-            //ToDo: this is merly a placeholder until ConfigurationData is figured out
-            ConfigurationData configurationData = DiskAnalysisServicesData.ConfigurationData;
-            // Copy the Plugin's current UserData structure to the response
-            //ToDo: this is merly a placeholder until UserData  is figured out
-            UserData userData = new UserData(DiskAnalysisServicesData.PluginRootCOD.Values.ToString());
-            //ToDO: remove this temporary delay
-            Thread.Sleep(5000);
-            // Create and populate the Response data structure
-            InitializationResponsePayload initializationResponsePayload = new InitializationResponsePayload(configurationData, userData);
-            InitializationResponse initializationResponse = new InitializationResponse(initializationResponsePayload);
-            // return information about this service/user/session
-            Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {initializationResponse}");
-            return initializationResponse;
-        }
-
-        public object Post(SetConfigurationDataRequest request) {
-            Log.Debug("starting Post(SetConfigurationDataRequest request)");
-            Log.Debug($"You sent me SetConfigurationDataRequest = {request}");
-            if (request.ConfigurationDataSave) {
-                // Action to take if "save" is true
-                DiskAnalysisServicesData.ConfigurationData=request.ConfigurationData;
-            }
-            //} else { // Action to take if "save" is false }
-            // return information about this service/user/session
-            string result = "OK";
-            Log.Debug($"leaving Any(SetConfigurationDataRequest request), returning {result}");
-            return new SetConfigurationDataResponse(new SetConfigurationDataResponsePayload(result));
-        }
-
-        public object Post(SetUserDataRequest request) {
-            Log.Debug("starting Post(SetUserDataRequest request)");
-            Log.Debug($"You sent me SetUserDataRequest = {request}");
-            SetUserDataRequestPayload setUserDataRequestPayload = request.SetUserDataRequestPayload;
-            Log.Debug($"You sent me SetUserDataRequestPayload = {setUserDataRequestPayload}");
-            UserData userData = setUserDataRequestPayload.UserData;
-            Log.Debug($"You sent me UserData = {userData}");
-            // ToDo: action to take if "save" is false
-            // ToDo: Action to ttake if "save" is true
-            // ToDo: Update the DiskAnalysisServicesConfigurationData (COD and its subscribers) in the Data assembly
-            // return information about this service/user/session
-            string result = "OK";
-            Log.Debug($"leaving Post(SetUserDataRequest request), returning {result}");
-            return new SetUserDataResponse(new SetUserDataResponsePayload(result));
-        }
-        public async Task<object> Post(WalkDiskDriveRequest request) {
+	public async Task<object> Post(WalkDiskDriveRequest request) {
             Log.Debug("starting Post(WalkDiskDriveRequest)");
             var diskAnalysis = new DiskAnalysis(Log);
 
@@ -106,7 +52,7 @@ namespace Ace.Agent.DiskAnalysisServices {
             // Create new Id for this LongRunningTask
             Id<LongRunningTaskInfo> longRunningTaskID = new Id<LongRunningTaskInfo>(Guid.NewGuid());
             // Create a new result container instance holding a new result instance for this task and add it to the Plugin's data structure 
-            DiskAnalysisServicesData.WalkDiskDriveResultContainers.Add(longRunningTaskID, new WalkDiskDriveResultContainer(new WalkDiskDriveResult()));
+            // DiskAnalysisServicesData.WalkDiskDriveResultContainers.Add(longRunningTaskID, new WalkDiskDriveResultContainer(new WalkDiskDriveResult()));
             LongRunningTaskInfo longRunningTaskInfo = new LongRunningTaskInfo() { Id=longRunningTaskID };
             if (request.DiskDriveNumber.HasValue) {
                 longRunningTaskInfo.LRTask=new Task(() => {
@@ -136,6 +82,7 @@ DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID],
                 // ToDo: figure out how to integrate a CancellationToken
                 DiskAnalysisServicesData.BaseServicesData.LongRunningTasks.Add(longRunningTaskID, longRunningTaskInfo);
             // record the TaskID and task info into the LookupDiskDriveAnalysisResultsCOD
+            DiskAnalysisServicesData.LookupDiskDriveAnalysisResultsCOD.Add(longRunningTaskID, longRunningTaskInfo);
             // Start the task running
             try {
                 DiskAnalysisServicesData.BaseServicesData.LongRunningTasks[longRunningTaskID].LRTask.Start();
@@ -150,9 +97,7 @@ DiskAnalysisServicesData.WalkDiskDriveResultContainers[longRunningTaskID],
                 //return DiskDriveToDBGraphResponse;
                 return walkDiskDriveResponse;
             }
-        public DiskAnalysisServicesData DiskAnalysisServicesData { get; set; }
-
-        public Funq.Container Container { get; set; }
+      
     }
 
 

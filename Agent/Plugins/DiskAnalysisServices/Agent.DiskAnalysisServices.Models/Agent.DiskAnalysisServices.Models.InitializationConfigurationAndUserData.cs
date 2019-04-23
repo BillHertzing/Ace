@@ -178,60 +178,6 @@ namespace Ace.Agent.DiskAnalysisServices {
     #endregion
 
 
-    #region DiskDrivesToDBGraphRequest, DiskDrivesToDBGraphResponse, and Route for DiskDrivesToDBGraph
-    [Route("/WalkDiskDrive")]
-    //[Route("/WalkDiskDrive/{DiskDriveNumber}")]
-    //[Route("/WalkDiskDrive/{DiskDrivePartitionIdentifier}")]
-    public class WalkDiskDriveRequest : IReturn<WalkDiskDriveResponse> {
-        public WalkDiskDriveRequest(int? diskNumber, DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) {
-            DiskDriveNumber=diskNumber;
-            DiskDrivePartitionIdentifier=diskDrivePartitionIdentifier;
-        }
-        public WalkDiskDriveRequest(DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) { }
-        public int? DiskDriveNumber { get; set; }
-        public DiskDrivePartitionIdentifier DiskDrivePartitionIdentifier { get; set; }
-    }
-    public class WalkDiskDriveResponse {
-        public WalkDiskDriveResponse() : this(new List<Id<LongRunningTaskInfo>>()) { }
-        public WalkDiskDriveResponse(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) { LongRunningTaskIDs=longRunningTaskIDs; }
-        public List<Id<LongRunningTaskInfo>> LongRunningTaskIDs { get; set; }
-    }
-    #endregion
-
-    #region GetLongRunningTaskStateRequest, GetLongRunningTaskStateResponse and Route for GetLongRunningTaskState
-    [Route("/GetLongRunningTaskState")]
-    [Route("/GetLongRunningTaskState/{LongRunningTaskID}")]
-    public class GetLongRunningTaskStateRequest : IReturn<SetUserDataResponse> {
-        //public GetLongRunningTaskStateRequest() : this(Guid.Empty) { }
-        public GetLongRunningTaskStateRequest(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) {
-            LongRunningTaskIDs=longRunningTaskIDs;
-        }
-        public List<Id<LongRunningTaskInfo>> LongRunningTaskIDs { get; set; }
-    }
-
-    public class GetLongRunningTaskStateResponse {
-        public GetLongRunningTaskStateResponse() : this("DefaultTaskState") { }
-        public GetLongRunningTaskStateResponse(string longRunningTaskState) {
-            LongRunningTaskState=longRunningTaskState;
-        }
-        public string LongRunningTaskState { get; set; }
-    }
-    #endregion GetLongRunningTaskStateRequest, GetLongRunningTaskStateResponse and Route for GetLongRunningTaskState
-
-    /*
-    #region Monitor Data Structures
-    [Route("/MonitorDiskAnalysisServicesDataStructures")]
-      public class MonitorDiskAnalysisServicesDataStructuresRequest : IReturn<MonitorDiskAnalysisServicesDataStructuresResponse>
-    {
-      public string Filters { get; set; }
-    }
-    public class MonitorDiskAnalysisServicesDataStructuresResponse
-    {
-      public string[] Result { get; set; }
-      public Operation Kind { get; set; }
-    }
-    #endregion
-    */
 
 }
 

@@ -23,6 +23,7 @@ namespace Ace.Agent.BaseServices {
         InitializationData InitializationData { get; set; }
 
     }
+	
     public class InitializationResponse {
         public InitializationResponse() : this(new InitializationResponsePayload()) { }
 
@@ -33,6 +34,7 @@ namespace Ace.Agent.BaseServices {
         public InitializationResponsePayload InitializationResponsePayload { get; set; }
 
     }
+	
     public class InitializationResponsePayload {
         public InitializationResponsePayload() : this(new ConfigurationData(), new UserData()) { }
 
@@ -41,43 +43,8 @@ namespace Ace.Agent.BaseServices {
             UserData=userData??throw new ArgumentNullException(nameof(userData));
         }
 
-        public ConfigurationData ConfigurationData { get; set; }
-
-        public UserData UserData { get; set; }
-    }
-
-    #endregion
-
-    #region IsAlive
-    [Route("/isAlive")]
-    [Route("/isAlive/{Name}")]
-    public class IsAliveReqPayload : IReturn<IsAliveRspPayload> {
-        public string Name { get; set; }
-    }
-
-    public class IsAliveRspPayload {
-        public string Result { get; set; }
-    }
-    #endregion IsAlive
-
-    #region Lat/Lng To Address and reverse
-    [Route("/LatLngToAddress")]
-    public class LatLngToAddressReqPayload : IReturn<LatLngToAddressRspPayload> {
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
-    }
-
-    public class LatLngToAddressRspPayload {
-        public string Address { get; set; }
-    }
-
-    [Route("/AddressToLatLng")]
-    public class AddressToLatLngReqPayload : IReturn<AddressToLatLngRspPayload> {
-        public string Address { get; set; }
-    }
-    public class AddressToLatLngRspPayload {
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
+        ConfigurationData ConfigurationData { get; set; }
+        UserData UserData { get; set; }
     }
     #endregion
 
@@ -89,8 +56,8 @@ namespace Ace.Agent.BaseServices {
             ConfigurationData=configurationData;
         }
         public ConfigurationData ConfigurationData { get; set; }
-
     }
+	
     public class GetConfigurationDataResponse {
         public GetConfigurationDataResponse() : this(new ConfigurationData()) { }
         public GetConfigurationDataResponse(ConfigurationData configurationData) {
@@ -100,7 +67,7 @@ namespace Ace.Agent.BaseServices {
     }
     #endregion
 
-    #region GetConfigurationDataRequest
+    #region GetUserDataRequest
     [Route("/GetBaseServicesUserData")]
     public class GetUserDataRequest : IReturn<GetUserDataResponse> {
         public GetUserDataRequest() : this(new UserData()) { }
@@ -118,31 +85,16 @@ namespace Ace.Agent.BaseServices {
         public UserData UserData { get; set; }
     }
 
+	//ToDo: add SetUserdata and SetConfigurationData
     #endregion
 
-    #region UpdateLongRunningTasksStatusRequest, UpdateLongRunningTasksStatusResponse, and route UpdateLongRunningTasksStatus
-    [Route("/UpdateLongRunningTasksStatus")]
-    public class UpdateLongRunningTasksStatusRequest : IReturn<UpdateLongRunningTasksStatusResponse> {
-        public UpdateLongRunningTasksStatusRequest() { }
-    }
+	
+	
+	    //public ConfigurationData ConfigurationData { get; set; }
 
-    public class UpdateLongRunningTasksStatusResponse {
-        public UpdateLongRunningTasksStatusResponse() : this(new UpdateLongRunningTasksStatusResponsePayload()) { }
-        public UpdateLongRunningTasksStatusResponse(UpdateLongRunningTasksStatusResponsePayload updateLongRunningTasksStatusResponsePayload) {
-            UpdateLongRunningTasksStatusResponsePayload=updateLongRunningTasksStatusResponsePayload;
-        }
-        public UpdateLongRunningTasksStatusResponsePayload UpdateLongRunningTasksStatusResponsePayload { get; set; }
-    }
+        //public UserData UserData { get; set; }
 
-    public class UpdateLongRunningTasksStatusResponsePayload {
-        public UpdateLongRunningTasksStatusResponsePayload() : this(new LongRunningTaskStatuses()) { }
-
-        public UpdateLongRunningTasksStatusResponsePayload(LongRunningTaskStatuses longRunningTaskStatuses) {
-            LongRunningTaskStatuses=longRunningTaskStatuses??throw new ArgumentNullException(nameof(longRunningTaskStatuses));
-        }
-
-        public LongRunningTaskStatuses LongRunningTaskStatuses { get; set; }
-    }
-    #endregion
+		
+    
 
 }

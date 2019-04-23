@@ -87,7 +87,7 @@ namespace ATAP.Utilities.DiskAnalysis {
             }
             Log.Debug($"leaving DiskInfoExsToDB");
         }
-
+        /*
         public async Task WalkDiskDrive(int diskDriveNumber, IDiskDriveInfoExs diskInfoExsContainer, WalkDiskDriveResultContainer walkDiskDriveResultContainer, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType,string[]> recordPartitionInfosEx = null) {
             Log.Debug($"starting WalkDiskDrive: DiskDriveNumber = {diskDriveNumber}");
             Log.Debug($"leaving WalkDiskDrive: DiskDriveNumber = {diskDriveNumber}");
@@ -104,6 +104,7 @@ namespace ATAP.Utilities.DiskAnalysis {
            // await PopulateDiskInfoExs().ContinueWith((c) => ReadDiskAsync(diskInfoEx));
             Log.Debug($"leaving WalkDiskDrive: diskDrivePartitionDriveLetterIdentifier = {diskDrivePartitionIdentifier.Dump()}");
         }
+        */
 
         // ToDo: Add an optional parameter for a Func delegate that will query/update the DB for the FSEntities based on the value of cRUD
        

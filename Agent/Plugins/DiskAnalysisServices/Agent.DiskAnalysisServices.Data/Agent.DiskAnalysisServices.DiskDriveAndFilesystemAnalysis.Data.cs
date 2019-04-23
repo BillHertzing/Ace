@@ -20,8 +20,12 @@ namespace Ace.Agent.DiskAnalysisServices {
 
         #region DiskDriveAnalysis Results
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupDiskDriveAnalysisResultsCOD { get; set; }
+
+         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DiskDriveInfoExs> DiskDriveInfoExCOD { get; set; }
+        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, PartitionInfoExs> PartitionInfoExCOD { get; set; }
+
         public IList<Exception> DiskDriveAnalysisExceptions { get; set; }
-        public DiskDriveInfoExs DiskDriveAnalysisDiskDriveInfoExs { get; set; }
+        //public DiskDriveInfoExs DiskDriveAnalysisDiskDriveInfoExs { get; set; }
 
         #endregion
 
@@ -43,7 +47,9 @@ namespace Ace.Agent.DiskAnalysisServices {
         }
         void ConstructDiskDriveAnalysisData() {
             LookupDiskDriveAnalysisResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
-            WalkDiskDriveResults=new List<WalkDiskDriveResult>();
+            DiskDriveInfoExCOD = new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DiskDriveInfoExs>();
+            PartitionInfoExCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, PartitionInfoExs>();
+
         }
 
         public void TearDownDiskDriveAnalysisData() {

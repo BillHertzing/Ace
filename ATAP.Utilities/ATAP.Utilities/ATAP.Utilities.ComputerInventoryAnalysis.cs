@@ -24,7 +24,7 @@ namespace ATAP.Utilities.ComputerInventory {
         public ComputerInventoryAnalysis(ILog log = null) {
             Log=log;
         }
-
+        /*
         public async Task WalkDiskDriveAndFilesystemAsync(int diskNumber, int asyncFileReadBlocksize, IDiskDriveInfoExs diskInfoExsContainer, WalkDiskDriveResultContainer walkDiskDriveResultContainer, IWalkFilesystemResultContainer walkFilesystemResultContainer, Action<string> recordRoot = null, Action<string[]> recordSubdir = null) {
             Log.Debug($"starting WalkDiskDriveAndFilesystemAsync: diskNumber = {diskNumber}");
             //ToDo: Add some validation to ensure the diskInfoEx has "good" data
@@ -42,7 +42,7 @@ namespace ATAP.Utilities.ComputerInventory {
             }
             Log.Debug($"leaving WalkDiskDriveAndFilesystemAsync: diskNumber = {diskNumber}");
         }
-
+        */
 
         #region Properties
         #region Properties:class logger

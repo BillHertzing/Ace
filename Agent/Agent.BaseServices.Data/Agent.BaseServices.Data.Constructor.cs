@@ -73,13 +73,14 @@ namespace Ace.Agent.BaseServices {
 
 
 
-            // Populate the ConfigurationData structure in the BaseServicesData instance
+            // Populate the ConfigurationData in the BaseServicesData instance
 
-            ConfigurationData=new ConfigurationData(RedisCacheConnectionString, MySqlConnectionString);
-
+     ConstructConfigurationData();
             // Populate the ComputerInventory structure with localhost data
-            ComputerInventory=new ATAP.Utilities.ComputerInventory.ComputerInventory().FromComputerName("localhost");
+            ConstructComputerInventory();
 
+			//ToDo: move this to BaseServices.Data.AuthenticationAndAuthorization
+			// ConstructAuthenticationAndAuthorization();
             // See if the MySQL configuration key exists, if so register MySQL as the RDBMS behind ORMLite
             if (appHost.AppSettings
                 .Exists(configKeyPrefix+configKeyMySqlConnectionString)) {
@@ -104,19 +105,20 @@ namespace Ace.Agent.BaseServices {
             } else {
                 throw new NotImplementedException(MySqlConnectionStringKeyNotFoundExceptionMessage);
             }
+			            // Register an Auth Repository
+            Container.Register<IAuthRepository>(c => new OrmLiteAuthRepository(c.Resolve<IDbConnectionFactory>()));
+            /// Create the  UserAuth and UserAuthDetails tables in the RDBMS if they do not already exist
+            Container.Resolve<IAuthRepository>().InitSchema();
 
-            // Add a dictionary of timers and a dictionary to hold "long-running tasks" to the IoC container
+			// ToDo: Move this region to Agent.BaseServices.Data.Timers
+            // Add a dictionary of timers to the IoC container
             #region create a dictionary of timers and register it in the IoC container
             var timers = new Dictionary<string, System.Timers.Timer>();
             Container.Register<Dictionary<string, System.Timers.Timer>>(c => timers);
             #endregion create a dictionary of timers and register it in the IoC container
 
-            #region create a dictionary of tasks that is intended to hold "long running" tasks
-            // put it into a property, and register the list in the IoC container
-            
-            LongRunningTasks = new Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
-            Container.Register<Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>>(c => LongRunningTasks);
-            #endregion create a list of tasks that is intended to hold "long running" tasks and register the list in the IoC container
+            // Create a dictionary of tasks that is intended to hold "long running" tasks and register the dictionary in the IoC container
+            ConstructLongRunningTasks();
 
             // Add a timer to check the status of long running tasks, and attach a callback to the timer
             #region create longRunningTasksCheckTimer, connect callback, and store in container's timers
@@ -129,10 +131,7 @@ namespace Ace.Agent.BaseServices {
 
 
 
-            // Register an Auth Repository
-            Container.Register<IAuthRepository>(c => new OrmLiteAuthRepository(c.Resolve<IDbConnectionFactory>()));
-            /// Create the  UserAuth and UserAuthDetails tables in the RDBMS if they do not already exist
-            Container.Resolve<IAuthRepository>().InitSchema();
+
 
 
             // Populate the application's Base Gateways
@@ -199,7 +198,10 @@ namespace Ace.Agent.BaseServices {
             // Store the collection of Gateway Monitor in the Base Data structure
 
             // Populate the specific per-user data instance for this user
-            UserData=new UserData();
+			            ConstructUserData();
+
+			
+			
             // ToDo: support AppSettings to control the enable/disable of Postman
             // Enable Postman integration
             //  AppHost.Plugins.Add(new PostmanFeature());
@@ -218,6 +220,8 @@ namespace Ace.Agent.BaseServices {
                 .EnableFeatures = Feature.All
                 .Remove(Feature.Metadata);
             */
+			
+			
             // Turn debug mode for the ACEAgent depending if running in debug mode or release mode
 #if Debug
       AppHost.Config.DebugMode = true;
@@ -332,7 +336,7 @@ namespace Ace.Agent.BaseServices {
         public IGatewayMonitors GatewayMonitors { get; set; }
         #endregion
         #region Properties:Configuration Data
-        public ConfigurationData ConfigurationData;
+
         public string RedisCacheConnectionString {
             get { return cacheClient.Get<string>(configKeyPrefix+configKeyRedisConnectionString); }
             set { cacheClient.Set<string>(configKeyPrefix+configKeyRedisConnectionString, value); }
@@ -341,10 +345,6 @@ namespace Ace.Agent.BaseServices {
             get { return cacheClient.Get<string>(configKeyPrefix+configKeyMySqlConnectionString); }
             set { cacheClient.Set<string>(configKeyPrefix+configKeyMySqlConnectionString, value); }
         }
-        #endregion
-        #region Properties:UserData
-        public UserData UserData;
-
         #endregion
 
         #endregion

@@ -16,12 +16,6 @@ namespace ATAP.Utilities.ComputerInventory {
 
 
 
-    public class DiskDrivePartitionDriveLetterIdentifier {
-        public DiskDrivePartitionDriveLetterIdentifier() : this(new Dictionary<Guid, IDictionary<Guid, string>>()) { }
-        public DiskDrivePartitionDriveLetterIdentifier(IDictionary<Guid, IDictionary<Guid, string>> diskDrivePartitionInfoGuidsDriveLetterStrings) { DiskDrivePartitionInfoGuidsDriveLetterStrings=diskDrivePartitionInfoGuidsDriveLetterStrings; }
-        public IDictionary<Guid, IDictionary<Guid, string>> DiskDrivePartitionInfoGuidsDriveLetterStrings { get; set; }
-    }
-
 
     // ToDo: remove this stub and integrate a ComputerSoftware type for the GUI (non-observable)
     [Serializable]

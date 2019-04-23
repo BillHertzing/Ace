@@ -1,7 +1,7 @@
 ﻿
 
 using ATAP.Utilities.ComputerHardware.Enumerations;
-
+using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using Swordfish.NET.Collections;
 using System;
@@ -262,8 +262,10 @@ namespace ATAP.Utilities.DiskDrive {
     public interface IDiskDriveAnalysisResult {
 
          ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupDiskDriveAnalysisResultsCOD { get; set; }
+         ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DiskDriveInfoExs> DiskDriveInfoExCOD { get; set; }
+         ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, PartitionInfoExs> PartitionInfoExCOD { get; set; }
         IList<Exception> DiskDriveAnalysisExceptions { get; set; }
-         DiskDriveInfoExs DiskDriveAnalysisDiskDriveInfoExs { get; set; }
+      //   DiskDriveInfoExs DiskDriveAnalysisDiskDriveInfoExs { get; set; }
 
     }
 
