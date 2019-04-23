@@ -258,7 +258,55 @@ namespace ATAP.Utilities.DiskDrive {
         }
     }
 
+    public interface IDiskDriveSpecifier {
+        bool Equals(DiskDriveSpecifier other);
+        bool Equals(object obj);
+        int GetHashCode();
+    }
 
+    public class DiskDriveSpecifier : IEquatable<DiskDriveSpecifier>, IDiskDriveSpecifier {
+        public DiskDriveSpecifier() {
+            ComputerName=string.Empty;
+            DiskDriveNumber=null;
+            DiskDrivePartitionIdentifier=new DiskDrivePartitionIdentifier();
+        }
+
+        public DiskDriveSpecifier(string computerName, int? diskDriveNumber, DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) {
+            ComputerName=computerName??throw new ArgumentNullException(nameof(computerName));
+            DiskDrivePartitionIdentifier=diskDrivePartitionIdentifier??throw new ArgumentNullException(nameof(diskDrivePartitionIdentifier));
+        }
+
+        public string ComputerName { get; set; }
+        public int? DiskDriveNumber { get; set; }
+        public DiskDrivePartitionIdentifier DiskDrivePartitionIdentifier { get; set; }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as DiskDriveSpecifier);
+        }
+
+        public bool Equals(DiskDriveSpecifier other) {
+            return other!=null&&
+                   ComputerName==other.ComputerName&&
+                   EqualityComparer<int?>.Default.Equals(DiskDriveNumber, other.DiskDriveNumber)&&
+                   EqualityComparer<DiskDrivePartitionIdentifier>.Default.Equals(DiskDrivePartitionIdentifier, other.DiskDrivePartitionIdentifier);
+        }
+
+        public override int GetHashCode() {
+            var hashCode = 748249881;
+            hashCode=hashCode*-1521134295+EqualityComparer<string>.Default.GetHashCode(ComputerName);
+            hashCode=hashCode*-1521134295+EqualityComparer<int?>.Default.GetHashCode(DiskDriveNumber);
+            hashCode=hashCode*-1521134295+EqualityComparer<DiskDrivePartitionIdentifier>.Default.GetHashCode(DiskDrivePartitionIdentifier);
+            return hashCode;
+        }
+
+        public static bool operator ==(DiskDriveSpecifier left, DiskDriveSpecifier right) {
+            return EqualityComparer<DiskDriveSpecifier>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(DiskDriveSpecifier left, DiskDriveSpecifier right) {
+            return !(left==right);
+        }
+    }
     public interface IDiskDriveAnalysisResult {
 
          ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupDiskDriveAnalysisResultsCOD { get; set; }

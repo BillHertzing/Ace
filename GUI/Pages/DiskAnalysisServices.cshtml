@@ -6,14 +6,12 @@
     <p><em>Loading (The page load is calling onInitAsync, which has not yet returned a value for Initialization Response)</em></p>
 } else {
     <hr />
-    <button id="btnReadDisk" type="button" class="btn btn-default" onclick="@(async () => await WalkDiskDrive(2))">Walk Disk Drive (hardcoded drive 2)</button>
+    <button id="btnReadDisk" type="button" class="btn btn-default" onclick="@(async () => await AnalyzeDiskDrive("localhost",2))">Analyze Disk Drive (hardcoded localhost drive 2)</button>
 
-    @if (@WalkDiskDriveResponse==null) {
-        <p>WalkDiskDrive request has not yet been submitted to Ace Commander</p>
-    } else {
+
 <p>WalkDiskDriveRunningTaskIDs =  @WalkDiskDriveLongRunningTaskIDs.ToString() </p>
 
-<p>The state of the WalkDiskDriveLongRunningTask is: @WalkDiskDriveLongRunningTaskState</p>
+<p>The state of the AnalyzeDiskDriveLongRunningTask is: @WalkDiskDriveLongRunningTaskState</p>
         <button id="btnGetLongRunningTaskState" type="button" class="btn btn-default" onclick="@(async () => await GetLongRunningTaskState(@WalkDiskDriveLongRunningTaskIDs))">Update Task State</button>
 
     }

@@ -43,8 +43,8 @@ namespace Ace.Agent.BaseServices {
             UserData=userData??throw new ArgumentNullException(nameof(userData));
         }
 
-        ConfigurationData ConfigurationData { get; set; }
-        UserData UserData { get; set; }
+        public ConfigurationData ConfigurationData { get; set; }
+        public UserData UserData { get; set; }
     }
     #endregion
 

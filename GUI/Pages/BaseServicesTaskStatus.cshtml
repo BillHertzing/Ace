@@ -1,6 +1,6 @@
 @page "/BaseServices.TaskStatus"
 @inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
-<h1>AceCommander Base Services Task status</h1>
+<h1>AceCommander Base Services Task Status</h1>
 
 
 <!-- If the onInitAsync, and the Initialization has not occurred, set a caution window style -->
@@ -8,9 +8,10 @@
 <hr />
 <h2>Tasks</h2>
 
+<p>@{foreach (var taskId in LongRunningTasksCOD.Keys) {@taskId.ToString() } }</p>
 <button type="button" class="btn btn-default" id="UpdateLongRunningTasksStatus" onclick=@(async () => await UpdateLongRunningTasksStatus())>@labelForUpdateLongRunningTasksStatusButton</button>
 
-<button type="button" class="btn btn-default" id="UpdateLongRunningTasksStatus" onclick=@(async () => await UpdateLongRunningTasksStatus(1))>specific task number</button>
+<button type="button" class="btn btn-default" id="UpdateLongRunningTasksStatus" onclick=@(async () => await UpdateLongRunningTasksStatus(1))>specific task number (hardcoded for 1)</button>
 
 }
 

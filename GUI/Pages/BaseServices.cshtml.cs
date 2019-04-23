@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 // Required for ComputerInventory used in BaseServices
 using ATAP.Utilities.DiskDrive;
+using Swordfish.NET.Collections;
+using ATAP.Utilities.TypedGuids;
+using ATAP.Utilities.LongRunningTasks;
 
 namespace Ace.AceGUI.Pages {
     public partial class BaseServicesCodeBehind : ComponentBase {
@@ -223,6 +226,9 @@ namespace Ace.AceGUI.Pages {
         #endregion
         #region Properties:PartitionInfoExs
         public PartitionInfoExs PartitionInfoExs { get; set; }
+        #endregion
+        #region Properties:LongRunningTasks
+        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LongRunningTasksCOD { get; set; }
         #endregion
         #endregion
 

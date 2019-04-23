@@ -87,27 +87,24 @@ namespace ATAP.Utilities.DiskAnalysis {
             }
             Log.Debug($"leaving DiskInfoExsToDB");
         }
+        public async Task AnalyzeDiskDrive(IDiskDriveSpecifier diskDriveSpecifier, IDiskDriveAnalysisResult diskDriveAnalysisResult, CancellationToken cancellationToken, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
+            Log.Debug($"starting AnalyzeDiskDrive: diskDriveSpecifier = {diskDriveSpecifier.ToString()}");
+            // ToDo: Add validation to ensure the diskDriveSpecifier corresponds to a valid member of the DiskInfoExs 
+            Task task = new Task( ()=> { Thread.Sleep(1); }, cancellationToken);
+
+            Log.Debug($"leaving AnalyzeDiskDrive");
+        }
+
         /*
-        public async Task WalkDiskDrive(int diskDriveNumber, IDiskDriveInfoExs diskInfoExsContainer, WalkDiskDriveResultContainer walkDiskDriveResultContainer, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType,string[]> recordPartitionInfosEx = null) {
-            Log.Debug($"starting WalkDiskDrive: DiskDriveNumber = {diskDriveNumber}");
-            Log.Debug($"leaving WalkDiskDrive: DiskDriveNumber = {diskDriveNumber}");
-        }
-
-        public async Task WalkDiskDrive(string computerName, IDiskDriveInfoExs diskInfoExsContainer, WalkDiskDriveResultContainer walkDiskDriveResultContainer, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
-            Log.Debug($"starting WalkDiskDrive: ComputerName = {computerName}");
-            Log.Debug($"leaving WalkDiskDrive: ComputerName = {computerName}");
-        }
-
         public async Task WalkDiskDrive(DiskDrivePartitionIdentifier diskDrivePartitionIdentifier, IDiskDriveInfoExs diskInfoExsContainer, WalkDiskDriveResultContainer walkDiskDriveResultContainer,  Action<CrudType , string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
             Log.Debug($"starting WalkDiskDrive: diskDrivePartitionDriveLetterIdentifier = {diskDrivePartitionIdentifier.Dump()}");
-            // ToDo: Add validation to ensure the diskDrivePartitionIdentifier corresponds to a valid member of the DiskInfoExs 
            // await PopulateDiskInfoExs().ContinueWith((c) => ReadDiskAsync(diskInfoEx));
             Log.Debug($"leaving WalkDiskDrive: diskDrivePartitionDriveLetterIdentifier = {diskDrivePartitionIdentifier.Dump()}");
         }
         */
 
         // ToDo: Add an optional parameter for a Func delegate that will query/update the DB for the FSEntities based on the value of cRUD
-       
+
 
 
 

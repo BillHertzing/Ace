@@ -7,30 +7,44 @@ using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.DiskDrive;
 using Ace.Agent.BaseServices;
+using System.Threading;
 
 namespace Ace.Agent.DiskAnalysisServices {
 
     #region DiskDrivesToDBGraphRequest, DiskDrivesToDBGraphResponse, and Route for DiskDrivesToDBGraph
-    [Route("/WalkDiskDrive")]
-    //[Route("/WalkDiskDrive/{DiskDriveNumber}")]
-    //[Route("/WalkDiskDrive/{DiskDrivePartitionIdentifier}")]
-    public class WalkDiskDriveRequest : IReturn<WalkDiskDriveResponse> {
-        public WalkDiskDriveRequest(int? diskNumber, DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) {
-            DiskDriveNumber=diskNumber;
-            DiskDrivePartitionIdentifier=diskDrivePartitionIdentifier;
+    [Route("/AnalyzeDiskDrive")]
+    //[Route("/AnalyzeDiskDrive/{DiskDriveNumber}")]
+    //[Route("/AnalyzeDiskDrive/{DiskDrivePartitionIdentifier}")]
+    public class AnalyzeDiskDriveRequest : IReturn<AnalyzeDiskDriveResponse> {
+        public AnalyzeDiskDriveRequest() : this(new AnalyzeDiskDriveRequestPayload()) { }
+        public AnalyzeDiskDriveRequest(AnalyzeDiskDriveRequestPayload analyzeDiskDriveRequestPayload) {
+            AnalyzeDiskDriveRequestPayload=analyzeDiskDriveRequestPayload;
         }
-        public WalkDiskDriveRequest(DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) { }
-        public int? DiskDriveNumber { get; set; }
-        public DiskDrivePartitionIdentifier DiskDrivePartitionIdentifier { get; set; }
+
+        public AnalyzeDiskDriveRequestPayload AnalyzeDiskDriveRequestPayload { get; set; }
     }
-    public class WalkDiskDriveResponse {
-        public WalkDiskDriveResponse() : this(new List<Id<LongRunningTaskInfo>>()) { }
-        public WalkDiskDriveResponse(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) { LongRunningTaskIDs=longRunningTaskIDs; }
+    public class AnalyzeDiskDriveRequestPayload {
+        public AnalyzeDiskDriveRequestPayload() {
+            DiskDriveSpecifier=new DiskDriveSpecifier();
+            CancellationToken=new CancellationToken(true);
+        }
+
+        public AnalyzeDiskDriveRequestPayload(DiskDriveSpecifier diskDriveSpecifier, CancellationToken cancellationToken) {
+            DiskDriveSpecifier=diskDriveSpecifier??throw new ArgumentNullException(nameof(diskDriveSpecifier));
+            CancellationToken=cancellationToken;
+        }
+
+        public DiskDriveSpecifier DiskDriveSpecifier { get; set; }
+        public CancellationToken CancellationToken { get; set; }
+    }
+    public class AnalyzeDiskDriveResponse {
+        public AnalyzeDiskDriveResponse() : this(new List<Id<LongRunningTaskInfo>>()) { }
+        public AnalyzeDiskDriveResponse(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) { LongRunningTaskIDs=longRunningTaskIDs; }
         public List<Id<LongRunningTaskInfo>> LongRunningTaskIDs { get; set; }
     }
     #endregion
 
-   
+
 
     /*
     #region Monitor Data Structures
