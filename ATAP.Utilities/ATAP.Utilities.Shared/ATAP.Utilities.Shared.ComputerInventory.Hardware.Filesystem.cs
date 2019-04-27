@@ -169,9 +169,6 @@ namespace ATAP.Utilities.Filesystem {
         int NumberOfFiles { get; set; }
     }
 
-    public interface IWalkFilesystemResultContainer {
-        IWalkFilesystemResult WalkFilesystemResult { get; set; }
-    }
 
     public class WalkFilesystemResult : IWalkFilesystemResult {
         public WalkFilesystemResult(int numberOfDirectories, int numberOfFiles, int deepestDirectoryTree, long largestFile, List<Exception> exceptions) {

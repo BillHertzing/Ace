@@ -24,6 +24,7 @@ namespace Ace.Agent.DiskAnalysisServices {
 
 
     public partial class DiskAnalysisServices : Service {
+
         public static ServiceStack.Logging.ILog Log = LogManager.GetLogger(typeof(DiskAnalysisServices));
 
         public object Post(InitializationRequest request) {
@@ -34,12 +35,16 @@ namespace Ace.Agent.DiskAnalysisServices {
             // Initialize the plugin's data structures for this service/user/session/connection
             // ToDo: Figure out if the Initialization request from the GUI has any impact on the configuration or user data structures
             InitializationData initializationData = initializationRequestPayload.InitializationData;
+            // Get the BaseServicesData and diskAnalysisServicesData instances that were injected into the DI container
+            var baseServicesData = HostContext.TryResolve<BaseServicesData>();
+            var diskAnalysisServicesData = HostContext.TryResolve<DiskAnalysisServicesData>();
+            // Create the task's action
             // Copy the Plugin's current ConfigurationData structure to the response
-            //ToDo: this is merly a placeholder until ConfigurationData is figured out
-            ConfigurationData configurationData = DiskAnalysisServicesData.ConfigurationData;
+            //ToDo: this is merely a placeholder until ConfigurationData is figured out
+            ConfigurationData configurationData = diskAnalysisServicesData.ConfigurationData;
             // Copy the Plugin's current UserData structure to the response
-            // ToDo: this is merly a placeholder until UserData  is figured out
-            UserData userData = new UserData(DiskAnalysisServicesData.PluginRootCOD.Values.ToString());
+            // ToDo: this is merely a placeholder until UserData  is figured out
+            UserData userData = diskAnalysisServicesData.UserData;
              // Create and populate the Response data structure
             InitializationResponsePayload initializationResponsePayload = new InitializationResponsePayload(configurationData, userData);
             InitializationResponse initializationResponse = new InitializationResponse(initializationResponsePayload);
@@ -51,14 +56,20 @@ namespace Ace.Agent.DiskAnalysisServices {
         public object Post(SetConfigurationDataRequest request) {
             Log.Debug("starting Post(SetConfigurationDataRequest request)");
             Log.Debug($"You sent me SetConfigurationDataRequest = {request}");
-			// ToDo: turn this into a Task, and put it on the LongRunningTasks in the BaseServiceData
-			// Get the remote cancellation token from the request
-			// Create a new cancellation token
-			// Create the association between the remote cancellation token and the local cancellation Token, store in the BaseServicesData
-			// Update the plugin's Data object's ConfigurationData
+            // ToDo: turn this into a Task, and put it on the LongRunningTasks in the BaseServiceData
+
+            // Get the remote cancellation token from the request
+            // Create a new cancellation token
+            // Create the association between the remote cancellation token and the local cancellation Token, store in the BaseServicesData
+            // Get the BaseServicesData and diskAnalysisServicesData instances that were injected into the DI container
+            var baseServicesData = HostContext.TryResolve<BaseServicesData>();
+            var diskAnalysisServicesData = HostContext.TryResolve<DiskAnalysisServicesData>();
+            
+            // Define the lambda that describes the task
+            // Update the plugin's Data object's ConfigurationData
             if (request.ConfigurationDataSave) {
                 // Action to take if "save" is true
-                DiskAnalysisServicesData.ConfigurationData=request.ConfigurationData;
+                diskAnalysisServicesData.ConfigurationData=request.ConfigurationData;
             }
             //} else { // Action to take if "save" is false }
 			// ToDo: Start the LongRunningTask
@@ -72,15 +83,17 @@ namespace Ace.Agent.DiskAnalysisServices {
             Log.Debug("starting Post(SetUserDataRequest request)");
 		Log.Debug($"You sent me SetUserDataRequest = {request}");
             SetUserDataRequestPayload setUserDataRequestPayload = request.SetUserDataRequestPayload;
-            Log.Debug($"You sent me SetUserDataRequestPayload = {setUserDataRequestPayload}, UserData = {DiskAnalysisServicesData.UserData}");
-					// ToDo: turn this into a Task, and return the LongRunningtaskId
-			// Get the remote cancellation token from the request
-			// Create a new cancellation token
-			// Create the association between the remote cancellation token and the local cancellation Token, store in the BaseServicesData
-			// Update the plugin's Data object's UserData
-			if (request.SetUserDataRequestPayload.UserDataSave) {
+            Log.Debug($"You sent me SetUserDataRequestPayload = {setUserDataRequestPayload}, UserData = {request.SetUserDataRequestPayload.UserData}");
+            // ToDo: turn this into a Task, and return the LongRunningtaskId
+            // Get the BaseServicesData and diskAnalysisServicesData instances that were injected into the DI container
+            var baseServicesData = HostContext.TryResolve<BaseServicesData>();
+            var diskAnalysisServicesData = HostContext.TryResolve<DiskAnalysisServicesData>();
+
+            // Define the lambda that describes the task
+            // Update the plugin's Data object's UserData
+            if (request.SetUserDataRequestPayload.UserDataSave) {
                 // Action to take if "save" is true
-                DiskAnalysisServicesData.UserData=request.SetUserDataRequestPayload.UserData;
+                diskAnalysisServicesData.UserData=request.SetUserDataRequestPayload.UserData;
             }
             //} else { // Action to take if "save" is false }
 
@@ -90,9 +103,8 @@ namespace Ace.Agent.DiskAnalysisServices {
             Log.Debug($"leaving Post(SetUserDataRequest request), returning {result}");
             return new SetUserDataResponse(new SetUserDataResponsePayload(result));
         }
-		
-		// This is the code block where the DiskAnalysisServices assembly declares it's plugin's data 
-        public DiskAnalysisServicesData DiskAnalysisServicesData { get; set; }
+
+
     }
 
 

@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace Ace.Agent.DiskAnalysisServices {
 
-    #region DiskDrivesToDBGraphRequest, DiskDrivesToDBGraphResponse, and Route for DiskDrivesToDBGraph
+    #region AnalyzeDiskDriveRequest, AnalyzeDiskDriveResponse, and Route for AnalyzeDiskDrive
     [Route("/AnalyzeDiskDrive")]
     //[Route("/AnalyzeDiskDrive/{DiskDriveNumber}")]
     //[Route("/AnalyzeDiskDrive/{DiskDrivePartitionIdentifier}")]
@@ -38,9 +38,44 @@ namespace Ace.Agent.DiskAnalysisServices {
         public CancellationToken CancellationToken { get; set; }
     }
     public class AnalyzeDiskDriveResponse {
-        public AnalyzeDiskDriveResponse() : this(new List<Id<LongRunningTaskInfo>>()) { }
-        public AnalyzeDiskDriveResponse(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) { LongRunningTaskIDs=longRunningTaskIDs; }
-        public List<Id<LongRunningTaskInfo>> LongRunningTaskIDs { get; set; }
+        public AnalyzeDiskDriveResponse() : this(new AnalyzeDiskDriveResponsePayload()) {}
+        public AnalyzeDiskDriveResponse(AnalyzeDiskDriveResponsePayload analyzeDiskDriveResponsePayload){
+            AnalyzeDiskDriveResponsePayload = analyzeDiskDriveResponsePayload; }
+
+        public AnalyzeDiskDriveResponsePayload AnalyzeDiskDriveResponsePayload { get; set; }
+    }
+
+    public class AnalyzeDiskDriveResponsePayload : IEquatable<AnalyzeDiskDriveResponsePayload> {
+        public AnalyzeDiskDriveResponsePayload() {
+            LongRunningTaskIds=new List<Id<LongRunningTaskInfo>>();
+        }
+
+        public AnalyzeDiskDriveResponsePayload(List<Id<LongRunningTaskInfo>> longRunningTaskIds) {
+            LongRunningTaskIds=longRunningTaskIds??throw new ArgumentNullException(nameof(longRunningTaskIds));
+        }
+
+        public List<Id<LongRunningTaskInfo>> LongRunningTaskIds { get; set; }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as AnalyzeDiskDriveResponsePayload);
+        }
+
+        public bool Equals(AnalyzeDiskDriveResponsePayload other) {
+            return other!=null&&
+                   EqualityComparer<List<Id<LongRunningTaskInfo>>>.Default.Equals(LongRunningTaskIds, other.LongRunningTaskIds);
+        }
+
+        public override int GetHashCode() {
+            return 1230356731+EqualityComparer<List<Id<LongRunningTaskInfo>>>.Default.GetHashCode(LongRunningTaskIds);
+        }
+
+        public static bool operator ==(AnalyzeDiskDriveResponsePayload left, AnalyzeDiskDriveResponsePayload right) {
+            return EqualityComparer<AnalyzeDiskDriveResponsePayload>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(AnalyzeDiskDriveResponsePayload left, AnalyzeDiskDriveResponsePayload right) {
+            return !(left==right);
+        }
     }
     #endregion
 

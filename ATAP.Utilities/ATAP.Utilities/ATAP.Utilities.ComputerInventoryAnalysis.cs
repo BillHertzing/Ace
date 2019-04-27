@@ -31,12 +31,12 @@ namespace ATAP.Utilities.ComputerInventory {
             //
             DiskAnalysis.DiskAnalysis dda = new DiskAnalysis.DiskAnalysis(Log);
             await dda.WalkDiskDrive(diskNumber, diskInfoExsContainer, walkDiskDriveResultContainer).ConfigureAwait(false);
-            FilesystemAnalysis fsa = new FilesystemAnalysis(Log, asyncFileReadBlocksize);
+            FileSystemAnalysis fsa = new FileSystemAnalysis(Log, asyncFileReadBlocksize);
             foreach (var d in diskInfoExsContainer.DiskDriveInfoExCOD.Keys) {
                 foreach (var p in diskInfoExsContainer.DiskDriveInfoExCOD[d].PartitionInfoExs.PartitionInfoExCOD.Keys) {
                     foreach (var driveLetter in diskInfoExsContainer.DiskDriveInfoExCOD[d].PartitionInfoExs.PartitionInfoExCOD[p].DriveLetters) {
                         string root = $"{driveLetter}:/";
-                        await fsa.WalkFileSystem(root, walkFilesystemResultContainer, recordRoot, recordSubdir);
+                        await fsa.AnalyzeFileSystem(root, walkFilesystemResultContainer, recordRoot, recordSubdir);
                     }
                 }
             }

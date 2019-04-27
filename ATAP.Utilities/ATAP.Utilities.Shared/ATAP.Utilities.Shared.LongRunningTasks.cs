@@ -1,12 +1,15 @@
 ﻿using ATAP.Utilities.TypedGuids;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ATAP.Utilities.LongRunningTasks {
     public interface ILongRunningTaskInfo {
+        CancellationToken CT { get; set; }
+        Id<CancellationTokenSource> CTSId { get; set; }
         Task LRTask { get; set; }
-        Id<LongRunningTaskInfo> Id { get; set; }
+        Id<LongRunningTaskInfo> LRTId { get; set; }
 
         bool Equals(LongRunningTaskInfo other);
         bool Equals(object obj);
@@ -17,13 +20,17 @@ namespace ATAP.Utilities.LongRunningTasks {
         public LongRunningTaskInfo() {
         }
 
-        public LongRunningTaskInfo(Id<LongRunningTaskInfo> id, Task lRTask) {
+        public LongRunningTaskInfo(Task lRTask, Id<LongRunningTaskInfo> lRTId, Id<CancellationTokenSource> cTSId, CancellationToken cT) {
             LRTask=lRTask??throw new ArgumentNullException(nameof(lRTask));
-            Id=id;
+            LRTId=lRTId;
+            CTSId=cTSId;
+            CT=cT;
         }
 
         public Task LRTask { get; set; }
-        public Id<LongRunningTaskInfo> Id { get; set; }
+        public Id<LongRunningTaskInfo> LRTId { get; set; }
+        public Id<CancellationTokenSource> CTSId { get; set; }
+        public CancellationToken CT { get; set; }
 
         public override bool Equals(object obj) {
             return Equals(obj as LongRunningTaskInfo);
@@ -32,13 +39,17 @@ namespace ATAP.Utilities.LongRunningTasks {
         public bool Equals(LongRunningTaskInfo other) {
             return other!=null&&
                    EqualityComparer<Task>.Default.Equals(LRTask, other.LRTask)&&
-                   Id.Equals(other.Id);
+                   LRTId.Equals(other.LRTId)&&
+                   CTSId.Equals(other.CTSId)&&
+                   EqualityComparer<CancellationToken>.Default.Equals(CT, other.CT);
         }
 
         public override int GetHashCode() {
-            var hashCode = -288306430;
+            var hashCode = 1114179746;
             hashCode=hashCode*-1521134295+EqualityComparer<Task>.Default.GetHashCode(LRTask);
-            hashCode=hashCode*-1521134295+EqualityComparer<Id<LongRunningTaskInfo>>.Default.GetHashCode(Id);
+            hashCode=hashCode*-1521134295+EqualityComparer<Id<LongRunningTaskInfo>>.Default.GetHashCode(LRTId);
+            hashCode=hashCode*-1521134295+EqualityComparer<Id<CancellationTokenSource>>.Default.GetHashCode(CTSId);
+            hashCode=hashCode*-1521134295+EqualityComparer<CancellationToken>.Default.GetHashCode(CT);
             return hashCode;
         }
 

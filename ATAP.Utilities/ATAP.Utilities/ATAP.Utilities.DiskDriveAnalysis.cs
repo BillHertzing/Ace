@@ -20,6 +20,8 @@ namespace ATAP.Utilities.DiskAnalysis {
             Log=log??throw new ArgumentNullException(nameof(log));
         }
 
+        // All of these async method will periodically execute instructions to the underlying database
+        //  For that reasons, they all take some optional action parameters
 
 
         // populate a list of DiskDriveInfoEx with information about the actual drives connected to the computer
@@ -76,7 +78,6 @@ namespace ATAP.Utilities.DiskAnalysis {
             Log.Debug($"leaving PopulatePartitionInfoExs");
         }
 
-
         // C/R/U/D a list of DiskDriveInfoEx with data in a DB
         // pass in an Action that will interact with the DB
         public async Task DiskInfoExsToDB(List<DiskDriveInfoEx> diskInfoExs, CrudType cRUD, Func<CrudType, DiskDriveInfoEx, Task> interact) {
@@ -104,8 +105,7 @@ namespace ATAP.Utilities.DiskAnalysis {
         */
 
         // ToDo: Add an optional parameter for a Func delegate that will query/update the DB for the FSEntities based on the value of cRUD
-
-
+        //  The instance of the CRUD specifier returns different Actions based on a case of the CRUD enumeration variable
 
 
 

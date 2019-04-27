@@ -17,7 +17,7 @@ namespace Ace.Agent.BaseServices {
             var updateLongRunningTasksStatusResponsePayload = new UpdateLongRunningTasksStatusResponsePayload();
             foreach (var LRTid in BaseServicesData.LongRunningTasks.Keys) {
                 var taskstatus = BaseServicesData.LongRunningTasks[LRTid].LRTask.Status;
-                // ToDo: Add start and duration
+                // ToDo: Add start time and current duration, Interim result, if any, must be queried through specialized interfaces referencing back to this master list
                 updateLongRunningTasksStatusResponsePayload.LongRunningTaskStatuses.LongRunningTaskStatusList.Add(new LongRunningTaskStatus(LRTid, taskstatus));
         }
             var updateLongRunningTasksStatusResponse = new UpdateLongRunningTasksStatusResponse(updateLongRunningTasksStatusResponsePayload);

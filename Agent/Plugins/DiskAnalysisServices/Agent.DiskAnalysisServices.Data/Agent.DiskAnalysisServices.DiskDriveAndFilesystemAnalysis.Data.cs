@@ -14,7 +14,7 @@ using ATAP.Utilities.Filesystem;
 
 namespace Ace.Agent.DiskAnalysisServices {
 
-    public partial class DiskAnalysisServicesData :IDiskDriveAnalysisResult {
+    public partial class DiskAnalysisServicesData : IDiskDriveAnalysisResult {
 
         // ToDo: Make the creation of All of the COD's herein Lazy
 
@@ -29,16 +29,16 @@ namespace Ace.Agent.DiskAnalysisServices {
 
         #endregion
 
-        #region FilesystemAnalysis Results
-        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupFilesystemAnalysisResultsCOD { get; set; }
+        #region FileSystemAnalysis Results
+        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupFileSystemAnalysisResultsCOD { get; set; }
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DirectoryInfoExs> DirectoryInfoExCOD { get; set; }
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, FileInfoExs> FileInfoExCOD { get; set; }
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, (Id<DirectoryInfoEx>, Id<FileInfoEx>)> EdgeFileInfoExDirectoryInfoExCOD { get; set; }
 
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, (Id<DirectoryInfoEx>, Id<DirectoryInfoEx>)> EdgeDirectoryInfoExDirectoryInfoExCOD { get; set; }
         #endregion
-        void ConstructFilesystemAnalysisData() {
-            LookupFilesystemAnalysisResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
+        void ConstructFileSystemAnalysisData() {
+            LookupFileSystemAnalysisResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
             DirectoryInfoExCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DirectoryInfoExs>();
             FileInfoExCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, FileInfoExs>();
             EdgeFileInfoExDirectoryInfoExCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, (Id<DirectoryInfoEx>, Id<FileInfoEx>)>();
@@ -49,7 +49,6 @@ namespace Ace.Agent.DiskAnalysisServices {
             LookupDiskDriveAnalysisResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
             DiskDriveInfoExCOD = new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DiskDriveInfoExs>();
             PartitionInfoExCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, PartitionInfoExs>();
-
         }
 
         public void TearDownDiskDriveAnalysisData() {
@@ -57,7 +56,7 @@ namespace Ace.Agent.DiskAnalysisServices {
             //PluginRootCOD.PropertyChanged-=this.onPluginRootCODPropertyChanged;
         }
 
-        public void TearDownFilesystemAnalysisData() {
+        public void TearDownFileSystemAnalysisData() {
             //EdgeDirectoryInfoExDirectoryInfoExCOD.CollectionChanged-=this.onEdgeDirectoryInfoExDirectoryInfoExCODCollectionChanged;
             //EdgeDirectoryInfoExDirectoryInfoExCOD.PropertyChanged-=this.onEdgeDirectoryInfoExDirectoryInfoExCODPropertyChanged;
         }

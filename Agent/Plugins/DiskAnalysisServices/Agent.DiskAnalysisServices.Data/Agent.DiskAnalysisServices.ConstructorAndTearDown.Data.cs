@@ -60,7 +60,7 @@ namespace Ace.Agent.DiskAnalysisServices
             ConstructConfigurationData();
             ConstructUserData();
             ConstructDiskDriveAnalysisData();
-            ConstructFilesystemAnalysisData();
+            ConstructFileSystemAnalysisData();
         }
 
         #region PublicProperties
@@ -99,7 +99,7 @@ enumerator.Dispose();
                     // dispose managed state (managed objects).
                     TearDown();
                     TearDownDiskDriveAnalysisData();
-                    TearDownFilesystemAnalysisData();
+                    TearDownFileSystemAnalysisData();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.

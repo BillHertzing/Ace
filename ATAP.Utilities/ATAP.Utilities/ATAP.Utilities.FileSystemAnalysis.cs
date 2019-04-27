@@ -28,16 +28,18 @@ namespace ATAP.Utilities.FileSystem {
         public const string RootDirectoryNotFound = "Directory {root} not found";
     }
 
-    public class FilesystemAnalysis {
-        //public FilesystemAnalysis(ILog log, int asyncFileReadBlocksize, MD5 mD5) {
-        public FilesystemAnalysis(ILog log, int asyncFileReadBlocksize) {
-            Log.Debug($"starting FilesystemAnalysis ctor (asyncFileReadBlocksize = {asyncFileReadBlocksize})");
+    public class FileSystemAnalysis {
+        //public FileSystemAnalysis(ILog log, int asyncFileReadBlocksize, MD5 mD5) {
+        public FileSystemAnalysis(ILog log, int asyncFileReadBlocksize) {
+            Log.Debug($"starting FileSystemAnalysis ctor (asyncFileReadBlocksize = {asyncFileReadBlocksize})");
             Log=log??throw new ArgumentNullException(nameof(log));
             AsyncFileReadBlocksize=asyncFileReadBlocksize;
             // MD5=mD5??throw new ArgumentNullException(nameof(mD5));
-            Log.Debug("leaving FilesystemAnalysis ctor");
+            Log.Debug("leaving FileSystemAnalysis ctor");
         }
         /*  Move this stuff to teh Expression for the Action that will validate the DB
+         *  The block below is somewhat out of date, the structures carry two, 
+         *  separate GUIDs for DB id and in-memory id
         if (DBFetch==null) {
             diskInfoEx.DiskIdentityId=0;
             diskInfoEx.DiskGuid=Guid.NewGuid();
@@ -83,7 +85,7 @@ namespace ATAP.Utilities.FileSystem {
                     }
         */
 
-        public async Task WalkFileSystem(string root, IWalkFilesystemResultContainer walkFileSystemResultContainer, Action<string> recordRoot = null, Action<string[]> recordSubdir = null) {
+        public async Task AnalyzeFileSystem(string root, IAnalyzeFileSystemResults walkFileSystemResultContainer, CancellationToken cancellationToken, Action<string> recordRoot = null, Action<string[]> recordSubdir = null) {
             Log.Debug($"starting WalkFileSystem: root = {root}");
 
             if (!Directory.Exists(root)) {
