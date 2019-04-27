@@ -139,9 +139,6 @@ namespace ATAP.Utilities.ComputerInventory {
                    EqualityComparer<TimeBlock>.Default.Equals(Moment, other.Moment);
         }
 
-        public bool Equals(DiskInfoExsContainer other) {
-            throw new NotImplementedException();
-        }
 
         public override int GetHashCode() {
             var hashCode = 1924731101;

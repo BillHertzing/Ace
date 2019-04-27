@@ -8,8 +8,8 @@ using System.Collections.Specialized;
 using System.Collections.Generic;
 using ATAP.Utilities.ComputerInventory;
 using ATAP.Utilities.ComputerHardware.Enumerations;
-using ATAP.Utilities.FileSystem;
-using ATAP.Utilities.FileSystem.Enumerations;
+using ATAP.Utilities.DiskDrive;
+
 using ATAP.Utilities.Database.Enumerations;
 using System.Threading.Tasks;
 using Funq;
@@ -17,7 +17,7 @@ using System.Threading;
 using Ace.Agent.BaseServices;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
-using ATAP.Utilities.DiskAnalysis;
+using ATAP.Utilities.DiskDriveAnalysis;
 using ATAP.Utilities.DiskDrive;
 
 namespace Ace.Agent.DiskAnalysisServices {
@@ -35,7 +35,7 @@ namespace Ace.Agent.DiskAnalysisServices {
             var cancellationToken = cancellationTokenSource.Token;
 
             // Setup the instance 
-            var diskAnalysis = new DiskAnalysis(Log);
+            var diskAnalysis = new DiskDriveAnalysis(Log);
             var diskDriveSpecifier = request.AnalyzeDiskDriveRequestPayload.DiskDriveSpecifier;
 
             //ToDo: Create an association between the remote cancellation token and a new cancellation token, and record this in the RemoteToLocalCancellationToken dictionary in the Container
@@ -65,11 +65,17 @@ namespace Ace.Agent.DiskAnalysisServices {
                 CT=cancellationToken
             };
 
+            // Create storage for the results and progress
+            var analyzeDiskDriveResult = new AnalyzeDiskDriveResult();
+            diskAnalysisServicesData.AnalyzeDiskDriveResultsCOD.Add(longRunningTaskID, analyzeDiskDriveResult);
+            var analyzeDiskDriveProgress = new AnalyzeDiskDriveProgress();
+            //diskAnalysisServicesData.AnalyzeDiskDriveProgressCOD.Add(longRunningTaskID, analyzeDiskDriveProgress);
+
             // Define the lambda that describes the task
             longRunningTaskInfo.LRTask=new Task(() => {
                 diskAnalysis.AnalyzeDiskDrive(
                     request.AnalyzeDiskDriveRequestPayload.DiskDriveSpecifier,
-                    diskAnalysisServicesData,
+                    analyzeDiskDriveResult, analyzeDiskDriveProgress,
                     cancellationToken,
                     (crud, r) => {
                         Log.Debug($"starting recordRoot Lambda, r = {r}");

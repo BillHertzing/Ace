@@ -11,12 +11,12 @@ using ATAP.Utilities.Database.Enumerations;
 using ATAP.Utilities.DiskDrive;
 using ATAP.Utilities.TypedGuids;
 
-namespace ATAP.Utilities.DiskAnalysis {
+namespace ATAP.Utilities.DiskDriveAnalysis {
 
 
-    public class DiskAnalysis {
+    public class DiskDriveAnalysis {
 
-        public DiskAnalysis(ILog log) {
+        public DiskDriveAnalysis(ILog log) {
             Log=log??throw new ArgumentNullException(nameof(log));
         }
 
@@ -88,7 +88,7 @@ namespace ATAP.Utilities.DiskAnalysis {
             }
             Log.Debug($"leaving DiskInfoExsToDB");
         }
-        public async Task AnalyzeDiskDrive(IDiskDriveSpecifier diskDriveSpecifier, IDiskDriveAnalysisResult diskDriveAnalysisResult, CancellationToken cancellationToken, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
+        public async Task AnalyzeDiskDrive(IDiskDriveSpecifier diskDriveSpecifier, IAnalyzeDiskDriveResult diskDriveAnalysisResult, IAnalyzeDiskDriveProgress diskDriveAnalysisProgress ,CancellationToken cancellationToken, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
             Log.Debug($"starting AnalyzeDiskDrive: diskDriveSpecifier = {diskDriveSpecifier.ToString()}");
             // ToDo: Add validation to ensure the diskDriveSpecifier corresponds to a valid member of the DiskInfoExs 
             Task task = new Task( ()=> { Thread.Sleep(1); }, cancellationToken);

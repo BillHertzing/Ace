@@ -14,7 +14,7 @@ using ServiceStack.Text;
 using ServiceStack.Logging;
 using ATAP.Utilities.ComputerHardware;
 using ATAP.Utilities.DiskDrive;
-using ATAP.Utilities.Filesystem;
+using ATAP.Utilities.FileSystem;
 using ATAP.Utilities.TypedGuids;
 
 namespace ATAP.Utilities.ComputerInventory {

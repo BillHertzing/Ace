@@ -17,7 +17,7 @@ using System.Threading;
 using Ace.Agent.BaseServices;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
-using ATAP.Utilities.DiskAnalysis;
+using ATAP.Utilities.DiskDriveAnalysis;
 using ATAP.Utilities.DiskDrive;
 
 namespace Ace.Agent.DiskAnalysisServices {
@@ -48,11 +48,17 @@ namespace Ace.Agent.DiskAnalysisServices {
                 CT=cancellationToken
             };
 
+            // Create storage for the results and progress
+            var analyzeFileSystemResult =new AnalyzeFileSystemResult();
+            diskAnalysisServicesData.AnalyzeFileSystemResultsCOD.Add(longRunningTaskID, analyzeFileSystemResult);
+            var analyzeFileSystemProgress = new AnalyzeFileSystemProgress();
+            //diskAnalysisServicesData.AnalyzeFileSystemProgressCOD.Add(longRunningTaskID, analyzeFileSystemProgress);
+
             // Define the lambda that describes the task
             longRunningTaskInfo.LRTask=new Task(() => {
                 fileSystemAnalysis.AnalyzeFileSystem(
                     request.AnalyzeFileSystemRequestPayload.Root,
-                    diskAnalysisServicesData,
+                    analyzeFileSystemResult, analyzeFileSystemProgress,
                     cancellationToken,
                     (crud, r) => {
                         Log.Debug($"starting recordRoot Lambda, r = {r}");

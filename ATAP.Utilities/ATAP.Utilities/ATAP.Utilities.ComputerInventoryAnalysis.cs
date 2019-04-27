@@ -13,7 +13,6 @@ using ServiceStack.Text;
 // ToDo: figure out logging for the ATAP libraries, this is only temporary
 using ServiceStack.Logging;
 using ATAP.Utilities.DiskDrive;
-using ATAP.Utilities.Filesystem;
 using ATAP.Utilities.FileSystem;
 
 namespace ATAP.Utilities.ComputerInventory {
@@ -29,7 +28,7 @@ namespace ATAP.Utilities.ComputerInventory {
             Log.Debug($"starting WalkDiskDriveAndFilesystemAsync: diskNumber = {diskNumber}");
             //ToDo: Add some validation to ensure the diskInfoEx has "good" data
             //
-            DiskAnalysis.DiskAnalysis dda = new DiskAnalysis.DiskAnalysis(Log);
+            DiskDriveAnalysis.DiskDriveAnalysis dda = new DiskDriveAnalysis.DiskDriveAnalysis(Log);
             await dda.WalkDiskDrive(diskNumber, diskInfoExsContainer, walkDiskDriveResultContainer).ConfigureAwait(false);
             FileSystemAnalysis fsa = new FileSystemAnalysis(Log, asyncFileReadBlocksize);
             foreach (var d in diskInfoExsContainer.DiskDriveInfoExCOD.Keys) {

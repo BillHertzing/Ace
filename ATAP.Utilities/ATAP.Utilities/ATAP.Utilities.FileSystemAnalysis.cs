@@ -17,7 +17,7 @@ using ATAP.Utilities.DiskDrive;
 
 // ToDo: figure out logging for the ATAP libraires, this is only temporary
 using ServiceStack.Logging;
-using ATAP.Utilities.Filesystem;
+using ATAP.Utilities.FileSystem;
 using System.Linq;
 using System.Security.Cryptography;
 using ATAP.Utilities.TypedGuids;
@@ -29,11 +29,17 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class FileSystemAnalysis {
-        //public FileSystemAnalysis(ILog log, int asyncFileReadBlocksize, MD5 mD5) {
-        public FileSystemAnalysis(ILog log, int asyncFileReadBlocksize) {
-            Log.Debug($"starting FileSystemAnalysis ctor (asyncFileReadBlocksize = {asyncFileReadBlocksize})");
+        //public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize, MD5 mD5) {
+        public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize) {
+            Log.Debug($"starting FileSystemAnalysis ctor (asyncFileReadBlockSize = {asyncFileReadBlockSize})");
             Log=log??throw new ArgumentNullException(nameof(log));
-            AsyncFileReadBlocksize=asyncFileReadBlocksize;
+            // ToDo: make the exception message a constant localizable string)
+            if (asyncFileReadBlockSize>=0) {
+                AsyncFileReadBlocksize=asyncFileReadBlockSize;
+
+            } else {
+                throw new ArgumentOutOfRangeException($"asyncFileReadBlockSize must be greater than 0, received {asyncFileReadBlockSize}");
+            }
             // MD5=mD5??throw new ArgumentNullException(nameof(mD5));
             Log.Debug("leaving FileSystemAnalysis ctor");
         }
@@ -85,8 +91,8 @@ namespace ATAP.Utilities.FileSystem {
                     }
         */
 
-        public async Task AnalyzeFileSystem(string root, IAnalyzeFileSystemResults walkFileSystemResultContainer, CancellationToken cancellationToken, Action<string> recordRoot = null, Action<string[]> recordSubdir = null) {
-            Log.Debug($"starting WalkFileSystem: root = {root}");
+        public async Task AnalyzeFileSystem( string root, IAnalyzeFileSystemResult analyzeFileSystemResults, IAnalyzeFileSystemProgress analyzeFileSystemProgress, CancellationToken cancellationToken, Action<CrudType, string> recordRoot = null, Action<CrudType, string[]> recordSubdir = null) {
+            Log.Debug($"starting AnalyzeFileSystem: root = {root}");
 
             if (!Directory.Exists(root)) {
                 throw new ArgumentException(ExceptionErrorMessages.RootDirectoryNotFound);
@@ -96,14 +102,14 @@ namespace ATAP.Utilities.FileSystem {
             Stack<string> dirs = new Stack<string>();
             string currentDir = root;
 
-            WalkFilesystemResult walkFilesystemResult = walkFileSystemResultContainer.WalkFilesystemResult as WalkFilesystemResult;
-            // ToDo: Initialize the fields of the walkFilesystemResult
-            walkFilesystemResult.NumberOfDirectories=1;
-            walkFilesystemResult.NumberOfFiles=1;
-            walkFilesystemResult.DeepestDirectoryTree=1;
-            walkFilesystemResult.LargestFile=0;
+            // ToDo: Initialize the fields of the analyzeFileSystemProgress
+            analyzeFileSystemProgress.Completed=false;
+            analyzeFileSystemProgress.NumberOfDirectories=0;
+            analyzeFileSystemProgress.NumberOfFiles=0;
+            analyzeFileSystemProgress.DeepestDirectoryTree=0;
+            analyzeFileSystemProgress.LargestFile=0;
             // Store root dir in the DB's node table as type directory
-            recordRoot.Invoke(root);
+            recordRoot.Invoke(CrudType.Create, root);
             dirs.Push(root);
             // go down all the dirs, doing every file in each dir first, then the next dir
             //  dirs are done in the order that they are returned by Directory.GetDirectories(currentDir)
@@ -122,13 +128,13 @@ namespace ATAP.Utilities.FileSystem {
                     // Store permission error on the current dir in the node table and accumulate errors to report back to GUI;
                     // if (updateCurrentDirWithException!=null){ updateCurrentDirWithException.Invoke(currentDir); }
                     // Add this exception to the results
-                    walkFilesystemResult.Exceptions.Add(e);
+                    analyzeFileSystemProgress.Exceptions.Add(e);
                     continue;
                 }
                 // update the results
-                walkFilesystemResult.NumberOfDirectories+=subDirs.Length;
+                analyzeFileSystemProgress.NumberOfDirectories+=subDirs.Length;
                 // update the with node and edge information about all subdirs
-                if (recordSubdir!=null) { recordSubdir.Invoke(subDirs); }
+                if (recordSubdir!=null) { recordSubdir.Invoke(CrudType.Create,  subDirs); }
 
                 try {
                     files=Directory.GetFiles(currentDir);
@@ -140,11 +146,11 @@ namespace ATAP.Utilities.FileSystem {
                     // Store permission error on the current dir in the node table and accumulate errors to report back to GUI;
                     // if (updateCurrentDirWithException!=null){ updateCurrentDirWithException.Invoke(currentDir); }
                     // Add this exception to the results
-                    walkFilesystemResult.Exceptions.Add(e);
+                    analyzeFileSystemProgress.Exceptions.Add(e);
                     continue;
                 }
                 // update the results
-                walkFilesystemResult.NumberOfFiles+=files.Length;
+                analyzeFileSystemProgress.NumberOfFiles+=files.Length;
                 // Exception handling gets tricky. files is an array of path strings
                 //  each has to be FileIO opened, information about each file extracted, and the file read an hashed
                 //  This should be done with async tasks.
@@ -166,11 +172,12 @@ namespace ATAP.Utilities.FileSystem {
                 foreach (var task in taskList) {
                     // append all exceptions from each task to the walkFilesystemResult
                     if (task.Result.Exceptions.Count>0) {
-                        walkFilesystemResult.Exceptions.AddRange(task.Result.Exceptions);
+                        analyzeFileSystemProgress.Exceptions.AddRange(task.Result.Exceptions);
                     } else {
                         // increment the walkFilesystemResult.LargestFile if any file is larger
-                        if (task.Result.FileInfo.Length>walkFilesystemResult.LargestFile)
-                            walkFilesystemResult.LargestFile=task.Result.FileInfo.Length;
+                        if (task.Result.FileInfo.Length>analyzeFileSystemProgress.LargestFile) {
+                            analyzeFileSystemProgress.LargestFile=task.Result.FileInfo.Length;
+                        }
                     }
                 }
 
@@ -187,11 +194,11 @@ namespace ATAP.Utilities.FileSystem {
 
         public async Task<FileInfoEx> PopulateFileInfoExAsync(string path, int blocksize) {
             FileInfoEx fileInfoEx = new FileInfoEx() {
-                Path = path,
+                Path=path,
                 FileInfoId=new Id<FileInfoEx>(Guid.NewGuid()),
                 FileInfoDbId=new Id<FileInfoEx>(Guid.Empty),
-                Exceptions =  new List<Exception>()
-                 };
+                Exceptions=new List<Exception>()
+            };
             try {
                 // read all bytes and generate the hash for the file
                 using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, blocksize, true)) // true means use IO async operations

@@ -95,10 +95,10 @@ namespace Ace.AceGUI.Pages {
                                                                  analyzeDiskDriveRequest);
             //Logger.LogDebug($"Returned from PostJsonAsync<AnalyzeDiskDriveResponse>");
             // record the TaskID
-            WalkDiskDriveLongRunningTaskIDs.AddRange(analyzeDiskDriveResponse.LongRunningTaskIDs);
+            AnalyzeDiskDriveLongRunningTaskIDs.AddRange(analyzeDiskDriveResponse.AnalyzeDiskDriveResponsePayload.LongRunningTaskIds);
             // This should be a URL and and ID for connecting to a SSE, and the next step
             // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
-            // ToDo: Activate the WalkDiskDrive button
+            // ToDo: Activate the AnalyzeDiskDrive button
 
             //Logger.LogDebug($"Leaving AnalyzeDiskDrive");
         }
@@ -112,7 +112,7 @@ namespace Ace.AceGUI.Pages {
           await HttpClient.PostJsonAsync<GetLongRunningTaskStateResponse>("/GetLongRunningTaskState?format=json",
                                                                  new GetLongRunningTaskStateRequest(longRunningTaskIDs));
             //Logger.LogDebug($"Returned from PostJsonAsync<ReadDiskResponse>");
-            WalkDiskDriveLongRunningTaskState=GetLongRunningTaskStateResponse.LongRunningTaskState;
+            AnalyzeDiskDriveLongRunningTaskState=GetLongRunningTaskStateResponse.LongRunningTaskState;
             // This should be a URL and and ID for connecting to a SSE, and the next step
             // is to draw a base result, then hookup a local task that monitors the SSE and updates the local copy of the COD
 
@@ -143,14 +143,14 @@ namespace Ace.AceGUI.Pages {
 
         #endregion Properties:ConfigurationData
 
-        #region Properties:WalkDiskDrive
+        #region Properties:AnalyzeDiskDrive
         public AnalyzeDiskDriveResponse AnalyzeDiskDriveResponse { get; set; }
-        public List<Id<LongRunningTaskInfo>> WalkDiskDriveLongRunningTaskIDs { get; set; }
+        public List<Id<LongRunningTaskInfo>> AnalyzeDiskDriveLongRunningTaskIDs { get; set; }
         #endregion
 
         #region Properties:GetLongRunningTaskState
         public GetLongRunningTaskStateResponse GetLongRunningTaskStateResponse { get; set; }
-        public string WalkDiskDriveLongRunningTaskState { get; set; }
+        public string AnalyzeDiskDriveLongRunningTaskState { get; set; }
         #endregion
     }
 }

@@ -1,11 +1,12 @@
-﻿using ATAP.Utilities.TypedGuids;
+﻿using ATAP.Utilities.LongRunningTasks;
+using ATAP.Utilities.TypedGuids;
 using Swordfish.NET.Collections;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace ATAP.Utilities.Filesystem {
+namespace ATAP.Utilities.FileSystem {
     public interface IDirectoryInfoEx {
         Id<DirectoryInfoEx> DirectoryDbId { get; set; }
         Id<DirectoryInfoEx> DirectoryId { get; set; }
@@ -160,30 +161,5 @@ namespace ATAP.Utilities.Filesystem {
         public ConcurrentObservableDictionary<Id<FileInfoEx>, FileInfoEx> FileInfoExCOD { get; set; }
     }
 
-
-    public interface IWalkFilesystemResult {
-        int DeepestDirectoryTree { get; set; }
-        List<Exception> Exceptions { get; set; }
-        long LargestFile { get; set; }
-        int NumberOfDirectories { get; set; }
-        int NumberOfFiles { get; set; }
-    }
-
-
-    public class WalkFilesystemResult : IWalkFilesystemResult {
-        public WalkFilesystemResult(int numberOfDirectories, int numberOfFiles, int deepestDirectoryTree, long largestFile, List<Exception> exceptions) {
-            NumberOfDirectories=numberOfDirectories;
-            NumberOfFiles=numberOfFiles;
-            DeepestDirectoryTree=deepestDirectoryTree;
-            LargestFile=largestFile;
-            Exceptions=exceptions??throw new ArgumentNullException(nameof(exceptions));
-        }
-
-        public int NumberOfDirectories { get; set; }
-        public int NumberOfFiles { get; set; }
-        public int DeepestDirectoryTree { get; set; }
-        public long LargestFile { get; set; }
-
-        public List<Exception> Exceptions { get; set; }
-    }
+   
 }

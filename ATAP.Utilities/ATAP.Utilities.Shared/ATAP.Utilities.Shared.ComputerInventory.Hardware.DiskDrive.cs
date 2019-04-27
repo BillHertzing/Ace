@@ -179,43 +179,8 @@ namespace ATAP.Utilities.DiskDrive {
 
         public ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx> DiskDriveInfoExCOD { get; set; }
     }
-    public interface IDiskInfoExsContainer {
 
-        bool Equals(DiskInfoExsContainer other);
-        bool Equals(object obj);
-        int GetHashCode();
-
-        List<DiskDriveInfoEx> DiskInfoExs { get; set; }
-
-    }
-
-    public class DiskInfoExsContainer : IEquatable<DiskInfoExsContainer>, IDiskInfoExsContainer {
-
-        public DiskInfoExsContainer(List<DiskDriveInfoEx> diskInfoExs) {
-            DiskInfoExs=diskInfoExs??throw new ArgumentNullException(nameof(diskInfoExs));
-        }
-
-        public static bool operator !=(DiskInfoExsContainer left, DiskInfoExsContainer right) {
-            return !(left==right);
-        }
-        public static bool operator ==(DiskInfoExsContainer left, DiskInfoExsContainer right) {
-            return EqualityComparer<DiskInfoExsContainer>.Default.Equals(left, right);
-        }
-
-        public override bool Equals(object obj) {
-            return Equals(obj as DiskInfoExsContainer);
-        }
-        public bool Equals(DiskInfoExsContainer other) {
-            return other!=null&&
-                   EqualityComparer<List<DiskDriveInfoEx>>.Default.Equals(DiskInfoExs, other.DiskInfoExs);
-        }
-        public override int GetHashCode() {
-            return 130062218+EqualityComparer<List<DiskDriveInfoEx>>.Default.GetHashCode(DiskInfoExs);
-        }
-
-        public List<DiskDriveInfoEx> DiskInfoExs { get; set; }
-
-    }
+    
 
     public interface IDiskDrivePartitionIdentifier {
         ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, IPartitionInfoExs> DiskDriveInfoPartitionInfoCOD { get; set; }
@@ -307,16 +272,7 @@ namespace ATAP.Utilities.DiskDrive {
             return !(left==right);
         }
     }
-    public interface IDiskDriveAnalysisResult {
-
-         ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupDiskDriveAnalysisResultsCOD { get; set; }
-         ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DiskDriveInfoExs> DiskDriveInfoExCOD { get; set; }
-         ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, PartitionInfoExs> PartitionInfoExCOD { get; set; }
-        IList<Exception> DiskDriveAnalysisExceptions { get; set; }
-      //   DiskDriveInfoExs DiskDriveAnalysisDiskDriveInfoExs { get; set; }
-
-    }
-
+    
 
 }
 
