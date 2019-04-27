@@ -2,19 +2,19 @@
 @inherits Ace.AceGUI.Pages.DiskAnalysisServicesCodeBehind
 <h1>AceCommander Disk Drive and Filesystem Analysis Services</h1>
 
-@if (@InitializationResponse==null) {
-    <p><em>Loading (The page load is calling onInitAsync, which has not yet returned a value for Initialization Response)</em></p>
-} else {
+
+    <p><em>ToDo: replace with window effect. Loading (The page load is calling onInitAsync, which has not yet returned a value for Initialization Response)</em></p>
+
     <hr />
-    <button id="btnReadDisk" type="button" class="btn btn-default" onclick="@(async () => await AnalyzeDiskDrive("localhost",2))">Analyze Disk Drive (hardcoded localhost drive 2)</button>
+    <button id="btnReadDisk" type="button" class="btn btn-primary" onclick="@(async () => await AnalyzeDiskDrive("localhost",2))">Analyze Disk Drive (hardcoded localhost drive 2)</button>
 
 
-<p>WalkDiskDriveRunningTaskIDs =  @WalkDiskDriveLongRunningTaskIDs.ToString() </p>
+<p>WalkDiskDriveRunningTaskIDs =  @AnalyzeDiskDriveLongRunningTaskIDs.ToString() </p>
 
-<p>The state of the AnalyzeDiskDriveLongRunningTask is: @WalkDiskDriveLongRunningTaskState</p>
-        <button id="btnGetLongRunningTaskState" type="button" class="btn btn-default" onclick="@(async () => await GetLongRunningTaskState(@WalkDiskDriveLongRunningTaskIDs))">Update Task State</button>
+<p>The state of the AnalyzeDiskDriveLongRunningTask is: @AnalyzeDiskDriveLongRunningTaskState</p>
+        <button id="btnGetLongRunningTaskState" type="button" class="btn btn-default" onclick="@(async () => await GetLongRunningTaskState(@AnalyzeDiskDriveLongRunningTaskIDs))">Update Task State</button>
 
-    }
+  
 
 
 

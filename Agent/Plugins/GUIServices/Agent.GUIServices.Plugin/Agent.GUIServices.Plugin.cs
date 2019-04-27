@@ -94,9 +94,7 @@ namespace Ace.Agent.GUIServices {
 
             Log.Debug($"in GUIServicesPlugin.Configure, virtualRootPath = {virtualRootPath}");
 
-            // change the default redirect path so that a request to an unexpected path will redirect to index.html
-            appHost.Config
-                .DefaultRedirectPath = defaultRedirectPath;
+            // per conversation with Myth at SS, the default behaviour, for URi "/" is to return the content of wwwroot/index.html
 
             // ToDo: if the GUI configuration specifies that the GUI has GUI-specific data sensor that can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
       // ToDo: setup the mechanisms that monitors the GUI 
@@ -144,7 +142,6 @@ namespace Ace.Agent.GUIServices {
         const string relativeRootPathValueContainsIlegalCharacterExceptionMessage = "relativeRootPathValue contains one or more characters that are illegal in a path. Ensure that the DebugRelativeRootPathKey's value and the ReleaseRelativeRootPathKey's value does not contain any characters that are illegal in a path, and retry.";
     #endregion Exception Messages (string constants)
 
-        const string defaultRedirectPath = "/index.html";
 
     #region File Name string constants
         const string pluginSettingsTextFileNameString = "Agent.GUIServices.settings.txt";

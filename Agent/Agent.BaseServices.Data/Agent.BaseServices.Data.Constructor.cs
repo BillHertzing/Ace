@@ -130,10 +130,6 @@ namespace Ace.Agent.BaseServices {
             #endregion create longRunningTasksCheckTimer, connect callback, and store in container's timers
 
 
-
-
-
-
             // Populate the application's Base Gateways
             // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
             Gateways=new MultiGatewaysBuilder()
@@ -198,13 +194,11 @@ namespace Ace.Agent.BaseServices {
             // Store the collection of Gateway Monitor in the Base Data structure
 
             // Populate the specific per-user data instance for this user
-			            ConstructUserData();
+			ConstructUserData();
 
-			
-			
             // ToDo: support AppSettings to control the enable/disable of Postman
             // Enable Postman integration
-            //  AppHost.Plugins.Add(new PostmanFeature());
+            // AppHost.Plugins.Add(new PostmanFeature());
 
 
             // ToDo: support AppSettings to control the enable/disable of CORS Feature
@@ -214,12 +208,10 @@ namespace Ace.Agent.BaseServices {
                                         allowCredentials: true,
                                         allowedHeaders: "content-type, Authorization, Accept"));
 
-            // ToDo: support AppSettings to control the enable/disable of Metadata Feature
-            /*
-            appHost.Config
-                .EnableFeatures = Feature.All
-                .Remove(Feature.Metadata);
-            */
+            // ToDo: Document clearly the metadata feature cannot be allowed on /, because it messes up the default returning f the content of index.html
+            
+            appHost.Config.EnableFeatures = Feature.All.Remove(Feature.Metadata);
+            
 			
 			
             // Turn debug mode for the ACEAgent depending if running in debug mode or release mode
