@@ -1,0 +1,22 @@
+@page "/BaseServices"
+@inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
+<h1>AceCommander Base Services</h1>
+
+<p>All Automatic stuff</p>
+@if (@InitializationResponse == null)
+{<p>InitializationResponse is STILL null</p>}
+else
+{ <p>InitializationResponse is NOT null</p>}
+
+
+@if (@IsAliveRspPayload == null)
+{<p>IsAliveRspPayload is STILL null</p>}
+else
+{ <p>IsAliveRspPayload is NOT null</p>}
+
+
+<hr />
+<p> add User LoginOrRegisterNewUserComponent here</p>
+<!--<BaseServicesUserRegistration /> -->
+
+

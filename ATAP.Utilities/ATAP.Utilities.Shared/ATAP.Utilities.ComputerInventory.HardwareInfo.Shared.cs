@@ -7,15 +7,15 @@ using System.ComponentModel;
 using System.Globalization;
 
 namespace ATAP.Utilities.ComputerInventory {
-	
-	
+
+    /*
     public class DiskDrivePartitionDriveLetterIdentifier {
-        public DiskDrivePartitionDriveLetterIdentifier() : this(new Dictionary<Guid, IDictionary<Guid, string>>()) { }
+        public DiskDrivePartitionDriveLetterIdentifier() : { }
         public DiskDrivePartitionDriveLetterIdentifier(IDictionary<Guid, IDictionary<Guid, string>> diskDrivePartitionInfoGuidsDriveLetterStrings) { DiskDrivePartitionInfoGuidsDriveLetterStrings=diskDrivePartitionInfoGuidsDriveLetterStrings; }
         public IDictionary<Guid, IDictionary<Guid, string>> DiskDrivePartitionInfoGuidsDriveLetterStrings { get; set; }
     }
+    */
 
-	
     [Serializable]
     public class MainBoard : ISerializable {
 

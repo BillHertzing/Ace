@@ -23,15 +23,16 @@ namespace Ace.Agent.BaseServices {
         #region Properties:ConfigurationData
         public ConfigurationData ConfigurationData { get; set; }
         #endregion
-        #region Properties:ConfigurationData
+        #region Properties:UserData
         public UserData UserData { get; set; }
         #endregion
-
 		#region IndirectConstructors
         void ConstructConfigurationData () {
-			ConfigurationData=new ConfigurationData(RedisCacheConnectionString, MySqlConnectionString);
+            Log.Debug("in BaseServicesData .ctor: ConstructConfigurationData");
+            ConfigurationData=new ConfigurationData(RedisCacheConnectionString, MySqlConnectionString);
         }
         void ConstructUserData() {
+            Log.Debug("in BaseServicesData .ctor: ConstructUserData");
             UserData=new BaseServices.UserData();
         }
         #endregion

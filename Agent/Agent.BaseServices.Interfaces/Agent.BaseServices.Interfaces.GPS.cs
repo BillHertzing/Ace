@@ -26,7 +26,7 @@ namespace Ace.Agent.BaseServices {
             Type gatewayEntryRspDataPayloadType = gatewayEntry.RspDataPayloadType;
             // ToDo replace DefaultAPIKey auth with a more robust and extendable solution
             var defaultAPIKey = gateway.DefaultAPIKey;
-            // Get the cancellationtoken from the GatewayEntryMonitor for this specific GatewayEntryRequest
+            // Get the cancellationToken from the GatewayEntryMonitor for this specific GatewayEntryRequest
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = cancellationTokenSource.Token;
             var gatewayEntryRspDataPayload = Activator.CreateInstance(gatewayEntryRspDataPayloadType);
@@ -40,7 +40,7 @@ namespace Ace.Agent.BaseServices {
             //string completeUrl = completeURI.ToString().AddQueryParam("latlng", $"{request.Latitude},{request.Longitude}");
             string msg = "notinitialized";
             try {
-                // See servicestack using Interfaces for typed DTOs and making this apply to all requests
+                // See ServiceStack using Interfaces for typed DTOs and making this apply to all requests
                 var userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36";
                 var referer = "https://localhost/";
                 msg=completeUrl.GetJsonFromUrl(requestFilter: req => {
@@ -97,7 +97,7 @@ namespace Ace.Agent.BaseServices {
             var gatewayPolicy = gateway.DefaultPolicy;
             Type gatewayEntryReqDataPayloadType = gatewayEntry.ReqDataPayloadType;
             Type gatewayEntryRspDataPayloadType = gatewayEntry.RspDataPayloadType;
-            // Get the cancellationtoken from the GatewayEntrymonitor for this specific GatewayEntryRequest
+            // Get the cancellationToken from the GatewayEntryMonitor for this specific GatewayEntryRequest
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = cancellationTokenSource.Token;
             var gatewayEntryRspDataPayload = Activator.CreateInstance(gatewayEntryRspDataPayloadType);
@@ -109,7 +109,7 @@ namespace Ace.Agent.BaseServices {
             string completeUrl = completeURI.ToString()
                 .AddQueryParam("address", $"{request.Address}")
                 .AddQueryParam("key", $"{gatewayDecodeAPIKey("AKE", "AKP", "AKEIV")}");
-            string msg = "notinitialized";
+            string msg = "NotInitialized";
             while (!cancellationToken.IsCancellationRequested) {
                 try {
                     // Execute the following call according to the policy.

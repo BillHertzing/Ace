@@ -61,26 +61,23 @@ namespace ATAP.Utilities.ComputerInventory {
 #if NETFUL
   public class ComputerHardware : OpenHardwareMonitor.Hardware.Computer {
 #else
-    public class ComputerHardware : IDiskDriveInfoExs, IEquatable<ComputerHardware>
-#endif
-  {
+    public class ComputerHardware : IDiskDriveInfoExs, IEquatable<ComputerHardware> {
+#endif  
         // A very generic list of computer hardware with no disk drives
         public ComputerHardware() : this(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic),
             new List<CPUMaker>() { CPUMaker.Generic },
-            new DiskDriveInfoExs(),
+            new ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx>() { { new Id<DiskDriveInfoEx>(), new DiskDriveInfoEx()} },
             new TimeBlock(DateTime.UtcNow, true)) { }
+    
+        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IDiskDriveInfoExs diskDriveInfoExs) : this(mainboard, cPUs, diskDriveInfoExs.DiskDriveInfoExCOD, new TimeBlock(DateTime.UtcNow, true)) { }
 
-        
-
-        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IDiskDriveInfoExs diskDriveInfoExs) : this(mainboard, cPUs, diskDriveInfoExs, new TimeBlock(DateTime.UtcNow, true)) { }
-
-        public ComputerHardware(MainBoard mainboard, IList<CPUMaker> cPUs, IDiskDriveInfoExs diskDriveInfoExs, TimeBlock moment) {
-            MainBoard=mainboard??throw new ArgumentNullException(nameof(mainboard));
+        public ComputerHardware(MainBoard mainBoard, IList<CPUMaker> cPUs, ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx> diskDriveInfoExCOD, TimeBlock moment) {
+            MainBoard=mainBoard??throw new ArgumentNullException(nameof(mainBoard));
             CPUs=cPUs??throw new ArgumentNullException(nameof(cPUs));
-            var ddicod = diskDriveInfoExs??throw new ArgumentNullException(nameof(diskDriveInfoExs));var 
-            DiskDriveInfoExCOD=diskDriveInfoExs.DiskDriveInfoExCOD??throw new ArgumentNullException(nameof(diskDriveInfoExs.DiskDriveInfoExCOD));
+            DiskDriveInfoExCOD=diskDriveInfoExCOD??throw new ArgumentNullException(nameof(diskDriveInfoExCOD));
             Moment=moment??throw new ArgumentNullException(nameof(moment));
         }
+
 
         /*
         // ToDo: Investigate the following, it is from old code that uses a .NetFull HW library to query info about a physical computer 

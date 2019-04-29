@@ -19,22 +19,20 @@ using ServiceStack.Logging;
 //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
 namespace Ace.AceService {
     public class AppHost : AppSelfHostBase {
-        #region string constants File Names and Exception Messages
-        #region File Names string constants
+        #region string constants default file names and Exception messages
+        #region string constants: File Names 
         public const string agentSettingsTextFileNameString = "Agent.BaseServices.settings.txt";
         //It would be nice if ServiceStack implemented the User Secrets pattern that ASP Core provides
         // Without that, the following string constant identifies an Environmental variable that can be populated with the name of a file
         public const string agentEnvironmentIndirectSettingsTextFileNameKey = "Agent.BaseServices.IndirectSettings.Path";
         #endregion
-        #region Exception Messages (string constants)
+        #region string constants: Exception Messages
         public const string cannotReadEnvironmentVariablesSecurityExceptionMessage = "Ace cannot read from the environment variables (Security)";
         #endregion
         #endregion
 
         static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
 
-        List<Task> longRunningTaskList;
-        Dictionary<string, System.Timers.Timer> timers;
 
         public AppHost() : base("AceService", typeof(BaseServices).Assembly) {
             Log.Debug("Entering AppHost Ctor");
@@ -114,7 +112,7 @@ namespace Ace.AceService {
             var baseServicesData = new BaseServicesData(this);
             container.Register<BaseServicesData>(c => baseServicesData);
 
-            // ToDo: Get the list of plugins to install from the configuration settings, currently hardcoded
+            // ToDo: Get the list of plugins to install from the configuration settings, currently hard coded
             // Create the list of PlugIns to load
             var plugInList = new List<IPlugin>() {
           //new RealEstateServicesPlugin(),

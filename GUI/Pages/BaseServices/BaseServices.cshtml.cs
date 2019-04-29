@@ -49,7 +49,7 @@ namespace Ace.AceGUI.Pages {
         #endregion Gateway definitions
 
         #region StringConstants:TaskStatus
-        public const string labelForUpdateLongRunningTasksStatusButton = "Press to Update Task Status";
+        //public const string labelForUpdateLongRunningTasksStatusButton = "Press to Update Task Status";
         #endregion
 
         #region User data (string constants)
@@ -86,11 +86,11 @@ namespace Ace.AceGUI.Pages {
 
             var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new InitializationData("BaseVersionXX", "MachineIDXX","userIDxx")));
             //Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest = {InitializationRequest}");
-            var initializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>("/BaseServicesInitialization",
+            InitializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>("/BaseServicesInitialization",
                                                                                                                         initializationRequest);
             //Log.LogDebug($"Returned from PostJsonAsync<InitializationResponse>, InitializationResponse = {InitializationResponse}");
-            ConfigurationData=initializationResponse.InitializationResponsePayload.ConfigurationData;
-            UserData=initializationResponse.InitializationResponsePayload.UserData;
+            ConfigurationData=InitializationResponse.InitializationResponsePayload.ConfigurationData;
+            UserData=InitializationResponse.InitializationResponsePayload.UserData;
             PartitionInfoExs=new PartitionInfoExs();
             //Log.LogDebug($"Leaving OnInitAsync");
         }
@@ -116,6 +116,7 @@ namespace Ace.AceGUI.Pages {
         #endregion
 
         #region UpdateLongRunningTasksStatus
+        /*
         public async Task UpdateLongRunningTasksStatus(int placeholder) {
             await new Task(() => { Thread.Sleep(5); });
         }
@@ -129,7 +130,7 @@ namespace Ace.AceGUI.Pages {
 
             // Log.LogDebug($"Leaving UpdateLongRunningTasksStatus");
         }
-
+        */
         #endregion
 
         #region PostGetBaseServicesConfigurationData 
@@ -228,7 +229,7 @@ namespace Ace.AceGUI.Pages {
         public PartitionInfoExs PartitionInfoExs { get; set; }
         #endregion
         #region Properties:LongRunningTasks
-        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LongRunningTasksCOD { get; set; }
+        //public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LongRunningTasksCOD { get; set; }
         #endregion
         #endregion
 

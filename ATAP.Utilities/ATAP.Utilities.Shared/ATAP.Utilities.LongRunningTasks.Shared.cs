@@ -5,32 +5,29 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace ATAP.Utilities.LongRunningTasks {
-    public interface ILongRunningTaskInfo {
-        CancellationToken CT { get; set; }
-        Id<CancellationTokenSource> CTSId { get; set; }
-        Task LRTask { get; set; }
-        Id<LongRunningTaskInfo> LRTId { get; set; }
 
-        bool Equals(LongRunningTaskInfo other);
+
+
+    public interface ILongRunningTaskInfo {
         bool Equals(object obj);
         int GetHashCode();
+
+        CancellationTokenSource CTS { get; set; }
+        Task LRTask { get; set; }
+        Id<LongRunningTaskInfo> LRTId { get; set; }
     }
-
     public class LongRunningTaskInfo : IEquatable<LongRunningTaskInfo>, ILongRunningTaskInfo {
-        public LongRunningTaskInfo() {
-        }
+        public LongRunningTaskInfo() :this (new Id<LongRunningTaskInfo>(),null,null) { }
 
-        public LongRunningTaskInfo(Task lRTask, Id<LongRunningTaskInfo> lRTId, Id<CancellationTokenSource> cTSId, CancellationToken cT) {
-            LRTask=lRTask??throw new ArgumentNullException(nameof(lRTask));
+        public LongRunningTaskInfo(Id<LongRunningTaskInfo> lRTId, Task lRTask, CancellationTokenSource cTS) {
             LRTId=lRTId;
-            CTSId=cTSId;
-            CT=cT;
+            LRTask=lRTask;
+            CTS=cTS;
         }
 
-        public Task LRTask { get; set; }
         public Id<LongRunningTaskInfo> LRTId { get; set; }
-        public Id<CancellationTokenSource> CTSId { get; set; }
-        public CancellationToken CT { get; set; }
+        public Task LRTask { get; set; }
+        public CancellationTokenSource CTS { get; set; }
 
         public override bool Equals(object obj) {
             return Equals(obj as LongRunningTaskInfo);
@@ -38,18 +35,16 @@ namespace ATAP.Utilities.LongRunningTasks {
 
         public bool Equals(LongRunningTaskInfo other) {
             return other!=null&&
-                   EqualityComparer<Task>.Default.Equals(LRTask, other.LRTask)&&
                    LRTId.Equals(other.LRTId)&&
-                   CTSId.Equals(other.CTSId)&&
-                   EqualityComparer<CancellationToken>.Default.Equals(CT, other.CT);
+                   EqualityComparer<Task>.Default.Equals(LRTask, other.LRTask)&&
+                   EqualityComparer<CancellationTokenSource>.Default.Equals(CTS, other.CTS);
         }
 
         public override int GetHashCode() {
-            var hashCode = 1114179746;
-            hashCode=hashCode*-1521134295+EqualityComparer<Task>.Default.GetHashCode(LRTask);
+            var hashCode = -1047278827;
             hashCode=hashCode*-1521134295+EqualityComparer<Id<LongRunningTaskInfo>>.Default.GetHashCode(LRTId);
-            hashCode=hashCode*-1521134295+EqualityComparer<Id<CancellationTokenSource>>.Default.GetHashCode(CTSId);
-            hashCode=hashCode*-1521134295+EqualityComparer<CancellationToken>.Default.GetHashCode(CT);
+            hashCode=hashCode*-1521134295+EqualityComparer<Task>.Default.GetHashCode(LRTask);
+            hashCode=hashCode*-1521134295+EqualityComparer<CancellationTokenSource>.Default.GetHashCode(CTS);
             return hashCode;
         }
 
@@ -71,9 +66,7 @@ namespace ATAP.Utilities.LongRunningTasks {
     }
 
     public class LongRunningTaskStatuses : IEquatable<LongRunningTaskStatuses>, ILongRunningTaskStatuses {
-        public LongRunningTaskStatuses() {
-            LongRunningTaskStatusList=new List<LongRunningTaskStatus>();
-        }
+        public LongRunningTaskStatuses() :this(new List<LongRunningTaskStatus>()){ }
 
         public LongRunningTaskStatuses(List<LongRunningTaskStatus> longRunningTaskStatusList) {
             LongRunningTaskStatusList=longRunningTaskStatusList??throw new ArgumentNullException(nameof(longRunningTaskStatusList));
@@ -113,7 +106,7 @@ namespace ATAP.Utilities.LongRunningTasks {
     }
 
     public class LongRunningTaskStatus : IEquatable<LongRunningTaskStatus>, ILongRunningTaskStatus {
-        public LongRunningTaskStatus() { }
+        public LongRunningTaskStatus() :this(new Id<LongRunningTaskInfo>(),TaskStatus.Created ) { }
 
         public LongRunningTaskStatus(Id<LongRunningTaskInfo> id, TaskStatus taskStatus) {
             Id=id;

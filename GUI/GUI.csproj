@@ -52,16 +52,16 @@
 
 
   <ItemGroup>
-    <Content Update="Pages\BaseServicesTaskStatus.cshtml">
+    <Content Update="Pages\BaseServices\BaseServicesTaskStatus.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\BaseServicesUserRegistration.cshtml">
+    <Content Update="Pages\BaseServices\BaseServicesUserRegistration.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\BaseServicesUserData.cshtml">
+    <Content Update="Pages\BaseServices\BaseServicesUserData.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\BaseServicesGeoLocation.cshtml">
+    <Content Update="Pages\BaseServices\BaseServicesGeoLocation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Pages\UserData.cshtml">
@@ -70,7 +70,7 @@
     <Content Update="Pages\ConfigurationData.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\DiskAnalysisServices.cshtml">
+    <Content Update="Pages\DiskAnalysisServices\DiskAnalysisServices.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

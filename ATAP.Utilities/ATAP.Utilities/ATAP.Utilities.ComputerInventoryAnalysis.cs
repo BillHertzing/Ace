@@ -17,8 +17,6 @@ using ATAP.Utilities.FileSystem;
 
 namespace ATAP.Utilities.ComputerInventory {
 
-    // Extension methods to populate a ComputerInventory object
-
     public class ComputerInventoryAnalysis {
         public ComputerInventoryAnalysis(ILog log = null) {
             Log=log;

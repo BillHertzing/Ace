@@ -1,4 +1,4 @@
-@page "/BaseServices.TaskStatus"
+@page "/BaseServicesTaskStatus"
 @inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
 <h1>AceCommander Base Services Task Status</h1>
 
@@ -7,10 +7,10 @@
 <!-- If the onInitAsync, and the Initialization has occurred, set a normal window style -->
 <hr />
 <h2>LongRunningTasks on the Agent</h2>
-
-<p>@{foreach (var taskId in LongRunningTasksCOD.Keys)
+<!--
+    <p>@{foreach (var taskId in @LongRunningTasksCOD.Keys)
     {@taskId.ToString() } }</p>
-
+-->
 <!-- Send a request for an update on all the tasks -->
 <button type="button" class="btn btn-default" id="UpdateLongRunningTasksStatus" onclick=@(async () => await UpdateLongRunningTasksStatus())>@labelForUpdateLongRunningTasksStatusButton</button>
 

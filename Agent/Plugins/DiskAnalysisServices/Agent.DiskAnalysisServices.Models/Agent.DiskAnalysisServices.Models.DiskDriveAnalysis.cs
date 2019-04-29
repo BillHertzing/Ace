@@ -24,18 +24,13 @@ namespace Ace.Agent.DiskAnalysisServices {
         public AnalyzeDiskDriveRequestPayload AnalyzeDiskDriveRequestPayload { get; set; }
     }
     public class AnalyzeDiskDriveRequestPayload {
-        public AnalyzeDiskDriveRequestPayload() {
-            DiskDriveSpecifier=new DiskDriveSpecifier();
-            CancellationToken=new CancellationToken(true);
-        }
+        public AnalyzeDiskDriveRequestPayload() : this (new DiskDriveSpecifier()) {  }
 
-        public AnalyzeDiskDriveRequestPayload(DiskDriveSpecifier diskDriveSpecifier, CancellationToken cancellationToken) {
+        public AnalyzeDiskDriveRequestPayload(DiskDriveSpecifier diskDriveSpecifier) {
             DiskDriveSpecifier=diskDriveSpecifier??throw new ArgumentNullException(nameof(diskDriveSpecifier));
-            CancellationToken=cancellationToken;
         }
 
         public DiskDriveSpecifier DiskDriveSpecifier { get; set; }
-        public CancellationToken CancellationToken { get; set; }
     }
     public class AnalyzeDiskDriveResponse {
         public AnalyzeDiskDriveResponse() : this(new AnalyzeDiskDriveResponsePayload()) {}
@@ -46,9 +41,7 @@ namespace Ace.Agent.DiskAnalysisServices {
     }
 
     public class AnalyzeDiskDriveResponsePayload : IEquatable<AnalyzeDiskDriveResponsePayload> {
-        public AnalyzeDiskDriveResponsePayload() {
-            LongRunningTaskIds=new List<Id<LongRunningTaskInfo>>();
-        }
+        public AnalyzeDiskDriveResponsePayload() : this (new List<Id<LongRunningTaskInfo>>()) {}
 
         public AnalyzeDiskDriveResponsePayload(List<Id<LongRunningTaskInfo>> longRunningTaskIds) {
             LongRunningTaskIds=longRunningTaskIds??throw new ArgumentNullException(nameof(longRunningTaskIds));

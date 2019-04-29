@@ -26,13 +26,12 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class AnalyzeFileSystemResult : IAnalyzeFileSystemResult {
-        public AnalyzeFileSystemResult() : this(new DirectoryInfoExs(), new FileInfoExs(), new List<Exception>()) {
-        }
+        public AnalyzeFileSystemResult() :this(new DirectoryInfoExs() , new FileInfoExs(), new List<Exception>()) { }
 
         public AnalyzeFileSystemResult(IDirectoryInfoExs directoryInfoExs, IFileInfoExs fileInfoExs, IList<Exception> exceptions) {
-            DirectoryInfoExs=directoryInfoExs??throw new ArgumentNullException(nameof(directoryInfoExs));
-            FileInfoExs=fileInfoExs??throw new ArgumentNullException(nameof(fileInfoExs));
-            Exceptions=exceptions??throw new ArgumentNullException(nameof(exceptions));
+            DirectoryInfoExs=directoryInfoExs;
+            FileInfoExs=fileInfoExs;
+            Exceptions=exceptions;
         }
 
         public IDirectoryInfoExs DirectoryInfoExs { get; set; }
@@ -45,10 +44,10 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class AnalyzeFileSystemResults : IAnalyzeFileSystemResults {
-        public AnalyzeFileSystemResults() : this(new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult>()) { }
+        public AnalyzeFileSystemResults() :this(new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult>() { { new Id<LongRunningTaskInfo>(), new AnalyzeFileSystemResult()} }) { }
 
         public AnalyzeFileSystemResults(ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult> AnalyzeFileSystemResultsCOD) {
-            this.AnalyzeFileSystemResultsCOD=AnalyzeFileSystemResultsCOD??throw new ArgumentNullException(nameof(AnalyzeFileSystemResultsCOD));
+            this.AnalyzeFileSystemResultsCOD=AnalyzeFileSystemResultsCOD;
         }
 
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult> AnalyzeFileSystemResultsCOD { get; set; }
@@ -57,7 +56,7 @@ namespace ATAP.Utilities.FileSystem {
     public interface IAnalyzeFileSystemProgress {
         bool Completed { get; set; }
         int DeepestDirectoryTree { get; set; }
-        List<Exception> Exceptions { get; set; }
+        IList<Exception> Exceptions { get; set; }
         long LargestFile { get; set; }
         int NumberOfDirectories { get; set; }
         int NumberOfFiles { get; set; }
@@ -65,20 +64,21 @@ namespace ATAP.Utilities.FileSystem {
 
 
     public class AnalyzeFileSystemProgress : IAnalyzeFileSystemProgress {
-        public AnalyzeFileSystemProgress() : this(0, 0, 0, 0, new List<Exception>()) { }
+        public AnalyzeFileSystemProgress():this(false,-1,-1,-1,-1, new List<Exception>()) { }
 
-        public AnalyzeFileSystemProgress(int numberOfDirectories, int numberOfFiles, int deepestDirectoryTree, long largestFile, List<Exception> exceptions) {
+        public AnalyzeFileSystemProgress(bool completed, int numberOfDirectories, int numberOfFiles, int deepestDirectoryTree, long largestFile, IList<Exception> exceptions) {
+            Completed=completed;
             NumberOfDirectories=numberOfDirectories;
             NumberOfFiles=numberOfFiles;
             DeepestDirectoryTree=deepestDirectoryTree;
             LargestFile=largestFile;
-            Exceptions=exceptions??throw new ArgumentNullException(nameof(exceptions));
+            Exceptions=exceptions;
         }
         public bool Completed { get; set; }
         public int NumberOfDirectories { get; set; }
         public int NumberOfFiles { get; set; }
         public int DeepestDirectoryTree { get; set; }
         public long LargestFile { get; set; }
-        public List<Exception> Exceptions { get; set; }
+        public IList<Exception> Exceptions { get; set; }
     }
 }

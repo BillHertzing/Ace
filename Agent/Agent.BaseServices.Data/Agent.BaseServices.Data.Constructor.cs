@@ -27,12 +27,6 @@ namespace Ace.Agent.BaseServices {
 
             // At this point, appHost.AppSettings has all of the data read in from the various Configuration sources (environment, command line, indirect file, direct file, compiled in)
 
-            // Blazor requires the delivery of static files ending in certain file suffixes.
-            // SS disallows many of these by default, so here we tell SS to allow certain file suffixes
-            appHost.Config.AllowFileExtensions.Add("dll");
-            appHost.Config.AllowFileExtensions.Add("json");
-            appHost.Config.AllowFileExtensions.Add("pdb");
-
             // If the Redis configuration key exists, register Redis as a name:value pair cache
             if (appHost.AppSettings.Exists(configKeyPrefix+configKeyRedisConnectionString)) {
                 var redisConnectionString = appHost.AppSettings.GetString(configKeyPrefix+configKeyRedisConnectionString);
@@ -71,46 +65,19 @@ namespace Ace.Agent.BaseServices {
             // ToDo: Instead of single keys, a magic function that reads the set of keys in each , recursively, and compares those sets, and the values of the keys present in both
             // At this point the Redis cache should match the current run's AppConfigurationSettings 
 
-
-
             // Populate the ConfigurationData in the BaseServicesData instance
+            ConstructConfigurationData();
 
-     ConstructConfigurationData();
             // Populate the ComputerInventory structure with localhost data
             ConstructComputerInventory();
+            // Populate the UserData in the BaseServicesData instance
+            ConstructUserData();
+            // Populate the AuthenticationData structure
+            ConstructAuthenticationData( appHost);
+            // Populate the AuthorizationData structure
+            ConstructAuthorizationData( appHost);
 
-			//ToDo: move this to BaseServices.Data.AuthenticationAndAuthorization
-			// ConstructAuthenticationAndAuthorization();
-            // See if the MySQL configuration key exists, if so register MySQL as the RDBMS behind ORMLite
-            if (appHost.AppSettings
-                .Exists(configKeyPrefix+configKeyMySqlConnectionString)) {
-                var appSettingsConfigValueMySqlConnectionString = appHost.AppSettings
-                    .GetString(configKeyPrefix+
-                    configKeyMySqlConnectionString);
-                // Configure OrmLiteConnectionFactory and register it
-                Container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(appSettingsConfigValueMySqlConnectionString, MySqlDialect.Provider));
-                // Access the OrmLiteConnectionFactory
-                var dbFactory = Container.TryResolve<IDbConnectionFactory>();
-                // Try to open the RDBMS to ensure the RDBMS is listening and the connection string is correct
-                try {
-                    using (var db = dbFactory.Open()) {
-                        // do nothing, just open a connection to the registered  RDBMS
-                        Log.Debug($"In BaseServicesData .ctor: Successfully opened connection to RDBMS");
-                    }
-                }
-                catch (Exception e) {
-                    Log.Debug($"In BaseServicesData .ctor: Exception when trying to connect to the MySQL RDBMS: Message = {e.Message}");
-                    throw new Exception(MySqlCannotConnectExceptionMessage, e);
-                }
-            } else {
-                throw new NotImplementedException(MySqlConnectionStringKeyNotFoundExceptionMessage);
-            }
-			            // Register an Auth Repository
-            Container.Register<IAuthRepository>(c => new OrmLiteAuthRepository(c.Resolve<IDbConnectionFactory>()));
-            /// Create the  UserAuth and UserAuthDetails tables in the RDBMS if they do not already exist
-            Container.Resolve<IAuthRepository>().InitSchema();
-
-			// ToDo: Move this region to Agent.BaseServices.Data.Timers
+            // ToDo: Move this region to Agent.BaseServices.Data.Timers
             // Add a dictionary of timers to the IoC container
             #region create a dictionary of timers and register it in the IoC container
             var timers = new Dictionary<string, System.Timers.Timer>();
@@ -123,8 +90,9 @@ namespace Ace.Agent.BaseServices {
             // Add a timer to check the status of long running tasks, and attach a callback to the timer
             #region create longRunningTasksCheckTimer, connect callback, and store in container's timers
             Log.Debug("In BaseServicesData .ctor: creating longRunningTasksCheckTimer");
-            var longRunningTasksCheckTimer = new System.Timers.Timer(10000);
-            longRunningTasksCheckTimer.AutoReset=true;
+            var longRunningTasksCheckTimer = new System.Timers.Timer(10000) {
+                AutoReset=true
+            };
             longRunningTasksCheckTimer.Elapsed+=new ElapsedEventHandler(LongRunningTasksCheckTimer_Elapsed);
             timers.Add(LongRunningTasksCheckTimerName, longRunningTasksCheckTimer);
             #endregion create longRunningTasksCheckTimer, connect callback, and store in container's timers
@@ -189,12 +157,12 @@ namespace Ace.Agent.BaseServices {
             var gm = gmb.Build();
             GatewayMonitors.GatewayMonitorColl.Add("Manual", gm);
 
-            //   GatewayMonitors.GatewayMonitorColl.Add("Manual", new GatewayMonitorBuilder().AddName("GoogleMapsGeoCoding").AddGatewayEntryMonitor(new GatewayEntryMonitorBuilder().AddName("GeoCode").Build()).Build());
+            // GatewayMonitors.GatewayMonitorColl.Add("Manual", new GatewayMonitorBuilder().AddName("GoogleMapsGeoCoding").AddGatewayEntryMonitor(new GatewayEntryMonitorBuilder().AddName("GeoCode").Build()).Build());
 
             // Store the collection of Gateway Monitor in the Base Data structure
 
             // Populate the specific per-user data instance for this user
-			ConstructUserData();
+            ConstructUserData();
 
             // ToDo: support AppSettings to control the enable/disable of Postman
             // Enable Postman integration
@@ -209,14 +177,13 @@ namespace Ace.Agent.BaseServices {
                                         allowedHeaders: "content-type, Authorization, Accept"));
 
             // ToDo: Document clearly the metadata feature cannot be allowed on /, because it messes up the default returning f the content of index.html
-            
-            appHost.Config.EnableFeatures = Feature.All.Remove(Feature.Metadata);
-            
-			
-			
+            appHost.Config.EnableFeatures=Feature.All.Remove(Feature.Metadata);
+
+
+
             // Turn debug mode for the ACEAgent depending if running in debug mode or release mode
 #if Debug
-      AppHost.Config.DebugMode = true;
+      appHost.Config.DebugMode = true;
 #else
             appHost.Config
                 .DebugMode=false;
@@ -239,20 +206,7 @@ namespace Ace.Agent.BaseServices {
             Log.Debug("Leaving BaseServicesData ctor");
         }
     */
-        // ToDo: figure out how to create/access a method to add a task to the LongRuningTasks dictionary in the container
-        /*
-            public Id<LongRunningTaskInfo> AddLongRunningTask(LongRunningTaskInfo longRunningTaskInfo, bool newID = true) {
-                if (newID)
-                    longRunningTaskInfo.ID=Guid.NewGuid();
-                Container.Resolve(typeof(Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>)) as Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>.Add(longRunningTaskInfo.ID, longRunningTaskInfo);
-                return longRunningTaskInfo.ID;
-            }
-            public Id<LongRunningTaskInfo> AddLongRunningTask(Task task) {
-                LongRunningTaskInfo longRunningTaskInfo = new LongRunningTaskInfo(Id<LongRunningTaskInfo>.NewGuid(), task);
-                Container.Resolve(typeof(Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>)) as Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>.Add(longRunningTaskInfo.ID, longRunningTaskInfo);
-                return longRunningTaskInfo.ID;
-            }
-            */
+ 
 
         #region EventHandlers
         void LongRunningTasksCheckTimer_Elapsed(object sender, ElapsedEventArgs e) {
@@ -279,8 +233,8 @@ namespace Ace.Agent.BaseServices {
 
         #region String Constants:Exception Messages
         const string RedisNotRunningExceptionMessage = "Redis Connection string found, but Redis not running as cacheClient.";
-        const string RedisConnectionStringKeyNotFoundExceptionMessage = "RedisConnectionString Key not found in Application's Configuration settings and no other ICache implemenation is supported. Add the RedisConnectionString Key and Value to the Application Configuration, and retry.";
-        const string MySqlConnectionStringKeyNotFoundExceptionMessage = "MySqlConnectionString Key not found in Application's Configuration settings and no other ORMLite implemenation is supported. Add the MySqlConnectionString Key and Value to the Application Configuration, and retry.";
+        const string RedisConnectionStringKeyNotFoundExceptionMessage = "RedisConnectionString Key not found in Application's Configuration settings and no other ICache implementation is supported. Add the RedisConnectionString Key and Value to the Application Configuration, and retry.";
+        const string MySqlConnectionStringKeyNotFoundExceptionMessage = "MySqlConnectionString Key not found in Application's Configuration settings and no other ORMLite implementation is supported. Add the MySqlConnectionString Key and Value to the Application Configuration, and retry.";
         const string ListeningServiceNotRunningInnerExceptionMessage = "No connection could be made because the target machine actively refused it ";
         const string MySqlCannotConnectExceptionMessage = "MySqlConnectionString Key found, but cannot connect to it. Ensure that the service is running, and that you have supplied the correct credentials";
 

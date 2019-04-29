@@ -28,6 +28,7 @@ namespace ATAP.Utilities.ComputerInventory {
                 //ToDo: read actual HW, currently specific for laptop
                 case "localhost":
                     // create the partitions COD for drive 2
+                    //Log.Debug("in ComputerHardware.FromComputerName initializer");
                     var partitionInfoExs = new PartitionInfoExs();
                     PartitionInfoEx PIE1 = new PartitionInfoEx() { DriveLetters=new List<string>() { "E" }, Exceptions=new List<Exception>(), PartitionDbId=new Id<PartitionInfoEx>(Guid.Empty), PartitionId=new Id<PartitionInfoEx>(Guid.NewGuid()), Size=1000000000000 };
                     partitionInfoExs.PartitionInfoExCOD.Add(PIE1.PartitionId, PIE1);
@@ -42,7 +43,7 @@ namespace ATAP.Utilities.ComputerInventory {
                     };
                     var diskDriveInfoExs = new DiskDriveInfoExs();
                     diskDriveInfoExs.DiskDriveInfoExCOD.Add(DDIE0.DiskDriveId, DDIE0);
-                    lCH=new ComputerHardware(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic), new List<CPUMaker> { CPUMaker.Intel }, diskDriveInfoExs, new TimeBlock(DateTime.UtcNow, true));
+                    lCH=new ComputerHardware(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic), new List<CPUMaker> { CPUMaker.Intel }, diskDriveInfoExs.DiskDriveInfoExCOD, new TimeBlock(DateTime.UtcNow, true));
                     break;
 
                 default:
@@ -53,20 +54,4 @@ namespace ATAP.Utilities.ComputerInventory {
         }
     }
 }
-/*
- * 
-  // Created on demand to match a specific computerName
-        public ComputerHardware(string computerName) {
-            if (!computerName.Trim().ToLowerInvariant().Equals("localhost"))
-                throw new NotImplementedException("ComputerName other than localhost is not supported");
-            // ToDo: Query WMI or Configuration data for real details
-            // Temp: hardcode for laptop
-            // Drive 0 for laptop
-            DiskDriveInfoEx DDIE0 = new DiskDriveInfoEx() {
-                DiskDriveId=new Id<DiskDriveInfoEx>(Guid.NewGuid()),
-            DiskDriveDbId =new Id<DiskDriveInfoEx>(Guid.Empty) ,
-            };
-            var diskDriveInfoExs = new DiskDriveInfoExs() { new DiskDriveInfoEx(), new DiskDriveInfoEx(), new DiskDriveInfoEx() };
-            new ComputerHardware(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic), new List<CPUMaker> { CPUMaker.Intel }, diskInfoExs, new TimeBlock(DateTime.UtcNow, true));
-        }
- * */
+

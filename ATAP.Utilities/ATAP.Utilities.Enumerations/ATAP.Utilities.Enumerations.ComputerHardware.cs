@@ -99,6 +99,8 @@ namespace ATAP.Utilities.ComputerHardware.Enumerations {
 
     public enum PartitionFileSystem {
         //ToDo: Add [LocalizedDescription("CRC32", typeof(Resource))]
+        [Description("Generic")]
+        Generic,
         [Description("NTFS")]
         NTFS,
         [Description("FAT32")]

@@ -15,7 +15,10 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
 
 
     public class DiskDriveAnalysis {
-
+        public static class ExceptionErrorMessages {
+            // ToDo: eventually localize these
+            public const string Placeholder = "placeholder";
+        }
         public DiskDriveAnalysis(ILog log) {
             Log=log??throw new ArgumentNullException(nameof(log));
         }
@@ -26,7 +29,7 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
 
         // populate a list of DiskDriveInfoEx with information about the actual drives connected to the computer
         // pass in an Action that will populate a storage location with the information
-        public async Task PopulateDiskInfoExs(IEnumerable<int> diskNumbers, CrudType cRUD, Action<IEnumerable<DiskDriveInfoEx>> storeDiskInfoExs, Action<DiskDriveInfoEx> storePartitionInfoExs) {
+        public async Task PopulateDiskInfoExs(IEnumerable<int?> diskNumbers, CrudType cRUD, Action<IEnumerable<DiskDriveInfoEx>> storeDiskInfoExs, Action<DiskDriveInfoEx> storePartitionInfoExs) {
             Log.Debug($"starting PopulateDiskInfoExs: cRUD = {cRUD.ToString()}, diskNumbers = {diskNumbers.Dump()}");
             var diskInfoExs = new List<DiskDriveInfoEx>();
             foreach (var d in diskNumbers) {
@@ -62,7 +65,7 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
             switch (diskInfoEx.DriveNumber) {
                 case 2: {
                     var partitionInfoEx = new PartitionInfoEx() {
-                        PartitionDbId = new Id<PartitionInfoEx>(),
+                        PartitionDbId=new Id<PartitionInfoEx>(),
                         DriveLetters=new List<string>() { "E" }
                     };
                     partitionInfoExs.Add(partitionInfoEx);
@@ -88,10 +91,10 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
             }
             Log.Debug($"leaving DiskInfoExsToDB");
         }
-        public async Task AnalyzeDiskDrive(IDiskDriveSpecifier diskDriveSpecifier, IAnalyzeDiskDriveResult diskDriveAnalysisResult, IAnalyzeDiskDriveProgress diskDriveAnalysisProgress ,CancellationToken cancellationToken, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
+        public async Task AnalyzeDiskDrive(IDiskDriveSpecifier diskDriveSpecifier, IAnalyzeDiskDriveResult diskDriveAnalysisResult, IAnalyzeDiskDriveProgress diskDriveAnalysisProgress, CancellationToken cancellationToken, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
             Log.Debug($"starting AnalyzeDiskDrive: diskDriveSpecifier = {diskDriveSpecifier.ToString()}");
             // ToDo: Add validation to ensure the diskDriveSpecifier corresponds to a valid member of the DiskInfoExs 
-            Task task = new Task( ()=> { Thread.Sleep(1); }, cancellationToken);
+            Task task = new Task(() => { Thread.Sleep(1); }, cancellationToken);
 
             Log.Debug($"leaving AnalyzeDiskDrive");
         }

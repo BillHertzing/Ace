@@ -13,13 +13,10 @@ namespace ATAP.Utilities.DiskDrive {
         IDiskDriveInfoExs DiskDriveInfoExs { get; set; }
         IPartitionInfoExs PartitionInfoExs { get; set; }
 
-        //     ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupDiskDriveAnalysisResultsCOD { get; set; }
-        //     ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DiskDriveInfoExs> DiskDriveInfoExCOD { get; set; }
-        //     ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, PartitionInfoExs> PartitionInfoExCOD { get; set; }
         IList<Exception> Exceptions { get; set; }
     }
     public class AnalyzeDiskDriveResult : IAnalyzeDiskDriveResult {
-        public AnalyzeDiskDriveResult() : this(new DiskDriveInfoExs(), new PartitionInfoExs(), new List<Exception>()) { }
+        public AnalyzeDiskDriveResult() :this(new DiskDriveInfoExs(), new PartitionInfoExs(),  new List<Exception>()) { }
 
         public AnalyzeDiskDriveResult(IDiskDriveInfoExs diskDriveInfoExs, IPartitionInfoExs partitionInfoExs, IList<Exception> exceptions) {
             DiskDriveInfoExs=diskDriveInfoExs??throw new ArgumentNullException(nameof(diskDriveInfoExs));
@@ -37,10 +34,10 @@ namespace ATAP.Utilities.DiskDrive {
     }
 
     public class AnalyzeDiskDriveResults : IAnalyzeDiskDriveResults {
-        public AnalyzeDiskDriveResults() : this(new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveResult>()) { }
+        public AnalyzeDiskDriveResults() :this(new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveResult>()) { }
 
-        public AnalyzeDiskDriveResults(ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveResult> AnalyzeDiskDriveResultsCOD) {
-            this.AnalyzeDiskDriveResultsCOD=AnalyzeDiskDriveResultsCOD??throw new ArgumentNullException(nameof(AnalyzeDiskDriveResultsCOD));
+        public AnalyzeDiskDriveResults(ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveResult> analyzeDiskDriveResultsCOD) {
+            AnalyzeDiskDriveResultsCOD=analyzeDiskDriveResultsCOD??throw new ArgumentNullException(nameof(analyzeDiskDriveResultsCOD));
         }
 
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveResult> AnalyzeDiskDriveResultsCOD { get; set; }
@@ -55,8 +52,7 @@ namespace ATAP.Utilities.DiskDrive {
     }
 
     public class AnalyzeDiskDriveProgress : IAnalyzeDiskDriveProgress {
-        public AnalyzeDiskDriveProgress() : this(false, 0, 0, 0, new List<Exception>()) {
-        }
+        public AnalyzeDiskDriveProgress() :this(false, -1, -1, -1, new List<Exception>()) {}
 
         public AnalyzeDiskDriveProgress(bool completed, int numberOfDiskDrives, int largestNumberOfPartitions, long largestPartition, List<Exception> exceptions) {
             Completed=completed;

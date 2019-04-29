@@ -8,111 +8,114 @@ using System;
 using System.Collections.Generic;
 
 namespace ATAP.Utilities.DiskDrive {
+
+
     public interface IDiskDriveInfoEx {
+        bool Equals(object obj);
+        int GetHashCode();
+
         Id<DiskDriveInfoEx> DiskDriveDbId { get; set; }
         Id<DiskDriveInfoEx> DiskDriveId { get; set; }
         DiskDriveMaker DiskDriveMaker { get; set; }
         DiskDriveType DiskDriveType { get; set; }
-        int DriveNumber { get; set; }
-        IEnumerable<Exception> Exceptions { get; set; }
+        int? DriveNumber { get; set; }
+        IList<Exception> Exceptions { get; set; }
         PartitionInfoExs PartitionInfoExs { get; set; }
         string SerialNumber { get; set; }
-
-        bool Equals(DiskDriveInfoEx other);
-        bool Equals(object obj);
-        int GetHashCode();
     }
-
     public class DiskDriveInfoEx : IEquatable<DiskDriveInfoEx>, IDiskDriveInfoEx {
 
-        public DiskDriveInfoEx() {
-        }
-        public DiskDriveInfoEx(int driveNumber, Id<DiskDriveInfoEx> diskDriveId, Id<DiskDriveInfoEx> diskDriveDbId, DiskDriveMaker diskDriveMaker, DiskDriveType diskDriveType, string serialNumber, PartitionInfoExs partitionInfoExs, IEnumerable<Exception> exceptions) {
-            DriveNumber=driveNumber;
+        public DiskDriveInfoEx() : this(new Id<DiskDriveInfoEx>(), new Id<DiskDriveInfoEx>(), DiskDriveMaker.Generic, string.Empty, DiskDriveType.Generic, null, new PartitionInfoExs(), new List<Exception>()) { }
+
+        public DiskDriveInfoEx(Id<DiskDriveInfoEx> diskDriveId, Id<DiskDriveInfoEx> diskDriveDbId, DiskDriveMaker diskDriveMaker, string serialNumber, DiskDriveType diskDriveType, int? driveNumber, PartitionInfoExs partitionInfoExs, IList<Exception> exceptions) {
+
             DiskDriveId=diskDriveId;
             DiskDriveDbId=diskDriveDbId;
             DiskDriveMaker=diskDriveMaker;
-            DiskDriveType=diskDriveType;
             SerialNumber=serialNumber??throw new ArgumentNullException(nameof(serialNumber));
+            DiskDriveType=diskDriveType;
+            DriveNumber=driveNumber;
             PartitionInfoExs=partitionInfoExs??throw new ArgumentNullException(nameof(partitionInfoExs));
             Exceptions=exceptions??throw new ArgumentNullException(nameof(exceptions));
+        }
+
+        public Id<DiskDriveInfoEx> DiskDriveId { get; set; }
+        public Id<DiskDriveInfoEx> DiskDriveDbId { get; set; }
+        public DiskDriveMaker DiskDriveMaker { get; set; }
+        public string SerialNumber { get; set; }
+        public DiskDriveType DiskDriveType { get; set; }
+        public int? DriveNumber { get; set; }
+        public PartitionInfoExs PartitionInfoExs { get; set; }
+        public IList<Exception> Exceptions { get; set; }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as DiskDriveInfoEx);
+        }
+
+        public bool Equals(DiskDriveInfoEx other) {
+            return other!=null&&
+                   DiskDriveId.Equals(other.DiskDriveId)&&
+                   DiskDriveDbId.Equals(other.DiskDriveDbId)&&
+                   DiskDriveMaker==other.DiskDriveMaker&&
+                   SerialNumber==other.SerialNumber&&
+                   DiskDriveType==other.DiskDriveType&&
+                   EqualityComparer<int?>.Default.Equals(DriveNumber, other.DriveNumber)&&
+                   EqualityComparer<PartitionInfoExs>.Default.Equals(PartitionInfoExs, other.PartitionInfoExs)&&
+                   EqualityComparer<IList<Exception>>.Default.Equals(Exceptions, other.Exceptions);
+        }
+
+        public override int GetHashCode() {
+            var hashCode = 1057818730;
+            hashCode=hashCode*-1521134295+EqualityComparer<Id<DiskDriveInfoEx>>.Default.GetHashCode(DiskDriveId);
+            hashCode=hashCode*-1521134295+EqualityComparer<Id<DiskDriveInfoEx>>.Default.GetHashCode(DiskDriveDbId);
+            hashCode=hashCode*-1521134295+DiskDriveMaker.GetHashCode();
+            hashCode=hashCode*-1521134295+EqualityComparer<string>.Default.GetHashCode(SerialNumber);
+            hashCode=hashCode*-1521134295+DiskDriveType.GetHashCode();
+            hashCode=hashCode*-1521134295+EqualityComparer<int?>.Default.GetHashCode(DriveNumber);
+            hashCode=hashCode*-1521134295+EqualityComparer<PartitionInfoExs>.Default.GetHashCode(PartitionInfoExs);
+            hashCode=hashCode*-1521134295+EqualityComparer<IList<Exception>>.Default.GetHashCode(Exceptions);
+            return hashCode;
+        }
+
+        public static bool operator ==(DiskDriveInfoEx left, DiskDriveInfoEx right) {
+            return EqualityComparer<DiskDriveInfoEx>.Default.Equals(left, right);
         }
 
         public static bool operator !=(DiskDriveInfoEx left, DiskDriveInfoEx right) {
             return !(left==right);
         }
-        public static bool operator ==(DiskDriveInfoEx left, DiskDriveInfoEx right) {
-            return EqualityComparer<DiskDriveInfoEx>.Default.Equals(left, right);
-        }
-
-        public override bool Equals(object obj) {
-            return Equals(obj as DiskDriveInfoEx);
-        }
-        public bool Equals(DiskDriveInfoEx other) {
-            return other!=null&&
-                   DriveNumber==other.DriveNumber&&
-                   DiskDriveDbId.Equals(other.DiskDriveDbId)&&
-                   DiskDriveMaker==other.DiskDriveMaker&&
-                   DiskDriveType==other.DiskDriveType&&
-                   SerialNumber==other.SerialNumber&&
-                   EqualityComparer<PartitionInfoExs>.Default.Equals(PartitionInfoExs, other.PartitionInfoExs)&&
-                   EqualityComparer<IEnumerable<Exception>>.Default.Equals(Exceptions, other.Exceptions);
-        }
-        public override int GetHashCode() {
-            var hashCode = -2144340839;
-            hashCode=hashCode*-1521134295+DriveNumber.GetHashCode();
-            hashCode=hashCode*-1521134295+EqualityComparer<Id<DiskDriveInfoEx>>.Default.GetHashCode(DiskDriveDbId);
-            hashCode=hashCode*-1521134295+DiskDriveMaker.GetHashCode();
-            hashCode=hashCode*-1521134295+DiskDriveType.GetHashCode();
-            hashCode=hashCode*-1521134295+EqualityComparer<string>.Default.GetHashCode(SerialNumber);
-            hashCode=hashCode*-1521134295+EqualityComparer<PartitionInfoExs>.Default.GetHashCode(PartitionInfoExs);
-            hashCode=hashCode*-1521134295+EqualityComparer<IEnumerable<Exception>>.Default.GetHashCode(Exceptions);
-            return hashCode;
-        }
-
-        public Id<DiskDriveInfoEx> DiskDriveDbId { get; set; }
-        public Id<DiskDriveInfoEx> DiskDriveId { get; set; }
-        public DiskDriveMaker DiskDriveMaker { get; set; }
-        public DiskDriveType DiskDriveType { get; set; }
-        public int DriveNumber { get; set; }
-        public IEnumerable<Exception> Exceptions { get; set; }
-        public PartitionInfoExs PartitionInfoExs { get; set; }
-        public string SerialNumber { get; set; }
-
     }
 
     public interface IPartitionInfoEx {
+        bool Equals(object obj);
+        int GetHashCode();
+
         IEnumerable<string> DriveLetters { get; set; }
-        IEnumerable<Exception> Exceptions { get; set; }
+        IList<Exception> Exceptions { get; set; }
         Id<PartitionInfoEx> PartitionDbId { get; set; }
         PartitionFileSystem PartitionFileSystem { get; set; }
         Id<PartitionInfoEx> PartitionId { get; set; }
-        long Size { get; set; }
-
-        bool Equals(object obj);
-        bool Equals(PartitionInfoEx other);
-        int GetHashCode();
+        long? Size { get; set; }
     }
-
     public class PartitionInfoEx : IEquatable<PartitionInfoEx>, IPartitionInfoEx {
-        public PartitionInfoEx() {
+        public PartitionInfoEx() : this(new Id<PartitionInfoEx>(), new Id<PartitionInfoEx>(), new List<String>(), PartitionFileSystem.Generic, new List<Exception>(), null) {
         }
 
-        public PartitionInfoEx(IEnumerable<string> driveLetters, IEnumerable<Exception> exceptions, Id<PartitionInfoEx> partitionDbId, PartitionFileSystem partitionFileSystem, Id<PartitionInfoEx> partitionId, long size) {
-            DriveLetters=driveLetters??throw new ArgumentNullException(nameof(driveLetters));
-            Exceptions=exceptions??throw new ArgumentNullException(nameof(exceptions));
-            PartitionDbId=partitionDbId;
-            PartitionFileSystem=partitionFileSystem;
+        public PartitionInfoEx(Id<PartitionInfoEx> partitionId, Id<PartitionInfoEx> partitionDbId, IEnumerable<string> driveLetters, PartitionFileSystem partitionFileSystem, IList<Exception> exceptions, long? size) {
             PartitionId=partitionId;
+            PartitionDbId=partitionDbId;
+            DriveLetters=driveLetters??throw new ArgumentNullException(nameof(driveLetters));
+            PartitionFileSystem=partitionFileSystem;
+            Exceptions=exceptions??throw new ArgumentNullException(nameof(exceptions));
             Size=size;
         }
 
-        public IEnumerable<string> DriveLetters { get; set; }
-        public IEnumerable<Exception> Exceptions { get; set; }
-        public Id<PartitionInfoEx> PartitionDbId { get; set; }
-        public PartitionFileSystem PartitionFileSystem { get; set; }
         public Id<PartitionInfoEx> PartitionId { get; set; }
-        public long Size { get; set; }
+        public Id<PartitionInfoEx> PartitionDbId { get; set; }
+        public IEnumerable<string> DriveLetters { get; set; }
+        public PartitionFileSystem PartitionFileSystem { get; set; }
+        public IList<Exception> Exceptions { get; set; }
+        public long? Size { get; set; }
 
         public override bool Equals(object obj) {
             return Equals(obj as PartitionInfoEx);
@@ -120,22 +123,22 @@ namespace ATAP.Utilities.DiskDrive {
 
         public bool Equals(PartitionInfoEx other) {
             return other!=null&&
-                   EqualityComparer<IEnumerable<string>>.Default.Equals(DriveLetters, other.DriveLetters)&&
-                   EqualityComparer<IEnumerable<Exception>>.Default.Equals(Exceptions, other.Exceptions)&&
-                   PartitionDbId.Equals(other.PartitionDbId)&&
-                   PartitionFileSystem==other.PartitionFileSystem&&
                    PartitionId.Equals(other.PartitionId)&&
-                   Size==other.Size;
+                   PartitionDbId.Equals(other.PartitionDbId)&&
+                   EqualityComparer<IEnumerable<string>>.Default.Equals(DriveLetters, other.DriveLetters)&&
+                   PartitionFileSystem==other.PartitionFileSystem&&
+                   EqualityComparer<IList<Exception>>.Default.Equals(Exceptions, other.Exceptions)&&
+                   EqualityComparer<long?>.Default.Equals(Size, other.Size);
         }
 
         public override int GetHashCode() {
-            var hashCode = -1093398953;
-            hashCode=hashCode*-1521134295+EqualityComparer<IEnumerable<string>>.Default.GetHashCode(DriveLetters);
-            hashCode=hashCode*-1521134295+EqualityComparer<IEnumerable<Exception>>.Default.GetHashCode(Exceptions);
-            hashCode=hashCode*-1521134295+EqualityComparer<Id<PartitionInfoEx>>.Default.GetHashCode(PartitionDbId);
-            hashCode=hashCode*-1521134295+PartitionFileSystem.GetHashCode();
+            var hashCode = 508343711;
             hashCode=hashCode*-1521134295+EqualityComparer<Id<PartitionInfoEx>>.Default.GetHashCode(PartitionId);
-            hashCode=hashCode*-1521134295+Size.GetHashCode();
+            hashCode=hashCode*-1521134295+EqualityComparer<Id<PartitionInfoEx>>.Default.GetHashCode(PartitionDbId);
+            hashCode=hashCode*-1521134295+EqualityComparer<IEnumerable<string>>.Default.GetHashCode(DriveLetters);
+            hashCode=hashCode*-1521134295+PartitionFileSystem.GetHashCode();
+            hashCode=hashCode*-1521134295+EqualityComparer<IList<Exception>>.Default.GetHashCode(Exceptions);
+            hashCode=hashCode*-1521134295+EqualityComparer<long?>.Default.GetHashCode(Size);
             return hashCode;
         }
 
@@ -153,9 +156,7 @@ namespace ATAP.Utilities.DiskDrive {
     }
 
     public class PartitionInfoExs : IPartitionInfoExs {
-        public PartitionInfoExs() {
-            PartitionInfoExCOD=new ConcurrentObservableDictionary<Id<PartitionInfoEx>, PartitionInfoEx>();
-        }
+        public PartitionInfoExs() : this (new ConcurrentObservableDictionary<Id<PartitionInfoEx>, PartitionInfoEx>()) {}
 
         public PartitionInfoExs(ConcurrentObservableDictionary<Id<PartitionInfoEx>, PartitionInfoEx> partitionInfoExCOD) {
             PartitionInfoExCOD=partitionInfoExCOD??throw new ArgumentNullException(nameof(partitionInfoExCOD));
@@ -169,12 +170,10 @@ namespace ATAP.Utilities.DiskDrive {
     }
 
     public class DiskDriveInfoExs : IDiskDriveInfoExs {
-        public DiskDriveInfoExs() {
-            DiskDriveInfoExCOD=new ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx>();
-        }
+        public DiskDriveInfoExs() :this(new ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx>()) {}
 
-        public DiskDriveInfoExs(ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx> DiskDriveInfoExCOD) {
-            DiskDriveInfoExCOD=DiskDriveInfoExCOD??throw new ArgumentNullException(nameof(DiskDriveInfoExCOD));
+        public DiskDriveInfoExs(ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx> diskDriveInfoExCOD) {
+            DiskDriveInfoExCOD=diskDriveInfoExCOD??throw new ArgumentNullException(nameof(diskDriveInfoExCOD));
         }
 
         public ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, DiskDriveInfoEx> DiskDriveInfoExCOD { get; set; }
@@ -191,9 +190,7 @@ namespace ATAP.Utilities.DiskDrive {
     }
 
     public class DiskDrivePartitionIdentifier : IEquatable<DiskDrivePartitionIdentifier>, IDiskDrivePartitionIdentifier {
-        public DiskDrivePartitionIdentifier() {
-            DiskDriveInfoPartitionInfoCOD=new ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, IPartitionInfoExs>();
-        }
+        public DiskDrivePartitionIdentifier() :this (new ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, IPartitionInfoExs>()) {}
 
         public DiskDrivePartitionIdentifier(ConcurrentObservableDictionary<Id<DiskDriveInfoEx>, IPartitionInfoExs> diskDriveInfoPartitionInfoCOD) {
             DiskDriveInfoPartitionInfoCOD=diskDriveInfoPartitionInfoCOD??throw new ArgumentNullException(nameof(diskDriveInfoPartitionInfoCOD));
@@ -230,14 +227,11 @@ namespace ATAP.Utilities.DiskDrive {
     }
 
     public class DiskDriveSpecifier : IEquatable<DiskDriveSpecifier>, IDiskDriveSpecifier {
-        public DiskDriveSpecifier() {
-            ComputerName=string.Empty;
-            DiskDriveNumber=null;
-            DiskDrivePartitionIdentifier=new DiskDrivePartitionIdentifier();
-        }
+        public DiskDriveSpecifier() :this (string.Empty, null, new DiskDrivePartitionIdentifier()) {}
 
         public DiskDriveSpecifier(string computerName, int? diskDriveNumber, DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) {
             ComputerName=computerName??throw new ArgumentNullException(nameof(computerName));
+            DiskDriveNumber=diskDriveNumber;
             DiskDrivePartitionIdentifier=diskDrivePartitionIdentifier??throw new ArgumentNullException(nameof(diskDrivePartitionIdentifier));
         }
 

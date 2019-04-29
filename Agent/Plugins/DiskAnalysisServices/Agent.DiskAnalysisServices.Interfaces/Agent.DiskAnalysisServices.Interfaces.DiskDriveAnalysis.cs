@@ -18,7 +18,6 @@ using Ace.Agent.BaseServices;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.DiskDriveAnalysis;
-using ATAP.Utilities.DiskDrive;
 
 namespace Ace.Agent.DiskAnalysisServices {
 
@@ -59,20 +58,14 @@ namespace Ace.Agent.DiskAnalysisServices {
             var baseServicesData = HostContext.TryResolve<BaseServicesData>();
             var diskAnalysisServicesData =  HostContext.TryResolve<DiskAnalysisServicesData>();
  
-            LongRunningTaskInfo longRunningTaskInfo = new LongRunningTaskInfo() {
-                LRTId=longRunningTaskID,
-                CTSId=cancellationTokenSourceId,
-                CT=cancellationToken
-            };
-
             // Create storage for the results and progress
             var analyzeDiskDriveResult = new AnalyzeDiskDriveResult();
             diskAnalysisServicesData.AnalyzeDiskDriveResultsCOD.Add(longRunningTaskID, analyzeDiskDriveResult);
             var analyzeDiskDriveProgress = new AnalyzeDiskDriveProgress();
-            //diskAnalysisServicesData.AnalyzeDiskDriveProgressCOD.Add(longRunningTaskID, analyzeDiskDriveProgress);
+            diskAnalysisServicesData.AnalyzeDiskDriveProgressCOD.Add(longRunningTaskID, analyzeDiskDriveProgress);
 
             // Define the lambda that describes the task
-            longRunningTaskInfo.LRTask=new Task(() => {
+            var task =new Task(() => {
                 diskAnalysis.AnalyzeDiskDrive(
                     request.AnalyzeDiskDriveRequestPayload.DiskDriveSpecifier,
                     analyzeDiskDriveResult, analyzeDiskDriveProgress,
@@ -83,8 +76,9 @@ namespace Ace.Agent.DiskAnalysisServices {
                 ).ConfigureAwait(false);
             });
 
-            // add the new cancellation token Source to the base data
-            baseServicesData.CancellationTokenSources.Add(cancellationTokenSourceId, cancellationTokenSource);
+            LongRunningTaskInfo longRunningTaskInfo = new LongRunningTaskInfo(longRunningTaskID, task, cancellationTokenSource) ;
+
+            // baseServicesData.CancellationTokenSources.Add(cancellationTokenSourceId, cancellationTokenSource);
             // Record this task (plus additional information about it) in the longRunningTasks dictionary in the BaseServicesData found in the Container
             baseServicesData.LongRunningTasks.Add(longRunningTaskID, longRunningTaskInfo);
             // record the TaskID and task info into the LookupDiskDriveAnalysisResultsCOD
@@ -99,7 +93,7 @@ namespace Ace.Agent.DiskAnalysisServices {
             }
             catch (Exception e) when (e is InvalidOperationException||e is ObjectDisposedException) {
                 Log.Debug($"Exception when trying to start the AnalyzeDiskDrive task, message is {e.Message}");
-                // ToDo: need to be sure that the when.any loop and GetLongRunningTasksStatus can handle a taskinfo in these states;
+                // ToDo: need to be sure that the when.any loop and GetLongRunningTaskStatus can handle a LongRunningTaskTaskInfo in these states;
 
             }
             var longRunningTaskIds = new List<Id<LongRunningTaskInfo>>();

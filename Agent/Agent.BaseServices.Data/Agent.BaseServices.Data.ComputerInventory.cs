@@ -16,10 +16,16 @@ namespace Ace.Agent.BaseServices {
 
         #region IndirectConstructors
         void ConstructComputerInventory() {
-            ComputerInventory=new ATAP.Utilities.ComputerInventory.ComputerInventory().FromComputerName("localhost");
+            Log.Debug("in BaseServicesData .ctor: ConstructComputerInventory");
+            // Look at the BaseServices configuration settings for options in setting up the initial ComputerInventory
+            if (true) {
+                ComputerInventory=new ATAP.Utilities.ComputerInventory.ComputerInventory().FromComputerName("localhost");
+            } else {
+                ComputerInventory=new ATAP.Utilities.ComputerInventory.ComputerInventory().FromConfigurationFile("./ncat-lt02");
+            }
         }
         #endregion
-    }	
+    }
 
 
 

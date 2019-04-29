@@ -12,8 +12,7 @@ namespace Ace.Agent.DiskAnalysisServices {
 
     #region AnalyzeFileSystemRequest, AnalyzeFileSystemResponse, and Route for AnalyzeFileSystem
     [Route("/AnalyzeFileSystem")]
-    //[Route("/AnalyzeFileSystem/{FileSystemNumber}")]
-    //[Route("/AnalyzeFileSystem/{FileSystemPartitionIdentifier}")]
+    //[Route("/AnalyzeFileSystem/{root}")]
     public class AnalyzeFileSystemRequest : IReturn<AnalyzeFileSystemResponse> {
         public AnalyzeFileSystemRequest() : this(new AnalyzeFileSystemRequestPayload()) { }
         public AnalyzeFileSystemRequest(AnalyzeFileSystemRequestPayload analyzeFileSystemRequestPayload) {
@@ -25,12 +24,16 @@ namespace Ace.Agent.DiskAnalysisServices {
     public class AnalyzeFileSystemRequestPayload : IEquatable<AnalyzeFileSystemRequestPayload> {
         public AnalyzeFileSystemRequestPayload() {
             Root=string.Empty;
-            BlockSize=BlockSize;
+            AsyncFileReadBlockSize=4096;
         }
 
+        public AnalyzeFileSystemRequestPayload(string root, int asyncFileReadBlockSize) {
+            Root=root??throw new ArgumentNullException(nameof(root));
+            AsyncFileReadBlockSize=asyncFileReadBlockSize;
+        }
 
         public string Root { get; set; }
-        public int BlockSize { get; set; }
+        public int AsyncFileReadBlockSize { get; set; }
 
         public override bool Equals(object obj) {
             return Equals(obj as AnalyzeFileSystemRequestPayload);
@@ -39,13 +42,13 @@ namespace Ace.Agent.DiskAnalysisServices {
         public bool Equals(AnalyzeFileSystemRequestPayload other) {
             return other!=null&&
                    Root==other.Root&&
-                   BlockSize==other.BlockSize;
+                   AsyncFileReadBlockSize==other.AsyncFileReadBlockSize;
         }
 
         public override int GetHashCode() {
             var hashCode = 715771032;
             hashCode=hashCode*-1521134295+EqualityComparer<string>.Default.GetHashCode(Root);
-            hashCode=hashCode*-1521134295+BlockSize.GetHashCode();
+            hashCode=hashCode*-1521134295+AsyncFileReadBlockSize.GetHashCode();
             return hashCode;
         }
 

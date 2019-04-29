@@ -21,6 +21,7 @@ namespace Ace.Agent.DiskAnalysisServices {
         #region DiskDriveAnalysis Results
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupDiskDriveAnalysisResultsCOD { get; set; }
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveResult> AnalyzeDiskDriveResultsCOD { get; set; }
+        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveProgress> AnalyzeDiskDriveProgressCOD { get; set; }
         void ConstructDiskDriveAnalysisData() {
             LookupDiskDriveAnalysisResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
             AnalyzeDiskDriveResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveResult>();
@@ -35,6 +36,8 @@ namespace Ace.Agent.DiskAnalysisServices {
         #region FileSystemAnalysis Results
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LookupFileSystemAnalysisResultsCOD { get; set; }
         public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult> AnalyzeFileSystemResultsCOD { get; set; }
+        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemProgress> AnalyzeFileSystemProgressCOD { get; set; }
+
         //public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, FileInfoExs> FileInfoExCOD { get; set; }
         //public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, (Id<DirectoryInfoEx>, Id<FileInfoEx>)> EdgeFileInfoExDirectoryInfoExCOD { get; set; }
         //public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, (Id<DirectoryInfoEx>, Id<DirectoryInfoEx>)> EdgeDirectoryInfoExDirectoryInfoExCOD { get; set; }

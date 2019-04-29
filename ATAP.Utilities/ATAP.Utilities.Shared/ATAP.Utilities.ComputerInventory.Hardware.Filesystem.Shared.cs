@@ -19,12 +19,12 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class DirectoryInfoEx : IEquatable<DirectoryInfoEx>, IDirectoryInfoEx {
-        public DirectoryInfoEx() { }
+        public DirectoryInfoEx() :this (new Id<DirectoryInfoEx>(), new Id<DirectoryInfoEx>(),null, new List<Exception>()) { }
 
         public DirectoryInfoEx(Id<DirectoryInfoEx> directoryDbId, Id<DirectoryInfoEx> directoryId, DirectoryInfo directoryInfo, IEnumerable<Exception> exceptions) {
             DirectoryDbId=directoryDbId;
             DirectoryId=directoryId;
-            DirectoryInfo=directoryInfo??throw new ArgumentNullException(nameof(directoryInfo));
+            DirectoryInfo=directoryInfo;
             Exceptions=exceptions??throw new ArgumentNullException(nameof(exceptions));
         }
 
@@ -68,12 +68,10 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class DirectoryInfoExs : IDirectoryInfoExs {
-        public DirectoryInfoExs() {
-            DirectoryInfoExCOD=new ConcurrentObservableDictionary<Id<DirectoryInfoEx>, DirectoryInfoEx>();
-        }
+        public DirectoryInfoExs():this(new ConcurrentObservableDictionary<Id<DirectoryInfoEx>, DirectoryInfoEx>()) {}
 
-        public DirectoryInfoExs(ConcurrentObservableDictionary<Id<DirectoryInfoEx>, DirectoryInfoEx> DirectoryInfoExCOD) {
-            DirectoryInfoExCOD=DirectoryInfoExCOD??throw new ArgumentNullException(nameof(DirectoryInfoExCOD));
+        public DirectoryInfoExs(ConcurrentObservableDictionary<Id<DirectoryInfoEx>, DirectoryInfoEx> directoryInfoExCOD) {
+            DirectoryInfoExCOD=directoryInfoExCOD??throw new ArgumentNullException(nameof(directoryInfoExCOD));
         }
 
         public ConcurrentObservableDictionary<Id<DirectoryInfoEx>, DirectoryInfoEx> DirectoryInfoExCOD { get; set; }
@@ -92,16 +90,17 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class FileInfoEx : IEquatable<FileInfoEx>, IFileInfoEx {
-        public FileInfoEx() { }
+        public FileInfoEx() : this (string.Empty, new Id<FileInfoEx>(), new Id<FileInfoEx>(),null,string.Empty, new List<Exception>()) { }
 
         public FileInfoEx(string path, Id<FileInfoEx> fileInfoDbId, Id<FileInfoEx> fileInfoId, FileInfo fileInfo, string hash, IList<Exception> exceptions) {
             Path=path??throw new ArgumentNullException(nameof(path));
             FileInfoDbId=fileInfoDbId;
             FileInfoId=fileInfoId;
-            FileInfo=fileInfo??throw new ArgumentNullException(nameof(fileInfo));
+            FileInfo=fileInfo;
             Hash=hash??throw new ArgumentNullException(nameof(hash));
             Exceptions=exceptions??throw new ArgumentNullException(nameof(exceptions));
         }
+
 
         // Path will be string.Empty if FileInfo is populated
         public string Path { get; set; }
@@ -150,12 +149,10 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class FileInfoExs : IFileInfoExs {
-        public FileInfoExs() {
-            FileInfoExCOD=new ConcurrentObservableDictionary<Id<FileInfoEx>, FileInfoEx>();
-        }
+        public FileInfoExs() :this (new ConcurrentObservableDictionary<Id<FileInfoEx>, FileInfoEx> ()) {}
 
-        public FileInfoExs(ConcurrentObservableDictionary<Id<FileInfoEx>, FileInfoEx> FileInfoExCOD) {
-            FileInfoExCOD=FileInfoExCOD??throw new ArgumentNullException(nameof(FileInfoExCOD));
+        public FileInfoExs(ConcurrentObservableDictionary<Id<FileInfoEx>, FileInfoEx> fileInfoExCOD) {
+            FileInfoExCOD=fileInfoExCOD??throw new ArgumentNullException(nameof(fileInfoExCOD));
         }
 
         public ConcurrentObservableDictionary<Id<FileInfoEx>, FileInfoEx> FileInfoExCOD { get; set; }

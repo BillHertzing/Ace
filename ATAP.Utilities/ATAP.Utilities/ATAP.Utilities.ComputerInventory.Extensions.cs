@@ -18,7 +18,7 @@ using ATAP.Utilities.FileSystem;
 using ATAP.Utilities.TypedGuids;
 
 namespace ATAP.Utilities.ComputerInventory {
-	
+
     public static class ComputerInventoryExtensions {
         public static ComputerInventory FromComputerName(this ComputerInventory me, string computerName) {
             if (computerName==string.Empty)
@@ -46,24 +46,30 @@ namespace ATAP.Utilities.ComputerInventory {
 
         }
 
-    }
+        //ToDo: make async versions
+        public static ComputerInventory FromConfigurationFile(this ComputerInventory me, string path) {
+            if (path==string.Empty)
+                throw new ArgumentNullException(nameof(path));
+            string computerName;
+            ComputerHardware lcH;
+            ComputerSoftware lcS;
+            ComputerProcesses lcP;
 
+            // Use JSON as the default structure
+            //var computerInventory = FromJson<ComputerInventory>();
+            // Just read the file into a 
+            // If using XML, 
+            // open the path as a stream, setup async buffered read, read into a structured format, catch exceptions
+            // Get the hardware by selecting a node range in the structured format 
+            // lcH=new ComputerHardware().FromStructuredFormat(path);
+            // ToDo: add "FromComputerName" extension method to ComputerSoftware and ComputerProcesses
+            lcH=me.ComputerHardware;
+            lcS=me.ComputerSoftware;
+            lcP=me.ComputerProcesses;
+            computerName=me.ComputerName;
+            return new ComputerInventory(lcH, lcS, lcP, computerName);
+        }
+    }
  
 }
-/*
- * 
-  // Created on demand to match a specific computerName
-        public ComputerHardware(string computerName) {
-            if (!computerName.Trim().ToLowerInvariant().Equals("localhost"))
-                throw new NotImplementedException("ComputerName other than localhost is not supported");
-            // ToDo: Query WMI or Configuration data for real details
-            // Temp: hardcode for laptop
-            // Drive 0 for laptop
-            DiskDriveInfoEx DDIE0 = new DiskDriveInfoEx() {
-                DiskDriveId=new Id<DiskDriveInfoEx>(Guid.NewGuid()),
-            DiskDriveDbId =new Id<DiskDriveInfoEx>(Guid.Empty) ,
-            };
-            var diskDriveInfoExs = new DiskDriveInfoExs() { new DiskDriveInfoEx(), new DiskDriveInfoEx(), new DiskDriveInfoEx() };
-            new ComputerHardware(new MainBoard(MainBoardMaker.Generic, CPUSocket.Generic), new List<CPUMaker> { CPUMaker.Intel }, diskInfoExs, new TimeBlock(DateTime.UtcNow, true));
-        }
- * */
+

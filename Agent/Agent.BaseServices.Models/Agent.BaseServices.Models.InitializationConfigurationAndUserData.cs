@@ -6,6 +6,9 @@ namespace Ace.Agent.BaseServices {
     #region BaseServices Initialization
     [Route("/BaseServicesInitialization")]
     public class InitializationRequest : IReturn<InitializationResponse> {
+        public InitializationRequest() :this(new InitializationRequestPayload()) {
+        }
+
         public InitializationRequest(InitializationRequestPayload initializationRequestPayload) {
             InitializationRequestPayload=initializationRequestPayload??throw new ArgumentNullException(nameof(initializationRequestPayload));
         }
@@ -20,7 +23,7 @@ namespace Ace.Agent.BaseServices {
             InitializationData=initializationData??throw new ArgumentNullException(nameof(initializationData));
         }
 
-        InitializationData InitializationData { get; set; }
+        public InitializationData InitializationData { get; set; }
 
     }
 	

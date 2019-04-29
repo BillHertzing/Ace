@@ -39,23 +39,18 @@ namespace Ace.Agent.DiskAnalysisServices {
             var diskAnalysisServicesData = HostContext.TryResolve<DiskAnalysisServicesData>();
 
             // Setup the instance. Use Configuration Data if the request payload is null
-            var blockSize = request.AnalyzeFileSystemRequestPayload.BlockSize>=0? request.AnalyzeFileSystemRequestPayload.BlockSize  : diskAnalysisServicesData.ConfigurationData.BlockSize;
+            var blockSize = request.AnalyzeFileSystemRequestPayload.AsyncFileReadBlockSize>=0? request.AnalyzeFileSystemRequestPayload.AsyncFileReadBlockSize : diskAnalysisServicesData.ConfigurationData.BlockSize;
             var fileSystemAnalysis = new FileSystemAnalysis(Log, diskAnalysisServicesData.ConfigurationData.BlockSize);
 
-            LongRunningTaskInfo longRunningTaskInfo = new LongRunningTaskInfo() {
-                LRTId=longRunningTaskID,
-                CTSId=cancellationTokenSourceId,
-                CT=cancellationToken
-            };
 
             // Create storage for the results and progress
             var analyzeFileSystemResult =new AnalyzeFileSystemResult();
             diskAnalysisServicesData.AnalyzeFileSystemResultsCOD.Add(longRunningTaskID, analyzeFileSystemResult);
             var analyzeFileSystemProgress = new AnalyzeFileSystemProgress();
-            //diskAnalysisServicesData.AnalyzeFileSystemProgressCOD.Add(longRunningTaskID, analyzeFileSystemProgress);
+            diskAnalysisServicesData.AnalyzeFileSystemProgressCOD.Add(longRunningTaskID, analyzeFileSystemProgress);
 
             // Define the lambda that describes the task
-            longRunningTaskInfo.LRTask=new Task(() => {
+            var task = new Task(() => {
                 fileSystemAnalysis.AnalyzeFileSystem(
                     request.AnalyzeFileSystemRequestPayload.Root,
                     analyzeFileSystemResult, analyzeFileSystemProgress,
@@ -65,8 +60,8 @@ namespace Ace.Agent.DiskAnalysisServices {
                     }
                 ).ConfigureAwait(false);
             });
-            // add the new cancellation token Source to the base data
-            baseServicesData.CancellationTokenSources.Add(cancellationTokenSourceId, cancellationTokenSource);
+
+            LongRunningTaskInfo longRunningTaskInfo = new LongRunningTaskInfo(longRunningTaskID, task, cancellationTokenSource) ;
             // Record this task (plus additional information about it) in the longRunningTasks dictionary in the BaseServicesData found in the Container
             baseServicesData.LongRunningTasks.Add(longRunningTaskID, longRunningTaskInfo);
             // record the TaskID and task info into the LookupDiskDriveAnalysisResultsCOD
