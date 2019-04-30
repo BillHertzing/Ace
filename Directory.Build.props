@@ -57,7 +57,7 @@
     <ProductName>AceCommander</ProductName> 
     <RepositoryUrl>https://github.com/BillHertzing/Ace</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>www.project.url</PackageProjectUrl>
     <PackageIconUrl>www.icon.url</PackageIconUrl>
     <PackageTags>Testing, experimental, alpha, ATAP, ATAP.AceCommander</PackageTags> 

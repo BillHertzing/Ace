@@ -1,0 +1,27 @@
+@page "/BaseServices.UserData"
+@inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
+<h1>AceCommander Base Services UserData</h1>
+
+@if (@InitializationResponse == null)
+{
+  <p>Loading (Calling onInitAsync)</p>
+}
+else
+{
+  if (@UserData == null)
+  {
+    <p>User Data has not yet been retrieved from Ace Commander</p>
+  }
+  else
+  {
+  <div>
+    <label for="GatewayEntryAPIKeyString">@labelForGatewayEntryAPIKeyString</label>
+    <input type="text" class="form-control" id="GatewayEntryAPIKeyString" bind="@UserData.GatewayEntryAPIKeyString" placeholder="@placeHolderForGatewayEntryAPIKeyString" />
+  </div>
+  <div>
+    <label for="GatewayNameString">@labelForGatewayNameString</label>
+    <input type="text" class="form-control" id="GatewayEntryNameString" bind="@UserData.GatewayNameString" placeholder="@placeHolderForGatewayNameString" />
+  </div>
+  <button type="button" class="btn btn-default" onclick="async () => await PostGetBaseServicesUserData(0)">@labelForPostBaseServicesUserDataButton</button>
+  }
+}

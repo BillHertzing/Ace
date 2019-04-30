@@ -1,0 +1,30 @@
+@page "/DiskAnalysisServices"
+@inherits Ace.AceGUI.Pages.DiskAnalysisServicesCodeBehind
+<h1>AceCommander Disk Drive and Filesystem Analysis Services</h1>
+
+
+<p><em>ToDo: replace with window effect. Loading (The page load is calling onInitAsync, which has not yet returned a value for Initialization Response)</em></p>
+
+<hr />
+<button id="btnAnalyzeDiskDrive" type="button" class="btn btn-primary" onclick="@(async () => await AnalyzeDiskDrive("localhost",2))">Analyze Disk Drive (hardcoded localhost drive 2)</button>
+@if (AnalyzeDiskDriveLongRunningTaskIds == null)
+{
+    <p>No requests to analyze any DiskDrives has yet been made</p>
+}
+else
+{
+    <p>The number of AnalyzeDiskDrive LongRunningTaskIDs in the list is  @AnalyzeDiskDriveLongRunningTaskIds.Count </p>
+}
+
+<button id="btnAnalyzeFileSystem" type="button" class="btn btn-primary" onclick="@(async () => await AnalyzeFileSystem("E:\\", 4096))">Analyze FileSystem  (hardcoded localhost root E:\ and 4096 )</button>
+@if (AnalyzeFileSystemLongRunningTaskIds == null)
+{
+    <p>No requests to analyze any FileSystems has yet been made</p>
+}
+else
+{
+    <p>The number of AnalyzeFileSystem LongRunningTaskIDs in the list is  @AnalyzeFileSystemLongRunningTaskIds.Count </p>
+    <p>The Id of one of the AnalyzeFileSystem LongRunningTaskIDs in the list is  @AnalyzeFileSystemLongRunningTaskIds[0].ToString()</p>
+}
+
+

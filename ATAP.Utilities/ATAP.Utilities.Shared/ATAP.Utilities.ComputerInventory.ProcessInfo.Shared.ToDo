@@ -1,0 +1,47 @@
+using System;
+//using Medallion.Shell;
+//using Swordfish.NET.Collections;
+using ATAP.Utilities.ComputerInventory.Enumerations;
+
+
+   // ToDo: separate ComputerProcess, ComputerProcesses classes for Shared assembly and for Base Services (stuff in the agent)
+
+
+namespace ATAP.Utilities.ComputerInventory
+{
+    // ToDo: separate ComputerProcess, ComputerProcesses classes for Shared assembly and for Base Services (stuff in the agent)
+
+      public class ComputerProcess
+    {
+        readonly object[] arguments;
+        Command cmd;
+        readonly IComputerSoftwareProgram computerSoftwareProgram;
+
+        public ComputerProcess(IComputerSoftwareProgram computerSoftwareProgram, params object[] arguments)
+        {
+            this.computerSoftwareProgram = computerSoftwareProgram;
+            this.arguments = arguments;
+        }
+
+        
+        public object[] Arguments => arguments;
+        public IComputerSoftwareProgram ComputerSoftwareProgram => computerSoftwareProgram;
+
+        public Command Cmd { get => cmd; set => cmd = value; }
+    }
+
+
+public class ComputerProcesses
+{
+        public ComputerProcesses() {
+        }
+
+        public ComputerProcesses(ConcurrentObservableDictionary<int, ComputerProcess> computerProcessDictionary) {
+            ComputerProcessDictionary=computerProcessDictionary??throw new ArgumentNullException(nameof(computerProcessDictionary));
+        }
+
+        public ConcurrentObservableDictionary<int, ComputerProcess> ComputerProcessDictionary { get; set; }
+
+
+    }
+}

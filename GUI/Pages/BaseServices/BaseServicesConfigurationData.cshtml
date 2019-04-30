@@ -1,0 +1,27 @@
+@page "/BaseServices.Configuration"
+@inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
+<h1>AceCommander Base Services Configuration Settings</h1>
+
+@if (@InitializationResponse == null)
+{
+  <p>Loading (Calling onInitAsync)</p>
+}
+else
+{
+  @if (@ConfigurationData == null)
+  {
+    <p>Configuration Information has not yet been retrieved from Ace Commander</p>
+  }
+  else
+  {
+    <div>
+      <label for="RedisCacheConnectionString">@labelForRedisCacheConnectionString</label>
+      <input type="text" class="form-control" id="RedisCacheConnectionString" bind="@ConfigurationData.RedisCacheConnectionString" placeholder="@placeHolderForRedisCacheConnectionString" />
+    </div>
+    <div>
+      <label for="MySqlConnectionString">@labelForMySqlConnectionString</label>
+      <input type="text" class="form-control" id="MySqlConnectionString" bind="@ConfigurationData.MySqlConnectionString" placeholder="@placeHolderForMySqlConnectionString" />
+    </div>
+    <button type="button" class="btn btn-default" onclick="async () => await PostGetBaseServicesConfigurationData(0)">@labelForPostGetBaseServicesConfigurationData</button>
+  }
+}

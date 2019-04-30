@@ -4,8 +4,7 @@ using System.Linq;
 
 namespace Ace.Agent.BaseServices {
     public static class DefaultConfiguration {
-        public static Dictionary<string, string> Configuration()
-        {
+        public static Dictionary<string, string> Configuration() {
             return new Dictionary<string, string>() {
                 { "Ace.Agent.BaseServices.Config.ListenOn", "http://localhost:21100/" },
                 { "Ace.Agent:ListeningOn", "http://localhost:21100/" },
@@ -16,6 +15,10 @@ namespace Ace.Agent.BaseServices {
                 {
                     "Ace.Agent.BaseServices.Config.RedisConnectionString",
                     "localhost:6379"
+                },
+                {
+                    "Ace.Agent.BaseServices.Config.SQLServerConnectionString",
+                    "localhost:6339TBD"
                 },
                 {
                     "Ace.Agent:UserName",

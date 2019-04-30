@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Swordfish.NET.Collections;
+using ATAP.Utilities.ComputerInventory.Enumerations;
+
+namespace ATAP.Utilities.ComputerInventory
+{
+
+   // ToDo: separate ComputerSoftwareProgram, ComputerSoftware, ComputerSoftwareDriver  classes for Shared assembly and for Base Services (stuff in the agent)
+
+  public interface IComputerSoftwareProgram
+    {
+        string ConfigFilePath { get; }
+        ConcurrentObservableDictionary<string, string> ConfigurationSettings { get; }
+        bool HasAPI { get; }
+        bool HasConfigurationSettings { get; }
+        bool HasERROut { get; }
+        bool HasLogFiles { get; }
+        bool HasSTDOut { get; }
+        string LogFileFnPattern { get; }
+        string LogFileFolder { get; }
+        string ProcessName { get; }
+        string ProcessPath { get; }
+        string ProcessStartPath { get; }
+        string Version { get; }
+    }
+    [Serializable]
+    public class ComputerSoftwareProgram : IComputerSoftwareProgram
+    {
+        readonly string configFilePath;
+        readonly ConcurrentObservableDictionary<string, string> configurationSettings;
+        readonly bool hasAPI;
+        readonly bool hasConfigurationSettings;
+        readonly bool hasERROut;
+        readonly bool hasLogFiles;
+        readonly bool hasSTDOut;
+        readonly string logFileFnPattern;
+        readonly string logFileFolder;
+        //ComputerSW kind;
+        readonly string processName;
+        readonly string processPath;
+        readonly string processStartPath;
+        readonly string version;
+
+        public ComputerSoftwareProgram(string processName, string processPath, string processStartPath, string version, bool hasConfigurationSettings, ConcurrentObservableDictionary<string, string> configurationSettings, string configFilePath, bool hasLogFiles, string logFileFolder, string logFileFnPattern, bool hasAPI, bool hasSTDOut, bool hasERROut)
+        {
+            this.processName = processName;
+            this.processPath = processPath;
+            this.processStartPath = processStartPath;
+            this.version = version;
+            this.hasConfigurationSettings = hasConfigurationSettings;
+            this.configurationSettings = configurationSettings;
+            this.configFilePath = configFilePath;
+            this.hasLogFiles = hasLogFiles;
+            this.logFileFolder = logFileFolder;
+            this.logFileFnPattern = logFileFnPattern;
+            this.hasAPI = hasAPI;
+            this.hasSTDOut = hasSTDOut;
+            this.hasERROut = hasERROut;
+        }
+
+        public string ConfigFilePath => configFilePath;
+
+        public ConcurrentObservableDictionary<string, string> ConfigurationSettings => configurationSettings;
+
+        public bool HasAPI => hasAPI;
+
+        public bool HasConfigurationSettings => hasConfigurationSettings;
+
+        public bool HasERROut => hasERROut;
+
+        public bool HasLogFiles => hasLogFiles;
+
+        public bool HasSTDOut => hasSTDOut;
+
+        public string LogFileFnPattern => logFileFnPattern;
+
+        public string LogFileFolder => logFileFolder;
+
+        public string ProcessName => processName;
+
+        public string ProcessPath => processPath;
+
+        public string ProcessStartPath => processStartPath;
+
+        public string Version => version;
+    }
+
+    [Serializable]
+    public class ComputerSoftwareDriver
+    {
+        readonly string name;
+        readonly string version;
+
+        public ComputerSoftwareDriver(string name, string version)
+        {
+            this.name = name;
+            this.version = version;
+        }
+
+        public string Name => name;
+
+        public string Version => version;
+    }
+
+    [Serializable]
+    public class ComputerSoftware 
+    {
+        // ToDo implement OS when the bug in dot net core is fixed. this type cannot be serialized by newtonSoft in dot net core v2
+        //readonly OperatingSystem oS;
+        readonly List<ComputerSoftwareDriver> computerSoftwareDrivers;
+        readonly List<ComputerSoftwareProgram> computerSoftwarePrograms;
+
+        public ComputerSoftware(List<ComputerSoftwareDriver> computerSoftwareDrivers, List<ComputerSoftwareProgram> computerSoftwarePrograms)
+        {
+            ////this.oS = Environment.OSVersion;
+            this.computerSoftwareDrivers = computerSoftwareDrivers;
+            this.computerSoftwarePrograms = computerSoftwarePrograms;
+        }
+        //public OperatingSystem OS => oS;
+
+        public List<ComputerSoftwareDriver> ComputerSoftwareDrivers => computerSoftwareDrivers;
+
+        public List<ComputerSoftwareProgram> ComputerSoftwarePrograms => computerSoftwarePrograms;
+    }
+}

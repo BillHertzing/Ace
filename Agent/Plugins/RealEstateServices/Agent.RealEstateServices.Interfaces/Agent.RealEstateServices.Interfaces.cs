@@ -6,112 +6,104 @@ using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using ATAP.Utilities.RealEstate.Enumerations;
 using System.Collections.Generic;
+using System.Threading;
 
-namespace Ace.Agent.RealEstateServices
+namespace Ace.Agent.RealEstateServices {
+    public class RealEstateServices : Service {
+        public static ILog Log = LogManager.GetLogger(typeof(RealEstateServices));
 
-{
-  public class RealEstateServices : Service
-  {
-    public static ILog Log = LogManager.GetLogger(typeof(RealEstateServices));
-    
-     public object Post(RealEstateServicesInitializationRequest request)
-    {
-      Log.Debug("starting Post(RealEstateServicesInitializationRequest request)");
-      RealEstateServicesInitializationDataRequestData RealEstateServicesInitializationDataRequestData = request.RealEstateServicesInitializationDataRequestData;
-      //Log.Debug($"You sent me RealEstateServicesInitializationDataRequestData = {RealEstateServicesInitializationDataRequestData}");
-      //Log.Debug($"You sent me RealEstateServicesInitializationData = {RealEstateServicesInitializationDataRequestData.RealEstateServicesInitializationData}");
-      // Initialize a machine datastructure for this service/user/session/connection
-      // Initialize a user datastructure for this service/user/session/connection
+        public object Post(InitializationRequest request) {
+            Log.Debug("starting Post(RealEstateServicesInitializationRequest request)");
+            InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;
+            Log.Debug($"You sent me InitializationRequestPayload = {initializationRequestPayload}");
 
-      // populate the ConfigurationData response structures
-      string google_API_URI = (RealEstateServicesData.Google_API_URI != null) ? RealEstateServicesData.Google_API_URI : "HTTP://GoogleAPIURINotDefined.com/";
-      string homeAway_API_URI_API_URI = (RealEstateServicesData.HomeAway_API_URI != null) ? RealEstateServicesData.HomeAway_API_URI : "HTTP://HomeAwayAPIURINotDefined.com/";
-      RealEstateServicesConfigurationData RealEstateServicesConfigurationData = new RealEstateServicesConfigurationData(google_API_URI, homeAway_API_URI_API_URI);
-      // populate the UserData response structures
-      string googleAPIKeyEncrypted = (RealEstateServicesData.GoogleAPIKeyEncrypted != null) ? RealEstateServicesData.GoogleAPIKeyEncrypted : "GoogleAPIKeyEncrypted needed";
-      string googleAPIKeyPassPhrase = (RealEstateServicesData.GoogleAPIKeyPassPhrase != null) ? RealEstateServicesData.GoogleAPIKeyPassPhrase : "GoogleAPIKeyPassPhrase needed";
-      string homeAwayAPIKeyEncrypted = (RealEstateServicesData.HomeAwayAPIKeyEncrypted != null) ? RealEstateServicesData.HomeAwayAPIKeyEncrypted : "HomeAwayAPIKeyEncrypted needed";
-      string homeAwayAPIKeyPassPhrase = (RealEstateServicesData.HomeAwayAPIKeyPassPhrase != null) ? RealEstateServicesData.HomeAwayAPIKeyPassPhrase : "HomeAwayAPIKeyPassPhrase needed";
-      RealEstateServicesUserData RealEstateServicesUserData = new RealEstateServicesUserData(googleAPIKeyEncrypted, homeAwayAPIKeyEncrypted, googleAPIKeyPassPhrase,  homeAwayAPIKeyPassPhrase);
+            // Initialize a machine datastructure for this service/user/session/connection
+            // Initialize a user datastructure for this service/user/session/connection
 
-      // Create and populate the Response data structure
-      RealEstateServicesInitializationResponseData RealEstateServicesInitializationResponseData = new RealEstateServicesInitializationResponseData(RealEstateServicesConfigurationData, RealEstateServicesUserData);
-      RealEstateServicesInitializationResponse RealEstateServicesInitializationResponse = new RealEstateServicesInitializationResponse(RealEstateServicesInitializationResponseData);
-      // return information about this service/user/session
-      Log.Debug($"leaving Post(RealEstateServicesInitializationRequest request), returning {RealEstateServicesInitializationResponse}");
-      return RealEstateServicesInitializationResponse;
+            //ToDo: the ConfigurationData structure need to be initialized in the plug startup code, and stored in teh Data instance, and this routine just copies those values
+            //ToDO: remove this temporary delay
+            Thread.Sleep(5000);
+            // populate the ConfigurationData response structures
+            string google_API_URI = (RealEstateServicesData.Google_API_URI!=null) ? RealEstateServicesData.Google_API_URI : "HTTP://GoogleAPIURINotDefined.com/";
+            string homeAway_API_URI_API_URI = (RealEstateServicesData.HomeAway_API_URI!=null) ? RealEstateServicesData.HomeAway_API_URI : "HTTP://HomeAwayAPIURINotDefined.com/";
+            ConfigurationData configurationData = new ConfigurationData(google_API_URI, homeAway_API_URI_API_URI);
+            // populate the UserData response structures
+            string googleAPIKeyEncrypted = (RealEstateServicesData.GoogleAPIKeyEncrypted!=null) ? RealEstateServicesData.GoogleAPIKeyEncrypted : "GoogleAPIKeyEncrypted needed";
+            string googleAPIKeyPassPhrase = (RealEstateServicesData.GoogleAPIKeyPassPhrase!=null) ? RealEstateServicesData.GoogleAPIKeyPassPhrase : "GoogleAPIKeyPassPhrase needed";
+            string homeAwayAPIKeyEncrypted = (RealEstateServicesData.HomeAwayAPIKeyEncrypted!=null) ? RealEstateServicesData.HomeAwayAPIKeyEncrypted : "HomeAwayAPIKeyEncrypted needed";
+            string homeAwayAPIKeyPassPhrase = (RealEstateServicesData.HomeAwayAPIKeyPassPhrase!=null) ? RealEstateServicesData.HomeAwayAPIKeyPassPhrase : "HomeAwayAPIKeyPassPhrase needed";
+            UserData userData = new UserData(googleAPIKeyEncrypted, homeAwayAPIKeyEncrypted, googleAPIKeyPassPhrase, homeAwayAPIKeyPassPhrase);
+
+            // Create and populate the InitializationResponse data structure
+            InitializationResponse initializationResponse = new InitializationResponse(new InitializationResponsePayload(configurationData, userData));
+            // return information about this service/user/session
+            Log.Debug($"leaving Post(InitializationRequest request), returning initializationResponse = {initializationResponse}");
+            return initializationResponse;
+        }
+
+        public object Post(SetConfigurationDataRequest request) {
+            Log.Debug("starting Post(SetConfigurationDataRequest request)");
+            Log.Debug($"You sent me ConfigurationData = {request.SetConfigurationDataRequestPayload.ConfigurationData}");
+            // ToDo: switch on the boolean
+            // ToDo: These should be part of a ConfigurationData instance in plugin's Data instance
+            RealEstateServicesData.Google_API_URI=request.SetConfigurationDataRequestPayload.ConfigurationData.Google_API_URI;
+            RealEstateServicesData.HomeAway_API_URI=request.SetConfigurationDataRequestPayload.ConfigurationData.HomeAway_API_URI;
+            SetConfigurationDataResponsePayload setConfigurationDataResponsePayload = new SetConfigurationDataResponsePayload("Ok");
+            Log.Debug($"leaving Any(SetConfigurationDataRequest request), returning setConfigurationDataResponsePayload = {setConfigurationDataResponsePayload}");
+            return new SetConfigurationDataResponse(setConfigurationDataResponsePayload);
+        }
+        public object Post(SetUserDataRequest request) {
+            Log.Debug("starting Post(SetUserDataRequest request)");
+            Log.Debug($"You sent me UserData = {request.SetUserDataRequestPayload.UserData}");
+            // ToDo: switch on the boolean
+            // ToDo: These should be part of a UserData instance in plugin's Data instance
+            RealEstateServicesData.GoogleAPIKeyEncrypted=request.SetUserDataRequestPayload.UserData.GoogleAPIKeyEncrypted;
+            RealEstateServicesData.GoogleAPIKeyPassPhrase=request.SetUserDataRequestPayload.UserData.GoogleAPIKeyPassPhrase;
+            RealEstateServicesData.HomeAwayAPIKeyEncrypted=request.SetUserDataRequestPayload.UserData.HomeAwayAPIKeyEncrypted;
+            RealEstateServicesData.HomeAwayAPIKeyPassPhrase=request.SetUserDataRequestPayload.UserData.HomeAwayAPIKeyPassPhrase;
+            SetUserDataResponsePayload setUserDataResponsePayload = new SetUserDataResponsePayload("Ok");
+            Log.Debug($"leaving Any(SetUserDataRequest request), returning setUserDataResponsePayload = {setUserDataResponsePayload}");
+            return new SetUserDataResponse(setUserDataResponsePayload);
+        }
+        public object Post(PropertySearchRequest request) {
+            Log.Debug("starting Post(PropertySearchRequest)");
+            PropertySearchRequestPayload propertySearchRequestPayload = request.PropertySearchRequestPayload;
+            PropertySearchRequestData propertySearchRequestData = propertySearchRequestPayload.PropertySearchRequestData;
+            bool savePropertySearchData = propertySearchRequestPayload.SavePropertySearchData;
+            SearchParameters searchParameters = propertySearchRequestData.SearchParameters;
+            ListingParameters listingParameters = propertySearchRequestData.ListingParameters;
+            // Get the name of the gateway to use
+            var gatewayName = "HomeAway";
+            // Get the HTTP request for a property search from the gateway
+            // update it with the searchParameters
+            // update it with the listingParameters
+            // Get the type of Response to expect back
+            // async call the gateway URI for property search, using the predefined policy and retry scheme
+            // ToDo: figure out how to integrate a CancellationToken
+            try {
+                Log.Debug("Calling through gateway {gateway}, using Registry Key {RegistryKey}");
+
+            }
+            catch {
+                Log.Debug("leaving Post(PropertySearchRequest)");
+            }
+            finally {
+            }
+
+
+            // update the Plugin Data Structure with the data from the response
+            //RealEstateServicesData.PluginRootCOD.Add("test1", 100);
+            Log.Debug("leaving Post(PropertySearchRequest)");
+            List<ListingSearchHit> listingSearchHits = new List<ListingSearchHit>();
+            PropertySearchResponseData propertySearchResponseData = new PropertySearchResponseData(listingSearchHits);
+            PropertySearchResponsePayload propertySearchResponsePayload = new PropertySearchResponsePayload(propertySearchResponseData);
+            PropertySearchResponse propertySearchResponse = new PropertySearchResponse();
+            propertySearchResponse.PropertySearchResponsePayload=propertySearchResponsePayload;
+            Log.Debug("Leaving Post(PropertySearchRequest)");
+            return propertySearchResponse;
+        }
+        public RealEstateServicesData RealEstateServicesData { get; set; }
     }
-
-    public object Post(SetRealEstateServicesConfigurationDataRequest request)
-    {
-      Log.Debug("starting Post(SetRealEstateServicesConfigurationDataRequest request)");
-      SetRealEstateServicesConfigurationDataRequestData setRealEstateServicesConfigurationDataRequestData = request.SetRealEstateServicesConfigurationDataRequestData;
-      RealEstateServicesConfigurationData RealEstateServicesConfigurationData = setRealEstateServicesConfigurationDataRequestData.RealEstateServicesConfigurationData;
-      Log.Debug($"You sent me RealEstateServicesConfigurationData = {RealEstateServicesConfigurationData}");
-      RealEstateServicesData.Google_API_URI = RealEstateServicesConfigurationData.Google_API_URI;
-      RealEstateServicesData.HomeAway_API_URI = RealEstateServicesConfigurationData.HomeAway_API_URI;
-      // return information about this service/user/session
-      string result = "OK";
-      Log.Debug($"leaving Any(SetRealEstateServicesConfigurationDataRequest request), returning {result}");
-      return new SetRealEstateServicesConfigurationDataResponse { Result = result };
-    }
-    public object Post(SetRealEstateServicesUserDataRequest request)
-    {
-      Log.Debug("starting Post(SetRealEstateServicesUserDataRequest request)");
-      SetRealEstateServicesUserDataRequestData setRealEstateServicesUserDataRequestData = request.SetRealEstateServicesUserDataRequestData;
-      RealEstateServicesUserData RealEstateServicesUserData = setRealEstateServicesUserDataRequestData.RealEstateServicesUserData;
-      Log.Debug($"You sent me RealEstateServicesUserData = {RealEstateServicesUserData}");
-      RealEstateServicesData.GoogleAPIKeyEncrypted = RealEstateServicesUserData.GoogleAPIKeyEncrypted;
-      RealEstateServicesData.GoogleAPIKeyPassPhrase = RealEstateServicesUserData.GoogleAPIKeyPassPhrase;
-      RealEstateServicesData.HomeAwayAPIKeyEncrypted = RealEstateServicesUserData.HomeAwayAPIKeyEncrypted;
-      RealEstateServicesData.HomeAwayAPIKeyPassPhrase = RealEstateServicesUserData.HomeAwayAPIKeyPassPhrase;
-      // return information about this service/user/session
-      string result = "OK";
-      Log.Debug($"leaving Post(SetRealEstateServicesUserDataRequest request), returning {result}");
-      return new SetRealEstateServicesConfigurationDataResponse { Result = result };
-    }
-     public object Post(PropertySearchRequest request)
-    {
-      Log.Debug("starting Post(PropertySearchRequest)");
-      PropertySearchRequestPayload propertySearchRequestPayload = request.PropertySearchRequestPayload;
-      PropertySearchRequestData propertySearchRequestData = propertySearchRequestPayload.PropertySearchRequestData;
-      bool savePropertySearchData = propertySearchRequestPayload.SavePropertySearchData;
-      SearchParameters searchParameters = propertySearchRequestData.SearchParameters;
-      ListingParameters listingParameters = propertySearchRequestData.ListingParameters;
-      // Get the name of the gateway to use
-      var gatewayName = "HomeAway";
-      // Get the HTTP request for a property search from the gateway
-      // update it with the searchParameters
-      // update it with the listingParameters
-      // Get the type of Response to expect back
-      // async call the gateway URI for property search, using the predefined policy and retry scheme
-      // ToDo: figure out how to integrate a CancellationToken
-      try
-      {
-        Log.Debug("Calling through gateway {gateway}, using Registry Key {RegistryKey}");
-
-      }
-      catch {
-        Log.Debug("leaving Post(PropertySearchRequest)");
-      }
-      finally
-      {
-      }
-
-
-      // update the Plugin Data Structure with the data from the response
-      //RealEstateServicesData.PluginRootCOD.Add("test1", 100);
-      Log.Debug("leaving Post(PropertySearchRequest)");
-      List<ListingSearchHit> listingSearchHits = new List<ListingSearchHit>();
-      PropertySearchResponseData propertySearchResponseData = new PropertySearchResponseData(listingSearchHits);
-      PropertySearchResponsePayload propertySearchResponsePayload = new PropertySearchResponsePayload(propertySearchResponseData);
-      PropertySearchResponse propertySearchResponse = new PropertySearchResponse();
-      propertySearchResponse.PropertySearchResponsePayload = propertySearchResponsePayload;
-      Log.Debug("Leaving Post(PropertySearchRequest)");
-      return propertySearchResponse;
-    }
-    public RealEstateServicesData RealEstateServicesData { get; set; }
-  }
 
 
 }

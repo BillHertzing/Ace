@@ -1,0 +1,69 @@
+// removed refedrences to ATAP Cryptocoin libraries
+@using Itenso.TimePeriod;
+@page "/HashRateDisplay"
+
+
+<h1>HashRate</h1>
+
+    Current hashrate :
+
+@*<p>
+    @(@currentHashRate.HashRatePerTimeSpan / 1000000) <label for="inputfield3" class="col-sm-1 control-label">@hrpts</label> /
+    <select onchange="@ChangeHashRateTimeSpan">
+      // dur - string
+      @foreach (var dur in timeBlockDurationsList)
+      {
+        <option value=@dur>@dur</option>
+      }
+    </select>
+  </p>
+  <p>
+    @(@currentHashRate.HashRatePerTimeSpan) Hashes / @currentHashRate.HashRateTimeSpan.Duration.TotalSeconds Seconds
+  </p>*@
+<button class="btn btn-primary" onclick="@Print">Print</button>
+
+<a href="/hardware">hardware page</a>
+
+
+@functions {
+//public List<TimeBlockDurations> timeBlockDurationsList { get; set; } = new List<TimeBlockDurations>();
+
+//public TimeBlockDurations currentDuration = TimeBlockDurations.Hour;
+//public string hrpts = "MH";
+
+//HashRate currentHashRate = new HashRate(19450000, new TimeBlock(DateTime.Now, new TimeSpan(0, 0, 1, 0)));
+
+public void Print()
+{
+  Console.WriteLine("stuff".ToString());
+}
+
+protected override void OnInit()
+{
+  //foreach (TimeBlockDurations dur in Enum.GetValues(typeof(TimeBlockDurations)))
+  //{
+  //  timeBlockDurationsList.Add(dur);
+  //}
+  //currentDuration = TimeBlockDurations.Hour;
+}
+
+protected void ChangeHashRateTimeSpan(UIChangeEventArgs e)
+{
+  //Console.WriteLine($"Firing ChangeHashRateTimeSpan , Initial currentDuration = {currentDuration}, eventvalue = {e.Value}");
+  //var newDuration = (TimeBlockDurations)Enum.Parse(typeof(TimeBlockDurations), (string)e.Value);
+  //if (newDuration != currentDuration)
+  //{
+  //  TimeSpan newTimeSpan;
+  //  switch (newDuration)
+  //  {
+  //    case TimeBlockDurations.Sec: { newTimeSpan = new TimeSpan(0, 0, 0, 1); break; }
+  //    case TimeBlockDurations.Min: { newTimeSpan = new TimeSpan(0, 0, 1, 0); break; }
+  //    case TimeBlockDurations.Hour: { newTimeSpan = new TimeSpan(0, 1, 0, 0); break; }
+  //    case TimeBlockDurations.Day: { newTimeSpan = new TimeSpan(1, 0, 0, 0); break; }
+  //  }
+  //  HashRate.ChangeTimeSpan(currentHashRate, new HashRate(0, new TimeBlock(DateTime.Now, newTimeSpan)));
+  //  currentDuration = newDuration;
+  //}
+  //Console.WriteLine($"Firing from ChangeUOM, final currentDuration = {currentDuration}");
+}
+}

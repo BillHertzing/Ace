@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
@@ -27,7 +27,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="ATAP.Utilities.RealEstate.Enumerations" Version="1.0.0" />
+
     <PackageReference Include="MedallionShell" Version="1.5.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview3.19153.1" />
     
@@ -38,37 +38,30 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Agent\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
     <ProjectReference Include="..\Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
+    <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
+    <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
     
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="ATAP.Utilities.ComputerInventory.Enumerations">
-      <HintPath>..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory.Enumerations\bin\Debug\netstandard2.0\ATAP.Utilities.ComputerInventory.Enumerations.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.ComputerInventory.Models">
-      <HintPath>..\..\ATAP.Utilities\ATAP.Utilities.ComputerInventory.Models\bin\Debug\netstandard2.0\ATAP.Utilities.ComputerInventory.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.CryptoCoin.Enumerations">
-      <HintPath>..\..\ATAP.Utilities\ATAP.Utilities.CryptoCoin.Enumerations\bin\Debug\netstandard2.0\ATAP.Utilities.CryptoCoin.Enumerations.dll</HintPath>
-    </Reference>
-    <Reference Include="ATAP.Utilities.CryptoCoin.Models">
-      <HintPath>..\..\ATAP.Utilities\ATAP.Utilities.CryptoCoin.Models\bin\Debug\netstandard2.0\ATAP.Utilities.CryptoCoin.Models.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+
 
   <ItemGroup>
-    <Content Update="Pages\BaseServicesUserRegistration.cshtml">
+    <Content Update="Pages\BaseServices\BaseServicesTaskStatus.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\BaseServicesUserData.cshtml">
+    <Content Update="Pages\BaseServices\BaseServicesUserRegistration.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\BaseServicesGeoLocation.cshtml">
+    <Content Update="Pages\BaseServices\BaseServicesUserData.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\BaseServices\BaseServicesGeoLocation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Pages\UserData.cshtml">
@@ -77,7 +70,7 @@
     <Content Update="Pages\ConfigurationData.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Pages\DiskAnalysisServices.cshtml">
+    <Content Update="Pages\DiskAnalysisServices\DiskAnalysisServices.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

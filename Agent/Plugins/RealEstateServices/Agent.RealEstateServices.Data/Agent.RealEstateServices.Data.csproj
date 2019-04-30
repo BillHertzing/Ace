@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 <!-- override the usual TargetFrameworks for any models that have to be present in both the Blazor GUI .netstandard2.0 or higher), and also in the ACE Windows Service (net471)-->
   <PropertyGroup>
@@ -27,7 +27,9 @@
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
  </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ATAP.Utilities.Http\ATAP.Utilities.Http.csproj" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+
+    <ProjectReference Include="..\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
   </ItemGroup>
   
 
