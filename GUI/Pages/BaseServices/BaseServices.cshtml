@@ -6,17 +6,27 @@
 @if (@InitializationResponse == null)
 {<p>InitializationResponse is STILL null</p>}
 else
-{ <p>InitializationResponse is NOT null</p>}
+{ <p>InitializationResponse is NOT null</p>
 
 
-@if (@IsAliveRspPayload == null)
-{<p>IsAliveRspPayload is STILL null</p>}
-else
-{ <p>IsAliveRspPayload is NOT null</p>}
+    @if (@IsAliveRspPayload == null)
+    {<p>IsAliveRspPayload is STILL null</p>}
+    else
+    { <p>IsAliveRspPayload is NOT null</p>}
 
 
-<hr />
-<p> add User LoginOrRegisterNewUserComponent here</p>
-<!--<BaseServicesUserRegistration /> -->
+    <hr />
+    <p> add User LoginOrRegisterNewUserComponent here</p>
+    <!--<BaseServicesUserRegistration /> -->
+
+    <hr />
+    <p> Long running Tasks </p>
+    <p> count: @LongRunningTasksCOD.Keys.Count </p>
+    @foreach (var kv in LongRunningTasksCOD)
+    {
+        <p> LRTId: @kv.Key.ToString() Status:@kv.Value.TaskStatus.ToString() </p>
+    }
+
+}
 
 

@@ -91,12 +91,6 @@ namespace Ace.Agent.BaseServices {
 	//ToDo: add SetUserdata and SetConfigurationData
     #endregion
 
-	
-	
-	    //public ConfigurationData ConfigurationData { get; set; }
-
-        //public UserData UserData { get; set; }
-
 		
     
 

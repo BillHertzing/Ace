@@ -5,17 +5,31 @@
 
 <!-- If the onInitAsync, and the Initialization has not occurred, set a caution window style -->
 <!-- If the onInitAsync, and the Initialization has occurred, set a normal window style -->
-<hr />
-<h2>LongRunningTasks on the Agent</h2>
-<!--
-    <p>@{foreach (var taskId in @LongRunningTasksCOD.Keys)
-    {@taskId.ToString() } }</p>
--->
-<!-- Send a request for an update on all the tasks -->
-<button type="button" class="btn btn-default" id="UpdateLongRunningTasksStatus" onclick=@(async () => await UpdateLongRunningTasksStatus())>@labelForUpdateLongRunningTasksStatusButton</button>
+@if (@InitializationResponse == null)
+{<p>InitializationResponse is STILL null</p>}
+else
+{ <p>InitializationResponse is NOT null</p>
 
-<!-- Send a request for an update on a specific Id<LongRunningTaskInfo> tasks -->
-<button type="button" class="btn btn-default" id="UpdateLongRunningTasksStatus" onclick=@(async () => await UpdateLongRunningTasksStatus(1))>specific task number (hardcoded for 1)</button>
+    <hr />
+    <h2>LongRunningTasks on the Agent</h2>
 
+    <p>
+        @{foreach (var taskId in @LongRunningTasksCOD.Keys)
+            {@taskId.ToString() } }
+    </p>
+
+    <!-- Send a request for an update on all the tasks -->
+    <button type="button" class="btn btn-default" id="GetLongRunningTasksStatus" onclick=@(async () => await GetLongRunningTasksStatus())>@labelForGetLongRunningTasksStatusButton</button>
+
+    <!-- Send a request for an update on a specific Id<LongRunningTaskInfo> tasks
+    <button type="button" class="btn btn-default" id="GetLongRunningTasksStatus" onclick=@(async () => await GetLongRunningTasksStatus(LongRunningTasksCOD.Keys.Select()))>specific task number (hardcoded for 1st in list)</button>
+
+    -->
+    <hr />
+    <p> Long running Tasks </p>
+    <p> count: @LongRunningTasksCOD.Keys.Count </p>
+    @foreach (var kv in LongRunningTasksCOD)
+        {
+            <p> LRTId: Status:@kv.Value.TaskStatus.ToString() </p>
+        }
 }
-

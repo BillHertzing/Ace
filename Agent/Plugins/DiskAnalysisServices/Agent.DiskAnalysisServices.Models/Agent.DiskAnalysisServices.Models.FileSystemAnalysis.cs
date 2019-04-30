@@ -22,10 +22,7 @@ namespace Ace.Agent.DiskAnalysisServices {
         public AnalyzeFileSystemRequestPayload AnalyzeFileSystemRequestPayload { get; set; }
     }
     public class AnalyzeFileSystemRequestPayload : IEquatable<AnalyzeFileSystemRequestPayload> {
-        public AnalyzeFileSystemRequestPayload() {
-            Root=string.Empty;
-            AsyncFileReadBlockSize=4096;
-        }
+        public AnalyzeFileSystemRequestPayload() :this (string.Empty, 4096) {}
 
         public AnalyzeFileSystemRequestPayload(string root, int asyncFileReadBlockSize) {
             Root=root??throw new ArgumentNullException(nameof(root));
@@ -70,9 +67,7 @@ namespace Ace.Agent.DiskAnalysisServices {
     }
 
     public class AnalyzeFileSystemResponsePayload : IEquatable<AnalyzeFileSystemResponsePayload> {
-        public AnalyzeFileSystemResponsePayload() {
-            LongRunningTaskIds=new List<Id<LongRunningTaskInfo>>();
-        }
+        public AnalyzeFileSystemResponsePayload() :this (new List<Id<LongRunningTaskInfo>>() ) {}
 
         public AnalyzeFileSystemResponsePayload(List<Id<LongRunningTaskInfo>> longRunningTaskIds) {
             LongRunningTaskIds=longRunningTaskIds??throw new ArgumentNullException(nameof(longRunningTaskIds));

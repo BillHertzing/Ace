@@ -29,17 +29,13 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class FileSystemAnalysis {
+
         //public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize, MD5 mD5) {
         public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize) {
-            Log.Debug($"starting FileSystemAnalysis ctor (asyncFileReadBlockSize = {asyncFileReadBlockSize})");
             Log=log??throw new ArgumentNullException(nameof(log));
+            Log.Debug($"starting FileSystemAnalysis ctor (asyncFileReadBlockSize = {asyncFileReadBlockSize})");
             // ToDo: make the exception message a constant localizable string)
-            if (asyncFileReadBlockSize>=0) {
-                AsyncFileReadBlocksize=asyncFileReadBlockSize;
-
-            } else {
-                throw new ArgumentOutOfRangeException($"asyncFileReadBlockSize must be greater than 0, received {asyncFileReadBlockSize}");
-            }
+            AsyncFileReadBlocksize =(asyncFileReadBlockSize>=0)? asyncFileReadBlockSize:throw new ArgumentOutOfRangeException($"asyncFileReadBlockSize must be greater than 0, received {asyncFileReadBlockSize}");
             // MD5=mD5??throw new ArgumentNullException(nameof(mD5));
             Log.Debug("leaving FileSystemAnalysis ctor");
         }

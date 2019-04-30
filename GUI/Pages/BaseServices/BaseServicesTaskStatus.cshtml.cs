@@ -16,6 +16,8 @@ using ATAP.Utilities.DiskDrive;
 using Swordfish.NET.Collections;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.LongRunningTasks;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Ace.AceGUI.Pages {
     public partial class BaseServicesCodeBehind : ComponentBase {
@@ -23,33 +25,52 @@ namespace Ace.AceGUI.Pages {
         #region StringConstants
         // Eventually replace with localization
         #region StringConstants:TaskStatus
-        public const string labelForUpdateLongRunningTasksStatusButton = "Press to Update Task Status";
+        public const string labelForGetLongRunningTasksStatusButton = "Press to Get Tasks Status";
         #endregion
         #endregion
 
 
-        #region UpdateLongRunningTasksStatus
-        public async Task UpdateLongRunningTasksStatus(int placeholder) {
+        #region GetLongRunningTasksStatus
+        public async Task GetLongRunningTasksStatus(IEnumerable taskList) {
             await new Task(() => { Thread.Sleep(5); });
         }
-        public async Task UpdateLongRunningTasksStatus() {
-            // Log.LogDebug($"Starting UpdateLongRunningTasksStatus, placeholder = {placeholder}");
-            UpdateLongRunningTasksStatusRequest updateLongRunningTasksStatusRequest = new UpdateLongRunningTasksStatusRequest();
-            //Log.LogDebug($"Calling PostJsonAsync<UpdateLongRunningTasksStatusResponse> with updateLongRunningTasksStatusRequest = {updateLongRunningTasksStatusRequest}");
-            UpdateLongRunningTasksStatusResponse updateLongRunningTasksStatusResponse =
-      await HttpClient.PostJsonAsync<UpdateLongRunningTasksStatusResponse>("/UpdateLongRunningTasksStatus", updateLongRunningTasksStatusRequest);
-            //Log.LogDebug($"Returned from PostJsonAsync<UpdateLongRunningTasksStatusResponse> with updateLongRunningTasksStatusResponse = {updateLongRunningTasksStatusResponse}");
-
-            // Log.LogDebug($"Leaving UpdateLongRunningTasksStatus");
+        public async Task GetLongRunningTasksStatus() {
+            // Log.LogDebug($"Starting GetLongRunningTasksStatus (all)");
+            List<Id<LongRunningTaskInfo>> longRunningTaskInfoIds = new List<Id<LongRunningTaskInfo>>();
+            longRunningTaskInfoIds.AddRange(LongRunningTasksCOD.Keys);
+            GetLongRunningTasksStatusRequest getLongRunningTasksStatusRequest = new GetLongRunningTasksStatusRequest(longRunningTaskInfoIds);
+            //Log.LogDebug($"Calling PostJsonAsync<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusRequest = {getLongRunningTasksStatusRequest}");
+            GetLongRunningTasksStatusResponse getLongRunningTasksStatusResponse =
+      await HttpClient.PostJsonAsync<GetLongRunningTasksStatusResponse>("/GetLongRunningTasksStatus", getLongRunningTasksStatusRequest);
+            // Log.LogDebug($"Returned from PostJsonAsync<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusResponse = {getLongRunningTasksStatusResponse}");
+            // Log.LogDebug($"Leaving GetLongRunningTasksStatus (all)");
         }
 
         #endregion
 
- 
+
+        public async Task GetLongRunningTasksState(List<Id<LongRunningTaskInfo>> longRunningTaskIds) {
+            //Logger.LogDebug($"Starting GetLongRunningTasksState");
+            //ToDo: add a cancellation token
+            //Logger.LogDebug($"Calling PostJsonAsync<GetLongRunningTaskStateResponse>");
+            // change the ReadDisk button's color
+
+            GetLongRunningTasksStatusResponse=
+          await HttpClient.PostJsonAsync<GetLongRunningTasksStatusResponse>("/GetLongRunningTasksStatus?format=json",
+                                                                 new GetLongRunningTasksStatusRequest(longRunningTaskIds));
+            //Logger.LogDebug($"Returned from PostJsonAsync<GetLongRunningTasksStatusResponse>");
+            foreach (var s in GetLongRunningTasksStatusResponse.LongRunningTaskStatuses.LongRunningTaskStatusList) {
+                LongRunningTasksCOD[s.Id]=s;
+            }
+            //Logger.LogDebug($"Leaving ReadDisk");
+        }
+
 
         #region Properties
         #region Properties:LongRunningTasks
-        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> LongRunningTasksCOD { get; set; }
+        public ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskStatus> LongRunningTasksCOD { get; set; }
+
+        public GetLongRunningTasksStatusResponse GetLongRunningTasksStatusResponse { get; set; }
         #endregion
         #endregion
 

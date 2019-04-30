@@ -17,6 +17,8 @@ using Swordfish.NET.Collections;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.LongRunningTasks;
 
+//using Stateless;
+
 namespace Ace.AceGUI.Pages {
     public partial class BaseServicesCodeBehind : ComponentBase {
 
@@ -49,7 +51,7 @@ namespace Ace.AceGUI.Pages {
         #endregion Gateway definitions
 
         #region StringConstants:TaskStatus
-        //public const string labelForUpdateLongRunningTasksStatusButton = "Press to Update Task Status";
+        //public const string labelForGetLongRunningTasksStatusButton = "Press to Get Task Status";
         #endregion
 
         #region User data (string constants)
@@ -82,8 +84,14 @@ namespace Ace.AceGUI.Pages {
             ////Log.LogDebug($"Initializing IServiceClient");
             ////IServiceClient client = new JsonHttpClient("http://localhost:21100");
             ////Log.LogDebug($"client is null: {client == null}");
-
-
+            /* // from teh stateless statemachine compiler project
+            const string on = "On";
+            const string off = "Off";
+            const char space = ' ';
+            var onOffSwitch = new StateMachine<string, char>(off);
+            onOffSwitch.Configure(off).Permit(space, on);
+            onOffSwitch.Configure(on).Permit(space, off);
+            */
             var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new InitializationData("BaseVersionXX", "MachineIDXX","userIDxx")));
             //Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest = {InitializationRequest}");
             InitializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>("/BaseServicesInitialization",
@@ -92,6 +100,7 @@ namespace Ace.AceGUI.Pages {
             ConfigurationData=InitializationResponse.InitializationResponsePayload.ConfigurationData;
             UserData=InitializationResponse.InitializationResponsePayload.UserData;
             PartitionInfoExs=new PartitionInfoExs();
+            LongRunningTasksCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskStatus>();
             //Log.LogDebug($"Leaving OnInitAsync");
         }
         #endregion
@@ -113,24 +122,6 @@ namespace Ace.AceGUI.Pages {
             get;
             set;
         }
-        #endregion
-
-        #region UpdateLongRunningTasksStatus
-        /*
-        public async Task UpdateLongRunningTasksStatus(int placeholder) {
-            await new Task(() => { Thread.Sleep(5); });
-        }
-        public async Task UpdateLongRunningTasksStatus() {
-            // Log.LogDebug($"Starting UpdateLongRunningTasksStatus, placeholder = {placeholder}");
-            UpdateLongRunningTasksStatusRequest updateLongRunningTasksStatusRequest = new UpdateLongRunningTasksStatusRequest();
-            //Log.LogDebug($"Calling PostJsonAsync<UpdateLongRunningTasksStatusResponse> with updateLongRunningTasksStatusRequest = {updateLongRunningTasksStatusRequest}");
-            UpdateLongRunningTasksStatusResponse updateLongRunningTasksStatusResponse =
-      await HttpClient.PostJsonAsync<UpdateLongRunningTasksStatusResponse>("/UpdateLongRunningTasksStatus", updateLongRunningTasksStatusRequest);
-            //Log.LogDebug($"Returned from PostJsonAsync<UpdateLongRunningTasksStatusResponse> with updateLongRunningTasksStatusResponse = {updateLongRunningTasksStatusResponse}");
-
-            // Log.LogDebug($"Leaving UpdateLongRunningTasksStatus");
-        }
-        */
         #endregion
 
         #region PostGetBaseServicesConfigurationData 

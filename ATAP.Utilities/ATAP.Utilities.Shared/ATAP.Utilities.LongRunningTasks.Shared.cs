@@ -96,25 +96,28 @@ namespace ATAP.Utilities.LongRunningTasks {
         }
     }
 
-    public interface ILongRunningTaskStatus {
-        Id<LongRunningTaskInfo> Id { get; set; }
-        TaskStatus TaskStatus { get; set; }
 
-        bool Equals(LongRunningTaskStatus other);
+
+    public interface ILongRunningTaskStatus  {
         bool Equals(object obj);
         int GetHashCode();
+
+        Id<LongRunningTaskInfo> Id { get; set; }
+        int NumberOfExceptions { get; set; }
+        TaskStatus TaskStatus { get; set; }
     }
-
     public class LongRunningTaskStatus : IEquatable<LongRunningTaskStatus>, ILongRunningTaskStatus {
-        public LongRunningTaskStatus() :this(new Id<LongRunningTaskInfo>(),TaskStatus.Created ) { }
+        public LongRunningTaskStatus() : this(new Id<LongRunningTaskInfo>(), TaskStatus.Created, 0) { }
 
-        public LongRunningTaskStatus(Id<LongRunningTaskInfo> id, TaskStatus taskStatus) {
+        public LongRunningTaskStatus(Id<LongRunningTaskInfo> id, TaskStatus taskStatus, int numberOfExceptions) {
             Id=id;
             TaskStatus=taskStatus;
+            NumberOfExceptions=numberOfExceptions;
         }
 
         public Id<LongRunningTaskInfo> Id { get; set; }
         public TaskStatus TaskStatus { get; set; }
+        public int NumberOfExceptions { get; set; }
 
         public override bool Equals(object obj) {
             return Equals(obj as LongRunningTaskStatus);

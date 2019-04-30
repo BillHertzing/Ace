@@ -25,6 +25,7 @@ namespace Ace.Agent.DiskAnalysisServices {
         void ConstructDiskDriveAnalysisData() {
             LookupDiskDriveAnalysisResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
             AnalyzeDiskDriveResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveResult>();
+            AnalyzeDiskDriveProgressCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeDiskDriveProgress>();
         }
         public void TearDownDiskDriveAnalysisData() {
             //PluginRootCOD.CollectionChanged-=this.onPluginRootCODCollectionChanged;
@@ -45,6 +46,7 @@ namespace Ace.Agent.DiskAnalysisServices {
         void ConstructFileSystemAnalysisData() {
             LookupFileSystemAnalysisResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>();
             AnalyzeFileSystemResultsCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult>();
+            AnalyzeFileSystemProgressCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemProgress>();
             //DirectoryInfoExCOD =new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, DirectoryInfoExs>();
             //FileInfoExCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, FileInfoExs>();
             //EdgeFileInfoExDirectoryInfoExCOD=new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, (Id<DirectoryInfoEx>, Id<FileInfoEx>)>();

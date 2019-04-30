@@ -5,51 +5,54 @@ using System.Collections.Generic;
 using ATAP.Utilities.TypedGuids;
 
 namespace Ace.Agent.BaseServices {
-    
 
-    #region UpdateLongRunningTasksStatusRequest, UpdateLongRunningTasksStatusResponse, and route UpdateLongRunningTasksStatus
-    [Route("/UpdateLongRunningTasksStatus")]
-    public class UpdateLongRunningTasksStatusRequest : IReturn<UpdateLongRunningTasksStatusResponse> {
-        public UpdateLongRunningTasksStatusRequest() { }
-    }
 
-    public class UpdateLongRunningTasksStatusResponse {
-        public UpdateLongRunningTasksStatusResponse() : this(new UpdateLongRunningTasksStatusResponsePayload()) { }
-        public UpdateLongRunningTasksStatusResponse(UpdateLongRunningTasksStatusResponsePayload updateLongRunningTasksStatusResponsePayload) {
-            UpdateLongRunningTasksStatusResponsePayload=updateLongRunningTasksStatusResponsePayload;
+    #region GetLongRunningTasksStatusRequest, GetLongRunningTasksStatusResponse, and route GetLongRunningTasksStatusRequest
+    [Route("/GetLongRunningTasksStatus")]
+    public class GetLongRunningTasksStatusRequest : IReturn<GetLongRunningTasksStatusResponse> {
+        public GetLongRunningTasksStatusRequest() : this(new List<Id<LongRunningTaskInfo>>()) { }
+        public GetLongRunningTasksStatusRequest(List<Id<LongRunningTaskInfo>> longRunningTaskInfoIDs) {
+            LongRunningTaskInfoIDs=longRunningTaskInfoIDs;
         }
-        public UpdateLongRunningTasksStatusResponsePayload UpdateLongRunningTasksStatusResponsePayload { get; set; }
+
+        public List<Id<LongRunningTaskInfo>> LongRunningTaskInfoIDs { get; set; }
     }
 
-    public class UpdateLongRunningTasksStatusResponsePayload {
-        public UpdateLongRunningTasksStatusResponsePayload() : this(new LongRunningTaskStatuses()) { }
+    public class GetLongRunningTasksStatusResponse {
+        public GetLongRunningTasksStatusResponse() : this(new LongRunningTaskStatuses()) { }
+        public GetLongRunningTasksStatusResponse(LongRunningTaskStatuses longRunningTaskStatuses) {
+            LongRunningTaskStatuses=longRunningTaskStatuses;
+        }
+        public LongRunningTaskStatuses LongRunningTaskStatuses { get; set; }
+    }
+    /*
+    public class GetLongRunningTasksStatusResponsePayload {
+        public GetLongRunningTasksStatusResponsePayload() : this(new LongRunningTaskStatuses()) { }
 
-        public UpdateLongRunningTasksStatusResponsePayload(LongRunningTaskStatuses longRunningTaskStatuses) {
+        public GetLongRunningTasksStatusResponsePayload(LongRunningTaskStatuses longRunningTaskStatuses) {
             LongRunningTaskStatuses=longRunningTaskStatuses??throw new ArgumentNullException(nameof(longRunningTaskStatuses));
         }
 
         public LongRunningTaskStatuses LongRunningTaskStatuses { get; set; }
     }
+    */
     #endregion
-	
-	
-	 #region GetLongRunningTaskStateRequest, GetLongRunningTaskStateResponse and Route for GetLongRunningTaskState
-    [Route("/GetLongRunningTaskState")]
-    [Route("/GetLongRunningTaskState/{LongRunningTaskID}")]
-    public class GetLongRunningTaskStateRequest : IReturn<GetLongRunningTaskStateResponse> {
-        //public GetLongRunningTaskStateRequest() : this(Guid.Empty) { }
-        public GetLongRunningTaskStateRequest(List<Id<LongRunningTaskInfo>> longRunningTaskIDs) {
-            LongRunningTaskIDs=longRunningTaskIDs;
-        }
-        public List<Id<LongRunningTaskInfo>> LongRunningTaskIDs { get; set; }
+
+
+    #region GetLongRunningTasksListRequest, GetLongRunningTasksListResponse and Route for GetLongRunningTasksList
+    [Route("/GetLongRunningTasksList")]
+    //[Route("/GetLongRunningTasksList/{LongRunningTaskID}")]
+    public class GetLongRunningTasksListRequest : IReturn<GetLongRunningTasksListResponse> {
+        //public GetLongRunningTasksListRequest() : this(Guid.Empty) { }
+        public GetLongRunningTasksListRequest() {}
     }
 
-    public class GetLongRunningTaskStateResponse {
-        public GetLongRunningTaskStateResponse() : this("DefaultTaskState") { }
-        public GetLongRunningTaskStateResponse(string longRunningTaskState) {
-            LongRunningTaskState=longRunningTaskState;
+    public class GetLongRunningTasksListResponse {
+        public GetLongRunningTasksListResponse() : this(new List<Id<LongRunningTaskInfo>>()) { }
+        public GetLongRunningTasksListResponse(List<Id<LongRunningTaskInfo>> longRunningTasksList) {
+            LongRunningTasksList=longRunningTasksList;
         }
-        public string LongRunningTaskState { get; set; }
+        public List<Id<LongRunningTaskInfo>> LongRunningTasksList { get; set; }
     }
     #endregion
 

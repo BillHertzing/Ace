@@ -33,7 +33,7 @@ namespace Ace.Agent.DiskAnalysisServices {
             var cancellationTokenSource = new CancellationTokenSource();
             var cancellationTokenSourceId = new Id<CancellationTokenSource>(Guid.NewGuid());
             var cancellationToken = cancellationTokenSource.Token;
-
+            Log.Debug("in Post(AnalyzeFileSystemRequest) 1");
             // Get the BaseServicesData and diskAnalysisServicesData instances that were injected into the DI container
             var baseServicesData = HostContext.TryResolve<BaseServicesData>();
             var diskAnalysisServicesData = HostContext.TryResolve<DiskAnalysisServicesData>();
@@ -41,6 +41,7 @@ namespace Ace.Agent.DiskAnalysisServices {
             // Setup the instance. Use Configuration Data if the request payload is null
             var blockSize = request.AnalyzeFileSystemRequestPayload.AsyncFileReadBlockSize>=0? request.AnalyzeFileSystemRequestPayload.AsyncFileReadBlockSize : diskAnalysisServicesData.ConfigurationData.BlockSize;
             var fileSystemAnalysis = new FileSystemAnalysis(Log, diskAnalysisServicesData.ConfigurationData.BlockSize);
+            Log.Debug("in Post(AnalyzeFileSystemRequest) 2");
 
 
             // Create storage for the results and progress

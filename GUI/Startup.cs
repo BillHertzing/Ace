@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,12 +15,14 @@ namespace GUI
   {
     public void ConfigureServices(IServiceCollection services)
     {
-      // Add Blazor.Extensions.Logging.BrowserConsoleLogger; taken from the Blazor.Extensions.Logging NuGet package home page https://www.nuget.org/packages/Blazor.Extensions.Logging/# on 6/12/2018
-      //services.AddLogging(builder => builder
-      //    .AddBrowserConsole() // Register the logger with the ILoggerBuilder
-      //    .SetMinimumLevel(LogLevel.Debug) // Set the minimum log level to Information
-      //);
-    }
+            // Add Blazor.Extensions.Logging.BrowserConsoleLogger; taken from the Blazor.Extensions.Logging NuGet package home page https://www.nuget.org/packages/Blazor.Extensions.Logging/# on 6/12/2018
+            //services.AddLogging(builder => builder
+            //    .AddBrowserConsole() // Register the logger with the ILoggerBuilder
+            //    .SetMinimumLevel(LogLevel.Debug) // Set the minimum log level to Information
+            //);
+            // Add a library that enables local storage on the browser
+            //services.AddBlazoredLocalStorage();
+        }
 
     public void Configure(IComponentsApplicationBuilder app)
     {
