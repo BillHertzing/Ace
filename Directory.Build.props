@@ -13,8 +13,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
     <!--
     <TargetFramework>net47</TargetFramework>
     <TargetFramework>net471</TargetFramework>
@@ -69,46 +69,6 @@
     <NuGetLocalFeedPath Condition=" '$(NuGetLocalFeedPath)' == '' ">C:\Dropbox\NuGetLocalFeed</NuGetLocalFeedPath> 
   </PropertyGroup>
 
-
-  <!-- Release Configuration compilation symbols, flags and build options -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>RELEASE;</DefineConstants>
-  </PropertyGroup>
-
-  <!-- Debug Configuration compilation symbols, flags and build options -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <NoWarn>1701;1702;1705,NU1701</NoWarn>
-  </PropertyGroup>
-
-  <!-- .NET Standard 2.0 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET Standard 2.0 solution-wide items to include in every project -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-  </ItemGroup>
-
-  <!-- .NET Core 2.0 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0'">
-    <DefineConstants>NETCORE;</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET Core 2.0 solution-wide items to include in every project -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-  </ItemGroup>
-
-    <!-- .NET 4 or greater references, compilation flags and build options -->
-  <PropertyGroup Condition="$(TargetFramework.Contains('net47'))">
-    <DefineConstants>NET47;NETFULL</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET 471 solution-wide items to include in every project -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471' ">
-  </ItemGroup>
 
   <!-- Demonstrate the difference between a msbuild run from inside Visual Studio, and a msbuild callled from dotnet CLI
        Replace Never with Clean -->
