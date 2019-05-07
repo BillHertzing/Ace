@@ -1,63 +1,68 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  
 
   <PropertyGroup>
-    <TargetFrameworks>net471</TargetFrameworks>
+    <!-- Override the TargetFameworks specified in the Directory.Build.props  -->
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFrameworks>netcoreapp3.0;</TargetFrameworks>
     <UserSecretsId>E5D6C5E5-6E30-49EF-BE15-E1B7C377D2A7</UserSecretsId>
     <OutputType>Exe</OutputType>
     <RootNamespace>Ace.AceService</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
-	<!-- Assembly, File, and Package Information for this assembly-->
-    <!-- Build and revision are created based on date-->
-    <MajorVersion>1</MajorVersion>
-    <MinorVersion>0</MinorVersion>
-    <PatchVersion>0</PatchVersion>
-    <!-- Current Lifecycle stage for this assembly-->
-    <PackageLifeCycleStage>Production</PackageLifeCycleStage>
-    <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
-    <PackageLabel>NA</PackageLabel>
+    <!-- microsoft "development" Nuget package  servers -->
+    <RestoreAdditionalProjectSources>
+      https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
+      https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
+    </RestoreAdditionalProjectSources>
+    
     <ApplicationIcon>ATAP.ICO</ApplicationIcon>
   </PropertyGroup>
 
-  <!-- Common for all TargetFrameworks references, compilation flags and build options -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview3-19153-02" />
-    <PackageReference Include="ServiceStack" Version="5.5.1" />
-     <PackageReference Include="ServiceStack.Redis" Version="5.5.1" />
-    <PackageReference Include="Topshelf" Version="4.2.0.205-develop" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+  <!-- Separate Property Group for Version Control -->
+  <PropertyGroup>
+    <!-- Assembly, File, and Package Information for this assembly-->
+    <!-- Build and revision are created based on date-->
+    <MajorVersion>1</MajorVersion>
+    <MinorVersion>1</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <!-- Current Lifecycle stage for this assembly-->
+    <PackageLifeCycleStage>Dev</PackageLifeCycleStage>
+    <!-- However, if the LifeCyclestage is Production, the NuGet Package Label is ignored, but MSBuild expects a non-null value  -->
+    <PackageLabel>Alpha</PackageLabel>
+  </PropertyGroup>
+
+  <!-- Packages necessary to host .Net Core apps as a service, not working in V30P4 / not yet part of ACE
+   <ItemGroup>
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0-preview4.19212.13" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview4.19216.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0-preview4.19216.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview4.19216.2" />
   </ItemGroup>
-  
-  <!-- .NET 4 or greater references, compilation flags and build options -->
-  <ItemGroup Condition="$(TargetFramework.Contains('net4'))">
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Security" />
+  -->
+
+  <!-- Packages necessary to run the ASP.Net Core Blazor Server -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview5.19227.9" />
+  </ItemGroup>
+
+  <!-- ServiceStack packages used -->
+  <ItemGroup>
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Redis" Version="5.5.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
+    <Content Update="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <Content Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
 

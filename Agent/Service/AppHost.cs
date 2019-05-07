@@ -1,13 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Security;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Windows.Forms;
 using Ace.Agent.BaseServices;
 using Ace.Agent.GUIServices;
 using Ace.Agent.DiskAnalysisServices;
@@ -18,7 +11,7 @@ using ServiceStack.Logging;
 
 //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
 namespace Ace.AceService {
-    public class AppHost : AppSelfHostBase {
+    public class SSAppHost : AppHostBase {
         #region string constants default file names and Exception messages
         #region string constants: File Names 
         public const string agentSettingsTextFileNameString = "Agent.BaseServices.settings.txt";
@@ -31,20 +24,14 @@ namespace Ace.AceService {
         #endregion
         #endregion
 
-        static readonly ILog Log = LogManager.GetLogger(typeof(AppHost));
+        static readonly ILog Log = LogManager.GetLogger(typeof(SSAppHost));
 
 
-        public AppHost() : base("AceService", typeof(BaseServices).Assembly) {
-            Log.Debug("Entering AppHost Ctor");
-            Log.Debug("Leaving AppHost Ctor");
+        public SSAppHost() : base("BaseServices", typeof(BaseServices).Assembly) {
+            Log.Debug("Entering SSAppHost Ctor");
+            Log.Debug("Leaving SSAppHost Ctor");
         }
 
-        // Stop the entire program
-        void menuItem1_Click(object Sender, EventArgs e) {
-            Log.Debug("AceCommander NotifyIcon menuItem1_Click event handler started");
-            this.Stop();
-            Log.Debug("AceCommander NotifyIcon menuItem1_Click event handler started");
-        }
 
         /// <summary>
         /// Application specific configuration
@@ -52,7 +39,7 @@ namespace Ace.AceService {
         /// </summary>
         public override void Configure(Container container) {
             // inject the concrete logging implementation
-            Log.Debug($"Entering AppHost.Configure method, container is {container.ToString()}");
+            Log.Debug($"Entering SSAppHost.Configure method, container is {container.ToString()}");
 
             // AppSettings is a first class object on the Container, so it will be auto-wired
             // In any other assembly, AppSettings is read-only, so it must be populated in this assembly
@@ -104,7 +91,7 @@ namespace Ace.AceService {
             AppSettings=multiAppSettingsBuilder.Build();
 
             // Create the BaseServices data structure and register it in the container
-            //  The AppHost (here, ServiceStack running as a Windows service) has some configuration that is common
+            //  The SSAppHost (here, ServiceStack running as a Windows service) has some configuration that is common
             //  to both Frameworks (.Net and .Net Core), which will be setup in a common assembly, so this instance of
             //  the appHost is being passed to the BaseServicesData constructor.
             //  this also registers a BaseServicesData instance in the container 
@@ -130,14 +117,14 @@ namespace Ace.AceService {
             // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.
 
             // start all the timers
-            Log.Debug("In AppHost.Configure: starting all timers");
+            Log.Debug("In SSAppHost.Configure: starting all timers");
             var timers = Container.Resolve<Dictionary<string, System.Timers.Timer>>();
             var longRunningTasksCheckTimer = timers[Ace.Agent.BaseServices.BaseServicesData.LongRunningTasksCheckTimerName];
             longRunningTasksCheckTimer.Start();
 
             /* 
             // ToDo: create a NotifyIcon equivalent for a Windows Service or Linux Daemon. Notifiy Icon itself will not work, as that is for WinForms only
-            Log.Debug("in AppHost.Configure: Create a NotifyIcon for AceCommander");
+            Log.Debug("in SSAppHost.Configure: Create a NotifyIcon for AceCommander");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             NotifyIcon notifyIcon1 = new NotifyIcon();
@@ -157,13 +144,26 @@ namespace Ace.AceService {
             // notifyIcon1.Visible = false;
             Log.Debug("NotifyIcon for AceCommander created");
             */
-            Log.Debug("Leaving AppHost.Configure");
+            Log.Debug("Leaving SSAppHost.Configure");
         }
+
+        /* this was part of teh now obiolete "winForms" way of doing a notify icon
+         * // ToDo: Findout how to display a Notify Icon, and respond to an 'exit' selection 
+        // Stop the entire program
+        void menuItem1_Click(object Sender, EventArgs e) {
+            Log.Debug("AceCommander NotifyIcon menuItem1_Click event handler started");
+            this.Stop();
+            Log.Debug("AceCommander NotifyIcon menuItem1_Click event handler started");
+        }
+        */
+
+        /* in ASP.Net Core, there must be some other method or event handler used to shutdown middleware
+         *  // ToDo: Findout how to shutdown SS gracefully ad dispose of it's stuff
         /// <summary>
-        /// Shut down the Web Service
+        /// Shut down the SS Middleware
         /// </summary>
         public override void Stop() {
-            Log.Debug("Entering AppHost Stop Method");
+            Log.Debug("Entering SSAppHost Stop Method");
             var container = base.Container;
 
             // It is possible that the Stop method is called during service startup, because the service could be failing because of a problem during startup,
@@ -174,11 +174,11 @@ namespace Ace.AceService {
             // Stop and dispose of all timers
             Dictionary<string, System.Timers.Timer> timers;
             try {
-                Log.Debug("In AppHost.Stop method, trying to resolve the timers dictionary");
+                Log.Debug("In SSAppHost.Stop method, trying to resolve the timers dictionary");
                 timers=container.TryResolve(typeof(Dictionary<string, System.Timers.Timer>)) as Dictionary<string, System.Timers.Timer>;
             }
             catch (Exception ex) {
-                Log.Debug($"In AppHost.Stop method, resolving the timers dictionary threw exception message: {ex.Message}");
+                Log.Debug($"In SSAppHost.Stop method, resolving the timers dictionary threw exception message: {ex.Message}");
                 throw;
             }
 
@@ -186,11 +186,13 @@ namespace Ace.AceService {
                 t.Stop();
                 t.Dispose();
             }
-            // call the ServiceStack AppSelfHostBase Stop method
-            Log.Debug("Entering the ServiceStack AppSelfHostBase Stop Method");
+            // call the ServiceStack AppHostBase Stop method
+            Log.Debug("Entering the ServiceStack AppHostBase Stop Method");
             base.Stop();
-            Log.Debug("Leaving AppHost Stop Method");
+            Log.Debug("Leaving SSAppHost Stop Method");
         }
+
+        */
         // Get the latest known current configuration, and use that information to populate the data structures
         //ToDo: computerInventory = new ComputerInventory(AppSettings.GetAll());
 

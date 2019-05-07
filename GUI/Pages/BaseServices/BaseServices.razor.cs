@@ -94,8 +94,9 @@ namespace Ace.AceGUI.Pages {
             */
             var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new InitializationData("BaseVersionXX", "MachineIDXX","userIDxx")));
             //Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest = {InitializationRequest}");
-            InitializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>("/BaseServicesInitialization",
-                                                                                                                        initializationRequest);
+            // Issue in Preview 4 & 5  requires the "route" to be a complete URL
+            var uriBuilder = new UriBuilder("http://localhost:21200/BaseServicesInitialization");
+            InitializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>(uriBuilder.Uri.ToString(),initializationRequest);
             //Log.LogDebug($"Returned from PostJsonAsync<InitializationResponse>, InitializationResponse = {InitializationResponse}");
             ConfigurationData=InitializationResponse.InitializationResponsePayload.ConfigurationData;
             UserData=InitializationResponse.InitializationResponsePayload.UserData;
