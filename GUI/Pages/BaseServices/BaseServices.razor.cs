@@ -4,18 +4,18 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Ace.Agent.BaseServices;
-// Required for the Log/logging
-//using Blazor.Extensions.Logging;
+// Required for Browser Console Logging
+using Microsoft.Extensions.Logging;
+using Blazor.Extensions.Logging;
 // Required for Blazor
 using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
-// Required for the Log/logging
-using Microsoft.Extensions.Logging;
 // Required for ComputerInventory used in BaseServices
 using ATAP.Utilities.DiskDrive;
 using Swordfish.NET.Collections;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.LongRunningTasks;
+using ServiceStack.Text;
 
 //using Stateless;
 
@@ -67,8 +67,8 @@ namespace Ace.AceGUI.Pages {
         HttpClient HttpClient { get; set; }
 
         // Access the Logging extensions registered in the DI container
-        //[Inject]
-        //public ILogger<BaseServicesCodeBehind> Log { get; set; }
+        [Inject]
+        public ILogger<BaseServicesCodeBehind> Log { get; set; }
 
         //[Inject]
         //protected SessionStorage sessionStorage;
@@ -80,7 +80,7 @@ namespace Ace.AceGUI.Pages {
 
         #region Page Initialization Handler
         protected override async Task OnInitAsync() {
-            //Log.LogDebug($"Starting OnInitAsync");
+            Log.LogDebug($"Starting OnInitAsync");
             ////Log.LogDebug($"Initializing IServiceClient");
             ////IServiceClient client = new JsonHttpClient("http://localhost:21100");
             ////Log.LogDebug($"client is null: {client == null}");
@@ -93,7 +93,7 @@ namespace Ace.AceGUI.Pages {
             onOffSwitch.Configure(on).Permit(space, off);
             */
             var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new InitializationData("BaseVersionXX", "MachineIDXX","userIDxx")));
-            //Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest = {InitializationRequest}");
+            Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with initializationRequest = {initializationRequest.Dump()}");
             // Issue in Preview 4 & 5  requires the "route" to be a complete URL
             var uriBuilder = new UriBuilder("http://localhost:21200/BaseServicesInitialization");
             InitializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>(uriBuilder.Uri.ToString(),initializationRequest);
