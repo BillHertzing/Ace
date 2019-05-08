@@ -1,22 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-  
 
   <PropertyGroup>
-    <!-- Override the TargetFameworks specified in the Directory.Build.props  -->
+    <!-- Override the TargetFamework specified in the Directory.Build.props  -->
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <TargetFrameworks>netcoreapp3.0;</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <UserSecretsId>E5D6C5E5-6E30-49EF-BE15-E1B7C377D2A7</UserSecretsId>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Ace.AceService</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
+    <ApplicationIcon>ATAP.ICO</ApplicationIcon>
+  </PropertyGroup>
+  
+    <PropertyGroup>
     <!-- microsoft "development" Nuget package  servers -->
     <RestoreAdditionalProjectSources>
       https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
       https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
     </RestoreAdditionalProjectSources>
-    
-    <ApplicationIcon>ATAP.ICO</ApplicationIcon>
   </PropertyGroup>
 
   <!-- Separate Property Group for Version Control -->
@@ -35,7 +37,6 @@
   <!-- Packages necessary to host .Net Core apps as a service, not working in V30P4 / not yet part of ACE
    <ItemGroup>
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0-preview4.19212.13" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview4.19216.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0-preview4.19216.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview4.19216.2" />
   </ItemGroup>
@@ -51,8 +52,8 @@
 
   <!-- ServiceStack packages used -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.5.1" />
-    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.5.1" />
+    <PackageReference Include="ServiceStack" Version="5.*" />
+    <PackageReference Include="ServiceStack.Logging.NLog" Version="5.*" />
     <PackageReference Include="ServiceStack.Redis" Version="5.5.1" />
   </ItemGroup>
 
@@ -79,20 +80,12 @@
     <ProjectReference Include="..\PlugIns\GUIServices\Agent.GUIServices.Plugin\Agent.GUIServices.Plugin.csproj" />
     <ProjectReference Include="..\PlugIns\RealEstateServices\Agent.RealEstateServices.Plugin\Agent.RealEstateServices.Plugin.csproj" />
   </ItemGroup>
-  
-
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  
 
   <ItemGroup>
     <None Update="ATAP.ICO">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-
 
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -101,11 +94,14 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Message Importance="High" Text="The value of Configuration is: $(Configuration)" />
+	
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
     </GetAssemblyIdentity>
+	
     <PropertyGroup>
       <PackageId>$(TargetName)</PackageId>
       <ReleaseDir>..\Releases\</ReleaseDir>
@@ -113,10 +109,13 @@
       <SquirrelParams>--no-msi --icon Images\ATAP.ico</SquirrelParams>
       <SemVerNumber>$([System.Version]::Parse(%(myAssemblyInfo.Version)).ToString(3))</SemVerNumber>
     </PropertyGroup>
+	
     <!-- Tasks to build the Squirrel package -->
     <Message Importance="High" Text="The value of SemVerNumber is: $(SemVerNumber)" />
     <!-- Build nupkg into the project local bin\Release\ directory temporarily -->
     <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File PostBuild.ps1 $(TargetName)" />
     <!-- Squirrelify into the release dir, usually located at solution level. Change the property above for a different location -->
+	
   </Target>
+  
 </Project>
