@@ -1,21 +1,27 @@
-﻿
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- override the usual TargetFramework for testing assemblies-->
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+  </PropertyGroup>
+  
  <PropertyGroup>
-    <RootNamespace>Ace.AceService.BaseServices.Tests</RootNamespace>
-    <TargetFrameworks>net471;netcoreapp2.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
-	<!-- Assembly, File, and Package Information for this assembly-->
+  </PropertyGroup>
+  
+  <!-- Separate Property Group for Version Control -->
+  <PropertyGroup>
+    <!-- Assembly, File, and Package Information for this assembly-->
     <!-- Build and revision are created based on date-->
-    <MajorVersion>0</MajorVersion>
+    <MajorVersion>1</MajorVersion>
     <MinorVersion>1</MinorVersion>
     <PatchVersion>0</PatchVersion>
     <!-- Current Lifecycle stage for this assembly-->
-    <PackageLifeCycleStage>dev</PackageLifeCycleStage>
-    <!-- NuGet Package Label for the Nuget Package if the LifeCyclestage is not Production-->
-    <PackageLabel>alpha</PackageLabel>
+    <PackageLifeCycleStage>Dev</PackageLifeCycleStage>
+    <!-- However, if the LifeCyclestage is Production, the NuGet Package Label is ignored, but MSBuild expects a non-null value  -->
+    <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
@@ -38,6 +44,5 @@
     <ProjectReference Include="..\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
   </ItemGroup>
-
 
 </Project>
