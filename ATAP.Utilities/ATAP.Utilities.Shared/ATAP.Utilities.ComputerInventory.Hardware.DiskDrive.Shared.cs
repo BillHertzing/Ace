@@ -87,6 +87,9 @@ namespace ATAP.Utilities.DiskDrive {
     }
 
     public interface IPartitionInfoEx {
+        Id<PartitionInfoEx> PartitionId { get; set; }
+
+
         bool Equals(object obj);
         int GetHashCode();
 
@@ -94,7 +97,6 @@ namespace ATAP.Utilities.DiskDrive {
         IList<Exception> Exceptions { get; set; }
         Id<PartitionInfoEx> PartitionDbId { get; set; }
         PartitionFileSystem PartitionFileSystem { get; set; }
-        Id<PartitionInfoEx> PartitionId { get; set; }
         long? Size { get; set; }
     }
     public class PartitionInfoEx : IEquatable<PartitionInfoEx>, IPartitionInfoEx {
@@ -227,17 +229,15 @@ namespace ATAP.Utilities.DiskDrive {
     }
 
     public class DiskDriveSpecifier : IEquatable<DiskDriveSpecifier>, IDiskDriveSpecifier {
-        public DiskDriveSpecifier() :this (string.Empty, null, new DiskDrivePartitionIdentifier()) {}
+        public DiskDriveSpecifier() :this (string.Empty, null) {}
 
-        public DiskDriveSpecifier(string computerName, int? diskDriveNumber, DiskDrivePartitionIdentifier diskDrivePartitionIdentifier) {
+        public DiskDriveSpecifier(string computerName, int? diskDriveNumber) {
             ComputerName=computerName??throw new ArgumentNullException(nameof(computerName));
             DiskDriveNumber=diskDriveNumber;
-            DiskDrivePartitionIdentifier=diskDrivePartitionIdentifier??throw new ArgumentNullException(nameof(diskDrivePartitionIdentifier));
         }
 
         public string ComputerName { get; set; }
         public int? DiskDriveNumber { get; set; }
-        public DiskDrivePartitionIdentifier DiskDrivePartitionIdentifier { get; set; }
 
         public override bool Equals(object obj) {
             return Equals(obj as DiskDriveSpecifier);
@@ -246,15 +246,13 @@ namespace ATAP.Utilities.DiskDrive {
         public bool Equals(DiskDriveSpecifier other) {
             return other!=null&&
                    ComputerName==other.ComputerName&&
-                   EqualityComparer<int?>.Default.Equals(DiskDriveNumber, other.DiskDriveNumber)&&
-                   EqualityComparer<DiskDrivePartitionIdentifier>.Default.Equals(DiskDrivePartitionIdentifier, other.DiskDrivePartitionIdentifier);
+                   EqualityComparer<int?>.Default.Equals(DiskDriveNumber, other.DiskDriveNumber);
         }
 
         public override int GetHashCode() {
             var hashCode = 748249881;
             hashCode=hashCode*-1521134295+EqualityComparer<string>.Default.GetHashCode(ComputerName);
             hashCode=hashCode*-1521134295+EqualityComparer<int?>.Default.GetHashCode(DiskDriveNumber);
-            hashCode=hashCode*-1521134295+EqualityComparer<DiskDrivePartitionIdentifier>.Default.GetHashCode(DiskDrivePartitionIdentifier);
             return hashCode;
         }
 

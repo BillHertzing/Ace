@@ -21,8 +21,7 @@ namespace Ace.Agent.RealEstateServices {
             // Initialize a user datastructure for this service/user/session/connection
 
             //ToDo: the ConfigurationData structure need to be initialized in the plug startup code, and stored in teh Data instance, and this routine just copies those values
-            //ToDO: remove this temporary delay
-            Thread.Sleep(5000);
+
             // populate the ConfigurationData response structures
             string google_API_URI = (RealEstateServicesData.Google_API_URI!=null) ? RealEstateServicesData.Google_API_URI : "HTTP://GoogleAPIURINotDefined.com/";
             string homeAway_API_URI_API_URI = (RealEstateServicesData.HomeAway_API_URI!=null) ? RealEstateServicesData.HomeAway_API_URI : "HTTP://HomeAwayAPIURINotDefined.com/";

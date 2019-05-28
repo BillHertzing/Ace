@@ -3,45 +3,43 @@
 <h1>AceCommander Base Services GeoLocation</h1>
 @inherits Ace.AceGUI.Pages.BaseServicesCodeBehind
 
-@if (@InitializationResponse == null)
-{
-  <p>Loading (Calling onInitAsync)</p>
-}
+@if (@IsInitialized == false)
+{<p>IsInitialized is STILL false</p>}
 else
 {
-  <hr />
-  <h2>Lat/Lng to Street address</h2>
-  <div>
-    <label for="Latitude">@labelForLatitude</label>
-    <input type="text" class="form-control" id="Latitude" bind="@Latitude" placeholder="@latitudePlaceHolder" />
-  </div>
-  <div>
-    <label for="Longitude">@labelForLongitude</label>
-    <input type="text" class="form-control" id="Longitude" bind="@Longitude" placeholder="@longitudePlaceHolder" />
-  </div>
-  <div>
-    <label for="Address">@labelForAddress</label>
-    <input type="text" class="form-control" id="Address" bind="@Address" placeholder="@addressPlaceHolder" />
-  </div>
-  <button type="button" class="btn btn-default" id="LatLngToAddress" onclick="@LatLngToAddress">@labelForLatLngToAddressButton</button>
-  <button type="button" class="btn btn-default" id="AddressToLatLng" onclick="@AddressToLatLng">@labelForAddressToLatLngButton</button>
+    <hr />
+    <h2>Lat/Lng to Street address</h2>
+    <div>
+        <label for="Latitude">@labelForLatitude</label>
+        <input type="text" class="form-control" id="Latitude" bind="@Latitude" placeholder="@latitudePlaceHolder" />
+    </div>
+    <div>
+        <label for="Longitude">@labelForLongitude</label>
+        <input type="text" class="form-control" id="Longitude" bind="@Longitude" placeholder="@longitudePlaceHolder" />
+    </div>
+    <div>
+        <label for="Address">@labelForAddress</label>
+        <input type="text" class="form-control" id="Address" bind="@Address" placeholder="@addressPlaceHolder" />
+    </div>
+    <button type="button" class="btn btn-default" id="LatLngToAddress" onclick="@GetAddressFromLatLong">@labelForLatLngToAddressButton</button>
+    <button type="button" class="btn btn-default" id="AddressToLatLng" onclick="@GetLatLongFromAddress">@labelForAddressToLatLngButton</button>
 
-  @if (@LatLngToAddressRspPayload == null)
-  {
-    <p>Latidue/Longitude To Address Information has not yet been submitted to Ace Commander</p>
-  }
-  else
-  {
-    <p>LatLngToAddress returned @LatLngToAddressRspPayload.ToString() </p>
-  }
-  @if (@AddressToLatLngRspPayload == null)
-  {
-    <p>Address to Latidue/Longitude Information has not yet been submitted to Ace Commander</p>
-  }
-  else
-  {
-    <p>Address to Latidue/Longitude returned @AddressToLatLngRspPayload.ToString() </p>
-  }
-
+    @if (@LatLngToAddressRspPayload == null)
+    {
+        <p>Latidue/Longitude To Address Information has not yet been submitted to Ace Commander</p>
+    }
+    else
+    {
+        <p>LatLngToAddress returned @LatLngToAddressRspPayload.ToString() </p>
+    }
+    @if (@AddressToLatLngRspPayload == null)
+    {
+        <p>Address to Latidue/Longitude Information has not yet been submitted to Ace Commander</p>
+    }
+    else
+    {
+        <p>Address to Latidue/Longitude returned @AddressToLatLngRspPayload.ToString() </p>
+    }
+    <p>test:@testint</p>
 }
 

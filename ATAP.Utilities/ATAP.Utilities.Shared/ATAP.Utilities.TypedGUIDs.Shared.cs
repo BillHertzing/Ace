@@ -1,26 +1,34 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ATAP.Utilities.TypedGuids {
 
     //Attribution: taken from answers provided to this question: https://stackoverflow.com/questions/53748675/strongly-typed-guid-as-generic-struct
+    // Modifications: CheckValue and all references removed, because our use case requries Guid.Empty to be a valid value
     public struct Id<T> : IEquatable<Id<T>> {
         private readonly Guid _value;
-        public Id(string value) {
-            var val = Guid.Parse(value);
-            //CheckValue(val);
-            _value=val;
+
+            public Id(string value) {
+            bool success;
+            Guid newValue ;
+            string iValue;
+            if (string.IsNullOrEmpty(value)) {
+                _value=Guid.NewGuid();
+            } else {
+                // Hack, used becasue only ServiceStack Json serializers add extra enclosing ".
+                //  but, neither simpleJson nor netwtonsoft will serialze this at all
+                iValue=value.Trim('"');
+                success=Guid.TryParse(iValue, out newValue);
+                if (!success) { throw new NotSupportedException($"Guid.TryParse failed,, newValue {value} cannot be parsed as a GUID"); }
+                _value=newValue;
+            }
         }
 
         public Id(Guid value) {
-            //CheckValue(value);
             _value=value;
-        }
-
-        private static void CheckValue(Guid value) {
-            if (value==Guid.Empty)
-                throw new ArgumentException("Guid value cannot be empty", nameof(value));
         }
 
         public override bool Equals(object obj) {
@@ -32,7 +40,7 @@ namespace ATAP.Utilities.TypedGuids {
         }
 
         public override int GetHashCode() {
-            return -1939223833+EqualityComparer<Guid>.Default.GetHashCode(_value);
+            return _value.GetHashCode();
         }
 
         public override string ToString() {
@@ -47,4 +55,30 @@ namespace ATAP.Utilities.TypedGuids {
             return !(left==right);
         }
     }
+    /*
+        public class ResultConverter<T> : JsonConverter {
+        public override bool CanWrite => false;
+        public override bool CanRead => true;
+        public override bool CanConvert(Type objectType) {
+            return objectType==typeof(Id<T>);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+            var jsonObject = JObject.Load(reader);
+
+if(System.Diagnostics.Debugger.IsAttached)
+  System.Diagnostics.Debugger.Break();
+            Id<T> result = new Id<T> {
+                //_value=jsonObject["_value"].Value();
+
+            };
+            return result;
+        }
+
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+            throw new InvalidOperationException("Use default serialization.");
+        }
+    }
+    */
 }

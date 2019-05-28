@@ -2,13 +2,11 @@
 using Microsoft.AspNetCore.Blazor.Hosting;
 // using Microsoft.Extensions.DependencyInjection;
 // Both are required for the logger/logging
-using Microsoft.Extensions.Logging;
 //using Blazor.Extensions.Logging;
-using GUI;
 
-namespace GUI
-{
-     public class Program
+
+namespace GUI {
+    public class Program
     {
         public static void Main(string[] args)
         {

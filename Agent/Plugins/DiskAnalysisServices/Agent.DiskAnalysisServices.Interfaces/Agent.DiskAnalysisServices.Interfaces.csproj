@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.*" />
+    <PackageReference Include="ServiceStack.Text" Version="5.5.1" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
   </ItemGroup>
   

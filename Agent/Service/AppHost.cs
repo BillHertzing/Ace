@@ -8,6 +8,9 @@ using Funq;
 using ServiceStack;
 using ServiceStack.Configuration;
 using ServiceStack.Logging;
+using ATAP.Utilities.LongRunningTasks;
+using ATAP.Utilities.TypedGuids;
+using ServiceStack.Text;
 
 //VS.NET Template Info: https://servicestack.net/vs-templates/EmptyWindowService
 namespace Ace.AceService {
@@ -25,7 +28,6 @@ namespace Ace.AceService {
         #endregion
 
         static readonly ILog Log = LogManager.GetLogger(typeof(SSAppHost));
-
 
         public SSAppHost() : base("BaseServices", typeof(BaseServices).Assembly) {
             Log.Debug("Entering SSAppHost Ctor");
@@ -144,6 +146,10 @@ namespace Ace.AceService {
             // notifyIcon1.Visible = false;
             Log.Debug("NotifyIcon for AceCommander created");
             */
+
+            var tID = new Id<LongRunningTaskInfo>();
+            Log.Debug($"tID: {tID.Dump()}");
+
             Log.Debug("Leaving SSAppHost.Configure");
         }
 

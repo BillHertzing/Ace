@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 //using Microsoft.Extensions.Hosting;
@@ -11,30 +10,32 @@ using ServiceStack.Logging.NLogger;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Reflection;
-using System.Linq;
-using Microsoft.Extensions.Logging;
-
-using System.Threading;
-using System.Threading.Tasks;
+using ATAP.Utilities.LongRunningTasks;
+using ATAP.Utilities.TypedGuids;
+using ServiceStack.Text;
 
 namespace Ace.AceService {
     partial class Program {
+
+        // ToDo: Localize the string constants
+        public const string hostEnvironmentNotRecoginedExceptionMessage = "The value {env} is not a recognized environment string";
         public const string ServiceNameBase = "AceCommander";
         public const string ServiceDisplayNameBase = "AceCommander";
         public const string ServiceDescriptionBase = "AceCommander";
-        public const string LifeCycleSuffix =
-#if Debug
-            "Dev";
-#else
-            "";
-#endif
+        // Do Not localize below this point
+        public const string EnvironmentVariablePrefix = "AceCommander";
+        public const string EnvironmentVariableEnvironment = "Environment";
+        public const string EnvironmentDefault = "Production";
 
+        // Helper method to properly combine the prefix with the suffix
+        static string EnvironmentVariableFullName(string name) { return EnvironmentVariablePrefix+"_"+name; }
+        // ServiceStack Logging
         public static ILog Log;
 
         public static async Task Main(string[] args) {
-            //To ensure every ServiceStack service uses the same Global Logger, set it before you initialize ServiceStack's SSAppHost,
+            // To ensure every class uses the same Global Logger, set the LogManager's LogFactory before initializing the hosting environment
+            //  set the LogFactory to ServiceStack's NLogFactory
             LogManager.LogFactory=new NLogFactory();
             Log=LogManager.GetLogger(typeof(Program));
             Log.Debug("Entering Program.Main");
@@ -44,6 +45,9 @@ namespace Ace.AceService {
             var loadedFromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Log.Debug($"in Program.Main: loadedFromDir is {loadedFromDir}");
             Directory.SetCurrentDirectory(loadedFromDir);
+
+            // Determine the environment from an EnvironmentVariable
+            var env = Environment.GetEnvironmentVariable(EnvironmentVariableFullName(EnvironmentVariableEnvironment))??EnvironmentDefault;
 
             // Create the genericHost hosting Kestrel WITHOUT IISIntegration, and Kestrel hosting ServiceStack
             // Create a self-hosted host with just Kestrel
@@ -163,6 +167,10 @@ await genericHost.StartAsync();
             // Create a logger instance for this class
             Log=LogManager.GetLogger(typeof(Startup));
             Log.Debug("Entering Program.Startup.Configure");
+            //app.U UseBrowserLink();
+            TestIDTypeSerialization();
+            TestComplexTypeSerialization();
+
 
             app.UseServiceStack(new SSAppHost() {
                 AppSettings=new NetCoreAppSettings(Configuration) // Use **appsettings.json** and config sources
@@ -174,9 +182,49 @@ await genericHost.StartAsync();
                 context.Response.StatusCode=404;
                 await Task.FromResult(0);
             });
+            // Temporary testing
+            Log.Debug($"Temporary Testing");
+            var Id = new Id<LongRunningTaskInfo>(Guid.NewGuid());
+            Log.Debug($"Id = {Id.Dump()}");
+            var IdStr = ServiceStack.Text.JsonSerializer.SerializeToString(Id);
+            Log.Debug($"IdStr from ServiceStack.Text.JsonSerializer.SerializeToString(Id)= {IdStr}");
+            var roundTripId = ServiceStack.Text.JsonSerializer.DeserializeFromString<Id<LongRunningTaskInfo>>(IdStr);
+            Log.Debug($"roundTripId from ServiceStack.Text.JsonSerializer.DeserializeFromString<Id<LongRunningTaskInfo>>(IdStr) = {roundTripId.Dump()}");
+            IdStr=Newtonsoft.Json.JsonConvert.SerializeObject(Id);
+            Log.Debug($"IdStr from Newtonsoft.Json.JsonConvert.SerializeObject(Id) = {IdStr.Dump()}");
+            roundTripId=Newtonsoft.Json.JsonConvert.DeserializeObject<Id<LongRunningTaskInfo>>(IdStr);
+            Log.Debug($"roundTripId from Newtonsoft.Json.JsonConvert.DeserializeObject<Id<LongRunningTaskInfo>> = {roundTripId.Dump()}");
+            // end temporary testing
 
             Log.Debug("Leaving Program.Startup.Configure");
 
+        }
+        // Temporary testing
+        private void TestComplexTypeSerialization() {
+            var cData = new Ace.Agent.BaseServices.ConfigurationData();
+            Log.Debug($"cData = {cData.Dump()}");
+            var cDataStr = ServiceStack.Text.JsonSerializer.SerializeToString(cData);
+            Log.Debug($"cDataStr from ServiceStack.Text.JsonSerializer.SerializeToString(Id)= {cDataStr}");
+            // ToDo: ask SS to Fix SS Deserializer in SS V5.5.1+
+            //var roundTripcData = ServiceStack.Text.JsonSerializer.DeserializeFromString<Ace.Agent.BaseServices.ConfigurationData>(cDataStr);
+            //Log.LogDebug($"roundTripcData from ServiceStack.Text.JsonSerializer.DeserializeFromString<Ace.Agent.BaseServices.ConfigurationData>(cDataStr) = {roundTripcData.Dump()}");
+            Log.Debug($"End Temporary Testing");
+        }
+        private void TestIDTypeSerialization() {
+
+            // Testing for serialization of ID<T> instances
+            // Temporary testing
+            Log.Debug($"Temporary Testing");
+            var Id = new Id<LongRunningTaskInfo>(Guid.NewGuid());
+            Log.Debug($"Id = {Id.Dump()}");
+            var IdStr = ServiceStack.Text.JsonSerializer.SerializeToString(Id);
+            Log.Debug($"IdStr from ServiceStack.Text.JsonSerializer.SerializeToString(Id)= {IdStr.Dump()}");
+            var roundTripId = ServiceStack.Text.JsonSerializer.DeserializeFromString<Id<LongRunningTaskInfo>>(IdStr);
+            Log.Debug($"roundTripId from ServiceStack.Text.JsonSerializer.DeserializeFromString<Id<LongRunningTaskInfo>>(IdStr) = {roundTripId.Dump()}");
+            IdStr=Newtonsoft.Json.JsonConvert.SerializeObject(Id);
+            Log.Debug($"IdStr from Newtonsoft.Json.JsonConvert.SerializeObject(Id) = {IdStr.Dump()}");
+            roundTripId=Newtonsoft.Json.JsonConvert.DeserializeObject<Id<LongRunningTaskInfo>>(IdStr);
+            Log.Debug($"roundTripId from Newtonsoft.Json.JsonConvert.DeserializeObject<Id<LongRunningTaskInfo>> = {roundTripId.Dump()}");
         }
     }
 }

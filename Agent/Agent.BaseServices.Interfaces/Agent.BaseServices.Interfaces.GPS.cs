@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ATAP.Utilities.LongRunningTasks;
 using ServiceStack;
-using ServiceStack.Logging;
+using ServiceStack.Text;
 
 namespace Ace.Agent.BaseServices {
     public partial class BaseServices : Service {
         
 
         #region Lat/Lng To Address and reverse
-        public object Post(LatLngToAddressReqPayload request) {
-            Log.Debug("Entering Post LatLngToAddressReqPayload request handler");
+        public object Post(GetAddressFromLatLongRequest request) {
+            Log.Debug("starting Post(GetAddressFromLatLongRequest request) request");
+            // Move most all of the logic below to ATAP.Utilities, and replace it with a delegate for a LongRunningTask
             // Resolve the GatewayEntry from the BaseServices Data Gateways that handles this Service
             // The associate "Route To Gateway" will return a structure that identifies the gateway and gatewayEntry to use
             var baseServicesData = HostContext.TryResolve<BaseServicesData>();
@@ -34,7 +36,7 @@ namespace Ace.Agent.BaseServices {
 
             //string completeUrl = completeURI.ToString().AddQueryParam("latlng",$"{request.Latitude},{request.Longitude}").AddQueryParam("key",$"{gatewayDecodeAPIKey("AKE","AKP","AKEIV")}");
             string completeUrl = completeURI.ToString()
-                .AddQueryParam("latlng", $"{request.Latitude},{request.Longitude}")
+                .AddQueryParam("latlng", $"{request.GeoLocationData.Latitude.ToString()},{request.GeoLocationData.Longitude.ToString()}")
                 .AddQueryParam("key", defaultAPIKey);
 
             //string completeUrl = completeURI.ToString().AddQueryParam("latlng", $"{request.Latitude},{request.Longitude}");
@@ -83,10 +85,12 @@ namespace Ace.Agent.BaseServices {
             }
           */
             Log.Debug("returned from Calling the Gateway:GatewayEntry Action");
-
-            return new LatLngToAddressRspPayload { Address=$"msg returned was {msg}" };
+            var longRunningTaskStartupInfo = new LongRunningTaskStartupinfo();
+            var getAddressFromLatLongResponse = new GetAddressFromLatLongResponse(longRunningTaskStartupInfo);
+            Log.Debug($"leaving Post(GetAddressFromLatLongRequest request), getAddressFromLatLongResponse = {getAddressFromLatLongResponse.Dump()}");
+            return getAddressFromLatLongResponse;
         }
-        public async Task<AddressToLatLngRspPayload> Post(AddressToLatLngReqPayload request) {
+        public async Task<GetLatLongFromAddressResponse> Post(GetLatLongFromAddressRequest request) {
             var baseServicesData = HostContext.TryResolve<BaseServicesData>();
             var gatewayName = "GoogleMapsGeoCoding";
             var gatewayEntryName = "GeoCaching";
@@ -107,7 +111,7 @@ namespace Ace.Agent.BaseServices {
             };
             //string aKE=  
             string completeUrl = completeURI.ToString()
-                .AddQueryParam("address", $"{request.Address}")
+                .AddQueryParam("address", $"{request.GeoLocationData.Address}")
                 .AddQueryParam("key", $"{gatewayDecodeAPIKey("AKE", "AKP", "AKEIV")}");
             string msg = "NotInitialized";
             while (!cancellationToken.IsCancellationRequested) {
@@ -125,7 +129,7 @@ namespace Ace.Agent.BaseServices {
             }
 
             // Call the GUI Maps API to convert street address to a Latitude/Longitude
-            return new AddressToLatLngRspPayload { Latitude=msg, Longitude=msg };
+            return new GetLatLongFromAddressResponse { Latitude=msg, Longitude=msg };
         }
         #endregion
 

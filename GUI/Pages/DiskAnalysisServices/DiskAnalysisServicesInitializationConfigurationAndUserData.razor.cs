@@ -1,20 +1,16 @@
 // Required for the HttpClient
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
+using Ace.AceGUI.HttpClientExtenssions;
 using Ace.Agent.BaseServices;
 using Ace.Agent.DiskAnalysisServices;
-using ATAP.Utilities.DiskDrive;
-using ATAP.Utilities.LongRunningTasks;
-using ATAP.Utilities.TypedGuids;
 // Required for the logger/logging
 //using Blazor.Extensions.Logging;
 // Required for Blazor
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using ServiceStack.Text;
 
 namespace Ace.AceGUI.Pages {
     public partial class DiskAnalysisServicesCodeBehind : ComponentBase {
@@ -28,36 +24,35 @@ namespace Ace.AceGUI.Pages {
         // Eventually localized
         public static Ace.Agent.DiskAnalysisServices.ConfigurationData configurationDataPlaceholder = new Ace.Agent.DiskAnalysisServices.ConfigurationData(-1);
         public static Ace.Agent.DiskAnalysisServices.UserData userDataPlaceholder = new Ace.Agent.DiskAnalysisServices.UserData("User Data pre-init placeholder");
-
-        // Add constant structures for configuration data and user data to be used when the GUI is displayed before it can initialize with the agent
-        // Eventually localized
         protected override async Task OnInitAsync() {
-            //Logger.LogDebug($"Starting OnInitAsync");
+            Logger.LogDebug($"Starting DiskAnalysisServices.OnInitAsync");
 
             var initializationRequest = new Ace.Agent.DiskAnalysisServices.InitializationRequest(new Ace.Agent.DiskAnalysisServices.InitializationRequestPayload(new Ace.Agent.BaseServices.InitializationData()));
-            //Logger.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest ={initializationRequest}");
-            InitializationResponse=await HttpClient.PostJsonAsync<Ace.Agent.DiskAnalysisServices.InitializationResponse>("/DiskAnalysisServicesInitialization",
+            UriBuilder.Path="DiskAnalysisServicesInitialization";
+            Logger.LogDebug($"Calling PostJsonAsyncSS<InitializationResponse> with InitializationRequest ={initializationRequest.Dump()}");
+            InitializationResponse=await HttpClient.PostJsonAsyncSS<Ace.Agent.DiskAnalysisServices.InitializationResponse>(UriBuilder.Uri.ToString(),
                                 initializationRequest);
-            //Logger.LogDebug($"Returned from GetJsonAsync<Agent.BaseServices.InitializationResponse>, InitializationResponse = {InitializationResponse}");
+            Logger.LogDebug($"Returned from GetJsonAsync<Agent.BaseServices.InitializationResponse>, InitializationResponse = {InitializationResponse.Dump()}");
 
             ConfigurationData=InitializationResponse.InitializationResponsePayload.ConfigurationData;
             UserData=InitializationResponse.InitializationResponsePayload.UserData;
             //ToDo: trigger screen refresh ?
-            //Logger.LogDebug($"Leaving OnInitAsync");
+            Logger.LogDebug($"Leaving DiskAnalysisServices.OnInitAsync");
         }
 
         public async Task SetConfigurationData() {
-            //Logger.LogDebug($"Starting SetConfigurationData");
+            Logger.LogDebug($"Starting DiskAnalysisServices.SetConfigurationData");
             // Create the payload for the Post
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             SetConfigurationDataRequest setConfigurationDataRequest = new SetConfigurationDataRequest() { ConfigurationData=ConfigurationData, ConfigurationDataSave=ConfigurationDataSave };
-            //Logger.LogDebug($"Calling GetJsonAsync<SetConfigurationDataResponse> with SetConfigurationDataRequest = {setConfigurationDataRequest}");
+            UriBuilder.Path="SetConfigurationData";
+            Logger.LogDebug($"Calling GetJsonAsync<SetConfigurationDataResponse> with SetConfigurationDataRequest = {setConfigurationDataRequest.Dump()}");
             SetConfigurationDataResponse setConfigurationDataResponse =
-      await HttpClient.PostJsonAsync<SetConfigurationDataResponse>("/SetConfigurationData?format=json",
+      await HttpClient.PostJsonAsyncSS<SetConfigurationDataResponse>(UriBuilder.Uri.ToString(),
                                                                                            setConfigurationDataRequest);
-            //Logger.LogDebug($"Returned from GetJsonAsync<SetConfigurationDataResponse> with setConfigurationDataResponse = {setConfigurationDataResponse}");
-            //Logger.LogDebug($"Leaving SetConfigurationData");
+            Logger.LogDebug($"Returned from GetJsonAsync<SetConfigurationDataResponse> with setConfigurationDataResponse = {setConfigurationDataResponse.Dump()}");
+            Logger.LogDebug($"Leaving SetConfigurationData");
         }
 
         public async Task SetUserData() {
@@ -66,12 +61,12 @@ namespace Ace.AceGUI.Pages {
             var setUserDataRequest = new SetUserDataRequest(new SetUserDataRequestPayload(UserData,
       UserDataSave));
 
-            //Logger.LogDebug($"Calling PostJsonAsync<SetUserDataResponsePayload>");
+            //Logger.LogDebug($"Calling PostJsonAsyncSS<SetUserDataResponsePayload>");
             SetUserDataResponse=
-      await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetUserData?format=json",
+      await HttpClient.PostJsonAsyncSS<SetUserDataResponse>("/SetUserData?format=json",
                                                                             setUserDataRequest);
-            //Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponsePayload>");
-            ////Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponsePayload> with SetUserDataResponsePayload.Result = {SetUserDataResponsePayload.Result}");
+            //Logger.LogDebug($"Returned from PostJsonAsyncSS<SetUserDataResponsePayload>");
+            ////Logger.LogDebug($"Returned from PostJsonAsyncSS<SetUserDataResponsePayload> with SetUserDataResponsePayload.Result = {SetUserDataResponsePayload.Result}");
             //Logger.LogDebug($"Leaving SetUserData");
         }
 

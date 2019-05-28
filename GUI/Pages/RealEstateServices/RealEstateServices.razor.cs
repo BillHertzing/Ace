@@ -1,14 +1,12 @@
 // Required for the HttpClient
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Ace.AceGUI.HttpClientExtenssions;
 using Ace.Agent.RealEstateServices;
 // Required for the logger/logging
 //using Blazor.Extensions.Logging;
 // Required for Blazor
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 
 namespace Ace.AceGUI.Pages {
     public class RealEstateServicesCodeBehind : ComponentBase {
@@ -50,8 +48,8 @@ namespace Ace.AceGUI.Pages {
         protected override async Task OnInitAsync() {
             //Logger.LogDebug($"Starting OnInitAsync");
             var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new Agent.BaseServices.InitializationData("BaseVersionXX", "MachineIDXX", "userIDxx")));
-            //Logger.LogDebug($"Calling PostJsonAsync<InitializationResponse> with InitializationRequest ={initializationRequest}");
-            var initializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>("/RealEstateServicesInitialization", initializationRequest);
+            //Logger.LogDebug($"Calling PostJsonAsyncSS<InitializationResponse> with InitializationRequest ={initializationRequest}");
+            var initializationResponse = await HttpClient.PostJsonAsyncSS<InitializationResponse>("/RealEstateServicesInitialization", initializationRequest);
             //Logger.LogDebug($"Returned from GetJsonAsync<InitializationResponse>, initializationResponse = {initializationResponse}");
             ConfigurationData=initializationResponse.InitializationResponsePayload.ConfigurationData;
             UserData=initializationResponse.InitializationResponsePayload.UserData;
@@ -74,7 +72,7 @@ namespace Ace.AceGUI.Pages {
             var setConfigurationDataRequest = new SetConfigurationDataRequest(setConfigurationDataRequestPayload);
             //Logger.LogDebug($"Calling GetJsonAsync<SetRealEstateServicesConfigurationDataResponse> with 
             SetConfigurationDataResponse=
-await HttpClient.PostJsonAsync<SetConfigurationDataResponse>("/SetRealEstateServicesConfigurationData",
+await HttpClient.PostJsonAsyncSS<SetConfigurationDataResponse>("/SetRealEstateServicesConfigurationData",
                                                                                      setConfigurationDataRequest);
             //Logger.LogDebug($"Returned from GetJsonAsync<SetConfigurationDataResponse> with setConfigurationDataResponse.Result = {setConfigurationDataResponse.Result}");
             //Logger.LogDebug($"Leaving SetRealEstateServicesConfigurationData");
@@ -85,12 +83,12 @@ await HttpClient.PostJsonAsync<SetConfigurationDataResponse>("/SetRealEstateServ
             // Create the payload for  the Post
             var setUserDataRequestPayload = new SetUserDataRequestPayload(UserData, UserDataSave);
             var setUserDataRequest = new SetUserDataRequest(setUserDataRequestPayload);
-            //Logger.LogDebug($"Calling PostJsonAsync<SetRealEstateServicesUserDataResponse>");
+            //Logger.LogDebug($"Calling PostJsonAsyncSS<SetRealEstateServicesUserDataResponse>");
             SetUserDataResponse=
-await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetRealEstateServicesUserData?format=json",
+await HttpClient.PostJsonAsyncSS<SetUserDataResponse>("/SetRealEstateServicesUserData?format=json",
                                                                             setUserDataRequest);
-            //Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponse>");
-            ////Logger.LogDebug($"Returned from PostJsonAsync<SetUserDataResponse> with SetUserDataResponse.Result = {SetUserDataResponse.Result}");
+            //Logger.LogDebug($"Returned from PostJsonAsyncSS<SetUserDataResponse>");
+            ////Logger.LogDebug($"Returned from PostJsonAsyncSS<SetUserDataResponse> with SetUserDataResponse.Result = {SetUserDataResponse.Result}");
             //Logger.LogDebug($"Leaving SetRealEstateServicesUserData");
         }
 
@@ -114,11 +112,11 @@ await HttpClient.PostJsonAsync<SetUserDataResponse>("/SetRealEstateServicesUserD
 
             PropertySearchRequest propertySearchRequest = new PropertySearchRequest();
             propertySearchRequest.PropertySearchRequestPayload=propertySearchRequestPayload;
-            //Logger.LogDebug($"Calling PostJsonAsync<PropertySearchResponse>");
+            //Logger.LogDebug($"Calling PostJsonAsyncSS<PropertySearchResponse>");
             PropertySearchResponse=
-    await HttpClient.PostJsonAsync<PropertySearchResponse>("/PropertySearch?format=json",
+    await HttpClient.PostJsonAsyncSS<PropertySearchResponse>("/PropertySearch?format=json",
                                                            propertySearchRequest);
-            //Logger.LogDebug($"Returned from PostJsonAsync<PropertySearchResponse>");
+            //Logger.LogDebug($"Returned from PostJsonAsyncSS<PropertySearchResponse>");
             // Do something with the results
 
             //Logger.LogDebug($"Leaving PropertySearch");

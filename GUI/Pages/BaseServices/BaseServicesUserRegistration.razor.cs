@@ -1,11 +1,11 @@
 // Required for the HttpClient
 using System.Net.Http;
 using System.Threading.Tasks;
+using Ace.AceGUI.HttpClientExtenssions;
 using Ace.Agent.BaseServices;
 // Required for the logger/logging
 //using Blazor.Extensions.Logging;
 // Required for Blazor
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
 // Required for the logger/logging
 using Microsoft.Extensions.Logging;
@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 //using ServiceStack.Auth
 
 namespace Ace.AceGUI.Pages {
-  public class BaseServicesUserRegistrationCodeBehind : ComponentBase
+    public class BaseServicesUserRegistrationCodeBehind : ComponentBase
   {
    
     #region string constants
@@ -62,10 +62,10 @@ namespace Ace.AceGUI.Pages {
       //ServiceStack.Register registerDTO = new ServiceStack.Register();
       Register registerDTO = new Register();
       registerDTO.Name = UserName;
-      //Logger.LogDebug($"Calling PostJsonAsync<BaseServicesUserRegistrationRspDTO> with registerDTO ={registerDTO}");
-      //RegisterResponseDTO = await HttpClient.PostJsonAsync<ServiceStack.RegisterResponse>("Register", registerDTO);
-      RegisterResponseDTO = await HttpClient.PostJsonAsync<RegisterResponse>("Register", registerDTO);
-      //Logger.LogDebug($"Returned from PostJsonAsync<ServiceStack.RegisterResponse>, RegisterResponseDTO = {RegisterResponseDTO}");
+      //Logger.LogDebug($"Calling PostJsonAsyncSS<BaseServicesUserRegistrationRspDTO> with registerDTO ={registerDTO}");
+      //RegisterResponseDTO = await HttpClient.PostJsonAsyncSS<ServiceStack.RegisterResponse>("Register", registerDTO);
+      RegisterResponseDTO = await HttpClient.PostJsonAsyncSS<RegisterResponse>("Register", registerDTO);
+      //Logger.LogDebug($"Returned from PostJsonAsyncSS<ServiceStack.RegisterResponse>, RegisterResponseDTO = {RegisterResponseDTO}");
       BaseServicesUserRegistrationRspDTOExpanded = RegisterResponseDTO.ToString();
       //Logger.LogDebug($"Leaving UserRegistrationSubmit");
     }

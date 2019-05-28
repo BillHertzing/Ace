@@ -4,14 +4,11 @@ using System.Threading.Tasks;
 // using Ace.Agent.GUIServices;
 // Required for the logger/logging
 //using Blazor.Extensions.Logging;
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
 // Required for the logger/logging
-using Microsoft.Extensions.Logging;
 
-namespace Ace.AceGUI.Pages
-{
-  public class GUIServicesCodeBehind : ComponentBase
+namespace Ace.AceGUI.Pages {
+    public class GUIServicesCodeBehind : ComponentBase
   {
     // Displayed on the .cshtml page
     public string verifyGUIResult;

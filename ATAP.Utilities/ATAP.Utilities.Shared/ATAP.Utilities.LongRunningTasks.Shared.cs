@@ -145,6 +145,23 @@ namespace ATAP.Utilities.LongRunningTasks {
         }
     }
 
+    public class LongRunningTaskStartupinfo {
+        public LongRunningTaskStartupinfo():this(new Id<LongRunningTaskInfo>(),new TaskStatus(), 0,0) {
+        }
+
+        public LongRunningTaskStartupinfo(Id<LongRunningTaskInfo> id, TaskStatus taskStatus, int numberOfExceptions, int sSEPlaceholder) {
+            Id=id;
+            TaskStatus=taskStatus;
+            NumberOfExceptions=numberOfExceptions;
+            SSEPlaceholder=sSEPlaceholder;
+        }
+
+        public Id<LongRunningTaskInfo> Id { get; set; }
+        public TaskStatus TaskStatus { get; set; }
+        public int NumberOfExceptions { get; set; }
+        public int SSEPlaceholder { get; set; }
+    }
+
 }
 
 

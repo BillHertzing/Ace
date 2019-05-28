@@ -19,6 +19,8 @@ using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.DiskDriveAnalysis;
 using ATAP.Utilities.DiskDrive;
+using System.Text;
+using System.Net.Http;
 
 namespace Ace.Agent.DiskAnalysisServices {
 
@@ -81,7 +83,13 @@ namespace Ace.Agent.DiskAnalysisServices {
             }
             var analyzeFileSystemResponsePayload = new AnalyzeFileSystemResponsePayload(new List<Id<LongRunningTaskInfo>>() { longRunningTaskID });
             var analyzeFileSystemResponse = new AnalyzeFileSystemResponse(analyzeFileSystemResponsePayload);
-
+            Log.Debug($"in AnalyzeFileSystemRequest analyzeFileSystemResponse = {analyzeFileSystemResponse.Dump()}");
+            // testing
+            //var analyzeFileSystemResponseSerialized = Newtonsoft.Json.JsonConvert.SerializeObject(analyzeFileSystemResponse);
+            //Log.Debug($"in AnalyzeFileSystemRequest analyzeFileSystemResponseSerialized = {analyzeFileSystemResponseSerialized.Dump()}");
+            //var stringContent = new StringContent(analyzeFileSystemResponseSerialized, Encoding.UTF8, "application/json");
+            //Log.Debug($"in AnalyzeFileSystemRequest stringContent = {stringContent.Dump()}");
+            // end testing 
             Log.Debug($"Leaving Post(AnalyzeFileSystemRequest), analyzeFileSystemResponse = {analyzeFileSystemResponse}");
             return analyzeFileSystemResponse;
         }

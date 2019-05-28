@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
     <RestoreAdditionalProjectSources>
       https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
@@ -22,9 +21,12 @@
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
   
-  <!--To enable Autorecompile, also  PowerShell to the server project folder and `dotnet watch run` there -->
+  <!--To enable Autorecompile, also PowerShell to the server project folder and `dotnet watch run` there -->
   <ItemGroup>
     <Watch Include="..\**\*.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <Watch Remove="Pages\DiskAnalysisServices\DiskAnalysisServicesInitializationConfigurationAndUserData.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +35,6 @@
     <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview4-19216-03" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview5.19227.9" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -43,7 +44,8 @@
   <ItemGroup>
     <PackageReference Include="Blazor.Extensions.Logging" Version="0.1.11" />
     <PackageReference Include="MedallionShell" Version="1.5.1" />
-    <PackageReference Include="ServiceStack.Text" Version="5.5.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="ServiceStack.Text.Core" Version="5.5.1" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
     <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
   </ItemGroup>
@@ -59,6 +61,12 @@
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
     
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Blazored.LocalStorage">
+      <HintPath>..\..\Blazored\LocalStorage\src\Blazored.LocalStorage\bin\Release\netstandard2.0\Blazored.LocalStorage.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 

@@ -7,6 +7,7 @@ using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.FileSystem;
 using Ace.Agent.BaseServices;
+using Newtonsoft.Json;
 
 namespace Ace.Agent.DiskAnalysisServices {
 
@@ -72,7 +73,7 @@ namespace Ace.Agent.DiskAnalysisServices {
         public AnalyzeFileSystemResponsePayload(List<Id<LongRunningTaskInfo>> longRunningTaskIds) {
             LongRunningTaskIds=longRunningTaskIds??throw new ArgumentNullException(nameof(longRunningTaskIds));
         }
-
+        [JsonConverter(typeof(Id<LongRunningTaskInfo>))]
         public List<Id<LongRunningTaskInfo>> LongRunningTaskIds { get; set; }
 
         public override bool Equals(object obj) {
