@@ -1,0 +1,5 @@
+# Application Configuration Settings for Ace Agent Plugin GUIServices
+# versioninfo
+
+RelativeToContentRootPath ../../../../../GUI/bin/Debug/netstandard2.0/Publish/GUI/dist
+VirtualRootPath 

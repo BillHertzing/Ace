@@ -37,7 +37,7 @@
     <!-- bring in the build tasks extensions defined in the MSBuild.Community project-->
     <MSBuildCommunityTasksPath>$(SolutionBuildToolsBaseDir)MSBuildTasks.*\build</MSBuildCommunityTasksPath>
     <!-- bring in the build tasks extensions defined in the ATAP.Utilities.BuildTooling project-->
-    <!-- ATAPBuildToolingConfiguration is normaly set to Release; use Debug if developing the BuildTooling assemblies and scripts -->
+    <!-- ATAPBuildToolingConfiguration is normally set to Release; use Debug if developing the BuildTooling assemblies and scripts -->
 	  <ATAPBuildToolingConfiguration>Debug</ATAPBuildToolingConfiguration>
     <!-- ATAPBuildToolingDebugVerbosity controls the level of details the Debug mode logging. If ATAPBuildToolingConfiguration is not Debug, this setting has no effect -->
     <!-- valid values for ATAPBuildToolingDebugVerbosity are trace -->
@@ -69,15 +69,14 @@
     <NuGetLocalFeedPath Condition=" '$(NuGetLocalFeedPath)' == '' ">C:\Dropbox\NuGetLocalFeed</NuGetLocalFeedPath> 
   </PropertyGroup>
 
-
-  <!-- Demonstrate the difference between a msbuild run from inside Visual Studio, and a msbuild callled from dotnet CLI
+  <!-- Demonstrate the difference between a msbuild run from inside Visual Studio, and a msbuild called from dotnet CLI
        Replace Never with Clean -->
-  <Target Name="HighlightDifferencesBetweenMSBuild" BeforeTargets="Never">
+  <Target Name="HighlightDifferencesBetweenMSBuild" BeforeTargets="Clean">
     <Message  Text="MSBuildRuntimeType = $(MSBuildRuntimeType)" />
     <Message Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'" Text="SolutionDir undefined or null"/>
     <Message Condition="$(SolutionDir) != '' And $(SolutionDir) != '*Undefined*'" Text="SolutionDir =$(SolutionDir)"/>
   </Target>
-
+  
   <!--
   <ItemGroup>
     <Analyzer Include="..\..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />

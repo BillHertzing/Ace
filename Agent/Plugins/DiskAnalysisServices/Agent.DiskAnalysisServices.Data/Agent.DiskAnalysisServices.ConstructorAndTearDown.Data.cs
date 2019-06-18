@@ -11,31 +11,14 @@ using Ace.Agent.BaseServices;
 namespace Ace.Agent.DiskAnalysisServices
 {
     public partial class DiskAnalysisServicesData : IDisposable {
-        #region string constants
-        #region Configuration Key strings
-        #endregion Configuration Key strings
-        #region Exception Messages (string constants)
-        #endregion Exception Messages (string constants)
-        #region File Name string constants
-        #endregion File Name string constants
-        #endregion string constants
 
         #region PublicStaticFields
         #region PublicStaticFields:configKeyPrefix
         // Surface the configKeyPrefix for this namespace
-        public static string configKeyPrefix =
-    MethodBase
-    .GetCurrentMethod()
-                .DeclaringType
-                .Namespace +
-            ".Config";
-        #endregion
-        #region PublicStaticFields:Logger
-        // Create a logger for this class
-        public static ILog Log = LogManager.GetLogger(typeof(DiskAnalysisServicesData));
+        //ToDo: Replace suffix with StringConstant
+        public static string configKeyPrefix = MethodBase.GetCurrentMethod().DeclaringType.Namespace +".Config";
         #endregion
         #endregion
-
 
         // private field for the cacheClient, populated by the constructor
         ICacheClient cacheClient;

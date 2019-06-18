@@ -4,13 +4,11 @@ using System.Linq;
 
 namespace Ace.Agent.BaseServices {
     public static class DefaultConfiguration {
-        public static Dictionary<string, string> Configuration() {
-            return new Dictionary<string, string>() {
-                { "Ace.Agent.BaseServices.Config.ListenOn", "http://localhost:21100/" },
-                { "Ace.Agent:ListeningOn", "http://localhost:21100/" },
+        public static Dictionary<string, string> Production =
+            new Dictionary<string, string>() {
                 {
                     "Ace.Agent.BaseServices.Config.MySqlConnectionString",
-                    "Server=localhost;Port=3306;Database=acecommander;Uid=whertzing;Pwd=devDBAdminPwd!"
+                    "Server=localhost;Port=3306;Database=acecommander;Uid=whertzing;Pwd=ReplaceablePasswordPattern"
                 },
                 {
                     "Ace.Agent.BaseServices.Config.RedisConnectionString",
@@ -20,13 +18,10 @@ namespace Ace.Agent.BaseServices {
                     "Ace.Agent.BaseServices.Config.SQLServerConnectionString",
                     "localhost:6339TBD"
                 },
-                {
-                    "Ace.Agent:UserName",
-                    Environment.UserName
-                },
+
                 {
                     "Ace.Agent.Plugin.HWPlugin.PathToHWConfigFile",
-                    $"{Environment.GetEnvironmentVariable("ProgramData")}+/ACE/AceService.HWPlugin.Config.txt"
+                    $"{Environment.GetEnvironmentVariable("ProgramData")}+/ACE/AceService.HWPlugin.Config.txt // replace with "
                 },
                 {
                     "Ace.Agent.Plugin.MinerPlugin.PathToMinerConfigFile",
@@ -53,7 +48,6 @@ namespace Ace.Agent.BaseServices {
                 { "Ace.AceGUI::MainWindow:Top", "0" },
                 { "Ace.AceGUI::MainWindow:Left", "0" }
             };
-        }
     }
 }
 

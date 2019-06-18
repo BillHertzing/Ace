@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.LongRunningTasks;
 using System.Threading;
+using Serilog;
+
 
 namespace Ace.Agent.BaseServices {
 

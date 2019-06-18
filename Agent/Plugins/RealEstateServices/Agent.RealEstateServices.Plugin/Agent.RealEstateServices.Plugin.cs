@@ -1,43 +1,27 @@
-using System;
-using System.Collections;
+using Serilog;
 using ServiceStack;
-using ServiceStack.Logging;
+using ServiceStack.Configuration;
 using ServiceStack.Caching;
 using Swordfish.NET.Collections;
-using System.Collections.Concurrent;
+
+using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using ServiceStack.Configuration;
-using System.Collections.Generic;
 using System.Linq;
-using ATAP.Utilities;
+
+using ATAP.Utilities.ServiceStack;
 using ATAP.Utilities.Http;
+using System.IO;
 
-namespace Ace.Agent.RealEstateServices
-{
-  public class RealEstateServicesPlugin : IPlugin, IPreInitPlugin
+namespace Ace.Agent.RealEstateServices {
+    public class RealEstateServicesPlugin : IPlugin, IPreInitPlugin
   {
-    #region string constants
-    #region Configuration Key strings
-    #endregion Configuration Key strings
-    #region Exception Messages (string constants)
-    #endregion Exception Messages (string constants)
-    #region File Name string constants
-    const string pluginSettingsTextFileName = "Agent.RealEstateServices.settings.txt";
-    const string pluginGatewaysTextFileName = "Agent.RealEstateServices.Gateways.txt";
-    #endregion File Name string constants
-    #endregion string constants
 
-    // Create a logger for this class
-    public static ILog Log = LogManager.GetLogger(typeof(RealEstateServicesPlugin));
 
     // Surface the configKeyPrefix for this namespace
     public static string myNamespace = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace;
 
-    // AppSettings will be auto-wired by ServiceStack to the IAppSettings in the IOC
-    public IAppSettings AppSettings { get; set; }
-
-    public Funq.Container Container { get; set; }
     public IAppHost appHost { get; set; }
     // Declare Event Handlers for the Plugin Root COD
     // These event handler will be attached/detached from the ObservableConcurrentDictionary via that class' constructor and dispose method
@@ -56,24 +40,46 @@ namespace Ace.Agent.RealEstateServices
     {
       Log.Debug("starting RealEstateServicesPlugin.Configure");
 
-      // Populate this Plugin's Application Configuration Settings
-      // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
-      var pluginAppSettings =new MultiAppSettingsBuilder()
-    // Command line flags have highest priority
-    // next in priority are  Environment variables
-    //.AddEnvironmentalVariables()
-    // next in priority are Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
-    .AddTextFile(pluginSettingsTextFileName)
-    // Builtin (compiled in) have the lowest priority
-    .AddDictionarySettings(DefaultConfiguration.Configuration())
-    .Build();
+            // Populate this PlugIn's AppSettings Configuration Settings and place it in the appSettingsDictionary
+            // Location of the files are at the ContentRoot. ToDo: figure out how to place them / resolve them relative to the location of the PlugIn assembly
+            // 
+            // HAck!
+            string envName = "Development";
 
-      // Key names in the cache for Configuration settings for a Plugin consist of the namespace and the string .Config
-      // Key names in the appSettings of a Plugin for Configuration settings may or may not have the prefix
-      // Compare the two lists of Configuration setting keys...
+            var pluginAppSettingsBuilder = new MultiAppSettingsBuilder();
+            // ToDo: command line settings
+            // Environment variables have 2nd highest priority
+            // ToDo: specific prefix
+            pluginAppSettingsBuilder.AddEnvironmentalVariables();
+            // Location of the files are at the ContentRoot. ToDo: figure out how to place them / resolve them relative to the location of the PlugIn assembly
+            // Non-Production Configuration settings in a text file
+            if (true) { // Hack!
+                        //if (!appHost.IsProduction()) {
+                var settingsTextFileName = StringConstants.PluginSettingsTextFileNameString+'.'+envName+StringConstants.PluginSettingsTextFileNameSuffix;
+                // ToDo: ensure it exists and the ensure we have permission to read it
+                // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
+                pluginAppSettingsBuilder.AddTextFile(settingsTextFileName);
+            }
+            // Production Configuration settings in a text file
+            pluginAppSettingsBuilder.AddTextFile(StringConstants.PluginSettingsTextFileNameString+StringConstants.PluginSettingsTextFileNameSuffix);
+            // BuiltIn (compiled in) have the lowest priority
+            pluginAppSettingsBuilder.AddDictionarySettings(DefaultConfiguration.Production);
 
-      // create a copy of the keys from AppSettings ensuring all are prefixed with the namespace and .Config
-      var configKeyPrefix = myNamespace + ".Config.";
+            // Create the appSettings from the builder
+            var pluginAppSettings = pluginAppSettingsBuilder.Build();
+            // Register them so other PlugIns can see them
+            AppSettingsDictionary appSettingsDictionary = appHost.TryResolve<AppSettingsDictionary>();
+            if (appSettingsDictionary==null) {
+                // ToDo: Log:Error
+                throw new InvalidOperationException("ToDo: exception message");
+            }
+            // ToDo: extend appSettingsDictionary to allow for adding a plugIn's AppSettings instance; needs to account for both readonly and changenotify
+            //appSettingsDictionary.
+
+            // ContentRoot from SS, and WebHostRoot (null?)
+            var contentRoot = Directory.GetCurrentDirectory();  // Hack!
+                                                                // create a copy of the keys from AppSettings ensuring all are prefixed with the namespace and .Config
+            var configKeyPrefix = myNamespace + ".Config.";
       var lengthConfigKeyPrefix = configKeyPrefix.Length;
       var appSettingsConfigKeys = pluginAppSettings.GetAllKeys();
       var fullAppSettingsConfigKeys = appSettingsConfigKeys.Select(x => x.IndexOf(configKeyPrefix) >= 0? x: configKeyPrefix + x);

@@ -8,12 +8,6 @@ using ServiceStack.VirtualPath;
 
 namespace Ace.Agent.GUIServices {
     public class GUIServicesData {
-    #region string constants
-    #region Configuration Key strings
-    #endregion Configuration Key strings
-    #region Exception Messages (string constants)
-    #endregion Exception Messages (string constants)
-    #endregion string constants
 
     public GUIServicesData() : this(new MultiAppSettingsBuilder().Build()) {
         }

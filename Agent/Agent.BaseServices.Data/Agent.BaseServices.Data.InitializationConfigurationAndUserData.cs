@@ -5,7 +5,7 @@ using System.Reflection;
 using ATAP.Utilities.Http;
 using ServiceStack;
 using ServiceStack.Caching;
-using ServiceStack.Logging;
+using Serilog;
 using ServiceStack.Redis;
 using Swordfish.NET.Collections;
 using Polly;

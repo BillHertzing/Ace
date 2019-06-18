@@ -1,39 +1,24 @@
-using System;
-using System.Collections;
+using Serilog;
 using ServiceStack;
-using ServiceStack.Logging;
+using ServiceStack.Configuration;
 using ServiceStack.Caching;
 using Swordfish.NET.Collections;
-using System.Collections.Concurrent;
+
+using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using ServiceStack.Configuration;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Ace.Agent.DiskAnalysisServices {
     public class DiskAnalysisServicesPlugin : IPlugin, IPreInitPlugin {
-        #region string constants
-        #region Configuration Key strings
-        #endregion Configuration Key strings
-        #region Exception Messages (string constants)
-        #endregion Exception Messages (string constants)
-        #region File Name string constants
-        const string pluginSettingsTextFileName = "Agent.DiskAnalysisServices.settings.txt";
-        #endregion File Name string constants
-        #endregion string constants
-
-        // Create a logger for this class
-        public static ILog Log = LogManager.GetLogger(typeof(DiskAnalysisServicesPlugin));
 
         // Surface the configKeyPrefix for this namespace
         public static string myNamespace = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace;
 
-        // AppSettings will be auto-wired by ServiceStack to the IAppSettings in the IOC
-        public IAppSettings AppSettings { get; set; }
-
 
         public IAppHost appHost { get; set; }
+
         // Declare Event Handlers for the Plugin Root COD
         // These event handler will be attached/detached from the ObservableConcurrentDictionary via that class' constructor and dispose method
         public void onPluginRootCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
@@ -46,7 +31,7 @@ namespace Ace.Agent.DiskAnalysisServices {
             // send a SSE message to all subscribers
         }
         public void Configure(IAppHost appHost) {
-            Log.Debug("starting DiskAnalysisServicesPlugin.Configure");
+            Log.Debug("<DiskAnalysisServicesPlugin.Configure");
 
             // Populate this Plugin's Application Configuration Settings
             // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
@@ -55,7 +40,7 @@ namespace Ace.Agent.DiskAnalysisServices {
           // next in priority are  Environment variables
           //.AddEnvironmentalVariables()
           // next in priority are Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
-          .AddTextFile(pluginSettingsTextFileName)
+          .AddTextFile(StringConstants.PluginSettingsTextFileName + StringConstants.PluginSettingsTextFileSuffix)
           // Builtin (compiled in) have the lowest priority
           .AddDictionarySettings(DefaultConfiguration.Configuration())
           .Build();
@@ -122,10 +107,8 @@ namespace Ace.Agent.DiskAnalysisServices {
             // and pass the Plugin's data structure to the container so it will be available to every other module and services
             appHost.GetContainer().Register(c => diskAnalysisServicesData);
 
-
-
-
             // ToDo: enable the mechanisms that monitors each GUI-specific data sensor, and start them running
+            Log.Debug(">DiskAnalysisServicesPlugin.Configure");
 
         }
 

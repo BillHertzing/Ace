@@ -5,8 +5,9 @@ using System.Reflection;
 using ATAP.Utilities.Http;
 using ServiceStack;
 using ServiceStack.Caching;
-using ServiceStack.Logging;
+//using ServiceStack.Logging;
 using ServiceStack.Redis;
+using Serilog;
 using Swordfish.NET.Collections;
 using Polly;
 using ServiceStack.Data;
@@ -258,7 +259,7 @@ namespace Ace.Agent.BaseServices {
             ".Config.";
 
         // Create a logger for this class
-        public static ILog Log = LogManager.GetLogger(typeof(BaseServicesData));
+        //public static ILog Log = LogManager.GetLogger(typeof(BaseServicesData));
 
         #endregion static fields
 

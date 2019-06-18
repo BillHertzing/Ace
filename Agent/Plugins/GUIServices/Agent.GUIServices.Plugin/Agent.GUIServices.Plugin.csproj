@@ -1,11 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
   <PropertyGroup>
+    <RootNamespace>Ace.Agent.Plugins.GUIServices</RootNamespace>
+    <ProjectGuid>{6D051132-4829-41E9-9658-306FE30F6C38}</ProjectGuid>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
-  
+
   <!-- Separate Property Group for Version Control -->
   <PropertyGroup>
     <!-- Assembly, File, and Package Information for this assembly-->
@@ -19,16 +21,37 @@
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
 
+   <!-- Packages to implement Serilog as logging provider -->
+   <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
+  </ItemGroup>
+
+  <!-- ServiceStack packages used -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.*" />
-    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
+  <!-- Concurrent Observable Types in Swordfish package used -->
+  <ItemGroup>
+    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+ </ItemGroup>
+
+  <!-- Reference the other related projects -->  
+  <ItemGroup>
+    <ProjectReference Include="..\Agent.GUIServices.StringConstants\Agent.GUIServices.StringConstants.csproj" />
+    <ProjectReference Include="..\Agent.GUIServices.Data\Agent.GUIServices.Data.csproj" />
     <ProjectReference Include="..\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
     <ProjectReference Include="..\Agent.GUIServices.Interfaces\Agent.GUIServices.Interfaces.csproj" />
-    <ProjectReference Include="..\Agent.GUIServices.Data\Agent.GUIServices.Data.csproj" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+    <ProjectReference Include="..\..\..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Agent.GUIServices.settings.txt">
+    <None Update="Agent.GUIServicesSettings.Development.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Agent.GUIServicesSettings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

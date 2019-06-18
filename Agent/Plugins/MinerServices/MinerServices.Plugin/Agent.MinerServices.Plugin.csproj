@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Ace.Agent.Plugins.MinerServices</RootNamespace>
+    <ProjectGuid>668AFC2F-E0DF-4393-AAD2-DA60ACE55D8F</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <!-- Separate Property Group for Version Control -->
+  <PropertyGroup>
+    <!-- Assembly, File, and Package Information for this assembly-->
+    <!-- Build and revision are created based on date-->
+    <MajorVersion>1</MajorVersion>
+    <MinorVersion>1</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <!-- Current Lifecycle stage for this assembly-->
+    <PackageLifeCycleStage>Dev</PackageLifeCycleStage>
+    <!-- However, if the LifeCyclestage is Production, the NuGet Package Label is ignored, but MSBuild expects a non-null value  -->
+    <PackageLabel>Alpha</PackageLabel>
+  </PropertyGroup>
+
+  <!-- Packages to implement Serilog as logging provider -->
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
+  </ItemGroup>
+
+  <!-- ServiceStack packages used -->
+  <ItemGroup>
+    <PackageReference Include="ServiceStack" Version="5.*" />
+  </ItemGroup>
+
+  <!-- Concurrent Observable Types in Swordfish package used -->
+  <ItemGroup>
+    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+  </ItemGroup>
+
+  <!-- Reference the other related projects -->  
+  <ItemGroup>
+    <ProjectReference Include="..\MinerServices.StringConstants\Agent.MinerServices.StringConstants.csproj" />
+    <ProjectReference Include="..\MinerServices.Data\Agent.MinerServices.Data.csproj" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <None Update="AceService.MinerServices.Plugin.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    <None Update="Agent.MinerServices.Settings.Development.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Agent.MinerServices.Settings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    </ItemGroup>
+
+</Project>

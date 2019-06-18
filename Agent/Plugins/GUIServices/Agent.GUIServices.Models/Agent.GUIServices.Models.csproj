@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -23,4 +23,10 @@
     <PackageReference Include="ServiceStack.Interfaces" Version="5.*" />
   </ItemGroup>
 
+  <ItemGroup>
+	<ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
+	<ProjectReference Include="..\..\..\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />
+	<ProjectReference Include="..\Agent.GUIServices.Shared\Agent.GUIServices.Shared.csproj" />
+  </ItemGroup>
+  
 </Project>

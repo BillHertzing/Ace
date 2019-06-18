@@ -1,0 +1,5 @@
+# Application Configuration Settings for Ace Agent Plugin GUIServices
+# versioninfo
+
+RelativeToContentRootPath ./GUI/GUI/dist
+VirtualRootPath 

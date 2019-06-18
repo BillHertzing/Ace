@@ -1,0 +1,5 @@
+# Application Configuration Settings for AceAgent BaseServices
+# versioninfo
+
+Ace.Agent.BaseServices.Config.RedisConnectionString localhost:6379
+Ace.Agent.BaseServices.Config.MySqlConnectionString Server=localhost;Port=3306;Database=acecommander;Uid=whertzing;Pwd=devDBAdminPwd!

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using ServiceStack.Logging;
+using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ATAP.Utilities.ComputerInventory;
