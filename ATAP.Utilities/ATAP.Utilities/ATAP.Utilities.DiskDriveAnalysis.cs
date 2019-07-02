@@ -49,13 +49,11 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
             // async (cRUD, diskInfoEx) => { await Task.Yield(); }
             // Task< DiskDriveInfoEx> t = await DBFetch.Invoke(cRUD, diskInfoEx);
             // diskInfoEx = await DBFetch.Invoke(cRUD, diskInfoEx);
-            Log.Debug($"leaving PopulateDiskInfoExs");
         }
 
         // populate a list of PartitionInfoEx with information about the actual partitions on a DiskDrive
         // pass in an Action that will populate a storage location with the information
         public async Task PopulatePartitionInfoExs(CrudType cRUD, DiskDriveInfoEx diskInfoEx, Action<DiskDriveInfoEx> storePartitionInfoExs) {
-            Log.Debug($"starting PopulatePartitionInfoExs: cRUD = {cRUD.ToString()}, diskInfoEx = {diskInfoEx.Dump()}");
 
             // ToDo: Get the list of partitions from the Disk hardware
             await new Task(() => Thread.Sleep(500));
@@ -77,33 +75,24 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
             storePartitionInfoExs.Invoke(diskInfoEx);
             // ToDo: see if the disk already has partitions in the DB
             var dBPartitions = new List<PartitionInfoEx>();
-
-            Log.Debug($"leaving PopulatePartitionInfoExs");
         }
 
         // C/R/U/D a list of DiskDriveInfoEx with data in a DB
         // pass in an Action that will interact with the DB
         public async Task DiskInfoExsToDB(List<DiskDriveInfoEx> diskInfoExs, CrudType cRUD, Func<CrudType, DiskDriveInfoEx, Task> interact) {
-            Log.Debug($"starting DiskInfoExsToDB: cRUD = {cRUD.ToString()}, diskInfoExs = {diskInfoExs.Dump()}");
             foreach (var diskInfoEx in diskInfoExs) {
                 // invoke the Action delegate to C/R/U/D each DiskDriveInfoEx to the DB
                 await interact.Invoke(cRUD, diskInfoEx);
             }
-            Log.Debug($"leaving DiskInfoExsToDB");
         }
         public async Task AnalyzeDiskDrive(IDiskDriveSpecifier diskDriveSpecifier, IAnalyzeDiskDriveResult diskDriveAnalysisResult, IAnalyzeDiskDriveProgress diskDriveAnalysisProgress, CancellationToken cancellationToken, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
-            Log.Debug($"starting AnalyzeDiskDrive: diskDriveSpecifier = {diskDriveSpecifier.ToString()}");
             // ToDo: Add validation to ensure the diskDriveSpecifier corresponds to a valid member of the DiskInfoExs 
             Task task = new Task(() => { Thread.Sleep(1); }, cancellationToken);
-
-            Log.Debug($"leaving AnalyzeDiskDrive");
         }
 
         /*
         public async Task WalkDiskDrive(DiskDrivePartitionIdentifier diskDrivePartitionIdentifier, IDiskDriveInfoExs diskInfoExsContainer, WalkDiskDriveResultContainer walkDiskDriveResultContainer,  Action<CrudType , string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
-            Log.Debug($"starting WalkDiskDrive: diskDrivePartitionDriveLetterIdentifier = {diskDrivePartitionIdentifier.Dump()}");
            // await PopulateDiskInfoExs().ContinueWith((c) => ReadDiskAsync(diskInfoEx));
-            Log.Debug($"leaving WalkDiskDrive: diskDrivePartitionDriveLetterIdentifier = {diskDrivePartitionIdentifier.Dump()}");
         }
         */
 

@@ -19,7 +19,6 @@ namespace ATAP.Utilities.LongRunningTasks {
 
     public static class LongRunningTasksExtensions {
         public static async Task<bool> CancelTask (this LongRunningTaskInfo me) {
-            //Log.Debug($"starting CancelTask: LRTId = {me.LRTId}");
             var cTS = me.CTS;
             cTS.Cancel();
             // ToDo: implement a better understanding of cancellation and how to handle it 

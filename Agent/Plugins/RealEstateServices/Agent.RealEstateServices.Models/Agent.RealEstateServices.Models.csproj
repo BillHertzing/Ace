@@ -18,9 +18,16 @@
     <!-- However, if the LifeCyclestage is Production, the NuGet Package Label is ignored, but MSBuild expects a non-null value  -->
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
-  
+
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
+  <ItemGroup>
+    <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
       <ItemGroup>
-        <PackageReference Include="ServiceStack.Interfaces" Version="5.*" />
+        <PackageReference Include="ServiceStack.Interfaces" Version="5.5.1" />
       </ItemGroup>
 
       <ItemGroup>

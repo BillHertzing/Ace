@@ -10,8 +10,6 @@ using Serilog;
 using Serilog.Debugging;
 
 using ServiceStack;
-//using ServiceStack.Logging;
-//using ServiceStack.Logging.NLogger;
 using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
@@ -24,13 +22,17 @@ using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
+using ATAP.Utilities.ETW;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.Runtime.Enumerations;
 using ATAP.Utilities.WebHostBuilders.Enumerations;
 
 namespace Ace.Agent.Host {
+
     partial class Program {
+        // Log Program Startup to ETW (as of 06/2019, ILWeaving this assembly results in a thrown invalid CLI Program Exception
+        // ATAP.Utilities.ETW.ATAPUtilitiesETWProvider.Log.MethodBoundry("<");
 
         // Extend the CommandLine Configuration Provider with these switch mappings
         // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-3.0#switch-mappings
@@ -42,16 +44,7 @@ namespace Ace.Agent.Host {
             };
         public const string userSecretsID = "E5D6C5E5-6E30-49EF-BE15-E1B7C377D2A7";
 
-        //public const SupportedWebHostBuilders WebHostBuilderToBuildDefault = SupportedWebHostBuilders.KestrelAloneWebHostBuilder;
-        // ServiceStack Logging
-        //static ServiceStack.Logging.ILog Log { get; set; }
-
         public static async Task Main(string[] args) {
-
-            // To ensure every class uses the same Global Logger, set the LogManager's LogFactory before initializing the hosting environment
-            //  set the LogFactory to ServiceStack's NLogFactory
-            //LogManager.LogFactory=new NLogFactory();
-            //Log=LogManager.GetLogger(typeof(Program));
 
             // Setup Serilog's static logger with an initial configuration sufficient to log statup errors
             Serilog.Core.Logger genericHostStartupNaubLogger = new LoggerConfiguration()
@@ -65,7 +58,6 @@ namespace Ace.Agent.Host {
                 .WriteTo.Debug()
                 //.WriteTo.File(path: "Logs/Demo.Serilog.{Date}.log", fileSizeLimitBytes: 1024, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, retainedFileCountLimit: 31)
                 .CreateLogger();
-            Log.Debug("Entering Program.Main");
 
             // When running as a service, the initial working dir is usually %WinDir%\System32, but the program (and configuration files) is probably installed to a different directory
             // Change the working directory to the location where the Exe and configuration files are installed to.
@@ -86,7 +78,6 @@ namespace Ace.Agent.Host {
                 // Add commandline switch provider and map -console to --console:false
                 .AddCommandLine(args, switchMappings);
 
-            // Create this program's ConfigurationRoot
             // Create this program's initial ConfigurationRoot
             var initialGenericHostConfigurationRoot = initialGenericHostConfigurationBuilder.Build();
 
@@ -145,14 +136,6 @@ namespace Ace.Agent.Host {
                 throw new InvalidOperationException(String.Format(StringConstants.InvalidRedeclarationOfEnvironmentExceptionMessage, initialEnvName, envName));
             }
 
-            // Validate the value of WebHostBuilderToBuild from the genericHostConfigurationRoot is one that is supported by this program
-            var webHostBuilderName = genericHostConfigurationRoot.GetValue<string>(StringConstants.WebHostBuilderToBuildConfigRootKey, StringConstants.WebHostBuilderStringDefault);
-            SupportedWebHostBuilders webHostBuilderToBuild;
-            if (!Enum.TryParse<SupportedWebHostBuilders>(webHostBuilderName, out webHostBuilderToBuild)) {
-                throw new InvalidDataException(String.Format(StringConstants.InvalidWebHostBuilderStringExceptionMessage, webHostBuilderName));
-            }
-            //Log.Debug("in Program.Main: webHostBuilderToBuild = {@webHostBuilderToBuild}", webHostBuilderToBuild);
-
             // Setup the Microsoft.Logging.Extensions Logging
             // One of what seems to me to be a limitation, is, the configuration needs to exist before logging can be read from it, so, 
             //    the whole process of getting the environment above, has to be done without the loggers. That seems... wrong?
@@ -191,15 +174,22 @@ namespace Ace.Agent.Host {
                 .CreateLogger();
 
             // Select which CoreLogger to use
-            Log.Logger=y;
-            Log.Debug("Environment = {envName}", envName);
-            Log.Debug("webHostBuilderToBuild = {webHostBuilderToBuild}", webHostBuilderToBuild);
+            Log.Logger=x;
+            Log.Debug("in Program.Main: Environment = {envName}", envName);
+
+            // Validate the value of WebHostBuilderToBuild from the genericHostConfigurationRoot is one that is supported by this program
+            var webHostBuilderName = genericHostConfigurationRoot.GetValue<string>(StringConstants.WebHostBuilderToBuildConfigRootKey, StringConstants.WebHostBuilderStringDefault);
+            SupportedWebHostBuilders webHostBuilderToBuild;
+            if (!Enum.TryParse<SupportedWebHostBuilders>(webHostBuilderName, out webHostBuilderToBuild)) {
+                throw new InvalidDataException(String.Format(StringConstants.InvalidWebHostBuilderStringExceptionMessage, webHostBuilderName));
+            }
+            Log.Debug("in Program.Main: webHostBuilderToBuild = {webHostBuilderToBuild}", webHostBuilderToBuild);
 
             // temporary testing 
             var tID = new Id<LongRunningTaskInfo>(new Guid());
             //Log.Debug("tID.ToString(): {temp_tidToString}", tID.ToString());
             //Log.Debug("tID.Dump(): {temp_tidDump}", tID.Dump());
-           // Log.Debug("tID(object): {temp_tidObject}", tID);
+            // Log.Debug("tID(object): {temp_tidObject}", tID);
             // End temporary testing 
 
 
@@ -258,39 +248,39 @@ namespace Ace.Agent.Host {
                 // Run it Async
                 await genericHost.RunAsync(genericHostCancellationToken);
             }
-            catch (OperationCanceledException) {
+            catch (OperationCanceledException e) {
                 ; // Just ignore it to suppress it
+                  // The Exception should be shown in the ETW trace
+                  //ToDo: Add Error level or category to ATAPUtilitiesETWProvider
+                  //ATAPUtilitiesETWProvider.Log.Information($"Exception in Program.Main: {e.Exception.GetType()}: {e.Exception.Message}");
             }
             // The IHostLifetime instance methods take over now
-            Log.Debug("in Program.Main: Leaving Program.Main");
+            // Log Program finishing to ETW if it happens to resume executionhere for some reason(as of 06/2019, ILWeaving this assembly results in a thrown invalid CLI Program Exception
+            // ATAP.Utilities.ETW.ATAPUtilitiesETWProvider.Log("> Program.Main");
+
         }
 
     }
 
+    [ATAP.Utilities.ETW.ETWLogAttribute]
     public class Startup {
-        //static ILog Log { get; set; }
         public IConfiguration Configuration { get; }
 
-        public IWebHostEnvironment WebHostEnvironment { get; set; }
+        public IHostEnvironment HostEnvironment { get; }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) {
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment) {
             Configuration=configuration;
-            WebHostEnvironment=webHostEnvironment;
+            HostEnvironment=hostEnvironment;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            Log.Debug("<Program.Startup.ConfigureServices");
-            Log.Debug(">Program.Startup.ConfigureServices");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment) {
-            // Create a logger instance for this class
-            //Log=LogManager.GetLogger(typeof(Startup));
-            Log.Debug("Entering Program.Startup.Configure");
+        public void Configure(IApplicationBuilder app, IHostEnvironment hostEnvironment) {
 
-            app.UseServiceStack(new SSAppHost(webHostEnvironment) {
+            app.UseServiceStack(new SSAppHost(hostEnvironment) {
                 AppSettings=new NetCoreAppSettings(Configuration)
             });
 
@@ -304,9 +294,6 @@ namespace Ace.Agent.Host {
             // TestIDTypeSerialization();
             // TestComplexTypeSerialization();
             // end temporary testing
-
-            Log.Debug("Leaving Program.Startup.Configure");
-
         }
         // Temporary testing
         private void TestComplexTypeSerialization() {

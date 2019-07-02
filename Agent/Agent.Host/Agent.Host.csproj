@@ -3,6 +3,7 @@
   <PropertyGroup>
     <!-- Override the TargetFamework specified in the Directory.Build.props  -->
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFrameworks>netcoreapp3.0;</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -41,6 +42,13 @@
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
   </PropertyGroup>
    -->
+   
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
+  <ItemGroup>
+    <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
 
   <!-- Packages necessary to host/configure .Net Core GenericHost hosting a Web Server as a service -->
   <ItemGroup>
@@ -50,17 +58,17 @@
     </PackageReference>
     <PackageReference Include="Serilog.Extensions.Hosting" Version="2.0.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0-preview6.19304.6" />
   </ItemGroup>
   
   <!-- Packages necessary to run the ASP.Net Core Generic Host and web server hosts Server -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview5.19227.9" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0-preview6.19304.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.0.0-preview6.19304.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.0.0-preview6.19304.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview6.19304.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview6.19304.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview6.19304.6" />
   </ItemGroup>
  
   <!-- Packages to implement Serilog as logging provider -->
@@ -68,13 +76,14 @@
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
-    <PackageReference Include="Serilog.Exceptions" Version="5.0.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.3.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
     <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
   </ItemGroup>
+  
 
   <!-- Packages to implement Serilog as a Microsoft logging provider ? ToDo: implement Serilog as a logging provider to Microsoft logging
   <ItemGroup>
@@ -85,12 +94,12 @@
   
   <!-- Packages necessary to run the ASP.Net Core Blazor Server -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview6.19307.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview6.19307.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview6.19307.2" />
   </ItemGroup>
   
-  <!-- ServiceStack packages used -->
+  <!-- Packages to implement ServiceStack-->
   <ItemGroup>
     <PackageReference Include="ServiceStack.Core" Version="5.5.1" />
     <PackageReference Include="ServiceStack.Text.Core" Version="5.5.1" />
@@ -103,17 +112,8 @@
     <ProjectReference Include="..\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
     <ProjectReference Include="..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
-    <ProjectReference Include="..\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Data\Agent.DiskAnalysisServices.Data.csproj" />
-    <ProjectReference Include="..\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Interfaces\Agent.DiskAnalysisServices.Interfaces.csproj" />
-    <ProjectReference Include="..\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
     <ProjectReference Include="..\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Plugin\Agent.DiskAnalysisServices.Plugin.csproj" />
-    <ProjectReference Include="..\Plugins\GUIServices\Agent.GUIServices.Data\Agent.GUIServices.Data.csproj" />
-    <ProjectReference Include="..\PlugIns\GUIServices\Agent.GUIServices.Interfaces\Agent.GUIServices.Interfaces.csproj" />
-    <ProjectReference Include="..\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
-    <ProjectReference Include="..\PlugIns\GUIServices\Agent.GUIServices.Plugin\Agent.GUIServices.Plugin.csproj" />
-    <ProjectReference Include="..\Plugins\MinerServices\Agent.MinerServices.Data\Agent.MinerServices.Data.csproj" />
-    <ProjectReference Include="..\Plugins\MinerServices\MinerServices.Interfaces\Agent.MinerServices.Interfaces.csproj" />
-    <ProjectReference Include="..\Plugins\MinerServices\MinerServices.Models\Agent.MinerServices.Models.csproj" />
+    <ProjectReference Include="..\PlugIns\GUIServices\PlugIn\PlugIn.GUIServices.PlugIn.csproj" />
     <ProjectReference Include="..\Plugins\MinerServices\MinerServices.Plugin\Agent.MinerServices.Plugin.csproj" />
     <ProjectReference Include="..\PlugIns\RealEstateServices\Agent.RealEstateServices.Plugin\Agent.RealEstateServices.Plugin.csproj" />
   </ItemGroup>

@@ -5,13 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Ace.Agent.Host {
+    [ATAP.Utilities.ETW.ETWLogAttribute]
     static public class SSAppHostDefaultConfiguration {
 
         // Create the minimal set of Configuration settings that the program needs to startup and run in production
         public static Dictionary<string, string> Production =
         new Dictionary<string, string>
         {
-            { "dummy", "dummy" }
+            {"PhysicalRootPath", "./GUI/GUI/dist"}
         };
 
     }

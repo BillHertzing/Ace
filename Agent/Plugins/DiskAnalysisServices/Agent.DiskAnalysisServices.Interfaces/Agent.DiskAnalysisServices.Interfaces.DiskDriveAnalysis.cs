@@ -25,7 +25,6 @@ namespace Ace.Agent.DiskAnalysisServices {
     public partial class DiskAnalysisServices : Service {
 
         public async Task<object> Post(AnalyzeDiskDriveRequest request) {
-            Log.Debug("starting Post(AnalyzeDiskDriveRequest)");
             // Housekeeping setup for the task to be created
             // Create new Id for this LongRunningTask
             Id<LongRunningTaskInfo> longRunningTaskID = new Id<LongRunningTaskInfo>(Guid.NewGuid());
@@ -100,7 +99,6 @@ namespace Ace.Agent.DiskAnalysisServices {
             longRunningTaskIds.Add(longRunningTaskID);
             var analyzeDiskDriveResponsePayload = new AnalyzeDiskDriveResponsePayload(longRunningTaskIds);
             var analyzeDiskDriveResponse = new AnalyzeDiskDriveResponse(analyzeDiskDriveResponsePayload);
-            Log.Debug($"Leaving Post(AnalyzeDiskDriveRequest), analyzeDiskDriveResponse = {analyzeDiskDriveResponse}");
             return analyzeDiskDriveResponse;
         }
 

@@ -2,11 +2,11 @@
 
 <PropertyGroup>
     <RootNamespace>Ace.Agent.Plugins.RealEstateServices</RootNamespace>
-    <ProjectGuid>{65E74DFA-C9B4-49C9-83C4-591A5779D1E8}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <IsPackable>true</IsPackable>
-  </PropertyGroup>
+    <ProjectGuid>65E74DFA-C9B4-49C9-83C4-591A5779D1E8</ProjectGuid>
+  <OutputType>Library</OutputType>
+  <IsPackable>true</IsPackable>
+  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+</PropertyGroup>
   
   <!-- Separate Property Group for Version Control -->
   <PropertyGroup>
@@ -21,6 +21,14 @@
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
 
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
+  <ItemGroup>
+    <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview6.19304.6" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
    <!-- Packages to implement Serilog as logging provider -->
    <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />
@@ -29,7 +37,7 @@
 
   <!-- ServiceStack packages used -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.*" />
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
   </ItemGroup>
 
   <!-- Concurrent Observable Types in Swordfish package used -->
@@ -39,6 +47,7 @@
 
   <!-- Reference the other related projects -->  
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
     <ProjectReference Include="..\Agent.RealEstateServices.StringConstants\Agent.RealEstateServices.StringConstants.csproj" />
     <ProjectReference Include="..\Agent.RealEstateServices.Data\Agent.RealEstateServices.Data.csproj" />
     <ProjectReference Include="..\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
@@ -47,10 +56,10 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="Agent.RealEstateServicesSettings.Development.txt">
+    <None Update="PlugIn.RealEstateServices.Settings.Development.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Agent.RealEstateServicesSettings.txt">
+    <None Update="PlugIn.RealEstateServices.Settings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Agent.RealEstateServices.Gateways.txt">

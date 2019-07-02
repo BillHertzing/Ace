@@ -15,10 +15,12 @@ using ServiceStack.Auth;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
+using ATAP.Utilities.ETW;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 
 namespace Ace.Agent.BaseServices {
+
     public partial class BaseServicesData : IDisposable {
         #region Properties:ConfigurationData
         public ConfigurationData ConfigurationData { get; set; }

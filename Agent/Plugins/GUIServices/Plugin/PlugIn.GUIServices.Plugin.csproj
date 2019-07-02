@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+
+  <PropertyGroup>
+    <RootNamespace>Ace.Agent.Plugins.GUIServices</RootNamespace>
+    <ProjectGuid>6D051132-4829-41E9-9658-306FE30F6C38</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <!-- Separate Property Group for Version Control -->
+  <PropertyGroup>
+    <!-- Assembly, File, and Package Information for this assembly-->
+    <!-- Build and revision are created based on date-->
+    <MajorVersion>1</MajorVersion>
+    <MinorVersion>1</MinorVersion>
+    <PatchVersion>0</PatchVersion>
+    <!-- Current Lifecycle stage for this assembly-->
+    <PackageLifeCycleStage>Dev</PackageLifeCycleStage>
+    <!-- However, if the LifeCyclestage is Production, the NuGet Package Label is ignored, but MSBuild expects a non-null value  -->
+    <PackageLabel>Alpha</PackageLabel>
+  </PropertyGroup>
+
+  <!-- During Core 3.0 preview, these additional NuGet package servers provide the latest preview packages -->
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>
+      https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
+      https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
+    </RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
+  <ItemGroup>
+    <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview6.19304.6" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
+  <!-- Packages to implement Serilog as logging provider -->
+   <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
+  </ItemGroup>
+
+  <!-- ServiceStack packages used -->
+  <ItemGroup>
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
+  </ItemGroup>
+
+  <!-- Concurrent Observable Types in Swordfish package used -->
+  <ItemGroup>
+    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+ </ItemGroup>
+
+  <!-- Reference the other related projects -->  
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+    <ProjectReference Include="..\..\..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
+    <ProjectReference Include="..\Data\PlugIn.GUIServices.Data.csproj" />
+    <ProjectReference Include="..\Interfaces\PlugIn.GUIServices.Interfaces.csproj" />
+    <ProjectReference Include="..\Models\PlugIn.GUIServices.Models.csproj" />
+    <ProjectReference Include="..\Shared\PlugIn.GUIServices.Shared.csproj" />
+    <ProjectReference Include="..\StringConstants\PlugIn.GUIServices.StringConstants.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PlugIn.GUIServices.Settings.Development.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="PlugIn.GUIServices.Settings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

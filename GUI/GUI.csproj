@@ -25,15 +25,13 @@
   <ItemGroup>
     <Watch Include="..\**\*.razor" />
   </ItemGroup>
-  <ItemGroup>
-    <Watch Remove="Pages\DiskAnalysisServices\DiskAnalysisServicesInitializationConfigurationAndUserData.razor" />
-  </ItemGroup>
+
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.0.0-preview5-19227-01" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.0.0-preview5-19227-01" PrivateAssets="all" />
-    <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview4-19216-03" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview5.19227.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.0.0-preview6.19307.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.0.0-preview6.19307.2" PrivateAssets="all" />
+    <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview6.19307.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview6.19304.6" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
@@ -55,7 +53,8 @@
     <ProjectReference Include="..\Agent\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Shared\Agent.DiskAnalysisServices.Shared.csproj" />
-    <ProjectReference Include="..\Agent\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\PlugIns\GUIServices\Models\PlugIn.GUIServices.Models.csproj" />
+    <ProjectReference Include="..\Agent\PlugIns\GUIServices\Shared\PlugIn.GUIServices.Shared.csproj" />
     <ProjectReference Include="..\Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />

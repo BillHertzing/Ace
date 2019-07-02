@@ -9,7 +9,7 @@ namespace Ace.Agent.RealEstateServices {
         #endregion Exception Messages (string constants)
 
         #region File Name string constants
-        public const string PluginSettingsTextFileNameString = "Agent.RealEstateServicesSettings";
+        public const string PluginSettingsTextFileNameString = "PlugIn.RealEstateServices.Settings";
         public const string PluginSettingsTextFileNameSuffix = ".txt";
         #endregion
     }

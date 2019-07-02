@@ -10,24 +10,15 @@ using Swordfish.NET.Collections;
 namespace Ace.Agent.RealEstateServices
 {
     public class RealEstateServicesData : IDisposable {
-    #region string constants
-    #region Configuration Key strings
-    #endregion Configuration Key strings
-    #region Exception Messages (string constants)
-    #endregion Exception Messages (string constants)
-    #region File Name string constants
-    #endregion File Name string constants
-    #endregion string constants
 
-    // Surface the configKeyPrefix for this namespace
-    public static string configKeyPrefix =
-    MethodBase
-    .GetCurrentMethod()
-                .DeclaringType
-                .Namespace +
-            ".Config";
-        // Create a logger for this class
-        public static ILog Log = LogManager.GetLogger(typeof(RealEstateServicesData));
+        #region PublicStaticFields
+        #region PublicStaticFields:configKeyPrefix
+        // Surface the configKeyPrefix for this namespace
+        //ToDo: Replace suffix with StringConstant
+        public static string configKeyPrefix = MethodBase.GetCurrentMethod().DeclaringType.Namespace+".Config";
+        #endregion
+        #endregion
+
         // private field for the cacheClient, populated by the constructor
         ICacheClient cacheClient;
 

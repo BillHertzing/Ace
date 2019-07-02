@@ -1,5 +1,5 @@
 ﻿using ATAP.Utilities.WebHostBuilders.Enumerations;
-
+using ATAP.Utilities.ETW;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;

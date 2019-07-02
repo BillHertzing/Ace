@@ -10,14 +10,17 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
+using ATAP.Utilities.ServiceStack;
+
+using Microsoft.Extensions.Hosting;
+
 namespace Ace.Agent.DiskAnalysisServices {
     public class DiskAnalysisServicesPlugin : IPlugin, IPreInitPlugin {
 
         // Surface the configKeyPrefix for this namespace
         public static string myNamespace = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace;
 
-
-        public IAppHost appHost { get; set; }
+        public Microsoft.Extensions.Hosting.IHostEnvironment HostEnvironment { get; set; }
 
         // Declare Event Handlers for the Plugin Root COD
         // These event handler will be attached/detached from the ObservableConcurrentDictionary via that class' constructor and dispose method
@@ -30,20 +33,49 @@ namespace Ace.Agent.DiskAnalysisServices {
             Log.Debug($"event onPluginRootPropertyChanged, args e = {e}");
             // send a SSE message to all subscribers
         }
-        public void Configure(IAppHost appHost) {
-            Log.Debug("<DiskAnalysisServicesPlugin.Configure");
 
-            // Populate this Plugin's Application Configuration Settings
-            // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
-            var pluginAppSettings = new MultiAppSettingsBuilder()
-          // Command line flags have highest priority
-          // next in priority are  Environment variables
-          //.AddEnvironmentalVariables()
-          // next in priority are Configuration settings in a text file relative to the current working directory at the point in time when this method executes.
-          .AddTextFile(StringConstants.PluginSettingsTextFileName + StringConstants.PluginSettingsTextFileSuffix)
-          // Builtin (compiled in) have the lowest priority
-          .AddDictionarySettings(DefaultConfiguration.Configuration())
-          .Build();
+        public void Configure(IAppHost appHost) {
+
+            Log.Debug("in DiskAnalysisServicesPlugin.Configure, appHost = {appHost}", appHost);
+
+            // Load the local property of IHostEnvironment type
+            HostEnvironment=appHost.GetContainer().Resolve<Microsoft.Extensions.Hosting.IHostEnvironment>();
+            // Determine the environment this PlugIn has been activated in
+            string envName = HostEnvironment.EnvironmentName;
+
+            // Populate this PlugIn's AppSettings Configuration Settings and place it in the appSettingsDictionary
+
+            // Location of the files are at the ContentRoot. ToDo: figure out how to place them / resolve them relative to the location of the PlugIn assembly
+
+            var pluginAppSettingsBuilder = new MultiAppSettingsBuilder();
+            // ToDo: command line settings
+            // Environment variables have 2nd highest priority
+            // ToDo: specific prefix
+            pluginAppSettingsBuilder.AddEnvironmentalVariables();
+            // Location of the files are at the ContentRoot. ToDo: figure out how to place them / resolve them relative to the location of the PlugIn assembly
+            // Non-Production Configuration settings in a text file
+            if (!this.HostEnvironment.IsProduction()) {
+                var settingsTextFileName = StringConstants.PluginSettingsTextFileName+'.'+envName+StringConstants.PluginSettingsTextFileSuffix;
+                // ToDo: ensure it exists and the ensure we have permission to read it
+                // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
+                pluginAppSettingsBuilder.AddTextFile(settingsTextFileName);
+            }
+            // Production Configuration settings in a text file
+            pluginAppSettingsBuilder.AddTextFile(StringConstants.PluginSettingsTextFileName+StringConstants.PluginSettingsTextFileSuffix);
+            // BuiltIn (compiled in) have the lowest priority
+            pluginAppSettingsBuilder.AddDictionarySettings(DefaultConfiguration.Production);
+
+            // Create the appSettings from the builder
+            var pluginAppSettings = pluginAppSettingsBuilder.Build();
+
+            // Register them so other PlugIns can see them
+            AppSettingsDictionary appSettingsDictionary = appHost.TryResolve<AppSettingsDictionary>();
+            if (appSettingsDictionary==null) {
+                // ToDo: Log:Error
+                throw new InvalidOperationException("ToDo: exception message");
+            }
+            // ToDo: extend appSettingsDictionary to allow for adding a plugIn's AppSettings instance; needs to account for both readonly and changenotify
+            //appSettingsDictionary.
 
             // Key names in the cache for Configuration settings for a Plugin consist of the namespace and the string .Config
             // Key names in the appSettings of a Plugin for Configuration settings may or may not have the prefix
@@ -70,7 +102,6 @@ namespace Ace.Agent.DiskAnalysisServices {
             // Set a flag indicating the need to dialog with the user to resolve the cache vs. appSettings discrepancies
             bool configurationsMatch = true; // (appSettingsConfigkeys.Count == cacheConfigkeys.Count) ;
 
-
             // Populate this Plugin's Gateways
             // Location of the files will depend on running as LifeCycle Production/QA/Dev as well as Debug and Release settings
             //var pluginGateways = new MultiGatewaysBuilder()
@@ -83,8 +114,6 @@ namespace Ace.Agent.DiskAnalysisServices {
             //.AddDictionarySettings(DefaultGateways.Configuration())
             //.Build();
 
-
-
             // Create a Gateways collection from the txt file
             //ConcurrentObservableDictionary<string, IGateway> gateways = new ConcurrentObservableDictionary<string, IGateway>();
             //gateways.Add("GoogleMapsGeoCoding", new GatewayBuilder().Build());
@@ -92,41 +121,31 @@ namespace Ace.Agent.DiskAnalysisServices {
             // Every Property matching a ConfigKey gets/sets the value of the matching ConfigKey in the cache
             // ConfigKey Properties do not have to be set in the constructor because the cache was setup before calling the constructor
 
-
+            // create the plugIn's data object
             DiskAnalysisServicesData diskAnalysisServicesData = new DiskAnalysisServicesData(appHost, new ConcurrentObservableDictionary<string, decimal>(), onPluginRootCollectionChanged, onPluginRootPropertyChanged);
 
             // copy the most recent configuration settings to the Data
-            // hmm should be a way to make sure the Data has a Property for each configuration setting, and to populate the initial Data with the cache value
-            // DiskAnalysisServicesData.GoogleAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "GoogleAPIKeyEncrypted");
-            //DiskAnalysisServicesData.HomeAwayAPIKeyEncrypted = cacheClient.Get<string>(configKeyPrefix + "HomeAwayAPIKeyEncrypted");
-            //DiskAnalysisServicesData.HomeAway_API_URI = cacheClient.Get<string>(configKeyPrefix + "HomeAway_API_URI");
-            // DiskAnalysisServicesData.Google_API_URI = cacheClient.Get<string>(configKeyPrefix + "Google_API_URI");
-            //DiskAnalysisServicesData.UriHomeAway_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriHomeAway_API_URI");
-            //DiskAnalysisServicesData.UriGoogle_API_URI = cacheClient.Get<Uri>(configKeyPrefix + "UriGoogle_API_URI");
+            // ToDo: hmm should be a way to make sure the Data has a Property for each configuration setting, and to populate the initial Data with the cache value
 
-            // and pass the Plugin's data structure to the container so it will be available to every other module and services
-            appHost.GetContainer().Register(c => diskAnalysisServicesData);
+            // Pass the Plugin's data structure to the container so it will be available to every other module and services
+            appHost.GetContainer().Register(d => diskAnalysisServicesData);
 
-            // ToDo: enable the mechanisms that monitors each GUI-specific data sensor, and start them running
-            Log.Debug(">DiskAnalysisServicesPlugin.Configure");
-
+            // ToDo: enable the mechanisms that monitors each plugin-specific data sensor, and start them running
         }
-
 
         /// <summary>
         /// Register this plugin with the appHost
         /// Configure its observableDataStructures and event handlers
         /// </summary>
-        /// <param name="appHost">The hosting provider</param>
-        /// 
+        /// <param name="appHost">The ASP.Net Host</param>
         public void Register(IAppHost appHost) {
-            Log.Debug("starting DiskAnalysisServicesPlugin.Register");
-
+            // ToDo: Create static string for exception message
             if (null==appHost) { throw new ArgumentNullException("appHost"); }
             appHost.RegisterService<DiskAnalysisServices>();
             this.Configure(appHost);
-            Log.Debug("Leaving DiskAnalysisServicesPlugin.Register");
         }
+
+        public void BeforePluginsLoaded(IAppHost appHost) { }
 
     }
 }

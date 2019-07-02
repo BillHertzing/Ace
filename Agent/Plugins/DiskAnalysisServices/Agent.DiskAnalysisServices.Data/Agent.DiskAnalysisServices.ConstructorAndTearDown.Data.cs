@@ -8,15 +8,14 @@ using ServiceStack.Logging;
 using Swordfish.NET.Collections;
 using Ace.Agent.BaseServices;
 
-namespace Ace.Agent.DiskAnalysisServices
-{
+namespace Ace.Agent.DiskAnalysisServices {
     public partial class DiskAnalysisServicesData : IDisposable {
 
         #region PublicStaticFields
         #region PublicStaticFields:configKeyPrefix
         // Surface the configKeyPrefix for this namespace
         //ToDo: Replace suffix with StringConstant
-        public static string configKeyPrefix = MethodBase.GetCurrentMethod().DeclaringType.Namespace +".Config";
+        public static string configKeyPrefix = MethodBase.GetCurrentMethod().DeclaringType.Namespace+".Config";
         #endregion
         #endregion
 
@@ -31,14 +30,14 @@ namespace Ace.Agent.DiskAnalysisServices
 
         // constructor with event handlers
         public DiskAnalysisServicesData(IAppHost appHost, ConcurrentObservableDictionary<string, decimal> pluginRootCOD, NotifyCollectionChangedEventHandler onPluginRootCODCollectionChanged, PropertyChangedEventHandler onPluginRootCODPropertyChanged) {
-      
-            cacheClient = appHost.GetContainer().Resolve<ICacheClient>();
+
+            cacheClient=appHost.GetContainer().Resolve<ICacheClient>();
             BaseServicesData=appHost.GetContainer().Resolve<BaseServicesData>();
-            PluginRootCOD = pluginRootCOD;
-            this.onPluginRootCODCollectionChanged = onPluginRootCODCollectionChanged;
-            this.onPluginRootCODPropertyChanged = onPluginRootCODPropertyChanged;
-            pluginRootCOD.CollectionChanged += this.onPluginRootCODCollectionChanged;
-            pluginRootCOD.PropertyChanged += this.onPluginRootCODPropertyChanged;
+            PluginRootCOD=pluginRootCOD;
+            this.onPluginRootCODCollectionChanged=onPluginRootCODCollectionChanged;
+            this.onPluginRootCODPropertyChanged=onPluginRootCODPropertyChanged;
+            pluginRootCOD.CollectionChanged+=this.onPluginRootCODCollectionChanged;
+            pluginRootCOD.PropertyChanged+=this.onPluginRootCODPropertyChanged;
             // ToDo: Get the Configuration data into the COD, and populate it from "plugin configuration data load"
             ConstructConfigurationData();
             ConstructUserData();
@@ -54,31 +53,31 @@ namespace Ace.Agent.DiskAnalysisServices
 
         #region IDisposable Support
         public void TearDown() {
-            PluginRootCOD.CollectionChanged -= this.onPluginRootCODCollectionChanged;
-            PluginRootCOD.PropertyChanged -= this.onPluginRootCODPropertyChanged;
+            PluginRootCOD.CollectionChanged-=this.onPluginRootCODCollectionChanged;
+            PluginRootCOD.PropertyChanged-=this.onPluginRootCODPropertyChanged;
             /*
-var enumerator = pluginRootCOD.Keys.GetEnumerator();
-try
-{
-while (enumerator.MoveNext())
-{
-var key = enumerator.Current;
-calculatedResults[key].CollectionChanged -= this.onNestedCollectionChanged;
-calculatedResults[key].PropertyChanged -= this.onNestedPropertyChanged;
-}
-}
-finally
-{
-enumerator.Dispose();
-}
-*/
+                var enumerator = pluginRootCOD.Keys.GetEnumerator();
+                try
+                {
+                while (enumerator.MoveNext())
+                {
+                var key = enumerator.Current;
+                calculatedResults[key].CollectionChanged -= this.onNestedCollectionChanged;
+                calculatedResults[key].PropertyChanged -= this.onNestedPropertyChanged;
+                }
+                }
+                finally
+                {
+                enumerator.Dispose();
+                }
+            */
         }
 
         bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing) {
-            if(!disposedValue) {
-                if(disposing) {
+            if (!disposedValue) {
+                if (disposing) {
                     // dispose managed state (managed objects).
                     TearDown();
                     TearDownDiskDriveAnalysisData();
@@ -86,24 +85,24 @@ enumerator.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-        // TODO: set large fields to null.
+                // TODO: set large fields to null.
 
-                disposedValue = true;
+                disposedValue=true;
             }
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-    // ~WithObservableConcurrentDictionaryAndEventHandlers() {
-    //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-    //   Dispose(false);
-    // }
-    // This code added to correctly implement the disposable pattern.
-    public void Dispose() {
-        // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        Dispose(true);
-        // TODO: uncomment the following line if the finalizer is overridden above.
-        // GC.SuppressFinalize(this);
-    }
-    #endregion
+        // ~WithObservableConcurrentDictionaryAndEventHandlers() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose() {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

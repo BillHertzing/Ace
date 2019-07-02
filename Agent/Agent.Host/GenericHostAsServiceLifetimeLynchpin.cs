@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ATAP.Utilities.ETW;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -7,8 +8,9 @@ using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ace.Agent.Host {
 
+namespace Ace.Agent.Host {
+ 
     // Attribution to https://dejanstojanovic.net/aspnet/2018/june/clean-service-stop-on-linux-with-net-core-21/
     // Attribution to https://www.stevejgordon.co.uk/running-net-core-generic-host-applications-as-a-windows-service
     // Attribution to https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0
@@ -17,6 +19,7 @@ namespace Ace.Agent.Host {
     // This class implements the service injected into the genericHost.  
     // This class implements the methods needed for IHostLifetime (WaitForStartAsync and StopAsync) to be a ConsoleLifetime (IHostLifetime derives from ConsoleLifetime)
     // This class derives from ServiceBase and implements the necessary adapters so the GenericHost can provide the implementation of the necessary delegates needed for Microsoft.Extensions.Hosting. ServiceLifetime IHostedService (StartAsync and StopAsync) 
+    [ATAP.Utilities.ETW.ETWLogAttribute]
     public class GenericHostAsServiceLifetimeLynchpin : ServiceBase, IHostLifetime, IHostedService {
         IHostApplicationLifetime HostApplicationLifetime;
         ILogger<GenericHostAsServiceLifetimeLynchpin> logger;
@@ -37,12 +40,11 @@ namespace Ace.Agent.Host {
             IHostApplicationLifetime hostApplicationLifetime) {
             this.logger=logger??throw new ArgumentNullException(nameof(logger));
             this.logger.LogInformation("Injected logger starting GenericHostAsServiceLifetimeLynchpin .ctor");
-            Log.Debug("Entering GenericHostAsServiceLifetimeLynchpin .ctor");
-            HostApplicationLifetime=hostApplicationLifetime??throw new ArgumentNullException(nameof(hostApplicationLifetime));
+
+            HostApplicationLifetime =hostApplicationLifetime??throw new ArgumentNullException(nameof(hostApplicationLifetime));
             HostEnvironment=hostEnvironment??throw new ArgumentNullException(nameof(hostEnvironment));
             HostConfiguration=hostConfiguration??throw new ArgumentNullException(nameof(hostConfiguration));
             this.logger.LogInformation("leaving GenericHostAsServiceLifetimeLynchpin .ctor");
-            Log.Debug("leaving GenericHostAsServiceLifetimeLynchpin .ctor");
         }
 
         #region IHostLifetime and IHostedService Interfaces implementation
@@ -51,7 +53,6 @@ namespace Ace.Agent.Host {
         // Hosting.Abstractions' StartAsync method calls this method at the start of StartAsync(CancellationToken)
         public Task WaitForStartAsync(CancellationToken cancellationToken) {
             this.logger.LogInformation("GenericHostAsServiceLifetimeLynchpin.WaitForStartAsync method called.");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.WaitForStartAsync method ");
             // Store away the CancellationToken passed as an argument
             CancellationToken=cancellationToken;
             // Register on that cancellationToken an Action that will call TrySetCanceled method on the _delayStart task.
@@ -59,7 +60,6 @@ namespace Ace.Agent.Host {
             CancellationToken.Register(() => _delayStart.TrySetCanceled());
 
             new Thread(Run).Start(); // Otherwise this would block and prevent IHost.StartAsync from finishing.
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.WaitForStartAsync method ");
             this.logger.LogDebug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.WaitForStartAsync method ");
             return _delayStart.Task;
         }
@@ -68,7 +68,6 @@ namespace Ace.Agent.Host {
         // in ConsoleWindow (debug) mode, this is called after Program.HostedWebServerStartup.Configure completes.
         public Task StartAsync(CancellationToken cancellationToken) {
             this.logger.LogInformation("GenericHostAsServiceLifetimeLynchpin.StartAsync method called.");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.StartAsync method ");
             // Store away the CancellationToken passed as an argument
             CancellationToken=cancellationToken;
             // Register on that cancellationToken an Action that will call TrySetCanceled method on the _delayStart task.
@@ -78,7 +77,6 @@ namespace Ace.Agent.Host {
             HostApplicationLifetime.ApplicationStarted.Register(OnStarted);
             HostApplicationLifetime.ApplicationStopping.Register(OnStopping);
             HostApplicationLifetime.ApplicationStopped.Register(OnStopped);
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.StartAsync method ");
             this.logger.LogInformation("Leaving Program.GenericHostAsServiceLifetimeLynchpin.StartAsync method ");
             return Task.CompletedTask;
         }
@@ -94,10 +92,8 @@ namespace Ace.Agent.Host {
 
         public Task StopAsync(CancellationToken cancellationToken) {
             this.logger.LogInformation("<GenericHostAsServiceLifetimeLynchpin.StopAsync");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.StopAsync method ");
             Log.Debug("in Program.GenericHostAsServiceLifetimeLynchpin.StopAsync: Calling the ServiceBase.Stop() method ");
             Stop();
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.StopAsync method ");
             this.logger.LogDebug(">{@ Method}", "Program.GenericHostAsServiceLifetimeLynchpin.StopAsync");
             return Task.CompletedTask;
         }
@@ -109,9 +105,7 @@ namespace Ace.Agent.Host {
         //  only 
         protected override void OnStart(string[] args) {
             this.logger.LogInformation("GenericHostAsServiceLifetimeLynchpin.OnStart method called.");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.OnStart method ");
             _delayStart.TrySetResult(null);
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.OnStart method ");
             base.OnStart(args);
         }
 
@@ -122,10 +116,8 @@ namespace Ace.Agent.Host {
         // ToDo:investigate BrowserLink, and multiple browsers effect on this call
         protected override void OnStop() {
             this.logger.LogInformation("GenericHostAsServiceLifetimeLynchpin.OnStop method called.");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.OnStop method ");
             HostApplicationLifetime.StopApplication();
             base.OnStop();
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.OnStop method ");
         }
 
         // All the other ServiceBase's virtual methods could be overridden here as well, to log them
@@ -136,10 +128,7 @@ namespace Ace.Agent.Host {
         // HostApplicationLifetime instance is passed to the GenericHostAsServiceLifetimeLynchpin ctor
         private void OnStarted() {
             this.logger.LogInformation("OnStarted event handler called.");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.OnStarted method from event handler ");
-
             // Post-startup code goes here  
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.OnStarted method from event handler ");
         }
 
         // Registered as a handler with the HostApplicationLifetime.Application event
@@ -149,27 +138,20 @@ namespace Ace.Agent.Host {
         // This IS called if the user hits ctrl-C in the ConsoleWindow
         private void OnStopping() {
             this.logger.LogInformation("OnStopping method called.");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.OnStopping method from event handler ");
-
             // On-stopping code goes here  
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.OnStopping method from event handler ");
         }
 
         // Registered as a handler with the HostApplicationLifetime.ApplicationStarted event
         // HostApplicationLifetime instance is passed to the GenericHostAsServiceLifetimeLynchpin ctor
         private void OnStopped() {
             this.logger.LogInformation("OnStopped method called.");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.OnStopped method from event handler ");
-
             // Post-stopped code goes here  
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.OnStopped method from event handler ");
         }
         #endregion
 
         // Run method with no arguments
         private void Run() {
             this.logger.LogInformation("Injected logger Run method called.");
-            Log.Debug("Entering Program.GenericHostAsServiceLifetimeLynchpin.Run");
             Log.Debug("In Program.GenericHostAsServiceLifetimeLynchpin.Run");
             try {
                 Log.Debug("in Program.GenericHostAsServiceLifetimeLynchpin.Run, calling Run(this) on the ServiceBase class, expecting it to block until service stoppped");
@@ -181,7 +163,6 @@ namespace Ace.Agent.Host {
                 Log.Debug(ex, "in Program.GenericHostAsServiceLifetimeLynchpin.Run, Run(this) threw exception = {Message}", ex.Message);
                 _delayStart.TrySetException(ex);
             }
-            Log.Debug("Leaving Program.GenericHostAsServiceLifetimeLynchpin.Run");
         }
     }
 

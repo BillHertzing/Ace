@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ServiceStack;
 using ServiceStack.Logging;
+using ATAP.Utilities.ETW;
 
 namespace Ace.Agent.BaseServices {
     public partial class BaseServices : Service {
@@ -24,7 +25,6 @@ namespace Ace.Agent.BaseServices {
         #endregion
 
         public object Post(InitializationRequest request) {
-            Log.Debug("starting Post(InitializationRequest request)");
             InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;
             Log.Debug($"You sent me InitializationRequestPayload = {initializationRequestPayload}");
             Log.Debug($"You sent me InitializationData = {initializationRequestPayload.InitializationData}");
@@ -44,7 +44,6 @@ namespace Ace.Agent.BaseServices {
             InitializationResponsePayload initializationResponsePayload = new InitializationResponsePayload(configurationData, userData);
             InitializationResponse initializationResponse = new InitializationResponse(initializationResponsePayload);
             // return information about this service/user/session
-            Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {initializationResponse}");
             return initializationResponse;
         }
 

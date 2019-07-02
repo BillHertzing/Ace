@@ -19,8 +19,16 @@
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
 
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.*" />
+    <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
     <ProjectReference Include="..\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
   </ItemGroup>

@@ -33,11 +33,9 @@ namespace ATAP.Utilities.FileSystem {
         //public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize, MD5 mD5) {
         public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize) {
             Log=log??throw new ArgumentNullException(nameof(log));
-            Log.Debug($"starting FileSystemAnalysis ctor (asyncFileReadBlockSize = {asyncFileReadBlockSize})");
             // ToDo: make the exception message a constant localizable string)
             AsyncFileReadBlocksize =(asyncFileReadBlockSize>=0)? asyncFileReadBlockSize:throw new ArgumentOutOfRangeException($"asyncFileReadBlockSize must be greater than 0, received {asyncFileReadBlockSize}");
             // MD5=mD5??throw new ArgumentNullException(nameof(mD5));
-            Log.Debug("leaving FileSystemAnalysis ctor");
         }
         /*  Move this stuff to teh Expression for the Action that will validate the DB
          *  The block below is somewhat out of date, the structures carry two, 

@@ -28,7 +28,6 @@ namespace Ace.Agent.DiskAnalysisServices {
         public static ServiceStack.Logging.ILog Log = LogManager.GetLogger(typeof(DiskAnalysisServices));
 
         public object Post(InitializationRequest request) {
-            Log.Debug("starting Post(InitializationRequest request)");
             InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;
             Log.Debug($"You sent me InitializationRequestPayload = {initializationRequestPayload}");
             Log.Debug($"You sent me InitializationData = {initializationRequestPayload.InitializationData}");
@@ -49,12 +48,10 @@ namespace Ace.Agent.DiskAnalysisServices {
             InitializationResponsePayload initializationResponsePayload = new InitializationResponsePayload(configurationData, userData);
             InitializationResponse initializationResponse = new InitializationResponse(initializationResponsePayload);
             // return information about this service/user/session
-            Log.Debug($"leaving Post(DiskAnalysisServicesInitializationRequest request), returning {initializationResponse}");
             return initializationResponse;
         }
 
         public object Post(SetConfigurationDataRequest request) {
-            Log.Debug("starting Post(SetConfigurationDataRequest request)");
             Log.Debug($"You sent me SetConfigurationDataRequest = {request}");
             // ToDo: turn this into a Task, and put it on the LongRunningTasks in the BaseServiceData
 
@@ -75,12 +72,10 @@ namespace Ace.Agent.DiskAnalysisServices {
 			// ToDo: Start the LongRunningTask
             // ToDo: return the LongRunningTaskId
             string result = "OK";
-            Log.Debug($"leaving Any(SetConfigurationDataRequest request), returning {result}");
             return new SetConfigurationDataResponse(new SetConfigurationDataResponsePayload(result));
         }
 
         public object Post(SetUserDataRequest request) {
-            Log.Debug("starting Post(SetUserDataRequest request)");
 		Log.Debug($"You sent me SetUserDataRequest = {request}");
             SetUserDataRequestPayload setUserDataRequestPayload = request.SetUserDataRequestPayload;
             Log.Debug($"You sent me SetUserDataRequestPayload = {setUserDataRequestPayload}, UserData = {request.SetUserDataRequestPayload.UserData}");
@@ -100,7 +95,6 @@ namespace Ace.Agent.DiskAnalysisServices {
 			// ToDo: Start the LongRunningTask
             // ToDo: return the LongRunningTaskId
             string result = "OK";
-            Log.Debug($"leaving Post(SetUserDataRequest request), returning {result}");
             return new SetUserDataResponse(new SetUserDataResponsePayload(result));
         }
 

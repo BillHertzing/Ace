@@ -16,6 +16,7 @@ using ServiceStack.Auth;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
+using ATAP.Utilities.ETW;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 
@@ -23,7 +24,6 @@ namespace Ace.Agent.BaseServices {
     public partial class BaseServicesData : IDisposable {
         // Constructor with just AppHost parameter
         public BaseServicesData(IAppHost appHost) {
-            Log.Debug("Entering BaseServicesData .ctor");
             Container=appHost.GetContainer();
 
             // At this point, appHost.AppSettings has all of the data read in from the various Configuration sources (environment, command line, indirect file, direct file, compiled in)
@@ -189,9 +189,6 @@ namespace Ace.Agent.BaseServices {
             appHost.Config
                 .DebugMode=false;
 #endif
-
-
-            Log.Debug("Leaving BaseServicesData ctor");
         }
         // constructor with event handlers
         /*
@@ -204,21 +201,17 @@ namespace Ace.Agent.BaseServices {
             this.onBaseCODPropertyChanged = onBaseCODPropertyChanged;
             GatewayMonitorCOD.CollectionChanged += this.onBaseCODCollectionChanged;
             GatewayMonitorCOD.PropertyChanged += this.onBaseCODPropertyChanged;
-            Log.Debug("Leaving BaseServicesData ctor");
         }
     */
  
 
         #region EventHandlers
         void LongRunningTasksCheckTimer_Elapsed(object sender, ElapsedEventArgs e) {
-            //Log.Debug("Entering the appHost.LongRunningTasksCheckTimer_Elapsed Method");
             Dictionary<string, System.Timers.Timer> timers = Container.TryResolve(typeof(Dictionary<string, System.Timers.Timer>)) as Dictionary<string, System.Timers.Timer>;
             timers[LongRunningTasksCheckTimerName].Stop();
-            //Log.Debug("checking for existence of any longRunningTasks");
             Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo> longRunningTaskList = Container.Resolve(typeof(Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>)) as Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskInfo>;
             Log.Debug($"in LongRunningTasksCheckTimer_Elapsed: There are {longRunningTaskList.Count} tasks in the longRunningTaskList");
             timers[LongRunningTasksCheckTimerName].Start();
-            //Log.Debug("Leaving the appHost.LongRunningTasksCheckTimer_Elapsed Method");
         }
 
 

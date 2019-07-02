@@ -9,8 +9,8 @@ namespace Ace.Agent.MinerServices {
         #endregion Exception Messages (string constants)
 
         #region File Name string constants
-        public const string PluginSettingsTextFileNameString = "Agent.MinerServicesSettings";
-        public const string PluginSettingsTextFileNameSuffix = ".txt";
+        public const string PluginSettingsTextFileName = "Plugin.MinerServices.Settings";
+        public const string PluginSettingsTextFileSuffix = ".txt";
         #endregion
     }
 }

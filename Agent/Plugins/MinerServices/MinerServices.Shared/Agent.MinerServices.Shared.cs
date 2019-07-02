@@ -1,6 +1,6 @@
 ﻿using System;
 
 namespace Agent.MinerServices.Shared {
-    public class Class1 {
+    public class Shared {
     }
 }

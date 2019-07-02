@@ -3,19 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI.csproj", "{722E51FC-A9FB-4B6D-AA10-DFD8D2C137B1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.Host", "Agent\Agent.Host\Agent.Host.csproj", "{B0ACF5E7-70C9-46A5-A273-FAEDF3DE9611}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8D6DE92C-637E-4433-9810-98D7FBCEA6BA} = {8D6DE92C-637E-4433-9810-98D7FBCEA6BA}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.BaseServices.Models", "Agent\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj", "{8D6DE92C-637E-4433-9810-98D7FBCEA6BA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.BaseServices.Interfaces", "Agent\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj", "{130DED02-5984-487C-93DD-0D264EED140E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.BaseServices.Data", "Agent\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj", "{D88FA700-5D18-401F-8515-A5E3A4890084}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87D83409-A5BD-4BAE-94A8-D30A2206E64A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -26,22 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		secrets.json = secrets.json
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.GUIServices.Models", "Agent\PlugIns\GUIServices\Agent.GUIServices.Models\Agent.GUIServices.Models.csproj", "{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.GUIServices.Interfaces", "Agent\PlugIns\GUIServices\Agent.GUIServices.Interfaces\Agent.GUIServices.Interfaces.csproj", "{5FA00593-5F8C-4DEB-A6FA-51A8D0CA76F7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.GUIServices.Plugin", "Agent\PlugIns\GUIServices\Agent.GUIServices.Plugin\Agent.GUIServices.Plugin.csproj", "{6D051132-4829-41E9-9658-306FE30F6C38}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Models", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj", "{8E880A9D-47E1-4EC0-B698-2BD6D4C17A80}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Interfaces", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Interfaces\Agent.RealEstateServices.Interfaces.csproj", "{DDA36E39-D60B-4624-ACC3-1910C2E821E0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Plugin", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Plugin\Agent.RealEstateServices.Plugin.csproj", "{65E74DFA-C9B4-49C9-83C4-591A5779D1E8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Data", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Data\Agent.RealEstateServices.Data.csproj", "{F397F057-6267-4A56-BE06-313FCB97D7CB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Shared", "Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj", "{69083826-DF64-4E73-83B4-50D6EED7A6FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agent", "Agent", "{0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}"
 EndProject
@@ -71,8 +42,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RealEstateServices", "RealE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DiskAnalysisServices", "DiskAnalysisServices", "{F16EF490-DC68-4DD0-B76E-6587390E2765}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.GUIServices.Data", "Agent\Plugins\GUIServices\Agent.GUIServices.Data\Agent.GUIServices.Data.csproj", "{5908C201-44B9-4BCA-A9F1-BCDF6F66833F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{5ED42294-12FE-4055-9A79-8334896F351B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Liquibase", "Liquibase", "{98781561-2E59-4F90-8CFF-2696752F7070}"
@@ -86,6 +55,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SchemaDumpFiles", "SchemaDu
 	ProjectSection(SolutionItems) = preProject
 		Database\SchemaDumpFiles\acecommander_routines.sql = Database\SchemaDumpFiles\acecommander_routines.sql
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ATAP.Utilities", "ATAP.Utilities", "{B70F6ACB-893B-4914-A7F3-A0D214F238ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BaseServices", "BaseServices", "{72F1C163-700A-4E3E-BADD-927E1E36E678}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agent.Host", "Agent.Host", "{62792E7E-B265-44C0-A663-2843841BEF0D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI.csproj", "{722E51FC-A9FB-4B6D-AA10-DFD8D2C137B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.Host", "Agent\Agent.Host\Agent.Host.csproj", "{B0ACF5E7-70C9-46A5-A273-FAEDF3DE9611}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8D6DE92C-637E-4433-9810-98D7FBCEA6BA} = {8D6DE92C-637E-4433-9810-98D7FBCEA6BA}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.BaseServices.Models", "Agent\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj", "{8D6DE92C-637E-4433-9810-98D7FBCEA6BA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.BaseServices.Interfaces", "Agent\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj", "{130DED02-5984-487C-93DD-0D264EED140E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.BaseServices.Data", "Agent\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj", "{D88FA700-5D18-401F-8515-A5E3A4890084}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlugIn.GUIServices.Models", "Agent\PlugIns\GUIServices\Models\PlugIn.GUIServices.Models.csproj", "{364D1E63-B911-4AC0-AC2B-A5CF23C64C0F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlugIn.GUIServices.Interfaces", "Agent\PlugIns\GUIServices\Interfaces\PlugIn.GUIServices.Interfaces.csproj", "{5FA00593-5F8C-4DEB-A6FA-51A8D0CA76F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlugIn.GUIServices.PlugIn", "Agent\PlugIns\GUIServices\PlugIn\PlugIn.GUIServices.PlugIn.csproj", "{6D051132-4829-41E9-9658-306FE30F6C38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlugIn.GUIServices.Data", "Agent\PlugIns\GUIServices\Data\PlugIn.GUIServices.Data.csproj", "{5908C201-44B9-4BCA-A9F1-BCDF6F66833F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlugIn.GUIServices.StringConstants", "Agent\PlugIns\GUIServices\StringConstants\PlugIn.GUIServices.StringConstants.csproj", "{F5716271-52EF-4B8B-B70A-F228D1222CAA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlugIn.GUIServices.Shared", "Agent\PlugIns\GUIServices\Shared\PlugIn.GUIServices.Shared.csproj", "{E9777AD7-8928-4DD9-AC9A-A4E5E576F620}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Models", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj", "{8E880A9D-47E1-4EC0-B698-2BD6D4C17A80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Interfaces", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Interfaces\Agent.RealEstateServices.Interfaces.csproj", "{DDA36E39-D60B-4624-ACC3-1910C2E821E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Plugin", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Plugin\Agent.RealEstateServices.Plugin.csproj", "{65E74DFA-C9B4-49C9-83C4-591A5779D1E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Data", "Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Data\Agent.RealEstateServices.Data.csproj", "{F397F057-6267-4A56-BE06-313FCB97D7CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.RealEstateServices.Shared", "Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj", "{69083826-DF64-4E73-83B4-50D6EED7A6FA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.DiskAnalysisServices.Data", "Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Data\Agent.DiskAnalysisServices.Data.csproj", "{EBE48F6E-B168-4B11-9050-E8DFFE86016F}"
 EndProject
@@ -101,19 +111,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities", "ATAP.Util
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.BaseServices.Shared", "Agent\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj", "{CB9940B9-8099-4FE4-B060-693591411332}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ATAP.Utilities", "ATAP.Utilities", "{B70F6ACB-893B-4914-A7F3-A0D214F238ED}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.Enumerations", "ATAP.Utilities\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj", "{22BF0314-77F1-4B6F-8CF5-48D80026CF24}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.Shared", "ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj", "{9C3883C4-3227-4BE8-B236-3EE404C0B79D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BaseServices", "BaseServices", "{72F1C163-700A-4E3E-BADD-927E1E36E678}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agent.Host", "Agent.Host", "{62792E7E-B265-44C0-A663-2843841BEF0D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.Host.StringConstants", "Agent\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj", "{409C2A14-1E25-4715-B0B9-EF12E2758891}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.GUIServices.StringConstants", "Agent\Plugins\GUIServices\Agent.GUIServices.StringConstants\Agent.GUIServices.StringConstants.csproj", "{F5716271-52EF-4B8B-B70A-F228D1222CAA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.DiskAnalysisServices.StringConstants", "Agent\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.StringConstants\Agent.DiskAnalysisServices.StringConstants.csproj", "{930BF7DA-543E-46B9-9A37-4A60BA9605A8}"
 EndProject
@@ -130,8 +132,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.MinerServices.StringConstants", "Agent\Plugins\MinerServices\MinerServices.StringConstants\Agent.MinerServices.StringConstants.csproj", "{7E7FEEED-87CB-4D99-A403-19AAF1BE9049}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agent.MinerServices.Shared", "Agent\Plugins\MinerServices\MinerServices.Shared\Agent.MinerServices.Shared.csproj", "{66DF64EE-690C-4C9F-A540-597C463949EF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent.GUIServices.Shared", "Agent\Plugins\GUIServices\Agent.GUIServices.Shared\Agent.GUIServices.Shared.csproj", "{99642780-E508-48B3-ADB5-E6835FAC9D8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -271,15 +271,27 @@ Global
 		{66DF64EE-690C-4C9F-A540-597C463949EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66DF64EE-690C-4C9F-A540-597C463949EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66DF64EE-690C-4C9F-A540-597C463949EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99642780-E508-48B3-ADB5-E6835FAC9D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99642780-E508-48B3-ADB5-E6835FAC9D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99642780-E508-48B3-ADB5-E6835FAC9D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99642780-E508-48B3-ADB5-E6835FAC9D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9777AD7-8928-4DD9-AC9A-A4E5E576F620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9777AD7-8928-4DD9-AC9A-A4E5E576F620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9777AD7-8928-4DD9-AC9A-A4E5E576F620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9777AD7-8928-4DD9-AC9A-A4E5E576F620}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{358C6FBD-56E7-4385-A70C-9191A4085A2C} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
+		{EBB234E4-867B-467A-BE11-D4651843D1DF} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
+		{E38BAEFE-15F9-429E-94F3-BE71D2115B86} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
+		{2894C382-76E8-4B77-BFAE-3CF8433AFC55} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
+		{E1D20164-8795-40E5-92D1-20E4D5F0753D} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
+		{4F890257-219C-4A15-A143-74E0F7BCA81F} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
+		{F16EF490-DC68-4DD0-B76E-6587390E2765} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
+		{98781561-2E59-4F90-8CFF-2696752F7070} = {5ED42294-12FE-4055-9A79-8334896F351B}
+		{1F751B0F-2900-4E82-836F-AEE00D52B079} = {5ED42294-12FE-4055-9A79-8334896F351B}
+		{A4399FC1-E4EE-48AA-A011-67D5143AFDD2} = {5ED42294-12FE-4055-9A79-8334896F351B}
+		{72F1C163-700A-4E3E-BADD-927E1E36E678} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
+		{62792E7E-B265-44C0-A663-2843841BEF0D} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
 		{722E51FC-A9FB-4B6D-AA10-DFD8D2C137B1} = {E2EC32C9-58E3-447F-93ED-E48B18D0F70C}
 		{B0ACF5E7-70C9-46A5-A273-FAEDF3DE9611} = {62792E7E-B265-44C0-A663-2843841BEF0D}
 		{8D6DE92C-637E-4433-9810-98D7FBCEA6BA} = {72F1C163-700A-4E3E-BADD-927E1E36E678}
@@ -293,17 +305,7 @@ Global
 		{65E74DFA-C9B4-49C9-83C4-591A5779D1E8} = {4F890257-219C-4A15-A143-74E0F7BCA81F}
 		{F397F057-6267-4A56-BE06-313FCB97D7CB} = {4F890257-219C-4A15-A143-74E0F7BCA81F}
 		{69083826-DF64-4E73-83B4-50D6EED7A6FA} = {4F890257-219C-4A15-A143-74E0F7BCA81F}
-		{358C6FBD-56E7-4385-A70C-9191A4085A2C} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
-		{EBB234E4-867B-467A-BE11-D4651843D1DF} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
-		{E38BAEFE-15F9-429E-94F3-BE71D2115B86} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
-		{2894C382-76E8-4B77-BFAE-3CF8433AFC55} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
-		{E1D20164-8795-40E5-92D1-20E4D5F0753D} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
-		{4F890257-219C-4A15-A143-74E0F7BCA81F} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
-		{F16EF490-DC68-4DD0-B76E-6587390E2765} = {E38BAEFE-15F9-429E-94F3-BE71D2115B86}
 		{5908C201-44B9-4BCA-A9F1-BCDF6F66833F} = {2894C382-76E8-4B77-BFAE-3CF8433AFC55}
-		{98781561-2E59-4F90-8CFF-2696752F7070} = {5ED42294-12FE-4055-9A79-8334896F351B}
-		{1F751B0F-2900-4E82-836F-AEE00D52B079} = {5ED42294-12FE-4055-9A79-8334896F351B}
-		{A4399FC1-E4EE-48AA-A011-67D5143AFDD2} = {5ED42294-12FE-4055-9A79-8334896F351B}
 		{EBE48F6E-B168-4B11-9050-E8DFFE86016F} = {F16EF490-DC68-4DD0-B76E-6587390E2765}
 		{C83F8693-87F1-4786-AC4D-6483B51983CF} = {F16EF490-DC68-4DD0-B76E-6587390E2765}
 		{F2C3747C-4DA7-428C-8DDC-F33F27247B26} = {F16EF490-DC68-4DD0-B76E-6587390E2765}
@@ -313,8 +315,6 @@ Global
 		{CB9940B9-8099-4FE4-B060-693591411332} = {72F1C163-700A-4E3E-BADD-927E1E36E678}
 		{22BF0314-77F1-4B6F-8CF5-48D80026CF24} = {B70F6ACB-893B-4914-A7F3-A0D214F238ED}
 		{9C3883C4-3227-4BE8-B236-3EE404C0B79D} = {B70F6ACB-893B-4914-A7F3-A0D214F238ED}
-		{72F1C163-700A-4E3E-BADD-927E1E36E678} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
-		{62792E7E-B265-44C0-A663-2843841BEF0D} = {0E1DC973-37C6-4373-9B8F-DCF540F7EBF2}
 		{409C2A14-1E25-4715-B0B9-EF12E2758891} = {62792E7E-B265-44C0-A663-2843841BEF0D}
 		{F5716271-52EF-4B8B-B70A-F228D1222CAA} = {2894C382-76E8-4B77-BFAE-3CF8433AFC55}
 		{930BF7DA-543E-46B9-9A37-4A60BA9605A8} = {F16EF490-DC68-4DD0-B76E-6587390E2765}
@@ -325,7 +325,7 @@ Global
 		{6A1C9DE5-4847-41B0-9C05-FC55F3AF3852} = {E1D20164-8795-40E5-92D1-20E4D5F0753D}
 		{7E7FEEED-87CB-4D99-A403-19AAF1BE9049} = {E1D20164-8795-40E5-92D1-20E4D5F0753D}
 		{66DF64EE-690C-4C9F-A540-597C463949EF} = {E1D20164-8795-40E5-92D1-20E4D5F0753D}
-		{99642780-E508-48B3-ADB5-E6835FAC9D8C} = {2894C382-76E8-4B77-BFAE-3CF8433AFC55}
+		{E9777AD7-8928-4DD9-AC9A-A4E5E576F620} = {2894C382-76E8-4B77-BFAE-3CF8433AFC55}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44B34B59-441A-460C-85B9-364D0E4153F9}

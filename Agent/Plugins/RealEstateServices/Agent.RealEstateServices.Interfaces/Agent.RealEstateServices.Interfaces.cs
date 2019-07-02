@@ -13,7 +13,6 @@ namespace Ace.Agent.RealEstateServices {
         public static ILog Log = LogManager.GetLogger(typeof(RealEstateServices));
 
         public object Post(InitializationRequest request) {
-            Log.Debug("starting Post(RealEstateServicesInitializationRequest request)");
             InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;
             Log.Debug($"You sent me InitializationRequestPayload = {initializationRequestPayload}");
 
@@ -36,23 +35,19 @@ namespace Ace.Agent.RealEstateServices {
             // Create and populate the InitializationResponse data structure
             InitializationResponse initializationResponse = new InitializationResponse(new InitializationResponsePayload(configurationData, userData));
             // return information about this service/user/session
-            Log.Debug($"leaving Post(InitializationRequest request), returning initializationResponse = {initializationResponse}");
             return initializationResponse;
         }
 
         public object Post(SetConfigurationDataRequest request) {
-            Log.Debug("starting Post(SetConfigurationDataRequest request)");
             Log.Debug($"You sent me ConfigurationData = {request.SetConfigurationDataRequestPayload.ConfigurationData}");
             // ToDo: switch on the boolean
             // ToDo: These should be part of a ConfigurationData instance in plugin's Data instance
             RealEstateServicesData.Google_API_URI=request.SetConfigurationDataRequestPayload.ConfigurationData.Google_API_URI;
             RealEstateServicesData.HomeAway_API_URI=request.SetConfigurationDataRequestPayload.ConfigurationData.HomeAway_API_URI;
             SetConfigurationDataResponsePayload setConfigurationDataResponsePayload = new SetConfigurationDataResponsePayload("Ok");
-            Log.Debug($"leaving Any(SetConfigurationDataRequest request), returning setConfigurationDataResponsePayload = {setConfigurationDataResponsePayload}");
             return new SetConfigurationDataResponse(setConfigurationDataResponsePayload);
         }
         public object Post(SetUserDataRequest request) {
-            Log.Debug("starting Post(SetUserDataRequest request)");
             Log.Debug($"You sent me UserData = {request.SetUserDataRequestPayload.UserData}");
             // ToDo: switch on the boolean
             // ToDo: These should be part of a UserData instance in plugin's Data instance
@@ -61,11 +56,9 @@ namespace Ace.Agent.RealEstateServices {
             RealEstateServicesData.HomeAwayAPIKeyEncrypted=request.SetUserDataRequestPayload.UserData.HomeAwayAPIKeyEncrypted;
             RealEstateServicesData.HomeAwayAPIKeyPassPhrase=request.SetUserDataRequestPayload.UserData.HomeAwayAPIKeyPassPhrase;
             SetUserDataResponsePayload setUserDataResponsePayload = new SetUserDataResponsePayload("Ok");
-            Log.Debug($"leaving Any(SetUserDataRequest request), returning setUserDataResponsePayload = {setUserDataResponsePayload}");
             return new SetUserDataResponse(setUserDataResponsePayload);
         }
         public object Post(PropertySearchRequest request) {
-            Log.Debug("starting Post(PropertySearchRequest)");
             PropertySearchRequestPayload propertySearchRequestPayload = request.PropertySearchRequestPayload;
             PropertySearchRequestData propertySearchRequestData = propertySearchRequestPayload.PropertySearchRequestData;
             bool savePropertySearchData = propertySearchRequestPayload.SavePropertySearchData;
@@ -84,7 +77,7 @@ namespace Ace.Agent.RealEstateServices {
 
             }
             catch {
-                Log.Debug("leaving Post(PropertySearchRequest)");
+                Log.Debug("Caught an exception");
             }
             finally {
             }
@@ -92,13 +85,11 @@ namespace Ace.Agent.RealEstateServices {
 
             // update the Plugin Data Structure with the data from the response
             //RealEstateServicesData.PluginRootCOD.Add("test1", 100);
-            Log.Debug("leaving Post(PropertySearchRequest)");
             List<ListingSearchHit> listingSearchHits = new List<ListingSearchHit>();
             PropertySearchResponseData propertySearchResponseData = new PropertySearchResponseData(listingSearchHits);
             PropertySearchResponsePayload propertySearchResponsePayload = new PropertySearchResponsePayload(propertySearchResponseData);
             PropertySearchResponse propertySearchResponse = new PropertySearchResponse();
             propertySearchResponse.PropertySearchResponsePayload=propertySearchResponsePayload;
-            Log.Debug("Leaving Post(PropertySearchRequest)");
             return propertySearchResponse;
         }
         public RealEstateServicesData RealEstateServicesData { get; set; }

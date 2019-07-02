@@ -11,7 +11,6 @@ namespace Ace.Agent.BaseServices {
 
         #region Interfaces:GetLongRunningTasksStatus
         public object Post(GetLongRunningTasksStatusRequest request) {
-            Log.Debug("starting Post(GetLongRunningTasksStatusRequest request)");
             var baseServicesData = HostContext.TryResolve<BaseServicesData>();
             var getLongRunningTasksStatusResponse = new GetLongRunningTasksStatusResponse();
             foreach (var LRTid in BaseServicesData.LongRunningTasks.Keys) {
@@ -21,7 +20,6 @@ namespace Ace.Agent.BaseServices {
                 // ToDo: Add start time and current duration, Interim result, if any, must be queried through specialized interfaces referencing back to this master list
                 getLongRunningTasksStatusResponse.LongRunningTaskStatuses.LongRunningTaskStatusList.Add(new LongRunningTaskStatus(LRTid, taskstatus, numInnerExceptions));
             }
-            Log.Debug("leaving Post(GetLongRunningTasksStatusRequest request)");
             return getLongRunningTasksStatusResponse;
         }
         #endregion

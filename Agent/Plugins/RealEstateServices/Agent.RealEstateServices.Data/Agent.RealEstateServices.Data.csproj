@@ -19,14 +19,19 @@
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
 
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.*" />
+    <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
  </ItemGroup>
  
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
-
     <ProjectReference Include="..\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
   </ItemGroup>
   

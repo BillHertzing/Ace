@@ -1,7 +1,7 @@
 {
 
   "Logging": {
-    "PathFormat": "./Logs/genericPathFormat.{Date}.log",
+    "PathFormat": "C:/DevLogs/Serilog/AceStartupLog.{Date}.log",
     "LogLevel": {
       "Default": "Debug",
       "System": "Debug",
@@ -33,7 +33,7 @@
     ],
     "GUIServices": {
       "GUIKind": "Blazor",
-      "GUIVersion": "3.0P5",
+      "GUIVersion": "3.0P6",
       "RelativeRootPath": "./GUI/GUI/dist/"
     }
   }

@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
-   <PropertyGroup>
-     <TargetFramework>netstandard2.0</TargetFramework>
-   <RootNamespace>Ace.Agent.Plugins.MinerServices</RootNamespace>
+  <PropertyGroup>
+    <RootNamespace>Ace.Agent.Plugins.MinerServices</RootNamespace>
     <OutputType>Library</OutputType>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
-   </PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
 
   <!-- Separate Property Group for Version Control -->
   <PropertyGroup>
@@ -21,15 +20,22 @@
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
 
-   <!-- Packages to implement Serilog as logging provider -->
-   <ItemGroup>
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
+  <ItemGroup>
+    <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
+  <!-- Packages to implement Serilog as logging provider -->
+  <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
   </ItemGroup>
 
   <!-- ServiceStack packages used -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.*" />
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
   </ItemGroup>
 
   <!-- Concurrent Observable Types in Swordfish package used -->
@@ -37,7 +43,7 @@
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
   </ItemGroup>
 
-  <!-- Reference the other related projects -->  
+  <!-- Reference the other related projects -->
   <ItemGroup>
     <ProjectReference Include="..\MinerServices.Models\Agent.MinerServices.Models.csproj" />
   </ItemGroup>

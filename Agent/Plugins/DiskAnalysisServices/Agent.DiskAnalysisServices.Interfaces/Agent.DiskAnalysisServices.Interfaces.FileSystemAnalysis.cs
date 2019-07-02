@@ -28,7 +28,6 @@ namespace Ace.Agent.DiskAnalysisServices {
     public partial class DiskAnalysisServices : Service {
 
         public async Task<object> Post(AnalyzeFileSystemRequest request) {
-            Log.Debug("starting Post(AnalyzeFileSystemRequest)");
             // Housekeeping setup for the task to be created
             // Create new Id for this LongRunningTask
             Id<LongRunningTaskInfo> longRunningTaskID = new Id<LongRunningTaskInfo>(Guid.NewGuid());

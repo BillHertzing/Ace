@@ -2,6 +2,7 @@ using Ace.Agent.BaseServices;
 using Ace.Agent.GUIServices;
 using Ace.Agent.DiskAnalysisServices;
 using Ace.Agent.MinerServices;
+using ATAP.Utilities.ETW;
 using ATAP.Utilities.ServiceStack;
 using Funq;
 using Serilog;
@@ -15,16 +16,17 @@ using System.Collections.Generic;
 using System.Security;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Ace.Agent.RealEstateServices;
 
 namespace Ace.Agent.Host {
+    [ATAP.Utilities.ETW.ETWLogAttribute]
     public class SSAppHost : AppHostBase {
         #region string constants default file names and Exception messages
         #region string constants: File Names 
-        public const string settingsTextFileNameSuffix = ".txt";
-        public const string sSAppHostSettingsTextFileNameString = "SSAppHostSettings";
-        public const string agentSettingsTextFileNameString = "Agent.BaseServicesSettings";
+        public const string settingsTextFileSuffix = ".txt";
+        public const string sSAppHostSettingsTextFileName = "SSAppHostSettings";
+        public const string agentSettingsTextFileName = "Agent.BaseServicesSettings";
         //It would be nice if ServiceStack implemented the User Secrets pattern that ASP Core provides
         // Without that, the following string constant identifies an Environmental variable that can be populated with the name of a file
         public const string agentEnvironmentIndirectSettingsTextFileNameKey = "Agent.BaseServices.IndirectSettings.Path";
@@ -36,19 +38,18 @@ namespace Ace.Agent.Host {
         public const string PhysicalRootPathConfigKey = "PhysicalRootPath";
         #endregion
 
-        // Make the WebHostEnvironment available to this class, use constructor injection to populate it
-        public IWebHostEnvironment WebHostEnvironment { get; }
+        // Make the HostEnvironment available to this class, use constructor injection to populate it
+        public IHostEnvironment HostEnvironment { get; }
 
         /// <summary>
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// Inject an implementation of an IWebHostEnvironment via the constructor
         /// </summary>
         //public SSAppHost() : base("BaseServices", typeof(BaseServices.BaseServices).Assembly) {
-        public SSAppHost(IWebHostEnvironment webHostEnvironment) : base("BaseServices", typeof(BaseServices.BaseServices).Assembly) {
-            Log.Debug("Entering SSAppHost Ctor");
-            WebHostEnvironment=webHostEnvironment;
-            //Log.Debug("in SSAppHost .ctor, base.Configuration = {Configuration}", base.Configuration);
-            Log.Debug("Leaving SSAppHost Ctor");
+        public SSAppHost(IHostEnvironment hostEnvironment) : base("BaseServices", typeof(BaseServices.BaseServices).Assembly) {
+            HostEnvironment=hostEnvironment;
+            // Load it into the Container
+            Container.AddSingleton<IHostEnvironment>(HostEnvironment);
         }
 
 
@@ -57,14 +58,11 @@ namespace Ace.Agent.Host {
         /// This method should initialize any IoC resources, in particular the AppSettings.
         /// </summary>
         public override void Configure(Container container) {
-            Log.Debug("Entering SSAppHost.Configure method");
 
             //Log.Debug("in SSAppHost.Configure method, container is {container}", container);
 
-            // Bring into AppSettings the ConfigurationRoot from the genericHost and get the Environment value
-            IAppSettings hostingAppSettings = new NetCoreAppSettings(Configuration);
-            //string envName = WebHostEnvironment.EnvironmentName;  // hack
-            string envName = "Development";
+            // get the Environment value from the WebHostenvironment injected by the constructor
+            string envName = this.HostEnvironment.EnvironmentName;  
             Log.Debug("in SSAppHost.Configure, envName = {envName}", envName);
 
             // AppSettings is a first class object on the Container, so it will be auto-wired
@@ -114,8 +112,8 @@ namespace Ace.Agent.Host {
             // ToDo: if it exists, append AddTextFile for configuration settings in a text file specified as a constant string in the app to the AppSettingsBuilder
             // ToDo: Investigate SS's MapHostAbsolutePath
             //  new TextFileSettings("~/appsettings.txt".MapHostAbsolutePath(),
-            if (!HostingEnvironment.IsProduction()) {
-                var settingsTextFileName = agentSettingsTextFileNameString+'.'+envName+settingsTextFileNameSuffix;
+            if (!this.HostEnvironment.IsProduction()) {
+                var settingsTextFileName = agentSettingsTextFileName+'.'+envName+settingsTextFileSuffix;
                 // ToDo: ensure it exists and the ensure we have permission to read it
                 // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
                 multiAppSettingsBuilder.AddTextFile(settingsTextFileName);
@@ -123,10 +121,10 @@ namespace Ace.Agent.Host {
             // Add the production Agent.BaseServices settings text file if it exists
             // ToDo: ensure it exists and the ensure we have permission to read it
             // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
-            multiAppSettingsBuilder.AddTextFile(agentSettingsTextFileNameString+settingsTextFileNameSuffix);
+            multiAppSettingsBuilder.AddTextFile(agentSettingsTextFileName+settingsTextFileSuffix);
             // Next in priority are the SSAppHost settings text files. Environment-specific settings text files have a higher priority than the default (production) settings text files
-            if (!HostingEnvironment.IsProduction()) {
-                var settingsTextFileName = sSAppHostSettingsTextFileNameString+'.'+envName+settingsTextFileNameSuffix;
+            if (!this.HostEnvironment.IsProduction()) {
+                var settingsTextFileName = sSAppHostSettingsTextFileName+'.'+envName+settingsTextFileSuffix;
                 // ToDo: ensure it exists and the ensure we have permission to read it
                 // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
                 multiAppSettingsBuilder.AddTextFile(settingsTextFileName);
@@ -134,7 +132,7 @@ namespace Ace.Agent.Host {
             // Add the production SSAppHost settings text file if it exists
             // ToDo: ensure it exists and the ensure we have permission to read it
             // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
-            multiAppSettingsBuilder.AddTextFile(sSAppHostSettingsTextFileNameString+settingsTextFileNameSuffix);
+            multiAppSettingsBuilder.AddTextFile(sSAppHostSettingsTextFileName+settingsTextFileSuffix);
             // ToDo: Investigate the web.config file and see when it makes sense to include it in the genericHost ConfigurationRoot
             // ToDo: Investigate the .exe.config file and see when it makes sense to include it in the genericHost ConfigurationRoot
             // multiAppSettingsBuilder.AddAppSettings()
@@ -168,10 +166,10 @@ namespace Ace.Agent.Host {
             // ToDo: Add each PlugIn to the SSAppHost
             // Create the list of PlugIns to load
             var plugInList = new List<IPlugin>() {
+               new GUIServicesPlugin(),
                new RealEstateServicesPlugin(),
                new MinerServicesPlugin(),
                new DiskAnalysisServicesPlugin(),
-               new GUIServicesPlugin()
             };
 
             // Load each plugin here. 
@@ -210,8 +208,6 @@ namespace Ace.Agent.Host {
             // notifyIcon1.Visible = false;
             Log.Debug("NotifyIcon for AceCommander created");
             */
-
-            Log.Debug("Leaving SSAppHost.Configure");
         }
 
         /* this was part of teh now obiolete "winForms" way of doing a notify icon
@@ -230,7 +226,6 @@ namespace Ace.Agent.Host {
         /// Shut down the SS Middleware
         /// </summary>
         public override void Stop() {
-            Log.Debug("Entering SSAppHost Stop Method");
             var container = base.Container;
 
             // It is possible that the Stop method is called during service startup, because the service could be failing because of a problem during startup,
@@ -256,7 +251,6 @@ namespace Ace.Agent.Host {
             // call the ServiceStack AppHostBase Stop method
             Log.Debug("Entering the ServiceStack AppHostBase Stop Method");
             base.Stop();
-            Log.Debug("Leaving SSAppHost Stop Method");
         }
 
         */

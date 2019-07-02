@@ -1,8 +1,10 @@
-﻿using ServiceStack;
+﻿using ATAP.Utilities.ETW;
+using ServiceStack;
 using ServiceStack.Configuration;
 using System.Collections.Generic;
 
 namespace Ace.Agent.Host {
+    [ATAP.Utilities.ETW.ETWLogAttribute]
     /// <summary>
     /// Represents a builder for the <see cref="MultiAppSettings"/> class.
     /// </summary>

@@ -8,45 +8,46 @@
     }
   },
   "profiles": {
-    "KestrelOnlyDev": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:22000/",
-      "environmentVariables": {
-        "ASPNETCORE_Environment": "Development",
-        "BlazorDemos_WebHostBuilder": "KestrelAloneWebHostBuilder",
-        "ASPNETCORE_URLS": "http://localhost:22000/"
-      },
-      "applicationUrl": "http://localhost:22000/"
-    },
     "IntegratedIISInProcessDev": {
       "commandName": "IISExpress",
       "commandLineArgs": "-C=true",
       "launchBrowser": true,
       "launchUrl": "http://localhost:22000/",
       "environmentVariables": {
-        "ASPNETCORE_Environment": "Development",
-        "BlazorDemos_WebHostBuilder": "IntegratedIISInProcessWebHostBuilder"
+        "BlazorDemos_WebHostBuilder": "IntegratedIISInProcessWebHostBuilder",
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "KestrelOnlyDev": {
+      "commandName": "Project",
+      "commandLineArgs": "-Console:true",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:22000/",
+      "environmentVariables": {
+        "BlazorDemos_WebHostBuilder": "KestrelAloneWebHostBuilder",
+        "ASPNETCORE_URLS": "http://localhost:22000/",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:22000/"
     },
     "KestrelOnlyProd": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:22000/",
       "environmentVariables": {
-        "ASPNETCORE_Environment": "Production",
         "BlazorDemos_WebHostBuilder": "KestrelAloneWebHostBuilder",
-        "ASPNETCORE_URLS": "http://localhost:22000/"
+        "ASPNETCORE_URLS": "http://localhost:22000/",
+        "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "applicationUrl": "http://localhost:22000/"
     },
     "IntegratedIISInProcessProd": {
-      "commandName": "Project",
+      "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "http://localhost:22000/",
       "environmentVariables": {
-        "ASPNETCORE_Environment": "Production",
-        "BlazorDemos_WebHostBuilder": "IntegratedIISInProcessWebHostBuilder"
+        "BlazorDemos_WebHostBuilder": "IntegratedIISInProcessWebHostBuilder",
+        "ASPNETCORE_ENVIRONMENT": "Production"
       }
     }
   }

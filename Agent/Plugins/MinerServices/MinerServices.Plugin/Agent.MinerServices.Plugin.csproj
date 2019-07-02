@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Ace.Agent.Plugins.MinerServices</RootNamespace>
     <ProjectGuid>668AFC2F-E0DF-4393-AAD2-DA60ACE55D8F</ProjectGuid>
     <OutputType>Library</OutputType>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <!-- Separate Property Group for Version Control -->
@@ -22,6 +21,22 @@
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
 
+  <!-- During Core 3.0 preview, these additional NuGet package servers provide the latest preview packages -->
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>
+      https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
+      https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
+    </RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
+  <ItemGroup>
+    <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview6.19304.6" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+  </ItemGroup>
+
   <!-- Packages to implement Serilog as logging provider -->
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />
@@ -30,7 +45,7 @@
 
   <!-- ServiceStack packages used -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.*" />
+    <PackageReference Include="ServiceStack" Version="5.5.1" />
   </ItemGroup>
 
   <!-- Concurrent Observable Types in Swordfish package used -->
@@ -40,19 +55,20 @@
 
   <!-- Reference the other related projects -->  
   <ItemGroup>
-    <ProjectReference Include="..\MinerServices.StringConstants\Agent.MinerServices.StringConstants.csproj" />
+    <ProjectReference Include="..\..\..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
     <ProjectReference Include="..\MinerServices.Data\Agent.MinerServices.Data.csproj" />
-    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+    <ProjectReference Include="..\MinerServices.Shared\Agent.MinerServices.Shared.csproj" />
+    <ProjectReference Include="..\MinerServices.StringConstants\Agent.MinerServices.StringConstants.csproj" />
   </ItemGroup>
 
   <ItemGroup>
       <None Update="AceService.MinerServices.Plugin.config">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-    <None Update="Agent.MinerServices.Settings.Development.txt">
+    <None Update="PlugIn.MinerServices.Settings.Development.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Agent.MinerServices.Settings.txt">
+    <None Update="PlugIn.MinerServices.Settings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     </ItemGroup>

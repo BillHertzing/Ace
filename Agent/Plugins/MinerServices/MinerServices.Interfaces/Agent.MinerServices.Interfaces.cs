@@ -20,14 +20,12 @@ namespace Ace.Agent.MinerServices
 
         public object Any(StartMinerRequest request)
         {
-            Log.Debug("starting Any StartMiner request");
             var minerID = request.ID;
             //ToDo Get miner process details
             return new StartMinerResponse { Result = minerID.ToString() };
         }
         public object Any(StopMinerRequest request)
         {
-            Log.Debug("starting Any StopMiner request");
             var processName = request.ProcessName;
             Process[] localByName = Process.GetProcessesByName(processName);
             // ToDo get an index from the Request, and/or loop over all if the index is not provided
@@ -42,7 +40,6 @@ namespace Ace.Agent.MinerServices
         }
         public object Any(ListMinerRequest request)
         {
-            Log.Debug("starting Any ListMiners request");
             //ToDo
             return new ListMinersResponse { ProcessID = 101010 };
         }
@@ -58,7 +55,6 @@ namespace Ace.Agent.MinerServices
         public object Any(TuneMinerGPURequest request)
         {
             TuneMinerGPUsResult[] tuneMinerGPUsResult;
-            Log.Debug("starting Any TuneGPUs request");
             //ToDo asking for all GPUs, or a set of specific GPUs?
             //ToDo asking for all MinerSWs, or a set of specific MinerSWs?
             //ToDo asking for fine or coarse tuning adjustments

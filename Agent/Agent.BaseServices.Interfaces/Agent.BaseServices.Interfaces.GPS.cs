@@ -12,7 +12,6 @@ namespace Ace.Agent.BaseServices {
 
         #region Lat/Lng To Address and reverse
         public object Post(GetAddressFromLatLongRequest request) {
-            Log.Debug("starting Post(GetAddressFromLatLongRequest request) request");
             // Move most all of the logic below to ATAP.Utilities, and replace it with a delegate for a LongRunningTask
             // Resolve the GatewayEntry from the BaseServices Data Gateways that handles this Service
             // The associate "Route To Gateway" will return a structure that identifies the gateway and gatewayEntry to use
@@ -87,7 +86,6 @@ namespace Ace.Agent.BaseServices {
             Log.Debug("returned from Calling the Gateway:GatewayEntry Action");
             var longRunningTaskStartupInfo = new LongRunningTaskStartupinfo();
             var getAddressFromLatLongResponse = new GetAddressFromLatLongResponse(longRunningTaskStartupInfo);
-            Log.Debug($"leaving Post(GetAddressFromLatLongRequest request), getAddressFromLatLongResponse = {getAddressFromLatLongResponse.Dump()}");
             return getAddressFromLatLongResponse;
         }
         public async Task<GetLatLongFromAddressResponse> Post(GetLatLongFromAddressRequest request) {
