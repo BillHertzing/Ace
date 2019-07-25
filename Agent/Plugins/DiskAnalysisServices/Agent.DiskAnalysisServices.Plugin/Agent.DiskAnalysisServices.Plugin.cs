@@ -14,7 +14,7 @@ using ATAP.Utilities.ServiceStack;
 
 using Microsoft.Extensions.Hosting;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
     public class DiskAnalysisServicesPlugin : IPlugin, IPreInitPlugin {
 
         // Surface the configKeyPrefix for this namespace

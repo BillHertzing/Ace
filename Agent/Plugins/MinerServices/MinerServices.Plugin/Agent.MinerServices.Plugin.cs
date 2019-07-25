@@ -18,7 +18,7 @@ using Microsoft.Extensions.Hosting;
 using ATAP.Utilities.Http;
 using System.IO;
 
-namespace Ace.Agent.MinerServices {
+namespace Ace.Plugin.MinerServices {
 
     public class MinerServicesPlugin : IPlugin, IPreInitPlugin {
 
@@ -49,15 +49,14 @@ namespace Ace.Agent.MinerServices {
             string envName = HostEnvironment.EnvironmentName;
 
             // Populate this PlugIn's AppSettings Configuration Settings and place it in the appSettingsDictionary
-
-            // Location of the files are at the ContentRoot. ToDo: figure out how to place them / resolve them relative to the location of the PlugIn assembly
+            // Location of the files are at the ContentRoot of the HostEnvironment. 
+            // ToDo: figure out how to place PlugIn configurtion files relative to the location of the PlugIn assembly
 
             var pluginAppSettingsBuilder = new MultiAppSettingsBuilder();
             // ToDo: command line settings
             // Environment variables have 2nd highest priority
             // ToDo: specific prefix
             pluginAppSettingsBuilder.AddEnvironmentalVariables();
-            // Location of the files are at the ContentRoot. ToDo: figure out how to place them / resolve them relative to the location of the PlugIn assembly
             // Non-Production Configuration settings in a text file
             if (!this.HostEnvironment.IsProduction()) {
                 var settingsTextFileName = StringConstants.PluginSettingsTextFileName+'.'+envName+StringConstants.PluginSettingsTextFileSuffix;
@@ -92,7 +91,7 @@ namespace Ace.Agent.MinerServices {
             var appSettingsConfigKeys = pluginAppSettings.GetAllKeys();
             var fullAppSettingsConfigKeys = appSettingsConfigKeys.Select(x => x.IndexOf(configKeyPrefix)>=0 ? x : configKeyPrefix+x);
 
-            // Get this namespaces configuration settings from the cache
+            // Get this namespace's configuration settings from the cache
             var cacheClient = appHost.GetContainer().Resolve<ICacheClient>();
             var cacheConfigKeys = cacheClient.GetKeysStartingWith(configKeyPrefix);
 
@@ -130,11 +129,15 @@ namespace Ace.Agent.MinerServices {
         /// </summary>
         /// <param name="appHost">The ASP.Net Host</param>
         public void Register(IAppHost appHost) {
-            // ToDo: Create static string for exception message
-            if (null==appHost) { throw new ArgumentNullException("appHost"); }
-            appHost.RegisterService<Ace.Agent.MinerServices.MinerServicesPlugin>();
+            if (null==appHost) {throw new ArgumentNullException(nameof(appHost));}
+            appHost.RegisterService<Ace.Plugin.MinerServices.MinerServicesPlugin>();
             this.Configure(appHost);
         }
+
+        /// <summary>
+        /// Code that needs to run before the PlugIn is initialized, will run before .Configure
+        /// </summary>
+        /// <param name="appHost">The ASP.Net Host</param>
         public void BeforePluginsLoaded(IAppHost appHost) { }
 
     }

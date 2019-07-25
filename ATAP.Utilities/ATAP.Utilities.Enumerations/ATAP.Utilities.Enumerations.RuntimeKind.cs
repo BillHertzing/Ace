@@ -43,7 +43,6 @@ namespace ATAP.Utilities.Runtime.Enumerations {
                 kind=isCA ? RuntimePlatformLifetime.OSXConsoleApp : RuntimePlatformLifetime.OSXDaemon;
                 IsOSX=true;
             } else {
-                // ToDo: replace exception message with a string constant
                 throw new InvalidOperationException(String.Format(UnknownRunTimeInformationOSPlatformExceptionMessage, RuntimeInformation.FrameworkDescription));
             }
         }

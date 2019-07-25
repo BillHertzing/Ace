@@ -1,7 +1,7 @@
 using Ace.Agent.BaseServices;
 using Ace.Agent.GUIServices;
-using Ace.Agent.DiskAnalysisServices;
-using Ace.Agent.MinerServices;
+using Ace.Plugin.DiskAnalysisServices;
+using Ace.Plugin.MinerServices;
 using ATAP.Utilities.ETW;
 using ATAP.Utilities.ServiceStack;
 using Funq;
@@ -17,26 +17,11 @@ using System.Security;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using Microsoft.Extensions.Hosting;
-using Ace.Agent.RealEstateServices;
+using Ace.Plugin.RealEstateServices;
 
 namespace Ace.Agent.Host {
     [ATAP.Utilities.ETW.ETWLogAttribute]
     public class SSAppHost : AppHostBase {
-        #region string constants default file names and Exception messages
-        #region string constants: File Names 
-        public const string settingsTextFileSuffix = ".txt";
-        public const string sSAppHostSettingsTextFileName = "SSAppHostSettings";
-        public const string agentSettingsTextFileName = "Agent.BaseServicesSettings";
-        //It would be nice if ServiceStack implemented the User Secrets pattern that ASP Core provides
-        // Without that, the following string constant identifies an Environmental variable that can be populated with the name of a file
-        public const string agentEnvironmentIndirectSettingsTextFileNameKey = "Agent.BaseServices.IndirectSettings.Path";
-        #endregion
-        #region string constants: Exception Messages
-        public const string cannotReadEnvironmentVariablesSecurityExceptionMessage = "Ace cannot read from the environment variables (Security)";
-        public const string CouldNotCreateServiceStackVirtualFileMappingExceptionMessage = "Could not create ServiceStack Virtual File Mapping: ";
-        #endregion
-        public const string PhysicalRootPathConfigKey = "PhysicalRootPath";
-        #endregion
 
         // Make the HostEnvironment available to this class, use constructor injection to populate it
         public IHostEnvironment HostEnvironment { get; }
@@ -45,7 +30,6 @@ namespace Ace.Agent.Host {
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// Inject an implementation of an IWebHostEnvironment via the constructor
         /// </summary>
-        //public SSAppHost() : base("BaseServices", typeof(BaseServices.BaseServices).Assembly) {
         public SSAppHost(IHostEnvironment hostEnvironment) : base("BaseServices", typeof(BaseServices.BaseServices).Assembly) {
             HostEnvironment=hostEnvironment;
             // Load it into the Container
@@ -59,15 +43,13 @@ namespace Ace.Agent.Host {
         /// </summary>
         public override void Configure(Container container) {
 
-            //Log.Debug("in SSAppHost.Configure method, container is {container}", container);
-
             // get the Environment value from the WebHostenvironment injected by the constructor
             string envName = this.HostEnvironment.EnvironmentName;  
             Log.Debug("in SSAppHost.Configure, envName = {envName}", envName);
 
             // AppSettings is a first class object on the Container, so it will be auto-wired
-            // In any other assembly, AppSettings is read-only, so it must be populated in this assembly
-            // SSAppHost is hosted within a WebServerHost. Location of all configuration files for SSAppHost will be relative and under the ContentRoot of the WebServerHost
+            // In every other assembly, AppSettings is read-only, so it must be populated in this assembly
+            // SSAppHost is hosted within a WebServerHost hosted within a GenericHost, so the location of all configuration files for SSAppHost will be under the ContentRoot of the WebServerHost
 
             // ToDo: It would be nice if ServiceStack implemented the User Secrets pattern that ASP Core provides
             /*
@@ -105,7 +87,7 @@ namespace Ace.Agent.Host {
             // ToDo: append AddTextFile for configuration settings in a text file specified in an environment variable
             // if (indirectSettingsTextFilepath!=null) { multiAppSettingsBuilder.AddTextFile(indirectSettingsTextFilepath); }
             // Next in priority are the Agent.BaseServices settings text files. Environment-specific settings text files have a higher priority than the default (production) settings text files
-            // Location of the text file is relative to the current working directory at the point in time when this method executes.
+            // Location of the text file is relative to the ContentRoot of the WebServerHost.
             // If this file does not exist, it is not considered an error, but if it does exist, not having read permission is an error
             // ToDo: if a configuration settings text file is specified as a constant string in the app, ensure it exists and the ensure we have permission to read it
             // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
@@ -113,7 +95,7 @@ namespace Ace.Agent.Host {
             // ToDo: Investigate SS's MapHostAbsolutePath
             //  new TextFileSettings("~/appsettings.txt".MapHostAbsolutePath(),
             if (!this.HostEnvironment.IsProduction()) {
-                var settingsTextFileName = agentSettingsTextFileName+'.'+envName+settingsTextFileSuffix;
+                var settingsTextFileName = StringConstants.agentSettingsTextFileName + '.' + envName + StringConstants.settingsTextFileSuffix;
                 // ToDo: ensure it exists and the ensure we have permission to read it
                 // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
                 multiAppSettingsBuilder.AddTextFile(settingsTextFileName);
@@ -121,10 +103,10 @@ namespace Ace.Agent.Host {
             // Add the production Agent.BaseServices settings text file if it exists
             // ToDo: ensure it exists and the ensure we have permission to read it
             // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
-            multiAppSettingsBuilder.AddTextFile(agentSettingsTextFileName+settingsTextFileSuffix);
+            multiAppSettingsBuilder.AddTextFile(StringConstants.agentSettingsTextFileName+StringConstants.settingsTextFileSuffix);
             // Next in priority are the SSAppHost settings text files. Environment-specific settings text files have a higher priority than the default (production) settings text files
             if (!this.HostEnvironment.IsProduction()) {
-                var settingsTextFileName = sSAppHostSettingsTextFileName+'.'+envName+settingsTextFileSuffix;
+                var settingsTextFileName = StringConstants.sSAppHostSettingsTextFileName+'.'+envName+StringConstants.settingsTextFileSuffix;
                 // ToDo: ensure it exists and the ensure we have permission to read it
                 // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
                 multiAppSettingsBuilder.AddTextFile(settingsTextFileName);
@@ -132,7 +114,7 @@ namespace Ace.Agent.Host {
             // Add the production SSAppHost settings text file if it exists
             // ToDo: ensure it exists and the ensure we have permission to read it
             // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
-            multiAppSettingsBuilder.AddTextFile(sSAppHostSettingsTextFileName+settingsTextFileSuffix);
+            multiAppSettingsBuilder.AddTextFile(StringConstants.sSAppHostSettingsTextFileName+StringConstants.settingsTextFileSuffix);
             // ToDo: Investigate the web.config file and see when it makes sense to include it in the genericHost ConfigurationRoot
             // ToDo: Investigate the .exe.config file and see when it makes sense to include it in the genericHost ConfigurationRoot
             // multiAppSettingsBuilder.AddAppSettings()
@@ -141,7 +123,7 @@ namespace Ace.Agent.Host {
             // Next in priority are Built-in (compiled in) Production configuration settings for SSAppHost
             multiAppSettingsBuilder.AddDictionarySettings(SSAppHostDefaultConfiguration.Production);
             // Last in priority are the AppSettings inherited from genericHost
-            //multiAppSettingsBuilder.AddNetCore(Configuration);
+            multiAppSettingsBuilder.AddNetCore(Configuration);
 
             //Build the AppSettings that is the first-class citizen on the SSAppHost, and available to all SS Middleware via the ``
             AppSettings=multiAppSettingsBuilder.Build();
@@ -210,8 +192,8 @@ namespace Ace.Agent.Host {
             */
         }
 
-        /* this was part of teh now obiolete "winForms" way of doing a notify icon
-         * // ToDo: Findout how to display a Notify Icon, and respond to an 'exit' selection 
+        /* this was part of teh now obsolete "winForms" way of doing a notify icon
+        // ToDo: Findout how to display a Notify Icon, and respond to an 'exit' selection 
         // Stop the entire program
         void menuItem1_Click(object Sender, EventArgs e) {
             Log.Debug("AceCommander NotifyIcon menuItem1_Click event handler started");
@@ -221,7 +203,7 @@ namespace Ace.Agent.Host {
         */
 
         /* in ASP.Net Core, there must be some other method or event handler used to shutdown middleware
-         *  // ToDo: Findout how to shutdown SS gracefully ad dispose of it's stuff
+        // ToDo: Findout how to shutdown SS gracefully ad dispose of it's stuff
         /// <summary>
         /// Shut down the SS Middleware
         /// </summary>
@@ -254,18 +236,5 @@ namespace Ace.Agent.Host {
         }
 
         */
-
-        // Get the latest known current configuration, and use that information to populate the data structures
-        //ToDo: computerInventory = new ComputerInventory(AppSettings.GetAll());
-
-        // validate that the configuration settings match the real computer inventory
-
-        // if the current computer inventory specifies that there are sensors that
-        // can and should be monitored, attach the event handlers that will respond to changes in the monitored data structures
-
-        // setup and enable the mechanisms that monitors each monitored sensor, and start them running
-        // ToDo: container.Register<ComputerInventory>(c => computerInventory);
-        // if the current computer inventory specifies that there are sensors that are being monitored, dispose of the resources that are doing the monitoring
-        //ComputerInventory computerInventory = container.TryResolve(typeof(ComputerInventory)) as ComputerInventory;
     }
 }

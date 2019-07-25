@@ -1,6 +1,6 @@
 using System;
 using ServiceStack;
-using ServiceStack.Logging;
+using Serilog;
 using ServiceStack.Text;
 using Swordfish.NET.Collections;
 using System.Collections.Concurrent;
@@ -19,7 +19,7 @@ using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.DiskDriveAnalysis;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
 
 
     public partial class DiskAnalysisServices : Service {
@@ -33,7 +33,7 @@ namespace Ace.Agent.DiskAnalysisServices {
             var cancellationToken = cancellationTokenSource.Token;
 
             // Setup the instance 
-            var diskAnalysis = new DiskDriveAnalysis(Log);
+            var diskAnalysis = new DiskDriveAnalysis(Log.Logger);
             var diskDriveSpecifier = request.AnalyzeDiskDriveRequestPayload.DiskDriveSpecifier;
 
             //ToDo: Create an association between the remote cancellation token and a new cancellation token, and record this in the RemoteToLocalCancellationToken dictionary in the Container

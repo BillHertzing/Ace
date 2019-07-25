@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ServiceStack;
-using ServiceStack.Logging;
 using ATAP.Utilities.LongRunningTasks;
 
 namespace Ace.Agent.BaseServices {

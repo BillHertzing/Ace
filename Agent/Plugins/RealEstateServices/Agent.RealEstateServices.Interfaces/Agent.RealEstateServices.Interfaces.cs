@@ -8,7 +8,7 @@ using ATAP.Utilities.RealEstate.Enumerations;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Ace.Agent.RealEstateServices {
+namespace Ace.Plugin.RealEstateServices {
     public class RealEstateServices : Service {
         public static ILog Log = LogManager.GetLogger(typeof(RealEstateServices));
 

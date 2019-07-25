@@ -40,6 +40,7 @@
     <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
     <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />
+    <ProjectReference Include="..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 using System;
 using ServiceStack;
-using ServiceStack.Logging;
 using ServiceStack.Text;
+using Serilog;
 using Swordfish.NET.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
@@ -20,12 +20,11 @@ using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.DiskDriveAnalysis;
 using ATAP.Utilities.DiskDrive;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
 
 
     public partial class DiskAnalysisServices : Service {
 
-        public static ServiceStack.Logging.ILog Log = LogManager.GetLogger(typeof(DiskAnalysisServices));
 
         public object Post(InitializationRequest request) {
             InitializationRequestPayload initializationRequestPayload = request.InitializationRequestPayload;

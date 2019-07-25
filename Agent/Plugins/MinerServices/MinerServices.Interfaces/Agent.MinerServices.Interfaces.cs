@@ -12,7 +12,7 @@ using Funq;
 using System.Reflection;
 //using ATAP.Utilities.CryptoMiner.Models;
 
-namespace Ace.Agent.MinerServices
+namespace Ace.Plugin.MinerServices
 {
     public class MinerServices : Service
     {

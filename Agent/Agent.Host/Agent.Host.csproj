@@ -36,6 +36,18 @@
       https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
     </RestoreAdditionalProjectSources>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="SSAppHostSettings.Development.txt" />
+    <None Remove="SSAppHostSettings.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SSAppHostSettings.Development.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SSAppHostSettings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   
   <!-- A RuntimeIdentifier is needed to run the project's output as a Windows Service 
   <PropertyGroup>
@@ -56,7 +68,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="2.0.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.5.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0-preview6.19304.6" />
   </ItemGroup>
@@ -85,12 +96,11 @@
   </ItemGroup>
   
 
-  <!-- Packages to implement Serilog as a Microsoft logging provider ? ToDo: implement Serilog as a logging provider to Microsoft logging
+  <!-- Packages to implement Serilog as a Microsoft logging provider ? ToDo: implement Serilog as a logging provider to Microsoft logging -->
   <ItemGroup>
-    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.4" />
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="2.*" />
   </ItemGroup>
-  -->
+  
   
   <!-- Packages necessary to run the ASP.Net Core Blazor Server -->
   <ItemGroup>
@@ -120,12 +130,6 @@
 
   <ItemGroup>
     <None Update="ATAP.ICO">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SSAppHostSettings.Development.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="SSAppHostSettings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

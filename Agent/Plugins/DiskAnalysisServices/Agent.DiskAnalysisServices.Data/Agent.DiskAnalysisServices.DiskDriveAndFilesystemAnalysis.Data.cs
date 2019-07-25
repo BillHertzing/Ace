@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using ServiceStack.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ATAP.Utilities.ComputerInventory;
@@ -12,7 +11,7 @@ using ATAP.Utilities.LongRunningTasks;
 using Swordfish.NET.Collections;
 using ATAP.Utilities.FileSystem;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
 
     public partial class DiskAnalysisServicesData : IAnalyzeDiskDriveResults,  IAnalyzeFileSystemResults {
 

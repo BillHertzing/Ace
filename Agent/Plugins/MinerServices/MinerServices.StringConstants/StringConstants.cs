@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ace.Agent.MinerServices {
+namespace Ace.Plugin.MinerServices {
     public static class StringConstants {
         #region Configuration Key strings
         #endregion Configuration Key strings

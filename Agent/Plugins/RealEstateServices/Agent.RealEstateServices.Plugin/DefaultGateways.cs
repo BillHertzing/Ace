@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using ATAP.Utilities.Http;
 
-namespace Ace.Agent.RealEstateServices
+namespace Ace.Plugin.RealEstateServices
 {
   static class DefaultGateways
   {

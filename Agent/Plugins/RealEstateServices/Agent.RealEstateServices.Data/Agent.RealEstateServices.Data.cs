@@ -4,17 +4,15 @@ using System.ComponentModel;
 using System.Reflection;
 using ServiceStack;
 using ServiceStack.Caching;
-using ServiceStack.Logging;
 using Swordfish.NET.Collections;
 
-namespace Ace.Agent.RealEstateServices
+namespace Ace.Plugin.RealEstateServices
 {
     public class RealEstateServicesData : IDisposable {
 
         #region PublicStaticFields
         #region PublicStaticFields:configKeyPrefix
         // Surface the configKeyPrefix for this namespace
-        //ToDo: Replace suffix with StringConstant
         public static string configKeyPrefix = MethodBase.GetCurrentMethod().DeclaringType.Namespace+".Config";
         #endregion
         #endregion

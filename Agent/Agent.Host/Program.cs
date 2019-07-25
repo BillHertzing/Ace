@@ -42,6 +42,7 @@ namespace Ace.Agent.Host {
                 { "-Console", StringConstants.ConsoleAppConfigRootKey },
                 { "-C", StringConstants.ConsoleAppConfigRootKey },
             };
+
         public const string userSecretsID = "E5D6C5E5-6E30-49EF-BE15-E1B7C377D2A7";
 
         public static async Task Main(string[] args) {
@@ -151,30 +152,27 @@ namespace Ace.Agent.Host {
             //  This brings in the System.Diagnostics.Debug namespace and writes the SelfLog there
             // Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
 
+            // Create a Serilog logger based on the ConfigurationRoot
+            //Serilog.Core.Logger x = new LoggerConfiguration().ReadFrom.Configuration(genericHostConfigurationRoot).CreateLogger();
+            // Example of setting up Serilogger in code, instead of configuration
+            //Serilog.Core.Logger y = new LoggerConfiguration()
+            //    .MinimumLevel.Verbose()
+            //    .Enrich.FromLogContext()
+            //    .Enrich.WithThreadId()
+            //    //.Enrich.WithHttpRequestId()
+            //    //.Enrich.WithUserName()
+            //    //.WithExceptionDetails()
+            //    .WriteTo.Seq(serverUrl: "http://localhost:5341")
+            //    //.WriteTo.Udp(remoteAddress:IPAddress.Loopback, remotePort:9999, formatter:default) // I could not get it to write to Sentinel
+            //    .WriteTo.Console(theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
+            //    .WriteTo.Debug()
+            //    .WriteTo.File(path: "Logs/Demo.Serilog.{Date}.log", fileSizeLimitBytes: 1024, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, retainedFileCountLimit: 31)
+            //    .CreateLogger();
+
             // The Serilog.Log is a static entry to the Serilog logging provider
             // Create a Serilog logger based on the ConfigurationRoot and assign it to the static Serilog.Log object
-
             // Configure logging based on the information in ConfigurationRoot
-            // Example of setting up Serilogger in configuration
-            Serilog.Core.Logger x = new LoggerConfiguration().ReadFrom.Configuration(genericHostConfigurationRoot).CreateLogger();
-
-            // Example of setting up Serilogger in code, instead of configuration
-            Serilog.Core.Logger y = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .Enrich.FromLogContext()
-                .Enrich.WithThreadId()
-                //.Enrich.WithHttpRequestId()
-                //.Enrich.WithUserName()
-                //.WithExceptionDetails()
-                .WriteTo.Seq(serverUrl: "http://localhost:5341")
-                //.WriteTo.Udp(remoteAddress:IPAddress.Loopback, remotePort:9999, formatter:default) // I could not get it to write to Sentinel
-                .WriteTo.Console(theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
-                .WriteTo.Debug()
-                .WriteTo.File(path: "Logs/Demo.Serilog.{Date}.log", fileSizeLimitBytes: 1024, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, retainedFileCountLimit: 31)
-                .CreateLogger();
-
-            // Select which CoreLogger to use
-            Log.Logger=x;
+            Log.Logger=new LoggerConfiguration().ReadFrom.Configuration(genericHostConfigurationRoot).CreateLogger();
             Log.Debug("in Program.Main: Environment = {envName}", envName);
 
             // Validate the value of WebHostBuilderToBuild from the genericHostConfigurationRoot is one that is supported by this program
@@ -224,9 +222,14 @@ namespace Ace.Agent.Host {
                 genericHostBuilder.ConfigureServices((hostContext, services) => {
                     services.AddSingleton<IHostLifetime, GenericHostAsServiceLifetimeLynchpin>();
                     // add Host options here if needed
-                    // Extend the generic host timeout to 10 seconds to give all running process time to do a graceful shutdown
-                    // ToDo: make the MaxTimeToWaitForGenericHostShutdown into a configuration option
-                    services.AddOptions<HostOptions>().Configure(opts => opts.ShutdownTimeout=TimeSpan.FromSeconds(10));
+                    // Extend the generic host timeout to thecvalue specified in the configuration, in seconds, to give all running process time to do a graceful shutdown
+                    // Ensure that the string value specified in the ConfigurationRoot can be converted to a double
+                    String shutDownTimeoutInSecondsString = genericHostConfigurationRoot.GetValue<string>(StringConstants.MaxTimeInSecondsToWaitForGenericHostShutdownConfigKey, StringConstants.MaxTimeInSecondsToWaitForGenericHostShutdownStringDefault);
+                    Double shutDownTimeoutInSecondsDouble;
+                    if (!Double.TryParse(shutDownTimeoutInSecondsString, out shutDownTimeoutInSecondsDouble)) {
+                        throw new InvalidCastException(String.Format(StringConstants.CannotConvertShutDownTimeoutInSecondsToDoubleExceptionMessage, shutDownTimeoutInSecondsString));
+                    }
+                    services.AddOptions<HostOptions>().Configure(opts => opts.ShutdownTimeout=TimeSpan.FromSeconds(shutDownTimeoutInSecondsDouble));
                 });
             } else {
                 Log.Debug("in Program.Main: extend genericHostBuilder by calling the extension method UseConsoleLifetime");
@@ -259,7 +262,6 @@ namespace Ace.Agent.Host {
             // ATAP.Utilities.ETW.ATAPUtilitiesETWProvider.Log("> Program.Main");
 
         }
-
     }
 
     [ATAP.Utilities.ETW.ETWLogAttribute]

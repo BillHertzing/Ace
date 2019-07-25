@@ -16,23 +16,20 @@ using ATAP.Utilities.Database.Enumerations;
 using ATAP.Utilities.DiskDrive;
 
 // ToDo: figure out logging for the ATAP libraires, this is only temporary
-using ServiceStack.Logging;
+using Serilog;
 using ATAP.Utilities.FileSystem;
 using System.Linq;
 using System.Security.Cryptography;
 using ATAP.Utilities.TypedGuids;
 
+
 namespace ATAP.Utilities.FileSystem {
-    public static class ExceptionErrorMessages {
-        // ToDo: eventually localize these
-        public const string RootDirectoryNotFound = "Directory {root} not found";
-    }
 
     public class FileSystemAnalysis {
 
         //public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize, MD5 mD5) {
-        public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize) {
-            Log=log??throw new ArgumentNullException(nameof(log));
+        public FileSystemAnalysis(ILogger logger, int asyncFileReadBlockSize) {
+            Logger=logger??throw new ArgumentNullException(nameof(logger));
             // ToDo: make the exception message a constant localizable string)
             AsyncFileReadBlocksize =(asyncFileReadBlockSize>=0)? asyncFileReadBlockSize:throw new ArgumentOutOfRangeException($"asyncFileReadBlockSize must be greater than 0, received {asyncFileReadBlockSize}");
             // MD5=mD5??throw new ArgumentNullException(nameof(mD5));
@@ -89,7 +86,7 @@ namespace ATAP.Utilities.FileSystem {
             Log.Debug($"starting AnalyzeFileSystem: root = {root}");
 
             if (!Directory.Exists(root)) {
-                throw new ArgumentException(ExceptionErrorMessages.RootDirectoryNotFound);
+                throw new ArgumentException(String.Format(StringConstants.RootDirectoryNotFoundExceptionMessage, root));
             }
 
             // Data structure to hold names of subfolders to be examined for files.
@@ -289,8 +286,8 @@ namespace ATAP.Utilities.FileSystem {
 
         #region Properties
         #region Properties:class logger
-        public ILog Log;
-
+        //public ILog Log;
+        private static ILogger Logger;
         #endregion
         #region Properties:AsyncFileReadBlocksize
         int AsyncFileReadBlocksize { get; set; }

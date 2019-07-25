@@ -1,6 +1,5 @@
 using System;
 using ServiceStack;
-using ServiceStack.Logging;
 using ServiceStack.Text;
 using Swordfish.NET.Collections;
 using System.Collections.Concurrent;
@@ -21,8 +20,9 @@ using ATAP.Utilities.DiskDriveAnalysis;
 using ATAP.Utilities.DiskDrive;
 using System.Text;
 using System.Net.Http;
+using Serilog;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
 
 
     public partial class DiskAnalysisServices : Service {
@@ -41,7 +41,7 @@ namespace Ace.Agent.DiskAnalysisServices {
 
             // Setup the instance. Use Configuration Data if the request payload is null
             var blockSize = request.AnalyzeFileSystemRequestPayload.AsyncFileReadBlockSize>=0? request.AnalyzeFileSystemRequestPayload.AsyncFileReadBlockSize : diskAnalysisServicesData.ConfigurationData.BlockSize;
-            var fileSystemAnalysis = new FileSystemAnalysis(Log, diskAnalysisServicesData.ConfigurationData.BlockSize);
+            var fileSystemAnalysis = new FileSystemAnalysis(Log.Logger, diskAnalysisServicesData.ConfigurationData.BlockSize);
             Log.Debug("in Post(AnalyzeFileSystemRequest) 2");
 
 

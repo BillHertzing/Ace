@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ace.Agent.RealEstateServices {
+namespace Ace.Plugin.RealEstateServices {
     public static class StringConstants {
         #region Configuration Key strings
         #endregion Configuration Key strings

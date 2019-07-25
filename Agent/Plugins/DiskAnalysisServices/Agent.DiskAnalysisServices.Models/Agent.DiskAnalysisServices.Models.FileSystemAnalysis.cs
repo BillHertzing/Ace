@@ -9,7 +9,7 @@ using ATAP.Utilities.FileSystem;
 using Ace.Agent.BaseServices;
 using Newtonsoft.Json;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
 
     #region AnalyzeFileSystemRequest, AnalyzeFileSystemResponse, and Route for AnalyzeFileSystem
     [Route("/AnalyzeFileSystem")]

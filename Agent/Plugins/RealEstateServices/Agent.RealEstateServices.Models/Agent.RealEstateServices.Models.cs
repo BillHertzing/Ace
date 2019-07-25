@@ -2,7 +2,7 @@ using System;
 using ServiceStack;
 using ATAP.Utilities.RealEstate.Enumerations;
 
-namespace Ace.Agent.RealEstateServices {
+namespace Ace.Plugin.RealEstateServices {
 
     //ToDo: Clean up region names
     #region InitializationRequest and Payload, InitializationResponse and Payload, and Route for RealEstateServicesInitialization

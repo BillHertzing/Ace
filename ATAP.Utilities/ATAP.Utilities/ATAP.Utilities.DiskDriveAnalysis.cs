@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
-using ServiceStack.Logging;
+using Serilog;
 using ServiceStack.Text;
 using ATAP.Utilities.ComputerInventory;
 using ATAP.Utilities.ComputerHardware.Enumerations;
@@ -15,12 +15,9 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
 
 
     public class DiskDriveAnalysis {
-        public static class ExceptionErrorMessages {
-            // ToDo: eventually localize these
-            public const string Placeholder = "placeholder";
-        }
-        public DiskDriveAnalysis(ILog log) {
-            Log=log??throw new ArgumentNullException(nameof(log));
+
+        public DiskDriveAnalysis(ILogger logger) {
+            //Log=log??throw new ArgumentNullException(nameof(log));
         }
 
         // All of these async method will periodically execute instructions to the underlying database
@@ -103,7 +100,7 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
 
         #region Properties
         #region Properties:class logger
-        public ILog Log;
+       //public ILog Log;
 
         #endregion
         #endregion

@@ -16,7 +16,7 @@ using System.IO;
 
 using Microsoft.Extensions.Hosting;
 
-namespace Ace.Agent.RealEstateServices {
+namespace Ace.Plugin.RealEstateServices {
     public class RealEstateServicesPlugin : IPlugin, IPreInitPlugin {
 
         // Surface the configKeyPrefix for this namespace

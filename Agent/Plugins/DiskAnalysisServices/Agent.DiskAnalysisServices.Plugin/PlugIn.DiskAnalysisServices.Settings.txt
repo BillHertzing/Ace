@@ -1,4 +1,4 @@
-# comment
-# VersionInfo
+# Application Configuration Settings for Ace Plugin DiskAnalysisServices
+# versioninfo
 
-Placeholder string placeholder
+Ace.Plugin.DiskAnalysisServices.Config.Placeholder placeholder

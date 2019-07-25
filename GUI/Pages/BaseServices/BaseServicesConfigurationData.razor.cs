@@ -36,14 +36,14 @@ namespace Ace.AceGUI.Pages {
         protected async Task InitConfigurationDataAsync() {
             Log.LogDebug($"Starting BaseServices.InitConfigurationDataAsync");
             // ToDo: analyze code paths to be sure there is no way this can be called before local storage is initialized
-            // IsInitialized=await LStorage.GetItemAsyncSS<bool>("BaseServices.IsInitialized");
+            // IsInitialized=await LStorage.GetItemAsync<bool>("BaseServices.IsInitialized");
             // ToDo: test and throw an error if local storage is not yet initialized
             // if (!IsInitialized) {}
 
             // initialize BaseServices.ConfigurationData property with data from local Storage
-            ConfigurationData=await LStorage.GetItemAsyncSS<ConfigurationData>("BaseServices.ConfigurationData");
+            ConfigurationData=await LStorage.GetItemAsync<ConfigurationData>("BaseServices.ConfigurationData");
             // ToDo: maybe move to a BaseServices.UserData compilation unit
-            UserData=await LStorage.GetItemAsyncSS<UserData>("BaseServices.UserData");
+            UserData=await LStorage.GetItemAsync<UserData>("BaseServices.UserData");
 
             Log.LogDebug($"Leaving BaseServices.InitConfigurationDataAsync");
         }

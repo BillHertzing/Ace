@@ -3,3 +3,5 @@
 
 Ace.Agent.BaseServices.Config.RedisConnectionString localhost:6379
 Ace.Agent.BaseServices.Config.MySqlConnectionString Server=localhost;Port=3306;Database=acecommander;Uid=whertzing;Pwd=devDBAdminPwd!
+Ace.Agent.BaseServices.Config.MSSQLConnectionString Server=(localdb)\\MSSQLLocalDB;Database=_CHANGE_ME;Trusted_Connection=True;MultipleActiveResultSets=true
+Ace.Agent.BaseServices.Config.RabbitMQConnectionString NeedRabbitMQConectionInfo

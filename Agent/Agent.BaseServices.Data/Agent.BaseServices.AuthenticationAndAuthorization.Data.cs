@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
+using Ace.Agent.Host;
 
 namespace Ace.Agent.BaseServices {
     public partial class BaseServicesData : IDisposable {
@@ -32,10 +33,10 @@ namespace Ace.Agent.BaseServices {
             
             // See if the MySQL configuration key exists, if so register MySQL as the RDBMS behind ORMLite
             if (appHost.AppSettings
-                .Exists(configKeyPrefix+configKeyMySqlConnectionString)) {
+                .Exists(configKeyPrefix+StringConstants.configKeyMySqlConnectionString)) {
                 var appSettingsConfigValueMySqlConnectionString = appHost.AppSettings
                     .GetString(configKeyPrefix+
-                    configKeyMySqlConnectionString);
+                    StringConstants.configKeyMySqlConnectionString);
                 // Configure OrmLiteConnectionFactory and register it
                 Container.Register<IDbConnectionFactory>(c => new OrmLiteConnectionFactory(appSettingsConfigValueMySqlConnectionString, MySqlDialect.Provider));
                 // Access the OrmLiteConnectionFactory

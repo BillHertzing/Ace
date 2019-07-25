@@ -44,12 +44,12 @@ namespace Ace.AceGUI.Pages {
         protected async Task InitGeoLocationDataAsync() {
             Log.LogDebug($"Starting BaseServices.InitGeoLocationDataAsync");
             // ToDo: analyze code paths to be sure there is no way this can be called before local storage is initialized
-            // IsInitialized=await LStorage.GetItemAsyncSS<bool>("BaseServices.IsInitialized");
+            // IsInitialized=await LStorage.GetItemAsync<bool>("BaseServices.IsInitialized");
             // ToDo: test and throw an error if local storage is not yet initialized
             // if (!IsInitialized) {}
 
             // initialize BaseServices.InitGeoLocationData property with data from local Storage
-            GeoLocationData=await LStorage.GetItemAsyncSS<GeoLocationData>("BaseServices.GeoLocationData");
+            GeoLocationData=await LStorage.GetItemAsync<GeoLocationData>("BaseServices.GeoLocationData");
 
             Log.LogDebug($"Leaving BaseServices.InitGeoLocationDataAsync");
         }

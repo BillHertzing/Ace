@@ -1,7 +1,7 @@
-# comment
-# VersionInfo
+# Application Configuration Settings for Ace PlugIn RealEstateServices
+# versioninfo
 
-HomeAwayAPIKeyEncrypted string {9236F76F-BE72-4629-96F8-8F0BEF150633}
-GoogleAPIKeyEncrypted string {1D243B01-76A8-4681-B021-69A88199CDEC}
-HomeAway_API_URI string https://www.homeaway.com/api/
-Google_API_URI string https://www.google.com/api/
+Ace.Plugin.RealEstateServices.Config.HomeAwayAPIKeyEncrypted {9236F76F-BE72-4629-96F8-8F0BEF150633}
+Ace.Plugin.RealEstateServices.Config.GoogleAPIKeyEncrypted {1D243B01-76A8-4681-B021-69A88199CDEC}
+Ace.Plugin.RealEstateServices.Config.HomeAway_API_URI https://www.homeaway.com/api/
+Ace.Plugin.RealEstateServices.Config.Google_API_URI https://www.google.com/api/

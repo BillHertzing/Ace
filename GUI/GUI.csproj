@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <RestoreAdditionalProjectSources>
-      https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
-      https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
-    </RestoreAdditionalProjectSources>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
-  
-    <!-- Separate Property Group for Version Control -->
+
+  <!-- Separate Property Group for Version Control -->
   <PropertyGroup>
     <!-- Assembly, File, and Package Information for this assembly-->
     <!-- Build and revision are created based on date-->
@@ -20,30 +19,60 @@
     <!-- However, if the LifeCyclestage is Production, the NuGet Package Label is ignored, but MSBuild expects a non-null value  -->
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
+
+  <!-- During Core 3.0 preview, these additional NuGet package servers provide the latest preview packages -->
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>
+      https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
+      https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
+    </RestoreAdditionalProjectSources>
+  </PropertyGroup>
   
   <!--To enable Autorecompile, also PowerShell to the server project folder and `dotnet watch run` there -->
   <ItemGroup>
     <Watch Include="..\**\*.razor" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.0.0-preview6.19307.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.0.0-preview6.19307.2" PrivateAssets="all" />
-    <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview6.19307.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview6.19304.6" />
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
-  </ItemGroup>
-
+  <!-- While Blazor CSP remains in preview, do not use the ILLinker -->  
   <PropertyGroup>
     <BlazorLinkOnBuild>false</BlazorLinkOnBuild>
   </PropertyGroup>
-  
+
+  <!-- Packages to implement persistent State through the Blazored.LocalStorage NuGet package-->  
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="2.*" />
+  </ItemGroup>
+
+  <!-- Packages to implement MEL Logging through the Blazor.Extensions.Logging NuGet package-->  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview6.19304.6" />
     <PackageReference Include="Blazor.Extensions.Logging" Version="0.1.11" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\css\site.scss" />
+    <Content Update="wwwroot\css\site.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- Packages to create a Blazor CSP project -->  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.0.0-preview6.19307.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.0.0-preview6.19307.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview6.19307.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Packages to implement ServiceStack-->  
+  <ItemGroup>
+    <PackageReference Include="ServiceStack.Text" Version="5.*" />
+  </ItemGroup>  
+
+  <ItemGroup>
     <PackageReference Include="MedallionShell" Version="1.5.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="ServiceStack.Text.Core" Version="5.5.1" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
     <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
   </ItemGroup>
@@ -59,42 +88,7 @@
     <ProjectReference Include="..\Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
-    
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Blazored.LocalStorage">
-      <HintPath>..\..\Blazored\LocalStorage\src\Blazored.LocalStorage\bin\Release\netstandard2.0\Blazored.LocalStorage.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-
-<!--
-  <ItemGroup>
-    <Content Update="Pages\BaseServices\BaseServicesTaskStatus.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Pages\BaseServices\BaseServicesUserRegistration.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Pages\BaseServices\BaseServicesUserData.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Pages\BaseServices\BaseServicesGeoLocation.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Pages\UserData.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Pages\ConfigurationData.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Pages\DiskAnalysisServices\DiskAnalysisServices.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-  </ItemGroup>
--->
-
   
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Message Importance="High" Text="This is a $(Configuration) Build" Condition="'$(Configuration)'=='Release'" />

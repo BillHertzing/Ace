@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
     public static class StringConstants {
 
         #region Configuration Key strings

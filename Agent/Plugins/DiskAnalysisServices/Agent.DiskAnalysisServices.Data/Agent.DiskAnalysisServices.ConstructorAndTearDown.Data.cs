@@ -4,17 +4,15 @@ using System.ComponentModel;
 using System.Reflection;
 using ServiceStack;
 using ServiceStack.Caching;
-using ServiceStack.Logging;
 using Swordfish.NET.Collections;
 using Ace.Agent.BaseServices;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
     public partial class DiskAnalysisServicesData : IDisposable {
 
         #region PublicStaticFields
         #region PublicStaticFields:configKeyPrefix
         // Surface the configKeyPrefix for this namespace
-        //ToDo: Replace suffix with StringConstant
         public static string configKeyPrefix = MethodBase.GetCurrentMethod().DeclaringType.Namespace+".Config";
         #endregion
         #endregion

@@ -5,7 +5,6 @@ using System.Reflection;
 using ATAP.Utilities.Http;
 using ServiceStack;
 using ServiceStack.Caching;
-//using ServiceStack.Logging;
 using ServiceStack.Redis;
 using Serilog;
 using Swordfish.NET.Collections;
@@ -19,6 +18,7 @@ using System.Timers;
 using ATAP.Utilities.ETW;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
+using Ace.Agent.Host;
 
 namespace Ace.Agent.BaseServices {
     public partial class BaseServicesData : IDisposable {
@@ -29,15 +29,14 @@ namespace Ace.Agent.BaseServices {
             // At this point, appHost.AppSettings has all of the data read in from the various Configuration sources (environment, command line, indirect file, direct file, compiled in)
 
             // If the Redis configuration key exists, register Redis as a name:value pair cache
-            if (appHost.AppSettings.Exists(configKeyPrefix+configKeyRedisConnectionString)) {
-                var redisConnectionString = appHost.AppSettings.GetString(configKeyPrefix+configKeyRedisConnectionString);
+            if (appHost.AppSettings.Exists(configKeyPrefix+StringConstants.configKeyRedisConnectionString)) {
+                var redisConnectionString = appHost.AppSettings.GetString(configKeyPrefix+StringConstants.configKeyRedisConnectionString);
                 Container.Register<IRedisClientsManager>(c => new RedisManagerPool(redisConnectionString));
                 Container.Register(c => c.Resolve<IRedisClientsManager>().GetCacheClient());
                 cacheClient=Container.Resolve<ICacheClient>();
             } else {
                 throw new NotImplementedException(RedisConnectionStringKeyNotFoundExceptionMessage);
             }
-
             // Ensure that the cacheClient is running
             try {
                 var test = cacheClient.GetKeysStartingWith(configKeyPrefix);
@@ -59,10 +58,10 @@ namespace Ace.Agent.BaseServices {
             ///Temp: This stores the values from the AppSettings into the CacheClient (Redis currently) via the properties setter for the following Config settings
             MySqlConnectionString=appHost.AppSettings
                           .GetString(configKeyPrefix+
-                          configKeyMySqlConnectionString);
+                          StringConstants.configKeyMySqlConnectionString);
             RedisCacheConnectionString=appHost.AppSettings
                           .GetString(configKeyPrefix+
-                          configKeyRedisConnectionString);
+                          StringConstants.configKeyRedisConnectionString);
             // ToDo: Instead of single keys, a magic function that reads the set of keys in each , recursively, and compares those sets, and the values of the keys present in both
             // At this point the Redis cache should match the current run's AppConfigurationSettings 
 
@@ -74,9 +73,9 @@ namespace Ace.Agent.BaseServices {
             // Populate the UserData in the BaseServicesData instance
             ConstructUserData();
             // Populate the AuthenticationData structure
-            ConstructAuthenticationData( appHost);
+            ConstructAuthenticationData(appHost);
             // Populate the AuthorizationData structure
-            ConstructAuthorizationData( appHost);
+            ConstructAuthorizationData(appHost);
 
             // ToDo: Move this region to Agent.BaseServices.Data.Timers
             // Add a dictionary of timers to the IoC container
@@ -129,9 +128,12 @@ namespace Ace.Agent.BaseServices {
 
             // Build a Gateway for Google Maps GeoCode Gateway
             // ToDo replace DefaultAPIKEy auth with a more robust and extendable solution
-            string defaultAPIKey = appHost.AppSettings
-                  .GetString(configKeyPrefix+
-                  configKeyGoogleMapsAPIKey);
+            Log.Debug("configKeyPrefix is {configKeyPrefix}", configKeyPrefix);
+            Log.Debug("StringConstants.configKeyGoogleMapsAPIKey is {configKeyGoogleMapsAPIKey}", StringConstants.configKeyGoogleMapsAPIKey);
+            if (!appHost.AppSettings.Exists(configKeyPrefix+StringConstants.configKeyGoogleMapsAPIKey)) {
+                throw new NotImplementedException(StringConstants.ConfigKeyGoogleMapsAPIKeyNotFoundExceptionMessage);
+            }
+            string defaultAPIKey = appHost.AppSettings.GetString(configKeyPrefix+StringConstants.configKeyGoogleMapsAPIKey);
             var gb = new GatewayBuilder();
             gb.AddName("GoogleMaps");
             gb.AddBaseUri(new Uri("https://maps.googleapis.com/maps/api/"));
@@ -203,7 +205,7 @@ namespace Ace.Agent.BaseServices {
             GatewayMonitorCOD.PropertyChanged += this.onBaseCODPropertyChanged;
         }
     */
- 
+
 
         #region EventHandlers
         void LongRunningTasksCheckTimer_Elapsed(object sender, ElapsedEventArgs e) {
@@ -219,10 +221,6 @@ namespace Ace.Agent.BaseServices {
 
         #region String Constants
         #region String Constants:Configuration Key strings
-        public const string configKeyAceAgentListeningOnString = "Ace.Agent.ListeningOn";
-        public const string configKeyRedisConnectionString = "RedisConnectionString";
-        public const string configKeyMySqlConnectionString = "MySqlConnectionString";
-        public const string configKeyGoogleMapsAPIKey = "GoogleMapsAPIKey";
         #endregion 
 
         #region String Constants:Exception Messages
@@ -278,12 +276,12 @@ namespace Ace.Agent.BaseServices {
         #region Properties:Configuration Data
 
         public string RedisCacheConnectionString {
-            get { return cacheClient.Get<string>(configKeyPrefix+configKeyRedisConnectionString); }
-            set { cacheClient.Set<string>(configKeyPrefix+configKeyRedisConnectionString, value); }
+            get { return cacheClient.Get<string>(configKeyPrefix+StringConstants.configKeyRedisConnectionString); }
+            set { cacheClient.Set<string>(configKeyPrefix+StringConstants.configKeyRedisConnectionString, value); }
         }
         public string MySqlConnectionString {
-            get { return cacheClient.Get<string>(configKeyPrefix+configKeyMySqlConnectionString); }
-            set { cacheClient.Set<string>(configKeyPrefix+configKeyMySqlConnectionString, value); }
+            get { return cacheClient.Get<string>(configKeyPrefix+StringConstants.configKeyMySqlConnectionString); }
+            set { cacheClient.Set<string>(configKeyPrefix+StringConstants.configKeyMySqlConnectionString, value); }
         }
         #endregion
 

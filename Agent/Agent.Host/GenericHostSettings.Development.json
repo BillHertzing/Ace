@@ -3,8 +3,8 @@
     "PathFormat": "C:/DevLogs/Serilog/AceStartupLog.{Date}.log",
     "LogLevel": {
       "Default": "Debug",
-      "System": "Warning",
-      "Microsoft": "Warning"
+      "System": "Information",
+      "Microsoft": "Information"
     }
   },
   "Serilog": {
@@ -32,11 +32,6 @@
     "Enrich": [ "FromLogContext", "WithThreadId" ],
     "Properties": {
       "Application": "AceCommander"
-    }
-  },
-  "SSAppHost": {
-    "GUIServices": {
-      "RelativeRootPath": "../../../../../GUI/bin/Debug/netstandard2.0/Publish/GUI/dist"
     }
   }
 }

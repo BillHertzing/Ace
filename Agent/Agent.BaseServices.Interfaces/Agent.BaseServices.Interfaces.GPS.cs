@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ATAP.Utilities.LongRunningTasks;
 using ServiceStack;
-using ServiceStack.Text;
+using Serilog;
 
 namespace Ace.Agent.BaseServices {
     public partial class BaseServices : Service {

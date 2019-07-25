@@ -96,10 +96,10 @@ namespace Ace.AceGUI.Pages {
             // Testing for serialization of complex data types
             TestComplexTypeSerialization();
             //Log.LogDebug($"IsInitialized 1: {IsInitialized.Dump()}");
-            IsInitialized=await LStorage.GetItemAsyncSS<bool>("BaseServices.IsInitialized");
+            IsInitialized=await LStorage.GetItemAsync<bool>("BaseServices.IsInitialized");
             //Log.LogDebug($"IsInitialized 2: {IsInitialized.Dump()}");
             //Log.LogDebug($"LastInitialized 1: {LastInitialized.Dump()}");
-            LastInitialized=await LStorage.GetItemAsyncSS<DateTime>("BaseServices.LastInitialized");
+            LastInitialized=await LStorage.GetItemAsync<DateTime>("BaseServices.LastInitialized");
             //Log.LogDebug($"LastInitialized 2: {LastInitialized.Dump()}");
             // if the key is not found, the bool value will be false (default)
             if (!IsInitialized) {
@@ -128,11 +128,11 @@ namespace Ace.AceGUI.Pages {
                 //var initializationResponse = await HttpClient.PostJsonAsyncSS<InitializationResponse>(UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString(), initializationRequest); // use the ServiceStack JSON serializer library
                 Log.LogDebug($"Returned from PostJsonAsync<InitializationResponse>, initializationResponse = {initializationResponse.Dump()}");
                 //Log.LogDebug($"Returned from PostJsonAsyncSS<InitializationResponse>, initializationResponse = {initializationResponse.Dump()}");
-                await LStorage.SetItemAsyncSS("BaseServices.IsInitialized", true);
-                await LStorage.SetItemAsyncSS("BaseServices.LastInitialized", DateTime.Now);
+                await LStorage.SetItemAsync("BaseServices.IsInitialized", true);
+                await LStorage.SetItemAsync("BaseServices.LastInitialized", DateTime.Now);
                 // Initialize Local Storage with data structures for BaseServices Configuration and User Data
-                await LStorage.SetItemAsyncSS("BaseServices.ConfigurationData", initializationResponse.InitializationResponsePayload.ConfigurationData);
-                await LStorage.SetItemAsyncSS("BaseServices.UserData", initializationResponse.InitializationResponsePayload.UserData);
+                await LStorage.SetItemAsync("BaseServices.ConfigurationData", initializationResponse.InitializationResponsePayload.ConfigurationData);
+                await LStorage.SetItemAsync("BaseServices.UserData", initializationResponse.InitializationResponsePayload.UserData);
 
                 // ToDo: Move to LongRunningTasks initialization compilation unit
                 // Testing for serialization of ID<T> instances
@@ -144,13 +144,13 @@ namespace Ace.AceGUI.Pages {
                 Log.LogDebug($"D1: {D1.Dump()}");
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                await LStorage.SetItemAsyncSS("BaseServices.D1", D1);
+                await LStorage.SetItemAsync("BaseServices.D1", D1);
                 stopwatch.Stop();
-                Log.LogDebug($"SetItemAsyncSS took {stopwatch.ElapsedMilliseconds} milliseconds");
+                Log.LogDebug($"SetItemAsync took {stopwatch.ElapsedMilliseconds} milliseconds");
                 stopwatch.Restart();
-                var D2 = await LStorage.GetItemAsyncSS<Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskStatus>>("BaseServices.D1");
+                var D2 = await LStorage.GetItemAsync<Dictionary<Id<LongRunningTaskInfo>, LongRunningTaskStatus>>("BaseServices.D1");
                 stopwatch.Stop();
-                Log.LogDebug($"GetItemAsyncSS took {stopwatch.ElapsedMilliseconds} milliseconds");
+                Log.LogDebug($"GetItemAsync took {stopwatch.ElapsedMilliseconds} milliseconds");
                 Log.LogDebug($"D2: {D2.Dump()}");
 
                 // Initialize Local Storage with data structures for LongRunningTasks
@@ -160,19 +160,19 @@ namespace Ace.AceGUI.Pages {
                 
                 longRunningTasksCOD.Add(tID, tLRTS);
                 Log.LogDebug($"longRunningTasksCOD: {longRunningTasksCOD.Dump()}");
-                await LStorage.SetItemAsyncSS("BaseServices.LongRunningTasksCOD", longRunningTasksCOD);
-                var longRunningTasksCOD2 = await LStorage.GetItemAsyncSS<ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskStatus>>("BaseServices.LongRunningTasksCOD");
+                await LStorage.SetItemAsync("BaseServices.LongRunningTasksCOD", longRunningTasksCOD);
+                var longRunningTasksCOD2 = await LStorage.GetItemAsync<ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, LongRunningTaskStatus>>("BaseServices.LongRunningTasksCOD");
                 Log.LogDebug($"longRunningTasksCOD2: {longRunningTasksCOD2.Dump()}");
 
                 // ToDo: Move to diskanalysis initialization compilation unit
                 // Initialize Local Storage with data structures for DiskDriveAndFileSystemAnalysis
-                await LStorage.SetItemAsyncSS("DiskAnalysisServices.PartitionInfoExs", new PartitionInfoExs());
+                await LStorage.SetItemAsync("DiskAnalysisServices.PartitionInfoExs", new PartitionInfoExs());
 
-                IsInitialized=await LStorage.GetItemAsyncSS<bool>("BaseServices.IsInitialized");
+                IsInitialized=await LStorage.GetItemAsync<bool>("BaseServices.IsInitialized");
             }
 
             // initialize this page's Properties with data from local Storage
-            LastInitialized=await LStorage.GetItemAsyncSS<DateTime>("BaseServices.LastInitialized");
+            LastInitialized=await LStorage.GetItemAsync<DateTime>("BaseServices.LastInitialized");
             // Properties related to ConfigurationData and UserData initialization
             await InitConfigurationDataAsync();
             // Properties related to LongRunningTasks initialization
@@ -181,10 +181,10 @@ namespace Ace.AceGUI.Pages {
             await InitGeoLocationDataAsync();
 
             //ToDo: move to DiskAnalysis CSB feature initialization
-            PartitionInfoExs=await LStorage.GetItemAsyncSS<PartitionInfoExs>("DiskAnalysisServices.PartitionInfoExs");
-            testint =await LStorage.GetItemAsyncSS<int>("testint");
+            PartitionInfoExs=await LStorage.GetItemAsync<PartitionInfoExs>("DiskAnalysisServices.PartitionInfoExs");
+            testint =await LStorage.GetItemAsync<int>("testint");
             testint++;
-            await LStorage.SetItemAsyncSS("testint", testint);
+            await LStorage.SetItemAsync("testint", testint);
             Log.LogDebug($"Leaving BaseServices.OnInitAsync");
         }
         #endregion

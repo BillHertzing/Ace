@@ -183,6 +183,7 @@ namespace Ace.Agent.GUIServices {
             this.Configure(appHost);
         }
 
-        public void BeforePluginsLoaded(IAppHost appHost) { }
+        public void BeforePluginsLoaded(IAppHost appHost) {
+        }
     }
 }

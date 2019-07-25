@@ -5,16 +5,15 @@ using System.Reflection;
 using Ace.Agent.BaseServices;
 using ServiceStack;
 using ServiceStack.Caching;
-using ServiceStack.Logging;
+
 using Swordfish.NET.Collections;
 
-namespace Ace.Agent.MinerServices {
+namespace Ace.Plugin.MinerServices {
     public class MinerServicesData {
 
         #region PublicStaticFields
         #region PublicStaticFields:configKeyPrefix
         // Surface the configKeyPrefix for this namespace
-        //ToDo: Replace suffix with StringConstant
         public static string configKeyPrefix = MethodBase.GetCurrentMethod().DeclaringType.Namespace+".Config";
         #endregion
         #endregion

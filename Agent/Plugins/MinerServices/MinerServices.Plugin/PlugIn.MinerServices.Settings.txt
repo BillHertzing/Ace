@@ -1,4 +1,4 @@
-# comment
-# VersionInfo
+# Application Configuration Settings for Ace Plugin MinerServices
+# versioninfo
 
-Placeholder string placeholder
+Placeholder placeholder

@@ -8,7 +8,7 @@ using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.DiskDrive;
 using Ace.Agent.BaseServices;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
 
     //ToDo: Clean up region names
     #region InitializationRequest and Payload, InitializationResponse and Payload, and Route for DiskAnalysisServicesInitialization

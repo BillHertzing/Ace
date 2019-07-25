@@ -1,1 +1,5 @@
-﻿
+﻿# Application Configuration Settings for ServiceStack Middlware Host  
+# versioninfo
+
+PhysicalRootPath ./GUI/GUI
+MaxTimeInSecondsToWaitForGenericHostShutdown 10

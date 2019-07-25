@@ -1,0 +1,69 @@
+digraph {
+
+node [shape = polygon,
+		sides = 4,
+		distortion = "0.0",
+		orientation = "0.0",
+		skew = "0.0",
+		color = white,
+		style = filled,
+		fontname = "Helvetica-Outline" ];
+
+Start[sides=8, color=lightsteelblue1]
+Initializing[shape = circle, color=lightsteelblue1]
+TriggerListTL1[label="TriggerListTL1, consisting of triggers t1..t2.. for properties used by the program's State"];
+InitialActiveTriggerList[color=Yellow ];
+CurrentActiveTriggerList[color=Yellow];
+
+Initialized[shape = circle, color=lightsteelblue1];
+Run[skew = "1.0", color=Yellow];
+Program1[skew = "1.0", color=lightsteelblue2,]
+ActivateListIncrementAnIntegerPropertyButtonOnClick[color=lightsteelblue2,]
+Program2[skew = "1.0", color=lightsteelblue2,]
+Program3[skew = "1.0", color=lightsteelblue2,]
+Program4[skew = "1.0", color=lightsteelblue2,]
+Program5[skew = "1.0", color=lightsteelblue2,]
+Program6[skew = "1.0", color=lightsteelblue2,]
+AnIntProperty[sides = 6,skew = "0.0", color=olive,]
+AnotherIntProperty[sides = 6,skew = "0.0", color=olive,]
+Add[skew = "1.0", color=lightolive,]
+  Start-> Initializing[label="nop"];
+ActivateListIncrementAnIntegerPropertyButtonOnClick ->  IncrementAnIntegerPropertyButtonOnClick ;
+TriggerListTL1 -> InitialTriggerList
+InitialTriggerList -> InitialActiveTriggerList
+InitialActiveTriggerList-> CurrentActiveTriggerList
+InitialActiveTriggerList->ActivateListIncrementAnIntegerPropertyButtonOnClick 
+CurrentActiveTriggerList->ActivateListIncrementAnIntegerPropertyButtonOnClick 
+  Initializing -> Initialized[color="0.650 0.700 0.700", label="StateInputsInitialized [AllInputsValid]"];
+  Initialized -> Run[label="nop"];
+Run -> Program1[label="Start"];
+Program1 -> Run[label="Exit"];
+Run -> Program2[label="Start"];
+Program2 -> Run[label="Exit"];
+Run -> Program3[label="Start"];
+Program3 -> Run[label="Exit"];
+
+Program2 -> AnIntProperty;
+AnIntProperty-> Program2 ;
+Program3 -> AnIntProperty;
+AnIntProperty-> Add;
+Add -> AnIntProperty;
+Add -> Program3 ;
+Program3  -> TriggerListTL1;
+Program4 -> AnIntProperty;
+AnIntProperty-> Program4;
+Program4 -> AnotherIntProperty;
+AnotherIntProperty-> Program4;
+Program5 -> AnIntProperty;
+AnIntProperty-> Add ;
+Add -> AnIntProperty;
+Add -> Program5 ;
+Program5 -> AnotherIntProperty;
+AnotherIntProperty-> Add ;
+Add -> AnotherIntProperty;
+Add -> Program5 ;
+Program6 -> AnIntProperty;
+AnIntProperty-> Program6;
+Program6 -> AnotherIntProperty;
+AnotherIntProperty-> Program6;
+}

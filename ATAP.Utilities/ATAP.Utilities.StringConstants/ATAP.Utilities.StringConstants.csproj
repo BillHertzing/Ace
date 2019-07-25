@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <OldToolsVersion>Current</OldToolsVersion>
+    <UpgradeBackupLocation>C:\Dropbox\whertzing\GitHub\Ace\Backup2\</UpgradeBackupLocation>
+  </PropertyGroup>
+</Project>

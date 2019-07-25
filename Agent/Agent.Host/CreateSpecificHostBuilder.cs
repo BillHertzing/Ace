@@ -65,6 +65,7 @@ namespace Ace.Agent.Host {
                 // Start with a "compiled-in defaults" for anything that is required to be provided in configuration  to the WebHost (IIS or Kestrel)
                 //configWebHostBuilder.AddInMemoryCollection(DefaultConfiguration.aceCommanderWebHostConfigurationCompileTimeProduction);
                 // Add additional required configuration variables to be provided in configuration for other environments
+                //ToDo replace the following string case with .IsDevelopment() etc. from IHostExtensions
                 string env = genericHostBuilderContext.Configuration.GetValue<string>(StringConstants.EnvironmentConfigRootKey);
                 switch (env) {
                     case StringConstants.EnvironmentDevelopment:

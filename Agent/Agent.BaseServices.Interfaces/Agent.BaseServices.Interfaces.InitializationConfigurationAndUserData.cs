@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ServiceStack;
-using ServiceStack.Logging;
+using Serilog;
 using ATAP.Utilities.ETW;
 
 namespace Ace.Agent.BaseServices {
     public partial class BaseServices : Service {
-        public static ILog Log = LogManager.GetLogger(typeof(BaseServices));
 
         #region  Interfaces:GetConfigurationDataRequest
         public object Post(GetConfigurationDataRequest request) {

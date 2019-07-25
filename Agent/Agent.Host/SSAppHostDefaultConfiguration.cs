@@ -12,7 +12,8 @@ namespace Ace.Agent.Host {
         public static Dictionary<string, string> Production =
         new Dictionary<string, string>
         {
-            {"PhysicalRootPath", "./GUI/GUI/dist"}
+            {StringConstants.PhysicalRootPathConfigKey, StringConstants.PhysicalRootPathStringDefault},
+
         };
 
     }

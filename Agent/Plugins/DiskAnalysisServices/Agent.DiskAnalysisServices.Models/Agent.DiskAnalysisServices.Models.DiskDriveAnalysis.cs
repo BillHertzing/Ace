@@ -10,7 +10,7 @@ using Ace.Agent.BaseServices;
 using System.Threading;
 using Newtonsoft.Json;
 
-namespace Ace.Agent.DiskAnalysisServices {
+namespace Ace.Plugin.DiskAnalysisServices {
 
     #region AnalyzeDiskDriveRequest, AnalyzeDiskDriveResponse, and Route for AnalyzeDiskDrive
     [Route("/AnalyzeDiskDrive")]

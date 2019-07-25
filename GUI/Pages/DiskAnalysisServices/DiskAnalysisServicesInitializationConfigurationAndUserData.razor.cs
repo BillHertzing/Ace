@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Ace.AceGUI.HttpClientExtenssions;
 using Ace.Agent.BaseServices;
-using Ace.Agent.DiskAnalysisServices;
+using Ace.Plugin.DiskAnalysisServices;
 // Required for the logger/logging
 //using Blazor.Extensions.Logging;
 // Required for Blazor
@@ -22,15 +22,15 @@ namespace Ace.AceGUI.Pages {
 
         // Add constant structures for configuration data and user data to be used when the GUI is displayed before it can initialize with the agent
         // Eventually localized
-        public static Ace.Agent.DiskAnalysisServices.ConfigurationData configurationDataPlaceholder = new Ace.Agent.DiskAnalysisServices.ConfigurationData(-1);
-        public static Ace.Agent.DiskAnalysisServices.UserData userDataPlaceholder = new Ace.Agent.DiskAnalysisServices.UserData("User Data pre-init placeholder");
+        public static Ace.Plugin.DiskAnalysisServices.ConfigurationData configurationDataPlaceholder = new Ace.Plugin.DiskAnalysisServices.ConfigurationData(-1);
+        public static Ace.Plugin.DiskAnalysisServices.UserData userDataPlaceholder = new Ace.Plugin.DiskAnalysisServices.UserData("User Data pre-init placeholder");
         protected override async Task OnInitAsync() {
             Logger.LogDebug($"Starting DiskAnalysisServices.OnInitAsync");
 
-            var initializationRequest = new Ace.Agent.DiskAnalysisServices.InitializationRequest(new Ace.Agent.DiskAnalysisServices.InitializationRequestPayload(new Ace.Agent.BaseServices.InitializationData()));
+            var initializationRequest = new Ace.Plugin.DiskAnalysisServices.InitializationRequest(new Ace.Plugin.DiskAnalysisServices.InitializationRequestPayload(new Ace.Agent.BaseServices.InitializationData()));
             UriBuilder.Path="DiskAnalysisServicesInitialization";
             Logger.LogDebug($"Calling PostJsonAsyncSS<InitializationResponse> with InitializationRequest ={initializationRequest.Dump()}");
-            InitializationResponse=await HttpClient.PostJsonAsyncSS<Ace.Agent.DiskAnalysisServices.InitializationResponse>(UriBuilder.Uri.ToString(),
+            InitializationResponse=await HttpClient.PostJsonAsyncSS<Ace.Plugin.DiskAnalysisServices.InitializationResponse>(UriBuilder.Uri.ToString(),
                                 initializationRequest);
             Logger.LogDebug($"Returned from GetJsonAsync<Agent.BaseServices.InitializationResponse>, InitializationResponse = {InitializationResponse.Dump()}");
 
@@ -73,22 +73,22 @@ namespace Ace.AceGUI.Pages {
         #region Properties
 
         #region Properties:Initialization
-        public Ace.Agent.DiskAnalysisServices.InitializationRequest InitializationRequest { get; set; }
-        public Ace.Agent.DiskAnalysisServices.InitializationResponse InitializationResponse { get; set; }
+        public Ace.Plugin.DiskAnalysisServices.InitializationRequest InitializationRequest { get; set; }
+        public Ace.Plugin.DiskAnalysisServices.InitializationResponse InitializationResponse { get; set; }
 
         public bool InitializationResponseOK = false;
         public string InitializationRequestParameters = "None";
         #endregion
 
         #region Properties:ConfigurationData
-        public Ace.Agent.DiskAnalysisServices.ConfigurationData ConfigurationData { get; set; } = configurationDataPlaceholder;
+        public Ace.Plugin.DiskAnalysisServices.ConfigurationData ConfigurationData { get; set; } = configurationDataPlaceholder;
 
         public bool ConfigurationDataSave { get; set; }
 
         #endregion
 
         #region Properties:UserData
-        public Ace.Agent.DiskAnalysisServices.UserData UserData { get; set; } = userDataPlaceholder;
+        public Ace.Plugin.DiskAnalysisServices.UserData UserData { get; set; } = userDataPlaceholder;
 
         public bool UserDataSave { get; set; }
 

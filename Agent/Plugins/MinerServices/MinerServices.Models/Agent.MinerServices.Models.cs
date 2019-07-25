@@ -1,6 +1,6 @@
 using ServiceStack;
 
-namespace Ace.Agent.MinerServices
+namespace Ace.Plugin.MinerServices
 {
 
     [Route("/StartMiner")]
