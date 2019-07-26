@@ -6,7 +6,7 @@
 <p><em>ToDo: replace with window effect. Loading (The page load is calling onInitAsync, which has not yet returned a value for Initialization Response)</em></p>
 
 <hr />
-<button id="btnAnalyzeDiskDrive" type="button" class="btn btn-primary" onclick="@(async () => await AnalyzeDiskDrive("localhost",2))">Analyze Disk Drive (hardcoded localhost drive 2)</button>
+<button id="btnAnalyzeDiskDrive" type="button" class="btn btn-primary" @onclick="(async () => await AnalyzeDiskDrive(HardcodedHost,2))">Analyze Disk Drive (hardcoded localhost drive 2)</button>
 @if (AnalyzeDiskDriveLongRunningTaskIds == null)
 {
     <p>No requests to analyze any DiskDrives has yet been made</p>
@@ -16,7 +16,7 @@ else
     <p>The number of AnalyzeDiskDrive LongRunningTaskIDs in the list is  @AnalyzeDiskDriveLongRunningTaskIds.Count </p>
 }
 
-<button id="btnAnalyzeFileSystem" type="button" class="btn btn-primary" onclick="@(async () => await AnalyzeFileSystem("E:\\", 4096))">Analyze FileSystem  (hardcoded localhost root E:\ and 4096 )</button>
+<button id="btnAnalyzeFileSystem" type="button" class="btn btn-primary" @onclick="(async () => await AnalyzeFileSystem(HardcodedDrive, 4096))">Analyze FileSystem  (hardcoded localhost root E:\ and 4096 )</button>
 @if (AnalyzeFileSystemLongRunningTaskIds == null)
 {
     <p>No requests to analyze any FileSystems has yet been made</p>

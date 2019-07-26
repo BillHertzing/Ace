@@ -14,6 +14,6 @@ else
     <label for="MySqlConnectionString">@labelForMySqlConnectionString</label>
     <input type="text" class="form-control" id="MySqlConnectionString" bind="@ConfigurationData.MySqlConnectionString" placeholder="@placeHolderForMySqlConnectionString" />
 </div>
-<button type="button" class="btn btn-default" onclick="async () => await PostGetBaseServicesConfigurationData(0)">@labelForPostGetBaseServicesConfigurationData</button>
+<button type="button" class="btn btn-default" @onclick="(async () => await PostGetBaseServicesConfigurationData(0))">@labelForPostGetBaseServicesConfigurationData</button>
 <p>test:@testint</p>
 }

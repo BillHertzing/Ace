@@ -308,6 +308,7 @@ namespace Ace.Agent.Host {
             //Log.LogDebug($"roundTripcData from ServiceStack.Text.JsonSerializer.DeserializeFromString<Ace.Agent.BaseServices.ConfigurationData>(cDataStr) = {roundTripcData.Dump()}");
             Log.Debug($"End Temporary Testing");
         }
+        /*
         private void TestIDTypeSerialization() {
 
             // Testing for serialization of ID<T> instances
@@ -330,5 +331,6 @@ namespace Ace.Agent.Host {
             roundTripId=Newtonsoft.Json.JsonConvert.DeserializeObject<Id<LongRunningTaskInfo>>(IdStr);
             Log.Debug($"roundTripId from Newtonsoft.Json.JsonConvert.DeserializeObject<Id<LongRunningTaskInfo>> = {roundTripId.Dump()}");
         }
+        */
     }
 }

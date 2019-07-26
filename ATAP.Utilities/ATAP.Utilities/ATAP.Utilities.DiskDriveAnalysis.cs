@@ -85,6 +85,7 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
         public async Task AnalyzeDiskDrive(IDiskDriveSpecifier diskDriveSpecifier, IAnalyzeDiskDriveResult diskDriveAnalysisResult, IAnalyzeDiskDriveProgress diskDriveAnalysisProgress, CancellationToken cancellationToken, Action<CrudType, string> recordDiskInfoEx = null, Action<CrudType, string[]> recordPartitionInfosEx = null) {
             // ToDo: Add validation to ensure the diskDriveSpecifier corresponds to a valid member of the DiskInfoExs 
             Task task = new Task(() => { Thread.Sleep(1); }, cancellationToken);
+            await Task.Yield();
         }
 
         /*
@@ -100,7 +101,7 @@ namespace ATAP.Utilities.DiskDriveAnalysis {
 
         #region Properties
         #region Properties:class logger
-       //public ILog Log;
+        //public ILog Log;
 
         #endregion
         #endregion

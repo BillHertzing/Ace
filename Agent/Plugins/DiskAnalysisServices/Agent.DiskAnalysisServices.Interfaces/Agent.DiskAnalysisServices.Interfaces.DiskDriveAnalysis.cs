@@ -99,6 +99,7 @@ namespace Ace.Plugin.DiskAnalysisServices {
             longRunningTaskIds.Add(longRunningTaskID);
             var analyzeDiskDriveResponsePayload = new AnalyzeDiskDriveResponsePayload(longRunningTaskIds);
             var analyzeDiskDriveResponse = new AnalyzeDiskDriveResponse(analyzeDiskDriveResponsePayload);
+            await Task.Yield(); // ToDo: figure out if this is the right way to make the method async.
             return analyzeDiskDriveResponse;
         }
 

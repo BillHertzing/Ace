@@ -22,6 +22,8 @@ namespace ATAP.Utilities.LongRunningTasks {
             var cTS = me.CTS;
             cTS.Cancel();
             // ToDo: implement a better understanding of cancellation and how to handle it 
+            await Task.Yield();
+
             //Log.Debug($"leaving CancelTask: LRTId = {me.LRTId}");
             return true;
         }

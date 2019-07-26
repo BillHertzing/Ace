@@ -21,8 +21,8 @@ else
         <label for="Address">@labelForAddress</label>
         <input type="text" class="form-control" id="Address" bind="@Address" placeholder="@addressPlaceHolder" />
     </div>
-    <button type="button" class="btn btn-default" id="LatLngToAddress" onclick="@GetAddressFromLatLong">@labelForLatLngToAddressButton</button>
-    <button type="button" class="btn btn-default" id="AddressToLatLng" onclick="@GetLatLongFromAddress">@labelForAddressToLatLngButton</button>
+    <button type="button" class="btn btn-default" id="LatLngToAddress" @onclick="(async () => await GetAddressFromLatLong())">@labelForLatLngToAddressButton</button>
+    <button type="button" class="btn btn-default" id="AddressToLatLng" @onclick="(async () => await GetLatLongFromAddress())">@labelForAddressToLatLngButton</button>
 
     @if (@LatLngToAddressRspPayload == null)
     {

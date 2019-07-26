@@ -31,6 +31,7 @@ namespace Ace.AceGUI.Pages {
         IUriHelper UriHelper { get; set; }
         #endregion
 
+        public static string HardcodedHost { get; set; } = "localhost";
         public async Task AnalyzeDiskDrive(string computerName, int? diskDriveNumber)
         {
             Logger.LogDebug($"Starting AnalyzeDiskDrive");
@@ -50,6 +51,7 @@ namespace Ace.AceGUI.Pages {
             //Logger.LogDebug($"Leaving AnalyzeDiskDrive");
         }
 
+        public static string HardcodedDrive { get; set; } = "E:\\";
         public async Task AnalyzeFileSystem(string drive, int asyncFileReadBlockSize) {
             Logger.LogDebug($"Starting AnalyzeFileSystem");
             

@@ -48,9 +48,10 @@ namespace Ace.AceGUI.Pages {
 
     #region Page Initialization Handler
     protected override async Task OnInitAsync() {
-      // There is currently no need to initialize state or call the Agent during this components initialization, but keep the logging statements here to better understand component/page flow
-      //Logger.LogDebug($"Starting OnInitAsync");
-      //Logger.LogDebug($"Leaving OnInitAsync");
+            // There is currently no need to initialize state or call the Agent during this components initialization, but keep the logging statements here to better understand component/page flow
+            //Logger.LogDebug($"Starting OnInitAsync");
+            //Logger.LogDebug($"Leaving OnInitAsync");
+            await Task.Yield();
     }
     public InitializationResponse BaseServicesInitializationRspPayload { get; set; }
     #endregion

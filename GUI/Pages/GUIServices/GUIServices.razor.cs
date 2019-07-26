@@ -20,18 +20,20 @@ namespace Ace.AceGUI.Pages {
     protected override async Task OnInitAsync()
     {
 
-      //Logger.LogDebug($"starting GUIServices.OnInitAsync");
-      //VerifyGUIResponse verifyGUIResponse = await HttpClient.GetJsonAsync<VerifyGUIResponse>("/VerifyGUI?format=json");
-      //Logger.LogDebug($"GUIServices.OnInitAsyncGetJsonAsync returned {verifyGUIResponse.Result}");
-      //verifyGUIResult = verifyGUIResponse.Result;
-      //Logger.LogDebug($"leaving GUIServices.OnInitAsync");
+            //Logger.LogDebug($"starting GUIServices.OnInitAsync");
+            //VerifyGUIResponse verifyGUIResponse = await HttpClient.GetJsonAsync<VerifyGUIResponse>("/VerifyGUI?format=json");
+            //Logger.LogDebug($"GUIServices.OnInitAsyncGetJsonAsync returned {verifyGUIResponse.Result}");
+            //verifyGUIResult = verifyGUIResponse.Result;
+            //Logger.LogDebug($"leaving GUIServices.OnInitAsync");
+            await Task.Yield();
+
+        }
+        // Access the Logging extensions registered in the DI container
+        /*
+        [Inject]
+        protected ILogger<BaseServicesCodeBehind> Logger {
+          get; set;
+        }
+            */
     }
-    // Access the Logging extensions registered in the DI container
-    /*
-    [Inject]
-    protected ILogger<BaseServicesCodeBehind> Logger {
-      get; set;
-    }
-        */
-  }
 }

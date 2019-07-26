@@ -16,7 +16,7 @@
         <input type="checkbox" bind="@ConfigurationDataSave" /> @labelForConfigurationDataSave
     </label>
 </div>
-<button type="button" class="btn btn-default" onclick="@SetRealEstateServicesConfigurationData">Submit</button>
+<button type="button" class="btn btn-default" @onclick="(async () => await SetRealEstateServicesConfigurationData())">Submit</button>
 @if (@SetConfigurationDataResponse==null) {
     <p>Configuration Information has not yet been submitted to Ace Commander</p>
 } else {

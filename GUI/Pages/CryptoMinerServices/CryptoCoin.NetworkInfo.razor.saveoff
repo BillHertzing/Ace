@@ -20,7 +20,7 @@
   <p>
     @(@currentHashRate.HashRatePerTimeSpan) Hashes / @currentHashRate.HashRateTimeSpan.Duration.TotalSeconds Seconds
   </p>*@
-<button class="btn btn-primary" onclick="@Print">Print</button>
+<button class="btn btn-primary" @onclick=""(async () => await Print()">Print</button>
 
 <a href="/hardware">hardware page</a>
 

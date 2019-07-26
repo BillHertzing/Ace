@@ -18,7 +18,7 @@ else
     <input type="checkbox" id="ConfigurationDataSave" bind="@ConfigurationDataSave" /> 
 
 </div>
-<button type="button" class="btn btn-default" onclick="@SetConfigurationData">Submit</button>
+<button type="button" class="btn btn-default" @onclick="(async () => await SetConfigurationData())">Submit</button>
 <p>ToDo: show long running taskid</p>
 }
 

@@ -89,6 +89,7 @@ namespace Ace.Plugin.DiskAnalysisServices {
             //var stringContent = new StringContent(analyzeFileSystemResponseSerialized, Encoding.UTF8, "application/json");
             //Log.Debug($"in AnalyzeFileSystemRequest stringContent = {stringContent.Dump()}");
             // end testing 
+            await Task.Yield(); // ToDo: figure out if this is the right way to make the method async.
             Log.Debug($"Leaving Post(AnalyzeFileSystemRequest), analyzeFileSystemResponse = {analyzeFileSystemResponse}");
             return analyzeFileSystemResponse;
         }

@@ -25,7 +25,7 @@
         <input type="checkbox" bind="@UserDataSave" /> @labelForUserDataSave
     </label>
 </div>
-<button type="button" class="btn btn-default" onclick="@SetRealEstateServicesUserData">Submit</button>
+<button type="button" class="btn btn-default" @onclick="(async () => await SetRealEstateServicesUserData())">Submit</button>
 @if (@InitializationResponse==null) {
     <p><em>Loading (Calling onInitAsync)</em></p>
 }
@@ -33,7 +33,7 @@
 @if (@SetUserDataResponse==null) {
     <p>User Information has not yet been submitted to Ace Commander</p>
 } else {
-<p>SetRealEstateServicesUserData returned @@SetUserDataResponse.Result.ToString() </p>
+<p>SetRealEstateServicesUserData returned ToDo: return a Task that returns SetUserDataResponse.Result.ToString() </p>
 }
 
 

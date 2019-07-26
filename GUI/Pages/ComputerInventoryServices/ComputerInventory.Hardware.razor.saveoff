@@ -12,8 +12,8 @@
 <div><label>component mainBoardMakerDropDownSingleSelect.CurrentlySelectedValue = </label> @mainBoardMakerDropDownSingleSelect?.CurrentlySelectedValue</div>
 <hr />
 <p>
-  <button class="btn btn-primary" onclick="@ForceCurrentlySelectedValueOfcPUMakerDropDownSingleSelectToDefault">Force the cPUMakerDropDownSingleSelect to its Default value</button>
-  <button class="btn btn-primary" onclick="@ForceCurrentlySelectedValueOfmainBoardMakerDropDownSingleSelectToDefault">(pset) Force the mainBoardMakerDropDownSingleSelect to its Default value</button>
+  <button class="btn btn-primary" @onclick="(async () => await ForceCurrentlySelectedValueOfcPUMakerDropDownSingleSelectToDefault())">Force the cPUMakerDropDownSingleSelect to its Default value</button>
+  <button class="btn btn-primary" @onclick="(async () => await ForceCurrentlySelectedValueOfmainBoardMakerDropDownSingleSelectToDefault())">(pset) Force the mainBoardMakerDropDownSingleSelect to its Default value</button>
 </p>
 
 @functions {

@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Security;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
-using Microsoft.Extensions.Hosting;
 using Ace.Plugin.RealEstateServices;
 
 namespace Ace.Agent.Host {

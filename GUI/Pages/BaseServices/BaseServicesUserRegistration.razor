@@ -2,14 +2,14 @@
 @inherits Ace.AceGUI.Pages.BaseServicesUserRegistrationCodeBehind
 <h2>User Registration</h2>
 
-<!-- If there is ever a need to populate state on this component, or get information from the Agent before displaing this commponent, add a pair of UserRegistrationInitializationReq/RspDTO.
-    But for no, there is no need to initializae any data in this component before it is displayed -->
+<!-- If there is ever a need to populate state on this component, or get information from the Agent before displaying this component, add a pair of UserRegistrationInitializationReq/RspDTO.
+    But for now, there is no need to initialize any data in this component before it is displayed -->
 <!-- Display the fields of the Servicestack.Auth.Register DTO -->
 <div>
   <label for="UserName">@labelForUserName</label>
   <input type="text" class="form-control" id="UserName" bind="@UserName" placeholder="@placeHolderForUserName" />
 </div>
-<button type="button" class="btn btn-default" id="UserRegistrationSubmitButton" onclick="@UserRegistrationSubmit">@labelForUserRegistrationSubmitButton</button>
+<button type="button" class="btn btn-default" id="UserRegistrationSubmitButton" @onclick="(async () => await UserRegistrationSubmit())">@labelForUserRegistrationSubmitButton</button>
 
 <!-- Start region During Development and Debugging -->
 <p>BaseServicesUserRegistrationRspDTO = @BaseServicesUserRegistrationRspDTOExpanded</p>

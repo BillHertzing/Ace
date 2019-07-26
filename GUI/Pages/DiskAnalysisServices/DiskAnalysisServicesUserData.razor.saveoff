@@ -18,7 +18,7 @@ else
       <input type="checkbox" bind="@UserDataSave" /> @labelForUserDataSave
     </label>
   </div>
-  <button type="button" class="btn btn-default" onclick="@SetUserData">Submit</button>
+  <button type="button" class="btn btn-default" @onclick="(async () => await SetUserData())">Submit</button>
 
   @if (@SetUserDataResponse == null)
   {

@@ -13,6 +13,6 @@ else
         <label for="GatewayNameString">@labelForGatewayNameString</label>
         <input type="text" class="form-control" id="GatewayEntryNameString" bind="@UserData.GatewayNameString" placeholder="@placeHolderForGatewayNameString" />
     </div>
-    <button type="button" class="btn btn-default" onclick="async () => await PostGetBaseServicesUserData(0)">@labelForPostBaseServicesUserDataButton</button>
+    <button type="button" class="btn btn-default" @onclick="(async () => await PostGetBaseServicesUserData(0))">@labelForPostBaseServicesUserDataButton</button>
 
 }
