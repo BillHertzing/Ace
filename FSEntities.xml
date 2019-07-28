@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+  <changeSet author="WGH" id="1">
+    <createTable tableName="FSEntities"
+                    remarks="The entities that can be found in a Windows FileSystem">
+      <column name="id" type="TinyInt">
+        <constraints nullable="false" primaryKey="true"
+                     primaryKeyName="DPT_PK"/>
+      </column>
+      <column name="enum_id" type="varchar2(14)"
+              remarks="The official department name as registered on the internal website."/>
+    </createTable>
+    <addUniqueConstraint constraintName="departments_uk1"
+                         columnNames="dname" tableName="departments"/>
+    <createSequence sequenceName="departments_seq"/>
+  </changeSet>
+
+  <create
+  Create table FSEntities
+  (
+  id INT PRIMARY KEY IDENTITY (1, 1),
+  enum_id TinyInt Unique NOT NULL,
+  DisplayName VARCHAR (255) NOT NULL
+  );
+  Select * from FSEntities;
+  insert into FSEntities
+  (enum_id,DisplayName)
+  Values
+  (0,'Directory')
+  ,(1,'Archive')
+  ,(2,'File')
+  ;
+  Select * from FSEntities;
+</databaseChangeLog>
