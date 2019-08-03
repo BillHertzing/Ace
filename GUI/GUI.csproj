@@ -87,6 +87,9 @@
     <ProjectReference Include="..\Agent\PlugIns\RealEstateServices\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
     <ProjectReference Include="..\Agent\Plugins\RealEstateServices\Agent.RealEstateServices.Shared\Agent.RealEstateServices.Shared.csproj" />
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
+    <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.IJSON.SS\ATAP.Utilities.IJSON.SS.csproj" />
+    <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.IJSON.STJ\ATAP.Utilities.IJSON.STJ.csproj" />
+    <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.IJSON\ATAP.Utilities.IJSON.csproj" />
     <ProjectReference Include="..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
   </ItemGroup>
   

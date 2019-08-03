@@ -9,10 +9,14 @@ using Blazor.Extensions.Logging;
 // Local Storage provided by Blazored.LocalStorage
 using Blazored.LocalStorage;
 using System;
+using ATAP.Utilities.IJSON;
+using ATAP.Utilities.IJSON.STJ;
 
 namespace GUI {
     public class Startup {
         public void ConfigureServices(IServiceCollection services) {
+            // Add an implementation of the IJSON interface
+            services.AddSingleton<ATAP.Utilities.IJSON.IJSON>(new ATAP.Utilities.IJSON.STJ.IJSONSTJ());
             // Add Blazor.Extensions.Logging.BrowserConsoleLogger; taken from the Blazor.Extensions.Logging NuGet package home page https://www.nuget.org/packages/Blazor.Extensions.Logging/# on 6/12/2018
             services.AddLogging(builder => builder
                 // Register the Blazor.Extensions.Logging logger with the Microsoft.Extensions.Logging.ILoggerBuilder

@@ -2,7 +2,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Ace.AceGUI.HttpClientExtenssions;
+using Ace.AceGUI.HttpClientExtensions;
 using Ace.Agent.BaseServices;
 using Ace.Plugin.DiskAnalysisServices;
 // Required for the logger/logging
@@ -29,8 +29,8 @@ namespace Ace.AceGUI.Pages {
 
             var initializationRequest = new Ace.Plugin.DiskAnalysisServices.InitializationRequest(new Ace.Plugin.DiskAnalysisServices.InitializationRequestPayload(new Ace.Agent.BaseServices.InitializationData()));
             UriBuilder.Path="DiskAnalysisServicesInitialization";
-            Logger.LogDebug($"Calling PostJsonAsyncSS<InitializationResponse> with InitializationRequest ={initializationRequest.Dump()}");
-            InitializationResponse=await HttpClient.PostJsonAsyncSS<Ace.Plugin.DiskAnalysisServices.InitializationResponse>(UriBuilder.Uri.ToString(),
+            Logger.LogDebug($"Calling PostJsonAsyncIJ<InitializationResponse> with InitializationRequest ={initializationRequest.Dump()}");
+            InitializationResponse=await HttpClient.PostJsonAsyncIJ<Ace.Plugin.DiskAnalysisServices.InitializationResponse>(UriBuilder.Uri.ToString(),
                                 initializationRequest);
             Logger.LogDebug($"Returned from GetJsonAsync<Agent.BaseServices.InitializationResponse>, InitializationResponse = {InitializationResponse.Dump()}");
 
@@ -49,7 +49,7 @@ namespace Ace.AceGUI.Pages {
             UriBuilder.Path="SetConfigurationData";
             Logger.LogDebug($"Calling GetJsonAsync<SetConfigurationDataResponse> with SetConfigurationDataRequest = {setConfigurationDataRequest.Dump()}");
             SetConfigurationDataResponse setConfigurationDataResponse =
-      await HttpClient.PostJsonAsyncSS<SetConfigurationDataResponse>(UriBuilder.Uri.ToString(),
+      await HttpClient.PostJsonAsyncIJ<SetConfigurationDataResponse>(UriBuilder.Uri.ToString(),
                                                                                            setConfigurationDataRequest);
             Logger.LogDebug($"Returned from GetJsonAsync<SetConfigurationDataResponse> with setConfigurationDataResponse = {setConfigurationDataResponse.Dump()}");
             Logger.LogDebug($"Leaving SetConfigurationData");
@@ -61,12 +61,12 @@ namespace Ace.AceGUI.Pages {
             var setUserDataRequest = new SetUserDataRequest(new SetUserDataRequestPayload(UserData,
       UserDataSave));
 
-            //Logger.LogDebug($"Calling PostJsonAsyncSS<SetUserDataResponsePayload>");
+            //Logger.LogDebug($"Calling PostJsonAsyncIJ<SetUserDataResponsePayload>");
             SetUserDataResponse=
-      await HttpClient.PostJsonAsyncSS<SetUserDataResponse>("/SetUserData?format=json",
+      await HttpClient.PostJsonAsyncIJ<SetUserDataResponse>("/SetUserData?format=json",
                                                                             setUserDataRequest);
-            //Logger.LogDebug($"Returned from PostJsonAsyncSS<SetUserDataResponsePayload>");
-            ////Logger.LogDebug($"Returned from PostJsonAsyncSS<SetUserDataResponsePayload> with SetUserDataResponsePayload.Result = {SetUserDataResponsePayload.Result}");
+            //Logger.LogDebug($"Returned from PostJsonAsyncIJ<SetUserDataResponsePayload>");
+            ////Logger.LogDebug($"Returned from PostJsonAsyncIJ<SetUserDataResponsePayload> with SetUserDataResponsePayload.Result = {SetUserDataResponsePayload.Result}");
             //Logger.LogDebug($"Leaving SetUserData");
         }
 
