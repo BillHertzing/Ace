@@ -11,7 +11,7 @@ using Blazor.Extensions.Logging;
 // Required for ComputerInventory used in BaseServices
 using ServiceStack.Text;
 using ATAP.Utilities.GeoLocationData;
-using Ace.AceGUI.HttpClientExtenssions;
+using Ace.AceGUI.HttpClientExtensions;
 
 //using Stateless;
 
@@ -64,10 +64,10 @@ namespace Ace.AceGUI.Pages {
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             var geoLocationData = new GeoLocationData(GeoLocationData.Latitude, GeoLocationData.Longitude, string.Empty);
             var getAddressFromLatLongRequest = new GetAddressFromLatLongRequest(geoLocationData);
-            Log.LogDebug($"Calling PostJsonAsyncSS<GetAddressFromLatLongResponse> with getAddressFromLatLongRequest = {getAddressFromLatLongRequest.Dump()}");
+            Log.LogDebug($"Calling PostJsonAsyncIJ<GetAddressFromLatLongResponse> with getAddressFromLatLongRequest = {getAddressFromLatLongRequest.Dump()}");
             var getAddressFromLatLongResponse=
-      await HttpClient.PostJsonAsyncSS<GetAddressFromLatLongResponse>("/GetAddressFromLatLong", getAddressFromLatLongRequest);
-            Log.LogDebug($"Returned from PostJsonAsyncSS<GetAddressFromLatLongResponse> with getAddressFromLatLongResponse = {getAddressFromLatLongResponse.Dump()}");
+      await HttpClient.PostJsonAsyncIJ<GetAddressFromLatLongResponse>("/GetAddressFromLatLong", getAddressFromLatLongRequest);
+            Log.LogDebug($"Returned from PostJsonAsyncIJ<GetAddressFromLatLongResponse> with getAddressFromLatLongResponse = {getAddressFromLatLongResponse.Dump()}");
             var longRunningTaskStartupInfo = getAddressFromLatLongResponse.LongRunningTaskStartupInfo;
 
             Log.LogDebug($"Leaving GetAddressFromLatLongResponse");
@@ -80,10 +80,10 @@ namespace Ace.AceGUI.Pages {
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             var getLatLongFromAddressRequest = new GetLatLongFromAddressRequest(new GeoLocationData(decimal.Zero, decimal.Zero, GeoLocationData.Address));
-            Log.LogDebug($"Calling PostJsonAsyncSS<GetLatLongFromAddressResponse> with getLatLongFromAddressRequest = {getLatLongFromAddressRequest.Dump()}");
+            Log.LogDebug($"Calling PostJsonAsyncIJ<GetLatLongFromAddressResponse> with getLatLongFromAddressRequest = {getLatLongFromAddressRequest.Dump()}");
             var longRunningTaskStartupInfo =
-      await HttpClient.PostJsonAsyncSS<GetLatLongFromAddressResponse>("/GetLatLongFromAddress", getLatLongFromAddressRequest);
-            Log.LogDebug($"Returned from PostJsonAsyncSS<GetLatLongFromAddressResponse> with longRunningTaskStartupInfo = {longRunningTaskStartupInfo.Dump()}");
+      await HttpClient.PostJsonAsyncIJ<GetLatLongFromAddressResponse>("/GetLatLongFromAddress", getLatLongFromAddressRequest);
+            Log.LogDebug($"Returned from PostJsonAsyncIJ<GetLatLongFromAddressResponse> with longRunningTaskStartupInfo = {longRunningTaskStartupInfo.Dump()}");
             //Latitude=AddressToLatLngRspPayload.Latitude;
             //Longitude=AddressToLatLngRspPayload.Longitude;
             Log.LogDebug($"Leaving GetLatLongFromAddress");

@@ -9,7 +9,7 @@ using ATAP.Utilities.TypedGuids;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using ServiceStack.Text;
-using Ace.AceGUI.HttpClientExtenssions;
+using Ace.AceGUI.HttpClientExtensions;
 
 namespace Ace.AceGUI.Pages {
     public partial class DiskAnalysisServicesCodeBehind : ComponentBase
@@ -39,8 +39,8 @@ namespace Ace.AceGUI.Pages {
             var analyzeDiskDriveRequest = new AnalyzeDiskDriveRequest(analyzeDiskDriveRequestPayload);
             // ToDo: deactivate the AnalyzeDiskDrive button
             UriBuilder.Path = "AnalyzeDiskDrive";
-            var analyzeDiskDriveResponse = await HttpClient.PostJsonAsyncSS<AnalyzeDiskDriveResponse>(UriBuilder.Uri.ToString(), analyzeDiskDriveRequest);
-            Logger.LogDebug($"Returned from PostJsonAsyncSS<AnalyzeDiskDriveResponse>, analyzeDiskDriveResponse = {analyzeDiskDriveResponse.Dump()}");
+            var analyzeDiskDriveResponse = await HttpClient.PostJsonAsyncIJ<AnalyzeDiskDriveResponse>(UriBuilder.Uri.ToString(), analyzeDiskDriveRequest);
+            Logger.LogDebug($"Returned from PostJsonAsyncIJ<AnalyzeDiskDriveResponse>, analyzeDiskDriveResponse = {analyzeDiskDriveResponse.Dump()}");
             // ToDo: move initialization of the AnalyzeDiskDriveLongRunningTaskIds object to a method that initializes a Lazy and see if it needs a Dispose??
             // record the TaskID, creating the List if it does not yet exist
             if (AnalyzeDiskDriveLongRunningTaskIds == null) { AnalyzeDiskDriveLongRunningTaskIds=new List<Id<LongRunningTaskInfo>>(); }
@@ -59,12 +59,12 @@ namespace Ace.AceGUI.Pages {
             var analyzeFileSystemRequest = new AnalyzeFileSystemRequest(analyzeFileSystemRequestPayload);
             // ToDo: deactivate the AnalyzeFileSystem button
             UriBuilder.Path="AnalyzeFileSystem";
-            Logger.LogDebug($"in AnalyzeFileSystem: Calling PostJsonAsyncSS<AnalyzeFileSystemResponse> with analyzeFileSystemRequest = {analyzeFileSystemRequest.Dump()}");
+            Logger.LogDebug($"in AnalyzeFileSystem: Calling PostJsonAsyncIJ<AnalyzeFileSystemResponse> with analyzeFileSystemRequest = {analyzeFileSystemRequest.Dump()}");
             //ToDo: every call back to the host may potentially return status code 500 and an error message, must wrap the call in try/catch
             var analyzeFileSystemResponse =
-            await HttpClient.PostJsonAsyncSS<AnalyzeFileSystemResponse>(UriBuilder.Uri.ToString(),
+            await HttpClient.PostJsonAsyncIJ<AnalyzeFileSystemResponse>(UriBuilder.Uri.ToString(),
                                                                    analyzeFileSystemRequest);
-            Logger.LogDebug($"in AnalyzeFileSystem: PostJsonAsyncSS<AnalyzeFileSystemResponse> returned analyzeFileSystemResponse = {analyzeFileSystemResponse.Dump()}");
+            Logger.LogDebug($"in AnalyzeFileSystem: PostJsonAsyncIJ<AnalyzeFileSystemResponse> returned analyzeFileSystemResponse = {analyzeFileSystemResponse.Dump()}");
 
             // ToDo: move initialization of the AnalyzeFileSystemLongRunningTaskIds object to a method that initializes a Lazy and see if it needs a Dispose??
             if (AnalyzeFileSystemLongRunningTaskIds==null) { AnalyzeFileSystemLongRunningTaskIds=new List<Id<LongRunningTaskInfo>>(); }

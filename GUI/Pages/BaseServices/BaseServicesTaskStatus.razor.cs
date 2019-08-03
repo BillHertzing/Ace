@@ -65,10 +65,10 @@ namespace Ace.AceGUI.Pages {
             Log.LogDebug($"in BaseServices.GetLongRunningTasksStatusByList getLongRunningTasksStatusResponseStr = {getLongRunningTasksStatusResponseStr.Dump()}");
             var getLongRunningTasksStatusResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<GetLongRunningTasksStatusResponse>(getLongRunningTasksStatusResponseStr);
             */
-            Log.LogDebug($"Calling PostJsonAsyncSS<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusRequest = {getLongRunningTasksStatusRequest.Dump()}");
+            Log.LogDebug($"Calling PostJsonAsyncIJ<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusRequest = {getLongRunningTasksStatusRequest.Dump()}");
             var getLongRunningTasksStatusResponse =
-            await HttpClient.PostJsonAsyncSS<GetLongRunningTasksStatusResponse>(UriBuilder.Uri.ToString(), getLongRunningTasksStatusRequest);
-            Log.LogDebug($"Returned from PostJsonAsyncSS<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusResponse = {getLongRunningTasksStatusResponse.Dump()}");
+            await HttpClient.PostJsonAsyncIJ<GetLongRunningTasksStatusResponse>(UriBuilder.Uri.ToString(), getLongRunningTasksStatusRequest);
+            Log.LogDebug($"Returned from PostJsonAsyncIJ<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusResponse = {getLongRunningTasksStatusResponse.Dump()}");
 
             Log.LogDebug($"Leaving BaseServices.GetLongRunningTasksStatusByList");
         }
@@ -80,10 +80,10 @@ namespace Ace.AceGUI.Pages {
             longRunningTaskInfoIdList.AddRange(LongRunningTasksCOD.Keys);
             GetLongRunningTasksStatusRequest getLongRunningTasksStatusRequest = new GetLongRunningTasksStatusRequest(longRunningTaskInfoIdList);
             UriBuilder.Path="GetLongRunningTasksStatus";
-            Log.LogDebug($"Calling PostJsonAsyncSS<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusRequest = {getLongRunningTasksStatusRequest.Dump()}");
+            Log.LogDebug($"Calling PostJsonAsyncIJ<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusRequest = {getLongRunningTasksStatusRequest.Dump()}");
             GetLongRunningTasksStatusResponse getLongRunningTasksStatusResponse =
-      await HttpClient.PostJsonAsyncSS<GetLongRunningTasksStatusResponse>(UriBuilder.Uri.ToString(), getLongRunningTasksStatusRequest);
-            Log.LogDebug($"Returned from PostJsonAsyncSS<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusResponse = {getLongRunningTasksStatusResponse.Dump()}");
+      await HttpClient.PostJsonAsyncIJ<GetLongRunningTasksStatusResponse>(UriBuilder.Uri.ToString(), getLongRunningTasksStatusRequest);
+            Log.LogDebug($"Returned from PostJsonAsyncIJ<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusResponse = {getLongRunningTasksStatusResponse.Dump()}");
             Log.LogDebug($"Leaving BaseServices.GetLongRunningTasksStatus (all)");
         }
 
