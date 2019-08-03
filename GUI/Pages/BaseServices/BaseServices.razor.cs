@@ -190,7 +190,7 @@ namespace Ace.AceGUI.Pages {
             IsAliveReqPayload isAliveReqPayload = new IsAliveReqPayload { };
             Log.LogDebug($"Calling PostJsonAsyncSS<isAliveRspPayload> with IsAliveReqPayload = {isAliveReqPayload}");
             var isAliveRspPayload=
-      await HttpClient.PostJsonAsyncSS<IsAliveRspPayload>(UriHelper.ToAbsoluteUri("IsAlive").ToString(), isAliveReqPayload);
+      await HttpClient.PostJsonAsyncIJ<IsAliveRspPayload>(UriHelper.ToAbsoluteUri("IsAlive").ToString(), isAliveReqPayload);
             Log.LogDebug($"Returned from PostJsonAsyncSS<isAliveRspPayload> with isAliveRspPayload = {isAliveRspPayload}");
             Log.LogDebug($"Leaving IsAlive");
         }

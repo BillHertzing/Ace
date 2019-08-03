@@ -66,7 +66,7 @@ namespace Ace.AceGUI.Pages {
             */
             Log.LogDebug($"Calling PostJsonAsyncSS<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusRequest = {getLongRunningTasksStatusRequest.Dump()}");
             var getLongRunningTasksStatusResponse =
-            await HttpClient.PostJsonAsyncSS<GetLongRunningTasksStatusResponse> (UriHelper.ToAbsoluteUri("GetLongRunningTasksStatus").ToString(), getLongRunningTasksStatusRequest);
+            await HttpClient.PostJsonAsyncIJ<GetLongRunningTasksStatusResponse> (UriHelper.ToAbsoluteUri("GetLongRunningTasksStatus").ToString(), getLongRunningTasksStatusRequest);
             Log.LogDebug($"Returned from PostJsonAsyncSS<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusResponse = {getLongRunningTasksStatusResponse.Dump()}");
 
             Log.LogDebug($"Leaving BaseServices.GetLongRunningTasksStatusByList");
@@ -80,7 +80,7 @@ namespace Ace.AceGUI.Pages {
             GetLongRunningTasksStatusRequest getLongRunningTasksStatusRequest = new GetLongRunningTasksStatusRequest(longRunningTaskInfoIdList);
             Log.LogDebug($"Calling PostJsonAsyncSS<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusRequest = {getLongRunningTasksStatusRequest.Dump()}");
             GetLongRunningTasksStatusResponse getLongRunningTasksStatusResponse =
-      await HttpClient.PostJsonAsyncSS<GetLongRunningTasksStatusResponse>(UriHelper.ToAbsoluteUri("GetLongRunningTasksStatus").ToString(), getLongRunningTasksStatusRequest);
+      await HttpClient.PostJsonAsyncIJ<GetLongRunningTasksStatusResponse>(UriHelper.ToAbsoluteUri("GetLongRunningTasksStatus").ToString(), getLongRunningTasksStatusRequest);
             Log.LogDebug($"Returned from PostJsonAsyncSS<GetLongRunningTasksStatusResponse> with getLongRunningTasksStatusResponse = {getLongRunningTasksStatusResponse.Dump()}");
             Log.LogDebug($"Leaving BaseServices.GetLongRunningTasksStatus (all)");
         }
