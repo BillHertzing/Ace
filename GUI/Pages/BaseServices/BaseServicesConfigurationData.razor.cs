@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Blazor.Extensions.Logging;
 // Required for Blazor LocalStorage
 // Required for ComputerInventory used in BaseServices
-using Ace.AceGUI.HttpClientExtenssions;
+using Ace.AceGUI.HttpClientExtensions;
 //using Stateless;
 
 namespace Ace.AceGUI.Pages {
@@ -56,10 +56,10 @@ namespace Ace.AceGUI.Pages {
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             GetConfigurationDataRequest getConfigurationDataRequest = new GetConfigurationDataRequest();
-            //Log.LogDebug($"Calling PostJsonAsyncSS<GetConfigurationDataResponse> with GetConfigurationDataRequest = {getConfigurationDataRequest}");
+            //Log.LogDebug($"Calling PostJsonAsyncIJ<GetConfigurationDataResponse> with GetConfigurationDataRequest = {getConfigurationDataRequest}");
             GetConfigurationDataResponse getConfigurationDataResponse =
-      await HttpClient.PostJsonAsyncSS<GetConfigurationDataResponse>("/GetBaseServicesConfigurationData", getConfigurationDataRequest);
-            //Log.LogDebug($"Returned from PostJsonAsyncSS<GetConfigurationDataResponse> with GetConfigurationDataResponse = {GetConfigurationDataResponse}");
+      await HttpClient.PostJsonAsyncIJ<GetConfigurationDataResponse>("/GetBaseServicesConfigurationData", getConfigurationDataRequest);
+            //Log.LogDebug($"Returned from PostJsonAsyncIJ<GetConfigurationDataResponse> with GetConfigurationDataResponse = {GetConfigurationDataResponse}");
             ConfigurationData=getConfigurationDataResponse.ConfigurationData;
             Log.LogDebug($"Leaving PostGetBaseServicesConfigurationData");
         }
@@ -72,10 +72,10 @@ namespace Ace.AceGUI.Pages {
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             GetUserDataRequest getUserDataRequest = new GetUserDataRequest();
-            //Log.LogDebug($"Calling PostJsonAsyncSS<GetUserDataResponse> with getUserDataRequest = {getUserDataRequest}");
+            //Log.LogDebug($"Calling PostJsonAsyncIJ<GetUserDataResponse> with getUserDataRequest = {getUserDataRequest}");
             GetUserDataResponse getUserDataResponse =
-      await HttpClient.PostJsonAsyncSS<GetUserDataResponse>("/GetBaseServicesUserData", getUserDataRequest);
-            //Log.LogDebug($"Returned from PostJsonAsyncSS<GetUserDataResponse> with GetUserDataResponse = {getUserDataResponse}");
+      await HttpClient.PostJsonAsyncIJ<GetUserDataResponse>("/GetBaseServicesUserData", getUserDataRequest);
+            //Log.LogDebug($"Returned from PostJsonAsyncIJ<GetUserDataResponse> with GetUserDataResponse = {getUserDataResponse}");
             UserData=getUserDataResponse.UserData;
             //Log.LogDebug($"Leaving PostGetBaseServicesUserData");
         }

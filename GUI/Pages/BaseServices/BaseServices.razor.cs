@@ -17,7 +17,7 @@ using ATAP.Utilities.LongRunningTasks;
 using ServiceStack.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Ace.AceGUI.HttpClientExtenssions;
+using Ace.AceGUI.HttpClientExtensions;
 using System.Text;
 using Microsoft.AspNetCore.Blazor.Services;
 using ATAP.Utilities.ConcurrentObservableCollections;
@@ -117,9 +117,9 @@ namespace Ace.AceGUI.Pages {
                 Log.LogDebug($"UriHelper.ToAbsoluteUri(BaseServicesInitialization).ToString(): {UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString()}");
                 Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with initializationRequest = {initializationRequest.Dump()}");
                 var initializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>(UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString(), initializationRequest); // use the DOT NET CORE Blazor Built-In JSON serializer library
-                //var initializationResponse = await HttpClient.PostJsonAsyncSS<InitializationResponse>(UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString(), initializationRequest); // use the ServiceStack JSON serializer library
+                //var initializationResponse = await HttpClient.PostJsonAsyncIJ<InitializationResponse>(UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString(), initializationRequest); // use the ServiceStack JSON serializer library
                 Log.LogDebug($"Returned from PostJsonAsync<InitializationResponse>, initializationResponse = {initializationResponse.Dump()}");
-                //Log.LogDebug($"Returned from PostJsonAsyncSS<InitializationResponse>, initializationResponse = {initializationResponse.Dump()}");
+                //Log.LogDebug($"Returned from PostJsonAsyncIJ<InitializationResponse>, initializationResponse = {initializationResponse.Dump()}");
                 await LStorage.SetItemAsync("BaseServices.IsInitialized", true);
                 await LStorage.SetItemAsync("BaseServices.LastInitialized", DateTime.Now);
                 // Initialize Local Storage with data structures for BaseServices Configuration and User Data

@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
+  
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -21,6 +22,15 @@
     <!-- However, if the LifeCyclestage is Production, the NuGet Package Label is ignored, but MSBuild expects a non-null value  -->
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
-
+  
+  
+  <ItemGroup>
+    <PackageReference Include="ServiceStack.Text" Version="5.5.1" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ATAP.Utilities.IJSON\ATAP.Utilities.IJSON.csproj" />
+  </ItemGroup>
 
 </Project>
