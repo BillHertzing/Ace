@@ -97,8 +97,9 @@ namespace Ace.Agent.Host {
             // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
             multiAppSettingsBuilder.AddTextFile(StringConstants.agentSettingsTextFileName + StringConstants.settingsTextFileSuffix);
             // Next in priority are the SSAppHost settings text files. Environment-specific settings text files have a higher priority than the default (production) settings text files
-            if (!this.HostEnvironment.IsProduction()) {
-                var settingsTextFileName = StringConstants.sSAppHostSettingsTextFileName+'.'+envName+StringConstants.settingsTextFileSuffix;
+            if (!this.HostEnvironment.IsProduction())
+            {
+                var settingsTextFileName = StringConstants.sSAppHostSettingsTextFileName + '.' + envName + StringConstants.settingsTextFileSuffix;
                 // ToDo: ensure it exists and the ensure we have permission to read it
                 // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
                 multiAppSettingsBuilder.AddTextFile(settingsTextFileName);
