@@ -10,8 +10,21 @@ using Blazor.Extensions.Logging;
 using Blazored.LocalStorage;
 using System;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+
 namespace GUI {
     public class Startup {
+        public IConfiguration Configuration { get; }
+
+        public IHostEnvironment HostEnvironment { get; }
+
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
+        {
+            Configuration = configuration;
+            HostEnvironment = hostEnvironment;
+        }
+
         public void ConfigureServices(IServiceCollection services) {
             // Add Blazor.Extensions.Logging.BrowserConsoleLogger; taken from the Blazor.Extensions.Logging NuGet package home page https://www.nuget.org/packages/Blazor.Extensions.Logging/# on 6/12/2018
             // So that Fody and the MethodBoundryAspect ILWeaver can use the logging provider, register both the ILogger and the ILoggerFactory

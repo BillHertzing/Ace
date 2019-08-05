@@ -36,8 +36,6 @@
       https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
     </RestoreAdditionalProjectSources>
   </PropertyGroup>
-  
-  
   <ItemGroup>
     <None Remove="SSAppHostSettings.Development.txt" />
     <None Remove="SSAppHostSettings.txt" />
@@ -125,12 +123,6 @@
     <ProjectReference Include="..\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
     <ProjectReference Include="..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
-    <ProjectReference Include="..\Plugins\AMQPServices\Plugin\PlugIn.AMQPServices.Plugin.csproj" />
-    <ProjectReference Include="..\Plugins\AMQPServices\StringConstants\PlugIn.AMQPServices.StringConstants.csproj" />
-    <ProjectReference Include="..\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Plugin\Agent.DiskAnalysisServices.Plugin.csproj" />
-    <ProjectReference Include="..\PlugIns\GUIServices\PlugIn\PlugIn.GUIServices.PlugIn.csproj" />
-    <ProjectReference Include="..\Plugins\MinerServices\MinerServices.Plugin\Agent.MinerServices.Plugin.csproj" />
-    <ProjectReference Include="..\PlugIns\RealEstateServices\Agent.RealEstateServices.Plugin\Agent.RealEstateServices.Plugin.csproj" />
   </ItemGroup>
 
   <ItemGroup>

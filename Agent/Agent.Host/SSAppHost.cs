@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Ace.Agent.BaseServices;
-using Ace.Agent.GUIServices;
-using Ace.Plugin.DiskAnalysisServices;
-using Ace.Plugin.MinerServices;
-using Ace.Plugin.RealEstateServices;
+using ATAP.Utilities.ETW;
 using ATAP.Utilities.ServiceStack;
 using Funq;
 using Microsoft.Extensions.Hosting;
@@ -22,10 +19,12 @@ namespace Ace.Agent.Host {
         /// Base constructor requires a Name and Assembly where web service implementation is located
         /// Inject an implementation of an IWebHostEnvironment via the constructor
         /// </summary>
-        public SSAppHost(IHostEnvironment hostEnvironment) : base("BaseServices", typeof(BaseServices.BaseServices).Assembly) {
-            HostEnvironment=hostEnvironment;
+        public SSAppHost(IHostEnvironment hostEnvironment) : base("BaseServices", typeof(BaseServices.BaseServices).Assembly)
+        {
+            HostEnvironment = hostEnvironment;
             // Load it into the Container
             Container.AddSingleton<IHostEnvironment>(HostEnvironment);
+
         }
 
 
@@ -33,9 +32,10 @@ namespace Ace.Agent.Host {
         /// Application specific configuration
         /// This method should initialize any IoC resources, in particular the AppSettings.
         /// </summary>
-        public override void Configure(Container container) {
+        public override void Configure(Container container)
+        {
 
-            // get the Environment value from the WebHost environment injected by the constructor
+            // get the Environment value from the WebHostEnvironment injected by the constructor
             string envName = this.HostEnvironment.EnvironmentName;
             Log.Debug("in SSAppHost.Configure, envName = {envName}", envName);
 
@@ -95,7 +95,7 @@ namespace Ace.Agent.Host {
             // Add the production Agent.BaseServices settings text file if it exists
             // ToDo: ensure it exists and the ensure we have permission to read it
             // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
-            multiAppSettingsBuilder.AddTextFile(StringConstants.agentSettingsTextFileName+StringConstants.settingsTextFileSuffix);
+            multiAppSettingsBuilder.AddTextFile(StringConstants.agentSettingsTextFileName + StringConstants.settingsTextFileSuffix);
             // Next in priority are the SSAppHost settings text files. Environment-specific settings text files have a higher priority than the default (production) settings text files
             if (!this.HostEnvironment.IsProduction()) {
                 var settingsTextFileName = StringConstants.sSAppHostSettingsTextFileName+'.'+envName+StringConstants.settingsTextFileSuffix;
@@ -106,7 +106,7 @@ namespace Ace.Agent.Host {
             // Add the production SSAppHost settings text file if it exists
             // ToDo: ensure it exists and the ensure we have permission to read it
             // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
-            multiAppSettingsBuilder.AddTextFile(StringConstants.sSAppHostSettingsTextFileName+StringConstants.settingsTextFileSuffix);
+            multiAppSettingsBuilder.AddTextFile(StringConstants.sSAppHostSettingsTextFileName + StringConstants.settingsTextFileSuffix);
             // ToDo: Investigate the web.config file and see when it makes sense to include it in the genericHost ConfigurationRoot
             // ToDo: Investigate the .exe.config file and see when it makes sense to include it in the genericHost ConfigurationRoot
             // multiAppSettingsBuilder.AddAppSettings()
@@ -118,7 +118,7 @@ namespace Ace.Agent.Host {
             multiAppSettingsBuilder.AddNetCore(Configuration);
 
             // Build the AppSettings that is the first-class citizen on the SSAppHost, and available to all SS Middleware via SS DI Injection
-            AppSettings=multiAppSettingsBuilder.Build();
+            AppSettings = multiAppSettingsBuilder.Build();
 
             // Create the BaseServices data structure and register it in the container
             //  The SSAppHost (here, ServiceStack running as a Windows service) has some configuration that is common
@@ -134,22 +134,55 @@ namespace Ace.Agent.Host {
             container.Register<AppSettingsDictionary>(c => appSettingsDictionary);
 
             // ToDo: Get the list of plugin names to install from the configuration settings
-            // ToDo: probe for assemblies that have a class that matches the name and implements IPlugIn
-            // ToDo: Load the matching assemblies into the runspace
-            // ToDo: Security: ensure the assemblies being loaded matches some external registry of SHA codes to prove non-tamperable and authenticity
-            // ToDo: Add each PlugIn to the SSAppHost
-            // Create the list of PlugIns to load
-            var plugInList = new List<IPlugin>() {
-               new GUIServicesPlugin(),
-               new RealEstateServicesPlugin(),
-               new MinerServicesPlugin(),
-               new DiskAnalysisServicesPlugin(),
-            };
-
-            // Load each plugin here. 
-            foreach (var pl in plugInList) {
-                Plugins.Add(pl);
+            // probe for assemblies that have a class that matches the name and implements IPlugIn
+            // From https://github.com/ServiceStack/dotnet-app/blob/4f53a3ed2ab936fbf3564cfa7985f8a3169b44bf/src/Web/Startup.cs#L1499
+            Microsoft.Extensions.Hosting.IHostEnvironment hostEnvironment = container.Resolve<Microsoft.Extensions.Hosting.IHostEnvironment>();
+            var contentRootPath = hostEnvironment.ContentRootPath;
+            var virtualFiles = new FileSystemVirtualFiles(contentRootPath);
+            /// ToDo: come back and fix this
+            FileSystemVirtualFiles vfs = null; //AppSettings.GetList().GetVirtualFiles(config: filesConfig); // optional configuration files for each plugin assembly
+            var pluginsDir = (vfs ?? virtualFiles).GetDirectory(AppSettings.Get<string>(StringConstants.PlugInsDirConfigKey) ?? StringConstants.PlugInsDirStringDefault);
+            var assemblies = new List<Assembly>();
+            if (pluginsDir != null)
+            {
+                var plugins = pluginsDir.GetFiles();
+                foreach (var plugin in plugins)
+                {
+                    if (plugin.Extension != "dll" && plugin.Extension != "exe")
+                        continue;
+                    // ToDo: Security: ensure the assemblies being loaded matches some external registry of SHA codes to prove non-tamperable and authenticity
+                    var dllBytes = plugin.ReadAllBytes();
+                    // ToDo: LogInfo to eventLog and Serilog $"Attempting to load plugin '{plugin.VirtualPath}', size: {dllBytes.Length} bytes".Print();
+                    // Load the matching assemblies into the runspace
+                    var asm = Assembly.Load(dllBytes);
+                    assemblies.Add(asm);
+                }
             }
+
+            // Add each PlugIn to the SSAppHost
+            if (assemblies.Count > 0)
+                assemblies.Each(x => this.ServiceAssemblies.AddIfNotExists(x));
+
+            // Add the virtualFiles to the SSAppHost
+            if (virtualFiles != null)
+                this.AddVirtualFileSources.Add(virtualFiles);
+            // Mark the virtualFiles as writeable if appropriate
+            if (vfs is IVirtualFiles writableFs)
+                this.VirtualFiles = writableFs;
+
+            // Create the list of PlugIns to load
+            //var plugInList = new List<IPlugin>() {
+            //   new GUIServicesPlugin(),
+            //   new RealEstateServicesPlugin(),
+            //   new MinerServicesPlugin(),
+            //   new DiskAnalysisServicesPlugin(),
+            //};
+
+            //// Load each plugin here. 
+            //foreach (var pl in plugInList)
+            //{
+            //    Plugins.Add(pl);
+            //}
 
             // ToDo: See Issue #8
             // ToDo place a static, deep-copy of the current application'instance of the configuration settings as the first object in the application's configuration settings history list.

@@ -13,7 +13,7 @@ namespace Ace.Agent.Host {
         new Dictionary<string, string>
         {
             {StringConstants.PhysicalRootPathConfigKey, StringConstants.PhysicalRootPathStringDefault},
-
+            {StringConstants.PlugInsDirConfigKey, StringConstants.PlugInsDirStringDefault},
         };
 
     }
