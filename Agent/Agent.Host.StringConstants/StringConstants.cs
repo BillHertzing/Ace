@@ -41,6 +41,10 @@ namespace Ace.Agent.Host {
         public const string configKeyRedisConnectionString = "RedisConnectionString";
         public const string configKeyMySqlConnectionString = "MySqlConnectionString";
         public const string configKeyGoogleMapsAPIKey = "GoogleMapsAPIKey";
+        public const string PlugInsDirConfigKey = "PlugInsDir";
+        public const string PlugInsDirStringDefault = "./PlugIns";
+
+
         #endregion
 
         #region string constants: EnvironmentVariablePrefixs
