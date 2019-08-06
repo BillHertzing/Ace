@@ -24,9 +24,6 @@ namespace GUI {
             // Add a library that enables local storage on the browser
             //  https://github.com/Blazored/LocalStorage
             services.AddBlazoredLocalStorage();
-            // ToDo: this is experimental Add a scoped instance of a UriBuilder
-            services.AddScoped<UriBuilder, LocalUriBuilder>();
-
         }
 
         public void Configure(IComponentsApplicationBuilder app) {
@@ -34,27 +31,5 @@ namespace GUI {
         }
     }
 
-    // Create a 
-    public class LocalUriBuilder : UriBuilder {
-        public LocalUriBuilder() :this("http://localhost:21200/"){}
-
-        public LocalUriBuilder(string uri) : base(uri) {
-         }
-
-        public LocalUriBuilder(Uri uri) : base(uri) {
-        }
-
-        public LocalUriBuilder(string schemeName, string hostName) : base(schemeName, hostName) {
-        }
-
-        public LocalUriBuilder(string scheme, string host, int portNumber) : base(scheme, host, portNumber) {
-        }
-
-        public LocalUriBuilder(string scheme, string host, int port, string pathValue) : base(scheme, host, port, pathValue) {
-        }
-
-        public LocalUriBuilder(string scheme, string host, int port, string path, string extraValue) : base(scheme, host, port, path, extraValue) {
-        }
-    }
 }
 

@@ -23,9 +23,6 @@ namespace Ace.AceGUI.Pages {
         [Inject]
         ILogger<DiskAnalysisServicesCodeBehind> Logger { get; set; }
 
-        // Access the local UriBuilder registered in the DI container
-        [Inject]
-        UriBuilder UriBuilder { get; set; }
         // Access the IUriHelper registered in the DI container
         [Inject]
         IUriHelper UriHelper { get; set; }
@@ -38,8 +35,7 @@ namespace Ace.AceGUI.Pages {
             var analyzeDiskDriveRequestPayload = new AnalyzeDiskDriveRequestPayload(new DiskDriveSpecifier() { ComputerName = computerName, DiskDriveNumber = diskDriveNumber});
             var analyzeDiskDriveRequest = new AnalyzeDiskDriveRequest(analyzeDiskDriveRequestPayload);
             // ToDo: deactivate the AnalyzeDiskDrive button
-            UriBuilder.Path = "AnalyzeDiskDrive";
-            var analyzeDiskDriveResponse = await HttpClient.PostJsonAsyncSS<AnalyzeDiskDriveResponse>(UriBuilder.Uri.ToString(), analyzeDiskDriveRequest);
+            var analyzeDiskDriveResponse = await HttpClient.PostJsonAsyncSS<AnalyzeDiskDriveResponse>(UriHelper.ToAbsoluteUri("AnalyzeDiskDrive").ToString(), analyzeDiskDriveRequest);
             Logger.LogDebug($"Returned from PostJsonAsyncSS<AnalyzeDiskDriveResponse>, analyzeDiskDriveResponse = {analyzeDiskDriveResponse.Dump()}");
             // ToDo: move initialization of the AnalyzeDiskDriveLongRunningTaskIds object to a method that initializes a Lazy and see if it needs a Dispose??
             // record the TaskID, creating the List if it does not yet exist
@@ -58,11 +54,10 @@ namespace Ace.AceGUI.Pages {
             var analyzeFileSystemRequestPayload = new AnalyzeFileSystemRequestPayload(drive, asyncFileReadBlockSize);
             var analyzeFileSystemRequest = new AnalyzeFileSystemRequest(analyzeFileSystemRequestPayload);
             // ToDo: deactivate the AnalyzeFileSystem button
-            UriBuilder.Path="AnalyzeFileSystem";
             Logger.LogDebug($"in AnalyzeFileSystem: Calling PostJsonAsyncSS<AnalyzeFileSystemResponse> with analyzeFileSystemRequest = {analyzeFileSystemRequest.Dump()}");
             //ToDo: every call back to the host may potentially return status code 500 and an error message, must wrap the call in try/catch
             var analyzeFileSystemResponse =
-            await HttpClient.PostJsonAsyncSS<AnalyzeFileSystemResponse>(UriBuilder.Uri.ToString(),
+            await HttpClient.PostJsonAsyncSS<AnalyzeFileSystemResponse>(UriHelper.ToAbsoluteUri("AnalyzeFileSystem").ToString(),
                                                                    analyzeFileSystemRequest);
             Logger.LogDebug($"in AnalyzeFileSystem: PostJsonAsyncSS<AnalyzeFileSystemResponse> returned analyzeFileSystemResponse = {analyzeFileSystemResponse.Dump()}");
 

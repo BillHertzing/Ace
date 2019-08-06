@@ -28,9 +28,8 @@ namespace Ace.AceGUI.Pages {
             Logger.LogDebug($"Starting DiskAnalysisServices.OnInitAsync");
 
             var initializationRequest = new Ace.Plugin.DiskAnalysisServices.InitializationRequest(new Ace.Plugin.DiskAnalysisServices.InitializationRequestPayload(new Ace.Agent.BaseServices.InitializationData()));
-            UriBuilder.Path="DiskAnalysisServicesInitialization";
             Logger.LogDebug($"Calling PostJsonAsyncSS<InitializationResponse> with InitializationRequest ={initializationRequest.Dump()}");
-            InitializationResponse=await HttpClient.PostJsonAsyncSS<Ace.Plugin.DiskAnalysisServices.InitializationResponse>(UriBuilder.Uri.ToString(),
+            InitializationResponse=await HttpClient.PostJsonAsyncSS<Ace.Plugin.DiskAnalysisServices.InitializationResponse>(UriHelper.ToAbsoluteUri("DiskAnalysisServicesInitialization").ToString(),
                                 initializationRequest);
             Logger.LogDebug($"Returned from GetJsonAsync<Agent.BaseServices.InitializationResponse>, InitializationResponse = {InitializationResponse.Dump()}");
 
@@ -46,10 +45,9 @@ namespace Ace.AceGUI.Pages {
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             SetConfigurationDataRequest setConfigurationDataRequest = new SetConfigurationDataRequest() { ConfigurationData=ConfigurationData, ConfigurationDataSave=ConfigurationDataSave };
-            UriBuilder.Path="SetConfigurationData";
             Logger.LogDebug($"Calling GetJsonAsync<SetConfigurationDataResponse> with SetConfigurationDataRequest = {setConfigurationDataRequest.Dump()}");
             SetConfigurationDataResponse setConfigurationDataResponse =
-      await HttpClient.PostJsonAsyncSS<SetConfigurationDataResponse>(UriBuilder.Uri.ToString(),
+      await HttpClient.PostJsonAsyncSS<SetConfigurationDataResponse>(UriHelper.ToAbsoluteUri("SetConfigurationData").ToString(),
                                                                                            setConfigurationDataRequest);
             Logger.LogDebug($"Returned from GetJsonAsync<SetConfigurationDataResponse> with setConfigurationDataResponse = {setConfigurationDataResponse.Dump()}");
             Logger.LogDebug($"Leaving SetConfigurationData");

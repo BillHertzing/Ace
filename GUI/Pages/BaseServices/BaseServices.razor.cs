@@ -46,10 +46,6 @@ namespace Ace.AceGUI.Pages {
         [Inject]
         public ILocalStorageService LStorage { get; set; }
 
-        // Access the UriBuilder registered in the DI container
-        [Inject]
-        UriBuilder UriBuilder { get; set; }
-
         // Access the IUriHelper registered in the DI container
         [Inject]
         IUriHelper UriHelper { get; set; }
@@ -117,10 +113,6 @@ namespace Ace.AceGUI.Pages {
                 */
                 var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new InitializationData("BaseVersionXX", "MachineIDXX", "userIDxx")));
                 Log.LogDebug($"initializationRequest: {initializationRequest.Dump()}");
-
-                //UriBuilder.Path="BaseServicesInitialization";
-                //Log.LogDebug($"UriBuilder: {UriBuilder.Uri.ToString()}");
-                //Log.LogDebug($"UriHelper.GetAbsoluteUri(): {UriHelper.GetAbsoluteUri()}"); // This is the current local Blazor Route
 
                 Log.LogDebug($"UriHelper.ToAbsoluteUri(BaseServicesInitialization).ToString(): {UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString()}");
                 Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with initializationRequest = {initializationRequest.Dump()}");
@@ -196,10 +188,9 @@ namespace Ace.AceGUI.Pages {
             // ToDo: Validators on the input field will make this better
             // ToDo: wrap in a try catch block and handle errors with a model dialog
             IsAliveReqPayload isAliveReqPayload = new IsAliveReqPayload { };
-            UriBuilder.Path="IsAlive";
             Log.LogDebug($"Calling PostJsonAsyncSS<isAliveRspPayload> with IsAliveReqPayload = {isAliveReqPayload}");
             var isAliveRspPayload=
-      await HttpClient.PostJsonAsyncSS<IsAliveRspPayload>(UriBuilder.Uri.ToString(), isAliveReqPayload);
+      await HttpClient.PostJsonAsyncSS<IsAliveRspPayload>(UriHelper.ToAbsoluteUri("IsAlive").ToString(), isAliveReqPayload);
             Log.LogDebug($"Returned from PostJsonAsyncSS<isAliveRspPayload> with isAliveRspPayload = {isAliveRspPayload}");
             Log.LogDebug($"Leaving IsAlive");
         }
