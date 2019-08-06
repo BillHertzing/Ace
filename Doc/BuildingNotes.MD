@@ -65,6 +65,29 @@ Install Redis for Ubuntu
    
     Put the shell script to start services into cron [How to run Ubuntu service on Windows (at startup)?](https://superuser.com/questions/1112007/how-to-run-ubuntu-service-on-windows-at-startup?noredirect=1&lq=1)
 
+	Install RabbitMQ on Windows
+
+	Erlang Installer First
+	1. https://www.erlang.org/downloads (OTP22.0 Windows 64-bit Binary File). Download, check for tampering, run elevated prompt 
+	or 
+	1."choco install erlang" ifthe chocolatey package is installed
+
+	RabbitMQ second
+	https://www.rabbitmq.com/install-windows.html
+	or
+	choco install rabbitmq 
+	When Windows Defender asks which networks to allow rabbitMQ to run on, for development, check to allow only on the 'private' network, same for 'epmd.exe'
 
 
+	RabbitMQ Management Plugin
+	By default, RabbitMQ management console is enabled when installed with Chocolatey. Otherwise, after installing RabbitMQ, close and reopen the shell window to pickup the new rabbitMQ path added to the PATH value
+	`rabbitmq-plugins enable rabbitmq_management` at the powershell prompt
+
+	Automated deployment:  review https://www.rabbitmq.com/plugins.html#enabled-plugins-file to ensure the RabbitMQ Management PLugin is part of a deployment / distribution. 
+
+	Management console access via http://{node-hostname}:15672/ (e.g., http://localhost:15672/)
+
+	User management: Initial admin login is guest/guest. Create a userid/password for a local administrator. Logouut of guest and back in as the local admin ID.
+	
+	ToDo:remove the Guest account, but figure out how to ensure local admin has access to virtual host /
 

@@ -36,6 +36,8 @@
       https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
     </RestoreAdditionalProjectSources>
   </PropertyGroup>
+  
+  
   <ItemGroup>
     <None Remove="SSAppHostSettings.Development.txt" />
     <None Remove="SSAppHostSettings.txt" />
@@ -114,7 +116,7 @@
   <ItemGroup>
     <PackageReference Include="ServiceStack.Core" Version="5.5.1" />
     <PackageReference Include="ServiceStack.Text.Core" Version="5.5.1" />
-    <PackageReference Include="ServiceStack.Redis" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Redis.Core" Version="5.5.1" />
   </ItemGroup>
 
   <!-- Reference the other related projects -->
@@ -123,6 +125,8 @@
     <ProjectReference Include="..\Agent.BaseServices.Interfaces\Agent.BaseServices.Interfaces.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
     <ProjectReference Include="..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
+    <ProjectReference Include="..\Plugins\AMQPServices\Plugin\PlugIn.AMQPServices.Plugin.csproj" />
+    <ProjectReference Include="..\Plugins\AMQPServices\StringConstants\PlugIn.AMQPServices.StringConstants.csproj" />
     <ProjectReference Include="..\Plugins\DiskAnalysisServices\Agent.DiskAnalysisServices.Plugin\Agent.DiskAnalysisServices.Plugin.csproj" />
     <ProjectReference Include="..\PlugIns\GUIServices\PlugIn\PlugIn.GUIServices.PlugIn.csproj" />
     <ProjectReference Include="..\Plugins\MinerServices\MinerServices.Plugin\Agent.MinerServices.Plugin.csproj" />

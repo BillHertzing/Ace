@@ -20,10 +20,12 @@ using ATAP.Utilities.DiskDrive;
 using System.Text;
 using System.Net.Http;
 using Serilog;
+using ATAP.Utilities.ETW;
 
 namespace Ace.Plugin.DiskAnalysisServices {
-
-
+#if TRACE
+    [ETWLogAttribute]
+#endif
     public partial class DiskAnalysisServices : Service {
 
         public async Task<object> Post(AnalyzeFileSystemRequest request) {

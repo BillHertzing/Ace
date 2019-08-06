@@ -24,6 +24,7 @@ namespace Ace.Agent.BaseServices {
         #region Properties:ConfigurationData
         public ConfigurationData ConfigurationData { get; set; }
         #endregion
+        
         #region Properties:UserData
         public UserData UserData { get; set; }
         #endregion

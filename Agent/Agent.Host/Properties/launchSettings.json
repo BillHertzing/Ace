@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:22010/",
+      "applicationUrl": "http://localhost:22000/",
       "sslPort": 0
     }
   },
@@ -11,7 +11,7 @@
     "IntegratedIISInProcessDev": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:22010/",
+      "launchUrl": "http://localhost:22000/",
       "environmentVariables": {
         "BlazorDemos_WebHostBuilder": "IntegratedIISInProcessWebHostBuilder",
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -21,13 +21,13 @@
       "commandName": "Project",
       "commandLineArgs": "-Console:true",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:22010/",
+      "launchUrl": "http://localhost:22000/",
       "environmentVariables": {
         "BlazorDemos_WebHostBuilder": "KestrelAloneWebHostBuilder",
-        "ASPNETCORE_URLS": "http://localhost:22010/",
+        "ASPNETCORE_URLS": "http://localhost:22000/",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:22010/"
+      "applicationUrl": "http://localhost:22000/"
     },
     "KestrelOnlyProd": {
       "commandName": "Project",

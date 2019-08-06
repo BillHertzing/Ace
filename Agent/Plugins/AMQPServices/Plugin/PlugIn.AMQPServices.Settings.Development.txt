@@ -1,0 +1,4 @@
+# Application Configuration Settings for Ace PlugIn AMQPServices
+# versioninfo
+
+AMQPConnectionString amqp://guest:guest@localhost:5672/

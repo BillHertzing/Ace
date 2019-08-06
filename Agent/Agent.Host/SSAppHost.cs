@@ -1,8 +1,9 @@
 using Ace.Agent.BaseServices;
+using Ace.PlugIn.AMQPServices;
 using Ace.Agent.GUIServices;
 using Ace.Plugin.DiskAnalysisServices;
 using Ace.Plugin.MinerServices;
-using ATAP.Utilities.ETW;
+using Ace.Plugin.RealEstateServices;
 using ATAP.Utilities.ServiceStack;
 using Funq;
 using Serilog;
@@ -16,7 +17,6 @@ using System.Collections.Generic;
 using System.Security;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
-using Ace.Plugin.RealEstateServices;
 
 namespace Ace.Agent.Host {
     [ATAP.Utilities.ETW.ETWLogAttribute]
@@ -42,7 +42,7 @@ namespace Ace.Agent.Host {
         /// </summary>
         public override void Configure(Container container) {
 
-            // get the Environment value from the WebHostenvironment injected by the constructor
+            // get the Environment value from the WebHost environment injected by the constructor
             string envName = this.HostEnvironment.EnvironmentName;  
             Log.Debug("in SSAppHost.Configure, envName = {envName}", envName);
 
@@ -124,7 +124,7 @@ namespace Ace.Agent.Host {
             // Last in priority are the AppSettings inherited from genericHost
             multiAppSettingsBuilder.AddNetCore(Configuration);
 
-            //Build the AppSettings that is the first-class citizen on the SSAppHost, and available to all SS Middleware via the ``
+            // Build the AppSettings that is the first-class citizen on the SSAppHost, and available to all SS Middleware via SS DI Injection
             AppSettings=multiAppSettingsBuilder.Build();
 
             // Create the BaseServices data structure and register it in the container
@@ -132,7 +132,7 @@ namespace Ace.Agent.Host {
             //  to both Frameworks (.Net and .Net Core), which will be setup in a common assembly, so this instance of
             //  the appHost is being passed to the BaseServicesData constructor.
             //  this also registers a BaseServicesData instance in the container 
-            // ToDo: implement Singleton pattern for BaseServicesData in the DI Container
+            // ToDo: implement Singleton pattern for BaseServicesData in the SS DI Container
             var baseServicesData = new BaseServicesData(this);
             container.Register<BaseServicesData>(c => baseServicesData);
 
@@ -148,6 +148,7 @@ namespace Ace.Agent.Host {
             // Create the list of PlugIns to load
             var plugInList = new List<IPlugin>() {
                new GUIServicesPlugin(),
+               new AMQPServicesPlugin(),
                new RealEstateServicesPlugin(),
                new MinerServicesPlugin(),
                new DiskAnalysisServicesPlugin(),
@@ -168,7 +169,7 @@ namespace Ace.Agent.Host {
             longRunningTasksCheckTimer.Start();
 
             /* 
-            // ToDo: create a NotifyIcon equivalent for a Windows Service or Linux Daemon. Notifiy Icon itself will not work, as that is for WinForms only
+            // ToDo: create a NotifyIcon equivalent for a Windows Service or Linux Daemon. NotifyIcon itself will not work, as that is for WinForms only
             Log.Debug("in SSAppHost.Configure: Create a NotifyIcon for AceCommander");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
