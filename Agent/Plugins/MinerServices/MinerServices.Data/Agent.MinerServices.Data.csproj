@@ -4,7 +4,7 @@
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
-  
+
   <!-- Separate Property Group for Version Control -->
   <PropertyGroup>
     <!-- Assembly, File, and Package Information for this assembly-->
@@ -17,7 +17,12 @@
     <!-- However, if the LifeCyclestage is Production, the NuGet Package Label is ignored, but MSBuild expects a non-null value  -->
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
-  
+
+  <!-- ConcurrentObservableCollection packages used in this assembly -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj" />
+  </ItemGroup>
+
   <!-- Packages to implement IL Weaving using Fody during the build process -->
   <ItemGroup>
     <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
@@ -25,14 +30,9 @@
     <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
   </ItemGroup>
 
-  <!-- ServiceStack packages used -->
+  <!-- ServiceStack packages used in this assembly -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.5.1" />
-  </ItemGroup>
-
-  <!-- Concurrent Observable Types in Swordfish package used -->
-  <ItemGroup>
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
   </ItemGroup>
 
   <!-- Reference the other related projects -->
@@ -40,5 +40,5 @@
     <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
     <ProjectReference Include="..\..\..\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj" />
   </ItemGroup>
-  
+
 </Project>

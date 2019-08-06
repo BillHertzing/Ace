@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ServiceStack.Text;
 using ServiceStack;
-using Swordfish.NET.Collections;
+using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace ATAP.Utilities.Http
 {

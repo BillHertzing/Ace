@@ -3,10 +3,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Reflection;
 using Ace.Agent.BaseServices;
+using ATAP.Utilities.ConcurrentObservableCollections;
 using ServiceStack;
 using ServiceStack.Caching;
-
-using Swordfish.NET.Collections;
 
 namespace Ace.Plugin.MinerServices {
     public class MinerServicesData {

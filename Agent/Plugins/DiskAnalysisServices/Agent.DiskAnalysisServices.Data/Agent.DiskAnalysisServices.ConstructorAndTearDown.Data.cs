@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Reflection;
 using ServiceStack;
 using ServiceStack.Caching;
-using Swordfish.NET.Collections;
 using Ace.Agent.BaseServices;
+using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace Ace.Plugin.DiskAnalysisServices {
     public partial class DiskAnalysisServicesData : IDisposable {

@@ -3,7 +3,6 @@ using Serilog;
 using ServiceStack;
 using ServiceStack.Configuration;
 using ServiceStack.Caching;
-using Swordfish.NET.Collections;
 
 using System;
 using System.Collections.Generic;
@@ -17,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 
 using ATAP.Utilities.Http;
 using System.IO;
+using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace Ace.Plugin.MinerServices {
 

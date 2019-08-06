@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
   <PropertyGroup>
-  <RootNamespace>Ace.Agent.Plugins.DiskAnalysisServices</RootNamespace>
+    <RootNamespace>Ace.Agent.Plugins.DiskAnalysisServices</RootNamespace>
     <ProjectGuid>57A0F5F5-7CF6-4E49-B7D7-334D54AACAAF</ProjectGuid>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -29,31 +29,29 @@
     </RestoreAdditionalProjectSources>
   </PropertyGroup>
 
+  <!-- ConcurrentObservableCollection packages used in this assembly -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj" />
+  </ItemGroup>
+
   <!-- Packages to implement IL Weaving using Fody during the build process -->
   <ItemGroup>
     <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
     <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview7.19362.4" />
     <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
   </ItemGroup>
 
-  <!-- Packages to implement Serilog as logging provider -->
-  <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.9.0-dev-01116" />
-    <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
-  </ItemGroup>
-
-  <!-- ServiceStack packages used -->
+  <!-- ServiceStack packages used in this assembly -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.5.1" />
   </ItemGroup>
 
-  <!-- Concurrent Observable Types in Swordfish package used -->
+  <!-- Package to access the IHostEnvironemnt  -->
   <ItemGroup>
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview7.19362.4" />
   </ItemGroup>
-
-  <!-- Reference the other related projects -->  
+  
+  <!-- Reference the other related projects -->
   <ItemGroup>
     <ProjectReference Include="..\..\..\Agent.Host.StringConstants\Agent.Host.StringConstants.csproj" />
     <ProjectReference Include="..\Agent.DiskAnalysisServices.StringConstants\Agent.DiskAnalysisServices.StringConstants.csproj" />
@@ -61,7 +59,7 @@
     <ProjectReference Include="..\Agent.DiskAnalysisServices.Models\Agent.DiskAnalysisServices.Models.csproj" />
     <ProjectReference Include="..\Agent.DiskAnalysisServices.Interfaces\Agent.DiskAnalysisServices.Interfaces.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <None Update="PlugIn.DiskAnalysisServices.Settings.Development.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

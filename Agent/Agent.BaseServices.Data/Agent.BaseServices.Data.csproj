@@ -33,10 +33,10 @@
     <PackageReference Include="ServiceStack.OrmLite.MySql" Version="5.5.1" />
     <PackageReference Include="ServiceStack.Redis" Version="5.5.1" />
     <PackageReference Include="ServiceStack.Server" Version="5.5.1" />
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
  </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj" />
     <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
     <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Shared\Agent.BaseServices.Shared.csproj" />

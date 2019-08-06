@@ -7,7 +7,6 @@ using ServiceStack;
 using ServiceStack.Caching;
 using Serilog;
 using ServiceStack.Redis;
-using Swordfish.NET.Collections;
 using Polly;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;

@@ -12,7 +12,6 @@ using Blazor.Extensions.Logging;
 using Blazored.LocalStorage;
 // Required for ComputerInventory used in BaseServices
 using ATAP.Utilities.DiskDrive;
-using Swordfish.NET.Collections;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.LongRunningTasks;
 using ServiceStack.Text;
@@ -21,6 +20,7 @@ using System.Diagnostics;
 using Ace.AceGUI.HttpClientExtenssions;
 using System.Text;
 using Microsoft.AspNetCore.Blazor.Services;
+using ATAP.Utilities.ConcurrentObservableCollections;
 
 //using Stateless;
 

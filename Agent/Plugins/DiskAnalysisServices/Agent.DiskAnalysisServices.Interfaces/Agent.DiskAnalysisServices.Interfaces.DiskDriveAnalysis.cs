@@ -2,7 +2,6 @@ using System;
 using ServiceStack;
 using Serilog;
 using ServiceStack.Text;
-using Swordfish.NET.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.Collections.Generic;

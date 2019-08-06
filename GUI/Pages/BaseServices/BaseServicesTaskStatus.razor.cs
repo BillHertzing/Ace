@@ -9,13 +9,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Blazor.Extensions.Logging;
 // Required for Blazor LocalStorage
-// Required for ComputerInventory used in BaseServices
-using Swordfish.NET.Collections;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.LongRunningTasks;
 using System.Collections.Generic;
 using ServiceStack.Text;
 using Ace.AceGUI.HttpClientExtenssions;
+using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace Ace.AceGUI.Pages {
     public partial class BaseServicesCodeBehind : ComponentBase {

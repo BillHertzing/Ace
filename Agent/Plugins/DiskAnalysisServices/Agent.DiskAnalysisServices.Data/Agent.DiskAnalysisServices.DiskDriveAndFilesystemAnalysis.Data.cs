@@ -8,8 +8,8 @@ using ATAP.Utilities.ComputerHardware.Enumerations;
 using ATAP.Utilities.DiskDrive;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.LongRunningTasks;
-using Swordfish.NET.Collections;
 using ATAP.Utilities.FileSystem;
+using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace Ace.Plugin.DiskAnalysisServices {
 

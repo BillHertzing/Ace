@@ -19,6 +19,11 @@
     <PackageLabel>Alpha</PackageLabel>
   </PropertyGroup>
 
+  <!-- ConcurrentObservableCollection packages used in this assembly -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj" />
+  </ItemGroup>
+
   <!-- Packages to implement IL Weaving using Fody during the build process -->
   <ItemGroup>
     <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
@@ -26,11 +31,11 @@
     <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
   </ItemGroup>
 
+  <!-- ServiceStack packages used in this assembly -->
   <ItemGroup>
     <PackageReference Include="ServiceStack" Version="5.5.1" />
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\Agent.RealEstateServices.Models\Agent.RealEstateServices.Models.csproj" />
     <ProjectReference Include="..\Agent.RealEstateServices.Data\Agent.RealEstateServices.Data.csproj" />

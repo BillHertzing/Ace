@@ -63,7 +63,6 @@ In the Docs subfolder are documents with information on designing these future g
 - ServiceStack Version 5.1.1 (Community Edition) URL TBD
 - TopShelf TBD
 - MedallionShell
-- Swordfish
 - TimePeriodLibrary.NET
 - ATAP.Utilities.* Various packages from ATAP technology.
 

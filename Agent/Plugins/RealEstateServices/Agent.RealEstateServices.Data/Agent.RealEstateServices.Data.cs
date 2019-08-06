@@ -2,9 +2,9 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Reflection;
+using ATAP.Utilities.ConcurrentObservableCollections;
 using ServiceStack;
 using ServiceStack.Caching;
-using Swordfish.NET.Collections;
 
 namespace Ace.Plugin.RealEstateServices
 {

@@ -1,9 +1,9 @@
 ﻿
 
 using ATAP.Utilities.ComputerHardware.Enumerations;
+using ATAP.Utilities.ConcurrentObservableCollections;
 using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
-using Swordfish.NET.Collections;
 using System;
 using System.Collections.Generic;
 

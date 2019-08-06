@@ -1,12 +1,11 @@
 ﻿using ATAP.Utilities.LongRunningTasks;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.DiskDrive;
-
-using Swordfish.NET.Collections;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace ATAP.Utilities.FileSystem {
 

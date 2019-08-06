@@ -10,11 +10,9 @@ using System.Threading;
 using ATAP.Utilities.Database.Enumerations;
 using ATAP.Utilities.DiskDrive;
 using ATAP.Utilities.TypedGuids;
-using Swordfish.NET.Collections;
+using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace ATAP.Utilities.ComputerInventory {
-
-
 
 
     // ToDo: remove this stub and integrate a ComputerSoftware type for the GUI (non-observable)

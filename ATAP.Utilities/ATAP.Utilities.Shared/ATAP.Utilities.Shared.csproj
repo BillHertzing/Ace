@@ -28,12 +28,12 @@
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="3.0.0-preview7.19362.9" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="ServiceStack.Text" Version="5.5.1" />
-    <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
     <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj" />
     <ProjectReference Include="..\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
   </ItemGroup>
 
