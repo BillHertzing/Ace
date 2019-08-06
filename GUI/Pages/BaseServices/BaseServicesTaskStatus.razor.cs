@@ -13,7 +13,7 @@ using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.LongRunningTasks;
 using System.Collections.Generic;
 using ServiceStack.Text;
-using Ace.AceGUI.HttpClientExtenssions;
+using Ace.AceGUI.HttpClientExtensions;
 using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace Ace.AceGUI.Pages {

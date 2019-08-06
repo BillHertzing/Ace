@@ -135,13 +135,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities", "ATAP.Util
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.StringConstants", "ATAP.Utilities\ATAP.Utilities.StringConstants\ATAP.Utilities.StringConstants.csproj", "{A337FC4C-5374-4C53-A665-B8603BCBCFEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.ConcurrentObservableCollections", "ATAP.Utilities\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj", "{7846123D-9D31-47F0-A2EC-1381B7567B51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.ConcurrentObservableCollections", "ATAP.Utilities\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj", "{7846123D-9D31-47F0-A2EC-1381B7567B51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.IJSON", "ATAP.Utilities\ATAP.Utilities.IJSON\ATAP.Utilities.IJSON.csproj", "{0D9A0E52-FB39-4EC5-ADCD-D1DB9CA04C82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.IJSON", "ATAP.Utilities\ATAP.Utilities.IJSON\ATAP.Utilities.IJSON.csproj", "{0D9A0E52-FB39-4EC5-ADCD-D1DB9CA04C82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.IJSON.SS", "ATAP.Utilities\ATAP.Utilities.IJSON.SS\ATAP.Utilities.IJSON.SS.csproj", "{1FD3DE3A-B9DB-47EE-8246-600352F22B3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.IJSON.SS", "ATAP.Utilities\ATAP.Utilities.IJSON.SS\ATAP.Utilities.IJSON.SS.csproj", "{1FD3DE3A-B9DB-47EE-8246-600352F22B3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.IJSON.STJ", "ATAP.Utilities\ATAP.Utilities.IJSON.STJ\ATAP.Utilities.IJSON.STJ.csproj", "{B5BDCD9F-F9EB-4440-8459-EC703256FF44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.IJSON.STJ", "ATAP.Utilities\ATAP.Utilities.IJSON.STJ\ATAP.Utilities.IJSON.STJ.csproj", "{B5BDCD9F-F9EB-4440-8459-EC703256FF44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -358,6 +358,7 @@ Global
 		{C554EC8F-A55C-4FBF-B606-2712A0DC78E5} = {B70F6ACB-893B-4914-A7F3-A0D214F238ED}
 		{A337FC4C-5374-4C53-A665-B8603BCBCFEE} = {B70F6ACB-893B-4914-A7F3-A0D214F238ED}
 		{0D9A0E52-FB39-4EC5-ADCD-D1DB9CA04C82} = {B70F6ACB-893B-4914-A7F3-A0D214F238ED}
+		{1FD3DE3A-B9DB-47EE-8246-600352F22B3A} = {B70F6ACB-893B-4914-A7F3-A0D214F238ED}
 		{B5BDCD9F-F9EB-4440-8459-EC703256FF44} = {B70F6ACB-893B-4914-A7F3-A0D214F238ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
