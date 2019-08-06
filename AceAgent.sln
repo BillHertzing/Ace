@@ -137,11 +137,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.StringConsta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.ConcurrentObservableCollections", "ATAP.Utilities\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj", "{7846123D-9D31-47F0-A2EC-1381B7567B51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.IJSON", "ATAP.Utilities\ATAP.Utilities.IJSON\ATAP.Utilities.IJSON.csproj", "{0D9A0E52-FB39-4EC5-ADCD-D1DB9CA04C82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.IJSON", "ATAP.Utilities\ATAP.Utilities.IJSON\ATAP.Utilities.IJSON.csproj", "{0D9A0E52-FB39-4EC5-ADCD-D1DB9CA04C82}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.IJSON.SS", "ATAP.Utilities\ATAP.Utilities.IJSON.SS\ATAP.Utilities.IJSON.SS.csproj", "{1FD3DE3A-B9DB-47EE-8246-600352F22B3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.IJSON.SS", "ATAP.Utilities\ATAP.Utilities.IJSON.SS\ATAP.Utilities.IJSON.SS.csproj", "{1FD3DE3A-B9DB-47EE-8246-600352F22B3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATAP.Utilities.IJSON.STJ", "ATAP.Utilities\ATAP.Utilities.IJSON.STJ\ATAP.Utilities.IJSON.STJ.csproj", "{B5BDCD9F-F9EB-4440-8459-EC703256FF44}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATAP.Utilities.IJSON.STJ", "ATAP.Utilities\ATAP.Utilities.IJSON.STJ\ATAP.Utilities.IJSON.STJ.csproj", "{B5BDCD9F-F9EB-4440-8459-EC703256FF44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
