@@ -15,23 +15,43 @@ using ATAP.Utilities.ComputerHardware.Enumerations;
 using ATAP.Utilities.Database.Enumerations;
 using ATAP.Utilities.DiskDrive;
 
-// ToDo: figure out logging for the ATAP libraires, this is only temporary
+// ToDo: figure out logging for the ATAP libraries, this is only temporary
 using Serilog;
 using ATAP.Utilities.FileSystem;
 using System.Linq;
 using System.Security.Cryptography;
 using ATAP.Utilities.TypedGuids;
-
+using ATAP.Utilities.AMQP;
+using ATAP.Utilities.ETW;
+using ServiceStack.Messaging;
 
 namespace ATAP.Utilities.FileSystem {
+#if TRACE
+    [ETWLogAttribute]
+#endif
+    public class FileSystemAnalysis<TRRReq, TRRRsp, TRFSEReq, TRFSERsp>
+        where TRRReq:IRecordRootReqPOCO where TRRRsp: IRecordRootRspPOCO 
+        where TRFSEReq : IRecordFSEntitiesReqPOCO where TRFSERsp : IRecordFSEntitiesRspPOCO {
 
-    public class FileSystemAnalysis {
+        IMessageService MessageService { get; set; }
+        Func<TRRReq, TRRRsp> RecordRoot { get; set; }
+        Func<TRFSEReq, TRFSERsp> RecordFSEntities { get; set; }
+        Func<bool> RecordComplete { get; set; }
 
         //public FileSystemAnalysis(ILog log, int asyncFileReadBlockSize, MD5 mD5) {
-        public FileSystemAnalysis(ILogger logger, int asyncFileReadBlockSize) {
-            Logger=logger??throw new ArgumentNullException(nameof(logger));
+        public FileSystemAnalysis(ILogger logger, int asyncFileReadBlockSize, IMessageService messageService) {
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             // ToDo: make the exception message a constant localizable string)
-            AsyncFileReadBlocksize =(asyncFileReadBlockSize>=0)? asyncFileReadBlockSize:throw new ArgumentOutOfRangeException($"asyncFileReadBlockSize must be greater than 0, received {asyncFileReadBlockSize}");
+
+            AsyncFileReadBlocksize = (asyncFileReadBlockSize >= 0) ? asyncFileReadBlockSize : throw new ArgumentOutOfRangeException($"asyncFileReadBlockSize must be greater than 0, received {asyncFileReadBlockSize}");
+            // MD5=mD5??throw new ArgumentNullException(nameof(mD5));
+        }
+        public FileSystemAnalysis(ILogger logger, int asyncFileReadBlockSize, IMessageService messageService, Func<TReq, TRsp> recordRoot, Func<TReq, TRsp> recordFSEntities)
+        {
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            // ToDo: make the exception message a constant localizable string)
+
+            AsyncFileReadBlocksize = (asyncFileReadBlockSize >= 0) ? asyncFileReadBlockSize : throw new ArgumentOutOfRangeException($"asyncFileReadBlockSize must be greater than 0, received {asyncFileReadBlockSize}");
             // MD5=mD5??throw new ArgumentNullException(nameof(mD5));
         }
         /*  Move this stuff to teh Expression for the Action that will validate the DB
@@ -50,9 +70,9 @@ namespace ATAP.Utilities.FileSystem {
             // diskInfoEx = await DBFetch.Invoke(cRUD, diskInfoEx);
             if (false) {
                 // already exist in DB, get ID and GUID from DB
-                diskInfoEx.DiskIdentityId=0; //ToDo: repalce with SQL fetch
-                diskInfoEx.DiskGuid=Guid.NewGuid(); //ToDo: repalce with SQL fetch
-                diskInfoEx.PartitionInfoExs=new List<PartitionInfoEx>(); //ToDo: repalce with SQL fetch
+                diskInfoEx.DiskIdentityId=0; //ToDo: replace with SQL fetch
+                diskInfoEx.DiskGuid=Guid.NewGuid(); //ToDo: replace with SQL fetch
+                diskInfoEx.PartitionInfoExs=new List<PartitionInfoEx>(); //ToDo: replace with SQL fetch
             }
         }
                 //ToDo: If cRUD is replace, update or delete
@@ -60,9 +80,9 @@ namespace ATAP.Utilities.FileSystem {
                 //if (false)
                 //{
                 //  // already exist in DB, get ID and GUID from DB
-                //  diskInfoEx.DiskDriveDBIdentityId = 0; //ToDo: repalce with SQL fetch
-                //  diskInfoEx.DiskDriveGuid = Guid.NewGuid(); //ToDo: repalce with SQL fetch
-                //  diskInfoEx.PartitionInfoExs = new List<PartitionInfoEx>(); //ToDo: repalce with SQL fetch
+                //  diskInfoEx.DiskDriveDBIdentityId = 0; //ToDo: replace with SQL fetch
+                //  diskInfoEx.DiskDriveGuid = Guid.NewGuid(); //ToDo: replace with SQL fetch
+                //  diskInfoEx.PartitionInfoExs = new List<PartitionInfoEx>(); //ToDo: replace with SQL fetch
                 //}
                 //else
                 //{
@@ -70,10 +90,10 @@ namespace ATAP.Utilities.FileSystem {
                 //  diskInfoEx.DiskDriveGuid = Guid.NewGuid();
                 //}
 
-                                // ToDo: depending on cRUD, do diffente things with the list
+                                // ToDo: depending on cRUD, do different things with the list
                     // if cRUD is Create
                     // make a partition list for every partition on the disk hw
-                    // ToDo: starting with the assumption there is only one partiton, and only one drive associated E:
+                    // ToDo: starting with the assumption there is only one partition, and only one drive associated E:
                     foreach (var p in hwPartitions) {
                         partitionInfoEx.PartitionIdentityId=0;
                         partitionInfoEx.PartitionGuid=Guid.NewGuid();
@@ -82,14 +102,14 @@ namespace ATAP.Utilities.FileSystem {
                     }
         */
 
-        public async Task AnalyzeFileSystem(string root, IAnalyzeFileSystemResult analyzeFileSystemResults, IAnalyzeFileSystemProgress analyzeFileSystemProgress, CancellationToken cancellationToken, Action<CrudType, string> recordRoot = null, Action<CrudType, string[]> recordSubdir = null) {
+        public async Task AnalyzeFileSystem(string root, IAnalyzeFileSystemResult analyzeFileSystemResults, IAnalyzeFileSystemProgress analyzeFileSystemProgress, CancellationToken cancellationToken, Func<IRecordRootReqDTO, IRecordRootRspDTO> recordRoot = null, Func<IRecordFSEntitiesReqDTO, IRecordFSEntitiesRspDTO> recordFSEntities = null) {
             Log.Debug($"starting AnalyzeFileSystem: root = {root}");
 
             if (!Directory.Exists(root)) {
                 throw new ArgumentException(String.Format(StringConstants.RootDirectoryNotFoundExceptionMessage, root));
             }
 
-            // Data structure to hold names of subfolders to be examined for files.
+            // Data structure to hold names of subdirectories to be examined for files.
             Stack<string> dirs = new Stack<string>();
             string currentDir = root;
 
@@ -106,8 +126,18 @@ namespace ATAP.Utilities.FileSystem {
                 cancellationToken.ThrowIfCancellationRequested();
             }
             // After this point, there may be cleanup to do if the task is cancelled
+            
             // Store root dir in the DB's node table as type directory
-            if (recordRoot!=null) { recordRoot.Invoke(CrudType.Create, root); }
+            IRecordRootRspDTOMessage recordRootRspDTOMessage;
+            if (recordRoot!=null) {
+                try {
+                    var directoryInfoExId = new Id<DirectoryInfoEx>(new Guid());
+                    List<Exception> eList = new List<Exception>();
+                    recordRootRspDTOMessage=recordRoot.Invoke(new RecordRootReqDTOMessage() { DirectoryInfoEx=new DirectoryInfoEx(directoryInfoExId, root)) };
+                } catch {
+                // ToDo: better exception handling here than just eat and ignore
+            }
+        }
             // check CancellationToken to see if this task is cancelled
             if (cancellationToken.IsCancellationRequested) {
                 // database cleanup is needed
@@ -138,8 +168,8 @@ namespace ATAP.Utilities.FileSystem {
                 }
                 // update the results
                 analyzeFileSystemProgress.NumberOfDirectories+=subDirs.Length;
-                // update the with node and edge information about all subdirs
-                if (recordSubdir!=null) { recordSubdir.Invoke(CrudType.Create, subDirs); }
+                // update the with node and edge information about all subdirectories
+                if (recordFSEntities!= null) { recordFSEntities.Invoke(CrudType.Create, new RecordFSEntitiesReqDTO() { ParentDirectoryInfoEx = currentDir, DirectoryInfoExs = subDirs, FileInfoExs = null); }
                 // check CancellationToken to see if this task is cancelled
                 if (cancellationToken.IsCancellationRequested) {
                     // database cleanup is needed
@@ -169,32 +199,29 @@ namespace ATAP.Utilities.FileSystem {
 
                 // Get FileInfo and Hash Files here. Create as many tasks and FileInfoEx containers as there are files
                 List<Task<FileInfoEx>> taskList = new List<Task<FileInfoEx>>();
-                foreach (var f in files) {
-                    taskList.Add(PopulateFileInfoExAsync(f, AsyncFileReadBlocksize, cancellationToken));
+                try
+                {
+                    foreach (var f in files)
+                    {
+                        taskList.Add(PopulateFileInfoExAsync(f, AsyncFileReadBlocksize, cancellationToken));
+                    }
+                    // wait for all to finish
+                    await Task.WhenAll(taskList);
+                } catch
+                {
+                    // ToDo: figure out how to record multiple exceptions (for each file) under the current directory
+                    // ToDo: something better than eating and silently ignoring an exception here
                 }
-                // wait for all to finish
-                await Task.WhenAll(taskList);
                 // check CancellationToken to see if this task is cancelled
                 if (cancellationToken.IsCancellationRequested) {
+                    Log.Debug($"in AnalyzeFileSystem: Cancellation requested (3rd checkpoint)");
                     // ToDo: investigate how best to handle the aggregate exceptions that may bubble up
                     // database cleanup is needed
-                    Log.Debug($"in AnalyzeFileSystem: Cancellation requested (3rd checkpoint)");
                     // DatabaseRollback();
                     cancellationToken.ThrowIfCancellationRequested();
                 }
 
-                // best to pass the tasklist into the Action, and let it analyze the tasklist and create the
-                //  appropriate database statements to insert the Node and Edge information about all files.
-                // ToDO: if (recordFiles!=null) { recordFiles.Invoke(currentdir, taskList); }
-                if (cancellationToken.IsCancellationRequested) {
-                    // ToDo: investigate how best to handle the aggregate exceptions that may bubble up
-                    // database cleanup is needed
-                    Log.Debug($"in AnalyzeFileSystem: Cancellation requested (3rd checkpoint)");
-                    // DatabaseRollback();
-                    cancellationToken.ThrowIfCancellationRequested();
-                }
-
-                // here, get the information from the tasklist needed to populate the AnalyzeFileSystem
+                // here, get the information from the taskList needed to populate the AnalyzeFileSystem
                 foreach (var task in taskList) {
                     // append all exceptions from each task to the AnalyzeFileSystem and the AnalyzeFileProgress
                     if (task.Result.Exceptions.Count>0) {
@@ -207,7 +234,9 @@ namespace ATAP.Utilities.FileSystem {
                         if (task.Result.FileInfo.Length>analyzeFileSystemProgress.LargestFile) {
                             analyzeFileSystemProgress.LargestFile=task.Result.FileInfo.Length;
                         }
+                        // Add the Hash value to this file's FileInfoEx
                     }
+                    // PersistFSEntries(currentDir,
                     // Add to the file node this file
                     // add to the edge node this file and the currentdir
                 }
@@ -284,6 +313,28 @@ namespace ATAP.Utilities.FileSystem {
             return fileInfoEx;
         }
 
+        #region RecordFSAChordToDB
+        public async RootRspMessageDTO PersistRoot (RootReqMessageDTO rootReqOrmDTO, ORMServer oRMServer,  CancellationToken cancellationToken)
+        {
+            //ToDo: 1st cancellationToken check
+            ORMLite oRM = new ORMLite;
+            ORMServer = new OrmServer(connectionstring); // specifies the specific  authorization levels and database to use, along with 
+            //ToDo: 2st cancellationToken check
+            rootReqOrmDTO = RootReqMessageDTO.ConvertTo(RootReqOrmDTO);
+           RootRspOrmDTO rootRspOrmDTO = new RootRspOrmDTO();
+            try
+            {
+                //sqlcmdtempl = StringConstants.RecordRootSQLCreateTemplate;
+                await rootRspOrmDTO = sqlcmd.Execute(StringConstants.RecordRootSQLCreateTemplate, rootReqOrmDTO); // ToDo: figure out if splatting the attributes is faster/smaller/more maintainable/EasierToReasonAbout
+            } catch
+            {
+                //ToDo: catch exceptions, modify the return result accordingly
+            }
+            return rootRspOrmDTO;
+        }
+        
+        #endregion
+
         #region Properties
         #region Properties:class logger
         //public ILog Log;
@@ -294,7 +345,7 @@ namespace ATAP.Utilities.FileSystem {
         #endregion
         // the hasher
         // ToDo: Find a MD5 algorithm that is thread-safe and can be reused; the one below throws a cryptographic exception when called a second time (after transformFinalBlock)
-        // ToDo: Make this into a list of hash functions that can be used on a filestream, and make it possible for any method in this class to select one from the list. Allows the user to select the hash function to be used.
+        // ToDo: Make this into a list of hash functions that can be used on a FileStream, and make it possible for any method in this class to select one from the list. Allows the user to select the hash function to be used.
         //MD5= System.Security.Cryptography.MD5.Create();
         #region Properties:Hasher MD5
         //System.Security.Cryptography.MD5 MD5 { get; set; }
@@ -312,7 +363,7 @@ namespace ATAP.Utilities.FileSystem {
 
 }
 // The ideas and code for ByteArrayHasher came from
-// The ideas and some code for an ansync version of "read file and hash it" came from https://stackoverflow.com/questions/49858310/how-to-async-md5-calculate-c-sharp
+// The ideas and some code for an async version of "read file and hash it" came from https://stackoverflow.com/questions/49858310/how-to-async-md5-calculate-c-sharp
 // The ideas and some code for a parallel version to process files came from https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-iterate-file-directories-with-the-parallel-class
 
 
@@ -343,7 +394,7 @@ namespace ATAP.Utilities.FileSystem {
     }
     // Create the HashFunction that can be called to incrementally 
     Func < HashFunction = new Func<byte[], string>(ba)    {
-    string hashresult;
+    string hashResult;
     switch (HashAlgorithm)
     {
       case HashAlgorithm.CRC32:

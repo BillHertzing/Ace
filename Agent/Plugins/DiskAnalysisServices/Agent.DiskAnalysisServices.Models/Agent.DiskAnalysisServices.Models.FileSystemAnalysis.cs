@@ -8,6 +8,7 @@ using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.FileSystem;
 using Ace.Agent.BaseServices;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace Ace.Plugin.DiskAnalysisServices {
 
@@ -97,8 +98,7 @@ namespace Ace.Plugin.DiskAnalysisServices {
             return !(left==right);
         }
     }
-#endregion
-
+    #endregion
 
     /*
     #region Monitor Data Structures

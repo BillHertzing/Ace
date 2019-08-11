@@ -1,0 +1,8 @@
+ClassDiagram [frame=true framecolor=steelblue label="Class Diagram"] {
+  Interface IMessageService {
+   MessageFactory :IMessageFactory
+  RegisterHandler<T> : void
+  public Stop():Void
+ }
+
+}

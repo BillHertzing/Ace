@@ -66,7 +66,7 @@ namespace Ace.PlugIn.AMQPServices {
                 // ToDo: Log:Error
                 throw new InvalidOperationException("ToDo: exception message");
             }
-            // ToDo: extend appSettingsDictionary to allow for adding a plugIn's AppSettings instance; needs to account for both readonly and changenotify
+            // ToDo: extend appSettingsDictionary to allow for adding a plugIn's AppSettings instance; needs to account for both readonly and ChangeNotify
             //appSettingsDictionary.
 
             // ContentRoot from SS, and WebHostRoot (null?)
@@ -111,6 +111,7 @@ namespace Ace.PlugIn.AMQPServices {
             // Pass the Plugin's data structure to the container so it will be available to every other module and services
             appHost.GetContainer().Register<AMQPServicesData>(d => aMQPServicesData);
 
+            // ToDo: Get the MQServer to use based on values in the AppSettings
             // Create and register a RabbitMqServer using the connectionString from the AppSettings
             appHost.Register<IMessageService>(new RabbitMqServer(aMQPConnectionString));
 
@@ -118,7 +119,9 @@ namespace Ace.PlugIn.AMQPServices {
             var mqServer = appHost.GetContainer().Resolve<IMessageService>();
             //var aMQPServiceController = new AMQPServiceController(appHost);
             mqServer.RegisterHandler<VerifyAMQPReqDTO>(appHost.ExecuteMessage);
-            mqServer.Start();
+            mqServer.RegisterHandler<RecordRootReqDTOMessage>(appHost.ExecuteMessage);
+            // Wait for other plugins to initialize, then start the mqServer
+            appHost.AfterInitCallbacks.Add(appHost => mqServer.Start());
 
             // ToDo: enable the mechanisms that monitors each plugin-specific data sensor, and start them running
 

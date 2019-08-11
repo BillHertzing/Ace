@@ -12,6 +12,7 @@ using ATAP.Utilities.ServiceStack;
 
 using Microsoft.Extensions.Hosting;
 using ATAP.Utilities.ConcurrentObservableCollections;
+using ServiceStack.Messaging;
 
 namespace Ace.Plugin.DiskAnalysisServices {
     public class DiskAnalysisServicesPlugin : IPlugin, IPreInitPlugin {
@@ -73,7 +74,7 @@ namespace Ace.Plugin.DiskAnalysisServices {
                 // ToDo: Log:Error
                 throw new InvalidOperationException("ToDo: exception message");
             }
-            // ToDo: extend appSettingsDictionary to allow for adding a plugIn's AppSettings instance; needs to account for both readonly and changenotify
+            // ToDo: extend appSettingsDictionary to allow for adding a plugIn's AppSettings instance; needs to account for both readonly and ChangeNotify
             //appSettingsDictionary.
 
             // Key names in the cache for Configuration settings for a Plugin consist of the namespace and the string .Config
@@ -128,6 +129,10 @@ namespace Ace.Plugin.DiskAnalysisServices {
 
             // Pass the Plugin's data structure to the container so it will be available to every other module and services
             appHost.GetContainer().Register(d => diskAnalysisServicesData);
+
+            // register the message handlers with the mqServer if one exists
+            var mqServer = appHost.GetContainer().TryResolve<IMessageService>();
+            mqServer?.RegisterHandler<RecordRootReqDTOMessage>(appHost.ExecuteMessage);
 
             // ToDo: enable the mechanisms that monitors each plugin-specific data sensor, and start them running
         }
