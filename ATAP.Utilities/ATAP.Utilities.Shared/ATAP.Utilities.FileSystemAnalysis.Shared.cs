@@ -8,8 +8,9 @@ using System.Text;
 using ATAP.Utilities.ConcurrentObservableCollections;
 
 namespace ATAP.Utilities.FileSystem {
-
-
+    /// <summary>
+    /// Data Structure to hold the results of an AnalyzerFileSystem method call
+    /// </summary>
     public interface IAnalyzeFileSystemResult {
         IDirectoryInfoExs DirectoryInfoExs { get; set; }
         IFileInfoExs FileInfoExs { get; set; }
@@ -24,8 +25,9 @@ namespace ATAP.Utilities.FileSystem {
         //      ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, (Id<DirectoryInfoEx>, Id<FileInfoEx>)> EdgeFileInfoExDirectoryInfoExCOD { get; set; }
     }
 
+    #region AnalyzeFileSystem
     public class AnalyzeFileSystemResult : IAnalyzeFileSystemResult {
-        public AnalyzeFileSystemResult() :this(new DirectoryInfoExs() , new FileInfoExs(), new List<Exception>()) { }
+        public AnalyzeFileSystemResult() : this(new DirectoryInfoExs(), new FileInfoExs(), new List<Exception>()) { }
 
         public AnalyzeFileSystemResult(IDirectoryInfoExs directoryInfoExs, IFileInfoExs fileInfoExs, IList<Exception> exceptions) {
             DirectoryInfoExs=directoryInfoExs;
@@ -43,7 +45,7 @@ namespace ATAP.Utilities.FileSystem {
     }
 
     public class AnalyzeFileSystemResults : IAnalyzeFileSystemResults {
-        public AnalyzeFileSystemResults() :this(new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult>() { { new Id<LongRunningTaskInfo>(), new AnalyzeFileSystemResult()} }) { }
+        public AnalyzeFileSystemResults() : this(new ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult>() { { new Id<LongRunningTaskInfo>(), new AnalyzeFileSystemResult() } }) { }
 
         public AnalyzeFileSystemResults(ConcurrentObservableDictionary<Id<LongRunningTaskInfo>, IAnalyzeFileSystemResult> AnalyzeFileSystemResultsCOD) {
             this.AnalyzeFileSystemResultsCOD=AnalyzeFileSystemResultsCOD;
@@ -63,7 +65,7 @@ namespace ATAP.Utilities.FileSystem {
 
 
     public class AnalyzeFileSystemProgress : IAnalyzeFileSystemProgress {
-        public AnalyzeFileSystemProgress():this(false,-1,-1,-1,-1, new List<Exception>()) { }
+        public AnalyzeFileSystemProgress() : this(false, -1, -1, -1, -1, new List<Exception>()) { }
 
         public AnalyzeFileSystemProgress(bool completed, int numberOfDirectories, int numberOfFiles, int deepestDirectoryTree, long largestFile, IList<Exception> exceptions) {
             Completed=completed;
@@ -80,4 +82,5 @@ namespace ATAP.Utilities.FileSystem {
         public long LargestFile { get; set; }
         public IList<Exception> Exceptions { get; set; }
     }
+    #endregion
 }
