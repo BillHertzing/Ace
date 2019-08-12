@@ -171,6 +171,7 @@ namespace ATAP.Utilities.FileSystem {
     public interface IRecordRootRspPOCO {
         string Result { get; set; }
         bool Success { get; set; }
+        string TransactionID { get; set; }
     }
 
     public interface IRecordRootRspDTO : IRecordRootRspPOCO {
@@ -188,6 +189,7 @@ namespace ATAP.Utilities.FileSystem {
         public DirectoryInfoEx ParentDirectoryInfoEx { get; set; }
         public DirectoryInfoExs DirectoryInfoExs { get; set; }
         public FileInfoExs FileInfoExs { get; set; }
+        string TransactionID { get; set; }
     }
 
     public interface IRecordFSEntitiesReqDTO : IRecordFSEntitiesReqPOCO {
@@ -238,6 +240,7 @@ namespace ATAP.Utilities.FileSystem {
     public class RecordRootRspPOCO : IRecordRootRspPOCO {
         public string Result { get; set; }
         public bool Success { get; set; }
+        public string TransactionID { get; set; }
     }
 
     public class RecordRootRspDTO : RecordRootRspPOCO, IRecordRootRspDTO {
@@ -255,6 +258,7 @@ namespace ATAP.Utilities.FileSystem {
         public DirectoryInfoEx ParentDirectoryInfoEx { get; set; }
         public DirectoryInfoExs DirectoryInfoExs { get; set; }
         public FileInfoExs FileInfoExs { get; set; }
+        public string TransactionID { get; set; }
     }
 
     public class RecordFSEntitiesReqDTO : RecordFSEntitiesReqPOCO, IRecordFSEntitiesReqDTO {
