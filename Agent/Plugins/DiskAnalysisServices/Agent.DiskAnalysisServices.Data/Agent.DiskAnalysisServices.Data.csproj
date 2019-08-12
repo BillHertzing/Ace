@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -33,7 +33,7 @@
 
   <!-- ServiceStack packages used in this assembly -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.5.1" />
+    <PackageReference Include="ServiceStack" Version="5.6.*" />
   </ItemGroup>
 
   <ItemGroup>

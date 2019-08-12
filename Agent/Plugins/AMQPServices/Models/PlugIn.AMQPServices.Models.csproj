@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -29,7 +29,7 @@
 
   <!-- ServiceStack packages used by this assembly -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack.Interfaces" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Interfaces" Version="5.6.*" />
   </ItemGroup>
 
   <ItemGroup>

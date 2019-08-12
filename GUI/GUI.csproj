@@ -67,7 +67,7 @@
 
   <!-- Packages to implement ServiceStack-->  
   <ItemGroup>
-    <PackageReference Include="ServiceStack.Text" Version="5.*" />
+    <PackageReference Include="ServiceStack.Text.Core" Version="5.6.*" />
   </ItemGroup>  
 
   <ItemGroup>

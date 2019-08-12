@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <!-- Override the TargetFamework specified in the Directory.Build.props  -->
@@ -114,9 +114,9 @@
   
   <!-- Packages to implement ServiceStack-->
   <ItemGroup>
-    <PackageReference Include="ServiceStack.Core" Version="5.5.1" />
-    <PackageReference Include="ServiceStack.Text.Core" Version="5.5.1" />
-    <PackageReference Include="ServiceStack.Redis.Core" Version="5.5.1" />
+    <PackageReference Include="ServiceStack.Core" Version="5.6.*" />
+    <PackageReference Include="ServiceStack.Text.Core" Version="5.6.*" />
+    <PackageReference Include="ServiceStack.Redis.Core" Version="5.6.*" />
   </ItemGroup>
 
   <!-- Reference the other related projects -->

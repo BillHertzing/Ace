@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
@@ -32,7 +32,7 @@
 
   <!-- ServiceStack packages used in this assembly -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.5.1" />
+    <PackageReference Include="ServiceStack" Version="5.6.*" />
   </ItemGroup>
 
   <!-- Reference the other related projects -->

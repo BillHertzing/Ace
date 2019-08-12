@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
   <PropertyGroup>
     <RootNamespace>Ace.Agent.Plugins.GUIServices</RootNamespace>
@@ -43,7 +43,7 @@
 
   <!-- ServiceStack packages used in this assembly -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.5.1" />
+    <PackageReference Include="ServiceStack" Version="5.6.*" />
   </ItemGroup>
 
   <!-- Package to access the IHostEnvironemnt  -->
