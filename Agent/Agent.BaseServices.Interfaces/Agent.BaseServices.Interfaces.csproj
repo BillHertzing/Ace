@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
-    <PackageReference Include="ServiceStack" Version="5.6.*" />
+    <PackageReference Include="ServiceStack" Version="5.6.1" />
     <ProjectReference Include="..\Agent.BaseServices.Data\Agent.BaseServices.Data.csproj" />
     <ProjectReference Include="..\Agent.BaseServices.Models\Agent.BaseServices.Models.csproj" />
   </ItemGroup>

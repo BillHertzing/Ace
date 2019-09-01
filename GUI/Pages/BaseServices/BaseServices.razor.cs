@@ -84,7 +84,7 @@ namespace Ace.AceGUI.Pages {
         }
         #endregion
         #region Page Initialization Handler
-        protected override async Task OnInitAsync() {
+        protected override async Task OnInitializedAsync()  {
             Log.LogDebug($"Starting BaseServices.OnInitAsync");
 
             // Testing for serialization of ID<T> instances

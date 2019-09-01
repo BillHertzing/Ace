@@ -216,7 +216,7 @@ namespace Ace.Agent.Host {
             IHostBuilder genericHostBuilder = CreateSpecificHostBuilder(args, genericHostConfigurationRoot);
             //Log.Debug("in Program.Main: genericHostBuilder = {@genericHostBuilder}", genericHostBuilder);
 
-            Log.Debug("in Program.Main: IsConsoleApplication = {IsConsoleApplication}", runtimeKind.IsConsoleApplication);
+        Log.Debug("in Program.Main: IsConsoleApplication = {IsConsoleApplication}", runtimeKind.IsConsoleApplication);
             if (!runtimeKind.IsConsoleApplication) {
                 Log.Debug("in Program.Main: extend genericHostBuilder by calling extension method .ConfigureServices and adding to the DI Container a singleton instance of AceAsServiceLifetimeKingpin of type IHostLifetime");
                 genericHostBuilder.ConfigureServices((hostContext, services) => {
@@ -263,8 +263,9 @@ namespace Ace.Agent.Host {
 
         }
     }
-
-    [ATAP.Utilities.ETW.ETWLogAttribute]
+#if TRACE
+    [ETWLogAttribute]
+#endif
     public class Startup {
         public IConfiguration Configuration { get; }
 
@@ -288,7 +289,7 @@ namespace Ace.Agent.Host {
 
             // The supplied lambda becomes the final handler in the HTTP pipeline
             app.Run(async (context) => {
-                Log.Debug("Last HTTP Pipeline handler");
+                Log.Debug("Last HTTP Pipeline handler, cwd = {0}; ContentRootPath = {1}", Directory.GetCurrentDirectory(), HostEnvironment.ContentRootPath);
                 context.Response.StatusCode=404;
                 await Task.FromResult(0);
             });

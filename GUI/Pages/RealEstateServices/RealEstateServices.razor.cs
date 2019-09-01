@@ -45,7 +45,7 @@ namespace Ace.AceGUI.Pages {
             set;
         }
 
-        protected override async Task OnInitAsync() {
+        protected override async Task OnInitializedAsync() {
             //Logger.LogDebug($"Starting OnInitAsync");
             var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new Agent.BaseServices.InitializationData("BaseVersionXX", "MachineIDXX", "userIDxx")));
             //Logger.LogDebug($"Calling PostJsonAsyncSS<InitializationResponse> with InitializationRequest ={initializationRequest}");

@@ -24,7 +24,7 @@ namespace Ace.AceGUI.Pages {
         // Eventually localized
         public static Ace.Plugin.DiskAnalysisServices.ConfigurationData configurationDataPlaceholder = new Ace.Plugin.DiskAnalysisServices.ConfigurationData(-1);
         public static Ace.Plugin.DiskAnalysisServices.UserData userDataPlaceholder = new Ace.Plugin.DiskAnalysisServices.UserData("User Data pre-init placeholder");
-        protected override async Task OnInitAsync() {
+        protected override async Task OnInitializedAsync() {
             Logger.LogDebug($"Starting DiskAnalysisServices.OnInitAsync");
 
             var initializationRequest = new Ace.Plugin.DiskAnalysisServices.InitializationRequest(new Ace.Plugin.DiskAnalysisServices.InitializationRequestPayload(new Ace.Agent.BaseServices.InitializationData()));

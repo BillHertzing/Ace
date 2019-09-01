@@ -40,13 +40,14 @@
 
   <!-- Packages to implement persistent State through the Blazored.LocalStorage NuGet package-->  
   <ItemGroup>
-    <PackageReference Include="Blazored.LocalStorage" Version="2.0.6" />
+    <PackageReference Include="Blazored.LocalStorage" Version="2.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.0.0-preview8.19405.7" />
   </ItemGroup>
 
   <!-- Packages to implement MEL Logging through the Blazor.Extensions.Logging NuGet package-->  
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview7.19362.4" />
-    <PackageReference Include="Blazor.Extensions.Logging" Version="0.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview8.19405.4" />
+    <PackageReference Include="Blazor.Extensions.Logging" Version="0.3.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
@@ -60,9 +61,9 @@
 
   <!-- Packages to create a Blazor CSP project -->  
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.0.0-preview7.19365.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.0.0-preview7.19365.7" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview7.19365.7" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.0.0-preview8.19405.7" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview8.19405.7" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Packages to implement ServiceStack-->  
@@ -71,7 +72,7 @@
   </ItemGroup>  
 
   <ItemGroup>
-    <PackageReference Include="MedallionShell" Version="1.5.1" />
+    <PackageReference Include="MedallionShell" Version="1.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="TimePeriodLibrary.NET" Version="2.1.1" />
   </ItemGroup>

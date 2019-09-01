@@ -34,7 +34,7 @@
 
   <!-- ServiceStack packages used in this assembly -->
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.6.*" />
+    <PackageReference Include="ServiceStack" Version="5.6.1" />
   </ItemGroup>
 
   <!-- Reference the other related projects -->

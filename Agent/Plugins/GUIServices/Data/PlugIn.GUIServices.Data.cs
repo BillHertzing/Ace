@@ -1,6 +1,7 @@
 
 using System;
 using System.Reflection;
+using Agent.GUIServices.Shared;
 using ServiceStack;
 using ServiceStack.Configuration;
 
@@ -8,17 +9,13 @@ using ServiceStack.VirtualPath;
 
 namespace Ace.Agent.GUIServices {
     public class GUIServicesData {
-
-    public GUIServicesData() : this(new MultiAppSettingsBuilder().Build()) {
+        public GUIServicesData(IAppSettings pluginAppSettings, ConfigurationData configurationData) {
+            PlugInAppSettings=pluginAppSettings;
+            ConfigurationData=configurationData;
         }
 
-        public GUIServicesData(IAppSettings pluginAppSettings) {
-      PluginAppSettings = pluginAppSettings;
-        }
+        public IAppSettings PlugInAppSettings { get; set; }
+        public ConfigurationData ConfigurationData { get; set; }
 
-        //ToDo: constructors with event handlers
-
-
-    public IAppSettings PluginAppSettings { get; }
     }
 }

@@ -128,6 +128,8 @@ namespace Ace.Agent.Host {
                     default:
                         throw new InvalidEnumArgumentException(String.Format(StringConstants.InvalidSupportedEnvironmentExceptionMessage, env));
                 }
+                // Configure the wwwRoot 
+                //webHostBuilder.UseWebRoot(Directory.GetCurrentDirectory());
                 // Configure WebHost Logging to use Serilog
                 //  webHostBuilder.UseSerilog(); // hmmm UseSesrilog does not exisit for the WebHost, just higher, for the GenericHost
                 // Specify the class to use when starting the WebHost

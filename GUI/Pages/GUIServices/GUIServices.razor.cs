@@ -17,7 +17,7 @@ namespace Ace.AceGUI.Pages {
     HttpClient HttpClient {
       get; set;
     }
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
 
             //Logger.LogDebug($"starting GUIServices.OnInitAsync");

@@ -1,16 +1,7 @@
 # Application Configuration Settings for Ace Plugin GUIServices
 # versioninfo
 
-GUIs {
-  abc {
-    RelativeToContentRootPath ./GUI/GUI/dist/abc
-    VirtualRootPath abc
-    },
-  xyz {
-    RelativeToContentRootPath ./GUI/GUI/dist/xyz
-    VirtualRootPath xyz
-  }
-}
+GUIMaps {_GUIMaps:[{VirtualRootPath:,RelativeToContentRootPath:./GUI/GUI/dist}]}
 
-RelativeToContentRootPath ./GUI/GUI/dist
-VirtualRootPath 
+DefaultGUIVirtualRootPath 
+

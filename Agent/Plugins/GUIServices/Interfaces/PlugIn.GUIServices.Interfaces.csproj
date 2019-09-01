@@ -27,10 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.6.*" />
+    <PackageReference Include="ServiceStack" Version="5.6.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Data\PlugIn.GUIServices.Data.csproj" />
     <ProjectReference Include="..\Models\PlugIn.GUIServices.Models.csproj" />
     <ProjectReference Include="..\Shared\PlugIn.GUIServices.Shared.csproj" />
   </ItemGroup>

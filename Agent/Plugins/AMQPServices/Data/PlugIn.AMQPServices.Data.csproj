@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.6.*" />
+    <PackageReference Include="ServiceStack" Version="5.6.1" />
     <ProjectReference Include="..\Shared\PlugIn.AMQPServices.Shared.csproj" />
     <ProjectReference Include="..\Models\PlugIn.AMQPServices.Models.csproj" />
     <ProjectReference Include="..\Interfaces\PlugIn.AMQPServices.Interfaces.csproj" />
