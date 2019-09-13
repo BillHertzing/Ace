@@ -1,7 +1,6 @@
-﻿using ATAP.Utilities.ETW;
+﻿using System.Collections.Generic;
 using ServiceStack;
 using ServiceStack.Configuration;
-using System.Collections.Generic;
 
 namespace Ace.Agent.Host {
     [ATAP.Utilities.ETW.ETWLogAttribute]
@@ -109,8 +108,7 @@ namespace Ace.Agent.Host {
             return this;
         }
 
-        public MultiAppSettingsBuilder AddNetCore(Microsoft.Extensions.Configuration.IConfiguration configuration)
-        {
+        public MultiAppSettingsBuilder AddNetCore(Microsoft.Extensions.Configuration.IConfiguration configuration) {
             appSettingsQueue.Enqueue(
                 new NetCoreAppSettings(configuration)
             );

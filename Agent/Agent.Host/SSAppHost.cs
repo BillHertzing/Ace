@@ -1,22 +1,15 @@
+using System;
+using System.Collections.Generic;
 using Ace.Agent.BaseServices;
-using Ace.PlugIn.AMQPServices;
 using Ace.Agent.GUIServices;
 using Ace.Plugin.DiskAnalysisServices;
 using Ace.Plugin.MinerServices;
 using Ace.Plugin.RealEstateServices;
 using ATAP.Utilities.ServiceStack;
 using Funq;
-using Serilog;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using ServiceStack;
-using ServiceStack.Configuration;
-using ServiceStack.Text;
-using System;
-using System.Collections.Generic;
-using System.Security;
-using ATAP.Utilities.LongRunningTasks;
-using ATAP.Utilities.TypedGuids;
 
 namespace Ace.Agent.Host {
     [ATAP.Utilities.ETW.ETWLogAttribute]
@@ -43,7 +36,7 @@ namespace Ace.Agent.Host {
         public override void Configure(Container container) {
 
             // get the Environment value from the WebHost environment injected by the constructor
-            string envName = this.HostEnvironment.EnvironmentName;  
+            string envName = this.HostEnvironment.EnvironmentName;
             Log.Debug("in SSAppHost.Configure, envName = {envName}", envName);
 
             // AppSettings is a first class object on the Container, so it will be auto-wired
@@ -94,7 +87,7 @@ namespace Ace.Agent.Host {
             // ToDo: Investigate SS's MapHostAbsolutePath
             //  new TextFileSettings("~/appsettings.txt".MapHostAbsolutePath(),
             if (!this.HostEnvironment.IsProduction()) {
-                var settingsTextFileName = StringConstants.agentSettingsTextFileName + '.' + envName + StringConstants.settingsTextFileSuffix;
+                var settingsTextFileName = StringConstants.agentSettingsTextFileName+'.'+envName+StringConstants.settingsTextFileSuffix;
                 // ToDo: ensure it exists and the ensure we have permission to read it
                 // ToDo: Security: There is something called a Time-To-Check / Time-To-Use vulnerability, ensure the way we check then access the text file does not open the program to this vulnerability
                 multiAppSettingsBuilder.AddTextFile(settingsTextFileName);
@@ -148,7 +141,6 @@ namespace Ace.Agent.Host {
             // Create the list of PlugIns to load
             var plugInList = new List<IPlugin>() {
                new GUIServicesPlugin(),
-               new AMQPServicesPlugin(),
                new RealEstateServicesPlugin(),
                new MinerServicesPlugin(),
                new DiskAnalysisServicesPlugin(),
@@ -169,7 +161,7 @@ namespace Ace.Agent.Host {
             longRunningTasksCheckTimer.Start();
 
             /* 
-            // ToDo: create a NotifyIcon equivalent for a Windows Service or Linux Daemon. NotifyIcon itself will not work, as that is for WinForms only
+            // ToDo: create a NotifyIcon equivalent for a Windows Service or Linux Daemon. Notifiy Icon itself will not work, as that is for WinForms only
             Log.Debug("in SSAppHost.Configure: Create a NotifyIcon for AceCommander");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -25,12 +25,9 @@ using ATAP.Utilities.ConcurrentObservableCollections;
 //using Stateless;
 
 namespace Ace.AceGUI.Pages {
+	// Use the Custom BlazorLog Attribute to specify logging of all method boundaries via the BlazorLogProvider class
+    [Ace.GUI.LogMethodBoundariesInBlazor]
     public partial class BaseServicesCodeBehind : ComponentBase {
-
-        #region StringConstants
-        // Eventually replace with localization
-
-        #endregion
 
         #region Access Objects registered in the DI container
         // This syntax adds to the class a Method that accesses the DI container, and retrieves the instance having the specified type from the DI container.
@@ -39,6 +36,9 @@ namespace Ace.AceGUI.Pages {
         HttpClient HttpClient { get; set; }
 
         // Access the Logging extensions registered in the DI container
+        [Inject]
+        public ILoggerFactory LoggerFactory { get; set; }
+
         [Inject]
         public ILogger<BaseServicesCodeBehind> Log { get; set; }
 
@@ -49,6 +49,8 @@ namespace Ace.AceGUI.Pages {
         // Access the IUriHelper registered in the DI container
         [Inject]
         IUriHelper UriHelper { get; set; }
+
+        private ILogger<BaseServicesCodeBehind> Logger { get; set; }
 
         #endregion
         #region Testing
@@ -85,12 +87,14 @@ namespace Ace.AceGUI.Pages {
         #endregion
         #region Page Initialization Handler
         protected override async Task OnInitializedAsync()  {
+            //Logger=LoggerFactory.CreateLogger<BaseServicesCodeBehind>();
+            //Logger.LogDebug($"Starting BaseServices.OnInitAsync, LoggerFactory");
             Log.LogDebug($"Starting BaseServices.OnInitAsync");
 
-            // Testing for serialization of ID<T> instances
-            TestIDTypeSerialization();
-            // Testing for serialization of complex data types
-            TestComplexTypeSerialization();
+            //// Testing for serialization of ID<T> instances
+            //TestIDTypeSerialization();
+            //// Testing for serialization of complex data types
+            //TestComplexTypeSerialization();
             //Log.LogDebug($"IsInitialized 1: {IsInitialized.Dump()}");
             IsInitialized=await LStorage.GetItemAsync<bool>("BaseServices.IsInitialized");
             //Log.LogDebug($"IsInitialized 2: {IsInitialized.Dump()}");

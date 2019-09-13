@@ -10,10 +10,12 @@
   "profiles": {
     "IntegratedIISInProcessDev": {
       "commandName": "IISExpress",
+      "commandLineArgs": "-Console:true",
       "launchBrowser": true,
       "launchUrl": "http://localhost:22000/",
       "environmentVariables": {
         "BlazorDemos_WebHostBuilder": "IntegratedIISInProcessWebHostBuilder",
+        "ASPNETCORE_URLS": "http://localhost:22010/",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

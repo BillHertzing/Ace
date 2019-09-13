@@ -1,16 +1,15 @@
-﻿using ATAP.Utilities.ETW;
+﻿using System;
+using System.ServiceProcess;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using System;
-using System.ServiceProcess;
-using System.Threading;
-using System.Threading.Tasks;
 
 
 namespace Ace.Agent.Host {
- 
+
     // Attribution to https://dejanstojanovic.net/aspnet/2018/june/clean-service-stop-on-linux-with-net-core-21/
     // Attribution to https://www.stevejgordon.co.uk/running-net-core-generic-host-applications-as-a-windows-service
     // Attribution to https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0
@@ -41,7 +40,7 @@ namespace Ace.Agent.Host {
             this.logger=logger??throw new ArgumentNullException(nameof(logger));
             this.logger.LogInformation("Injected logger starting GenericHostAsServiceLifetimeLynchpin .ctor");
 
-            HostApplicationLifetime =hostApplicationLifetime??throw new ArgumentNullException(nameof(hostApplicationLifetime));
+            HostApplicationLifetime=hostApplicationLifetime??throw new ArgumentNullException(nameof(hostApplicationLifetime));
             HostEnvironment=hostEnvironment??throw new ArgumentNullException(nameof(hostEnvironment));
             HostConfiguration=hostConfiguration??throw new ArgumentNullException(nameof(hostConfiguration));
             this.logger.LogInformation("leaving GenericHostAsServiceLifetimeLynchpin .ctor");

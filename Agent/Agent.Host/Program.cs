@@ -1,32 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+
+using System.Reflection;
+using System.Threading;
+
+using System.Threading.Tasks;
+using ATAP.Utilities.ETW;
+using ATAP.Utilities.LongRunningTasks;
+using ATAP.Utilities.Runtime.Enumerations;
+using ATAP.Utilities.TypedGuids;
+using ATAP.Utilities.WebHostBuilders.Enumerations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
-
 using Serilog;
 //Required for Serilog.SelfLog
 using Serilog.Debugging;
-
 using ServiceStack;
-using ServiceStack.Text;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.ServiceProcess;
-using System.Threading;
-using System.Threading.Tasks;
-using ATAP.Utilities.ETW;
-using ATAP.Utilities.LongRunningTasks;
-using ATAP.Utilities.TypedGuids;
-using ATAP.Utilities.Runtime.Enumerations;
-using ATAP.Utilities.WebHostBuilders.Enumerations;
 
 namespace Ace.Agent.Host {
 
@@ -47,7 +42,7 @@ namespace Ace.Agent.Host {
 
         public static async Task Main(string[] args) {
 
-            // Setup Serilog's static logger with an initial configuration sufficient to log statup errors
+            // Setup Serilog's static logger with an initial configuration sufficient to log startup errors
             Serilog.Core.Logger genericHostStartupNaubLogger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.FromLogContext()
@@ -76,7 +71,7 @@ namespace Ace.Agent.Host {
                 .AddJsonFile(StringConstants.genericHostSettingsFileName+StringConstants.hostSettingsFileNameSuffix, optional: true)
                 .AddEnvironmentVariables(prefix: StringConstants.ASPNETCOREEnvironmentVariablePrefix)
                 .AddEnvironmentVariables(prefix: StringConstants.CustomEnvironmentVariablePrefix)
-                // Add commandline switch provider and map -console to --console:false
+                // Add command-line switch provider and map -console to --console:false
                 .AddCommandLine(args, switchMappings);
 
             // Create this program's initial ConfigurationRoot
@@ -258,7 +253,7 @@ namespace Ace.Agent.Host {
                   //ATAPUtilitiesETWProvider.Log.Information($"Exception in Program.Main: {e.Exception.GetType()}: {e.Exception.Message}");
             }
             // The IHostLifetime instance methods take over now
-            // Log Program finishing to ETW if it happens to resume executionhere for some reason(as of 06/2019, ILWeaving this assembly results in a thrown invalid CLI Program Exception
+            // Log Program finishing to ETW if it happens to resume execution here for some reason(as of 06/2019, ILWeaving this assembly results in a thrown invalid CLI Program Exception
             // ATAP.Utilities.ETW.ATAPUtilitiesETWProvider.Log("> Program.Main");
 
         }
@@ -297,17 +292,6 @@ namespace Ace.Agent.Host {
             // TestIDTypeSerialization();
             // TestComplexTypeSerialization();
             // end temporary testing
-        }
-        // Temporary testing
-        private void TestComplexTypeSerialization() {
-            var cData = new Ace.Agent.BaseServices.ConfigurationData();
-            Log.Debug($"cData = {cData.Dump()}");
-            var cDataStr = JsonSerializer.SerializeToString(cData);
-            Log.Debug($"cDataStr from ServiceStack.Text.JsonSerializer.SerializeToString(Id)= {cDataStr}");
-            // ToDo: ask SS to Fix SS Deserializer in SS V5.5.1+ when running under Mono-WASM runtime. fails under Preview5 when run in a client-side Blazor app. passes server-side
-            //var roundTripcData = ServiceStack.Text.JsonSerializer.DeserializeFromString<Ace.Agent.BaseServices.ConfigurationData>(cDataStr);
-            //Log.LogDebug($"roundTripcData from ServiceStack.Text.JsonSerializer.DeserializeFromString<Ace.Agent.BaseServices.ConfigurationData>(cDataStr) = {roundTripcData.Dump()}");
-            Log.Debug($"End Temporary Testing");
         }
         /*
         private void TestIDTypeSerialization() {

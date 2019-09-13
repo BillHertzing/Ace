@@ -14,6 +14,7 @@ namespace GUI {
     public class Startup {
         public void ConfigureServices(IServiceCollection services) {
             // Add Blazor.Extensions.Logging.BrowserConsoleLogger; taken from the Blazor.Extensions.Logging NuGet package home page https://www.nuget.org/packages/Blazor.Extensions.Logging/# on 6/12/2018
+            // So that Fody and the MethodBoundryAspect ILWeaver can use the logging provider, register both the ILogger and the ILoggerFactory
             services.AddLogging(builder => builder
                 // Register the Blazor.Extensions.Logging logger with the Microsoft.Extensions.Logging.ILoggerBuilder
                 .AddBrowserConsole()

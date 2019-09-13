@@ -38,6 +38,11 @@
     <BlazorLinkOnBuild>false</BlazorLinkOnBuild>
   </PropertyGroup>
 
+  <!-- Packages to implement IL Weaving using Fody during the build process -->
+  <ItemGroup>
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+  </ItemGroup>
+
   <!-- Packages to implement persistent State through the Blazored.LocalStorage NuGet package-->  
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="2.0.11" />
