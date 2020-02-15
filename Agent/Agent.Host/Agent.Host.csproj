@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <!-- Override the TargetFamework specified in the Directory.Build.props  -->
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <TargetFrameworks>netcoreapp3.0;</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -60,7 +60,7 @@
   <!-- Packages to implement IL Weaving using Fody during the build process -->
   <ItemGroup>
     <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
-    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.118" />
     <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj" />
     <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
   </ItemGroup>
@@ -71,52 +71,52 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0-preview8.19405.3" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0-preview8.19405.4" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.1" />
   </ItemGroup>
   
   <!-- Packages necessary to run the ASP.Net Core Generic Host and web server hosts Server -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.0-preview8.19405.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.0.0-preview8.19405.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.0.0-preview8.19405.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview8.19405.4" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview8.19405.4" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0-preview8.19405.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
   </ItemGroup>
  
   <!-- Packages to implement Serilog as logging provider -->
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.9.0-dev-01116" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00209" />
-    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.1-dev-00745" />
-    <PackageReference Include="Serilog.Exceptions" Version="5.3.1" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.2-dev-00802" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00216" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.2.0-dev-00747" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.4.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.2-dev-00020" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0-dev-00847" />
-    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.1-dev-00159" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0-dev-00864" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="4.1.0-dev-00166" />
     <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
   </ItemGroup>
   
 
   <!-- Packages to implement Serilog as a Microsoft logging provider ? ToDo: implement Serilog as a logging provider to Microsoft logging -->
   <ItemGroup>
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.0-dev-10240" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10265" />
   </ItemGroup>
   
   
   <!-- Packages necessary to run the ASP.Net Core Blazor Server -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview8.19405.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview8.19405.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.2.0-preview1.20073.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
   </ItemGroup>
   
   <!-- Packages to implement ServiceStack-->
   <ItemGroup>
-    <PackageReference Include="ServiceStack.Core" Version="5.6.*" />
-    <PackageReference Include="ServiceStack.Text.Core" Version="5.6.*" />
-    <PackageReference Include="ServiceStack.Redis.Core" Version="5.6.*" />
+    <PackageReference Include="ServiceStack.Core" Version="5.8.1" />
+    <PackageReference Include="ServiceStack.Text.Core" Version="5.8.1" />
+    <PackageReference Include="ServiceStack.Redis.Core" Version="5.8.1" />
   </ItemGroup>
 
   <!-- Reference the other related projects -->

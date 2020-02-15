@@ -15,13 +15,14 @@ using ATAP.Utilities.ComputerHardware.Enumerations;
 using ATAP.Utilities.Database.Enumerations;
 using ATAP.Utilities.DiskDrive;
 
-// ToDo: figure out logging for the ATAP libraires, this is only temporary
+// ToDo: figure out logging for the ATAP libraries, this is only temporary
 using Serilog;
 using ATAP.Utilities.FileSystem;
 using System.Linq;
 using System.Security.Cryptography;
 using ATAP.Utilities.TypedGuids;
-
+using ATAP.Utilities.Persistence;
+using System.Linq.Expressions;
 
 namespace ATAP.Utilities.FileSystem {
 
@@ -50,9 +51,9 @@ namespace ATAP.Utilities.FileSystem {
             // diskInfoEx = await DBFetch.Invoke(cRUD, diskInfoEx);
             if (false) {
                 // already exist in DB, get ID and GUID from DB
-                diskInfoEx.DiskIdentityId=0; //ToDo: repalce with SQL fetch
-                diskInfoEx.DiskGuid=Guid.NewGuid(); //ToDo: repalce with SQL fetch
-                diskInfoEx.PartitionInfoExs=new List<PartitionInfoEx>(); //ToDo: repalce with SQL fetch
+                diskInfoEx.DiskIdentityId=0; //ToDo: replace with SQL fetch
+                diskInfoEx.DiskGuid=Guid.NewGuid(); //ToDo: replace with SQL fetch
+                diskInfoEx.PartitionInfoExs=new List<PartitionInfoEx>(); //ToDo: replace with SQL fetch
             }
         }
                 //ToDo: If cRUD is replace, update or delete
@@ -60,9 +61,9 @@ namespace ATAP.Utilities.FileSystem {
                 //if (false)
                 //{
                 //  // already exist in DB, get ID and GUID from DB
-                //  diskInfoEx.DiskDriveDBIdentityId = 0; //ToDo: repalce with SQL fetch
-                //  diskInfoEx.DiskDriveGuid = Guid.NewGuid(); //ToDo: repalce with SQL fetch
-                //  diskInfoEx.PartitionInfoExs = new List<PartitionInfoEx>(); //ToDo: repalce with SQL fetch
+                //  diskInfoEx.DiskDriveDBIdentityId = 0; //ToDo: replace with SQL fetch
+                //  diskInfoEx.DiskDriveGuid = Guid.NewGuid(); //ToDo: replace with SQL fetch
+                //  diskInfoEx.PartitionInfoExs = new List<PartitionInfoEx>(); //ToDo: replace with SQL fetch
                 //}
                 //else
                 //{
@@ -70,10 +71,10 @@ namespace ATAP.Utilities.FileSystem {
                 //  diskInfoEx.DiskDriveGuid = Guid.NewGuid();
                 //}
 
-                                // ToDo: depending on cRUD, do diffente things with the list
+                                // ToDo: depending on cRUD, do different things with the list
                     // if cRUD is Create
                     // make a partition list for every partition on the disk hw
-                    // ToDo: starting with the assumption there is only one partiton, and only one drive associated E:
+                    // ToDo: starting with the assumption there is only one partition, and only one drive associated E:
                     foreach (var p in hwPartitions) {
                         partitionInfoEx.PartitionIdentityId=0;
                         partitionInfoEx.PartitionGuid=Guid.NewGuid();
@@ -82,14 +83,14 @@ namespace ATAP.Utilities.FileSystem {
                     }
         */
 
-        public async Task AnalyzeFileSystem(string root, IAnalyzeFileSystemResult analyzeFileSystemResults, IAnalyzeFileSystemProgress analyzeFileSystemProgress, CancellationToken cancellationToken, Action<CrudType, string> recordRoot = null, Action<CrudType, string[]> recordSubdir = null) {
+        public async Task AnalyzeFileSystem(string root, IAnalyzeFileSystemResult analyzeFileSystemResults, IAnalyzeFileSystemProgress analyzeFileSystemProgress, CancellationToken cancellationToken, PersistenceAbstract persistence = null) {
             Log.Debug($"starting AnalyzeFileSystem: root = {root}");
 
             if (!Directory.Exists(root)) {
                 throw new ArgumentException(String.Format(StringConstants.RootDirectoryNotFoundExceptionMessage, root));
             }
 
-            // Data structure to hold names of subfolders to be examined for files.
+            // Data structure to hold names of subdirectories to be examined for files.
             Stack<string> dirs = new Stack<string>();
             string currentDir = root;
 
@@ -105,13 +106,35 @@ namespace ATAP.Utilities.FileSystem {
                 Log.Debug($"in AnalyzeFileSystem: Cancellation requested (1st checkpoint)");
                 cancellationToken.ThrowIfCancellationRequested();
             }
-            // After this point, there may be cleanup to do if the task is cancelled
-            // Store root dir in the DB's node table as type directory
-            if (recordRoot!=null) { recordRoot.Invoke(CrudType.Create, root); }
+            // After this point, there will be cleanup to do if the task is cancelled or exceptions are thrown
+            // If the persistence argument is not null, setup the persistence
+            if (persistence!=null) {
+                try {
+                    persistence.PersistenceSetupResults=persistence.PersistenceSetup(persistence.PersistenceSetupInitializationData);
+                }catch {
+                    //ToDo: catch exceptions when setting up persistence
+                }
+            }
+            // If the persistence argument is not null, persist the root directory
+            if (persistence!=null) {
+                // ToDo: if writing to an ORM, there needs to be a indicator that this is a create operation
+                persistence.PersistenceInsertData.DList=new List<string>() { root };
+                try {
+                    persistence.PersistenceInsertResults=persistence.PersistenceInsert(persistence.PersistenceInsertData, persistence.PersistenceSetupResults);
+                }
+                catch {
+                    //ToDo: catch exceptions when writing out data to persistence
+                }
+                // Did the insert fail
+                if (!persistence.PersistenceInsertResults.Success) {
+                    // ToDo: figure out how to handle a failed persistence insert
+                }
+
+            }
             // check CancellationToken to see if this task is cancelled
             if (cancellationToken.IsCancellationRequested) {
-                // database cleanup is needed
                 Log.Debug($"in AnalyzeFileSystem: Cancellation requested (2nd checkpoint)");
+                // ToDo: cleanup is needed
                 // DatabaseRollback();
                 cancellationToken.ThrowIfCancellationRequested();
             }
@@ -138,15 +161,32 @@ namespace ATAP.Utilities.FileSystem {
                 }
                 // update the results
                 analyzeFileSystemProgress.NumberOfDirectories+=subDirs.Length;
-                // update the with node and edge information about all subdirs
-                if (recordSubdir!=null) { recordSubdir.Invoke(CrudType.Create, subDirs); }
+                // update the  node and edge information about all subdirectories
+                // If the persistence argument is not null, persist the root directory
+                if (persistence!=null) {
+                    // ToDo: if writing to an ORM, there needs to be a indicator that this is a create operation
+                    persistence.PersistenceInsertData.DList=new List<string>(subDirs );
+                    try {
+                        persistence.PersistenceInsertResults=persistence.PersistenceInsert(persistence.PersistenceInsertData, persistence.PersistenceSetupResults);
+                    }
+                    catch {
+                        //ToDo: catch exceptions when writing out data to persistence
+                    }
+                    // Did the insert fail
+                    if (!persistence.PersistenceInsertResults.Success) {
+                        // ToDo: figure out how to handle a failed persistence insert
+                    }
+
+                }
+
                 // check CancellationToken to see if this task is cancelled
                 if (cancellationToken.IsCancellationRequested) {
-                    // database cleanup is needed
                     Log.Debug($"in AnalyzeFileSystem: Cancellation requested (2nd checkpoint)");
+                    // persistence cleanup may be needed
                     // DatabaseRollback();
                     cancellationToken.ThrowIfCancellationRequested();
                 }
+                // analyze the files in this subdirectories
                 try {
                     files=Directory.GetFiles(currentDir);
                 }
@@ -177,8 +217,8 @@ namespace ATAP.Utilities.FileSystem {
                 // check CancellationToken to see if this task is cancelled
                 if (cancellationToken.IsCancellationRequested) {
                     // ToDo: investigate how best to handle the aggregate exceptions that may bubble up
-                    // database cleanup is needed
                     Log.Debug($"in AnalyzeFileSystem: Cancellation requested (3rd checkpoint)");
+                    // persistence cleanup may be needed
                     // DatabaseRollback();
                     cancellationToken.ThrowIfCancellationRequested();
                 }
@@ -188,8 +228,8 @@ namespace ATAP.Utilities.FileSystem {
                 // ToDO: if (recordFiles!=null) { recordFiles.Invoke(currentdir, taskList); }
                 if (cancellationToken.IsCancellationRequested) {
                     // ToDo: investigate how best to handle the aggregate exceptions that may bubble up
-                    // database cleanup is needed
                     Log.Debug($"in AnalyzeFileSystem: Cancellation requested (3rd checkpoint)");
+                    // persistence cleanup may be needed
                     // DatabaseRollback();
                     cancellationToken.ThrowIfCancellationRequested();
                 }
@@ -209,12 +249,12 @@ namespace ATAP.Utilities.FileSystem {
                         }
                     }
                     // Add to the file node this file
-                    // add to the edge node this file and the currentdir
+                    // add to the edge node this file and the current directory
                 }
                 if (cancellationToken.IsCancellationRequested) {
                     // ToDo: investigate how best to handle the aggregate exceptions that may bubble up
-                    // database cleanup is needed
                     Log.Debug($"in AnalyzeFileSystem: Cancellation requested (4th checkpoint)");
+                    // persistence cleanup may be needed
                     // DatabaseRollback();
                     cancellationToken.ThrowIfCancellationRequested();
                 }
@@ -223,10 +263,13 @@ namespace ATAP.Utilities.FileSystem {
                     // ToDo: Get DirectoryInfo for each directory
                     // ToDo: only push if there is no exception
                     // ToDo: Insert the Node and Edge information about all directories into the DB
-                    // ToDo: update the DirectoryInfoEx in subDirs with the nodeID for each subdir as returned by the insert
+                    // ToDo: update the DirectoryInfoEx in subDirs with the nodeID for each subdirectories as returned by the insert
                     dirs.Push(str);
                 }
             }
+            // The analysis is complete
+            Log.Debug($"finished AnalyzeFileSystem");
+            // TearDown the persistence mechanism
         }
 
         public async Task<FileInfoEx> PopulateFileInfoExAsync(string path, int blocksize, CancellationToken cancellationToken) {
@@ -307,12 +350,9 @@ namespace ATAP.Utilities.FileSystem {
         #endregion
     }
 
-
-
-
 }
 // The ideas and code for ByteArrayHasher came from
-// The ideas and some code for an ansync version of "read file and hash it" came from https://stackoverflow.com/questions/49858310/how-to-async-md5-calculate-c-sharp
+// The ideas and some code for an async version of "read file and hash it" came from https://stackoverflow.com/questions/49858310/how-to-async-md5-calculate-c-sharp
 // The ideas and some code for a parallel version to process files came from https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/how-to-iterate-file-directories-with-the-parallel-class
 
 
@@ -343,22 +383,22 @@ namespace ATAP.Utilities.FileSystem {
     }
     // Create the HashFunction that can be called to incrementally 
     Func < HashFunction = new Func<byte[], string>(ba)    {
-    string hashresult;
+    string hashResult;
     switch (HashAlgorithm)
     {
       case HashAlgorithm.CRC32:
       {
-        //hashresult = BitConverter.ToUInt32(hasherCRC32.ComputeHash(ba), 0).ToString("X8");
+        //hashResult = BitConverter.ToUInt32(hasherCRC32.ComputeHash(ba), 0).ToString("X8");
         break;
       }
       case HashAlgorithm.MD5:
       {
-        hashresult = Convert.ToBase64String(hasherMD5.ComputeHash(ba));
+        hashResult = Convert.ToBase64String(hasherMD5.ComputeHash(ba));
         break;
       }
       default: { throw new ArgumentException(); }
     }
-    return hashresult;
+    return hashResult;
   }
   public HashAlgorithm HashAlgorithm;
   public Func<byte[], string> HashFunction;

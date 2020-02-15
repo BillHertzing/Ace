@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ATAP.Utilities.LongRunningTasks;
-using ServiceStack;
 using Serilog;
+using ServiceStack;
 
 namespace Ace.Agent.BaseServices {
     public partial class BaseServices : Service {
-        
+
 
         #region Lat/Lng To Address and reverse
         public object Post(GetAddressFromLatLongRequest request) {

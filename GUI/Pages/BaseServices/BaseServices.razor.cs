@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Ace.AceGUI.HttpClientExtenssions;
 using System.Text;
-using Microsoft.AspNetCore.Blazor.Services;
 using ATAP.Utilities.ConcurrentObservableCollections;
 
 //using Stateless;
@@ -47,8 +46,12 @@ namespace Ace.AceGUI.Pages {
         public ILocalStorageService LStorage { get; set; }
 
         // Access the IUriHelper registered in the DI container
-        [Inject]
-        IUriHelper UriHelper { get; set; }
+        //[Inject]
+        //IUriHelper UriHelper { get; set; }
+
+        // Access the INavigationManager registered in the DI container
+        [Inject] 
+        NavigationManager NavigationManager { get; set; }
 
         private ILogger<BaseServicesCodeBehind> Logger { get; set; }
 
@@ -118,9 +121,12 @@ namespace Ace.AceGUI.Pages {
                 var initializationRequest = new InitializationRequest(new InitializationRequestPayload(new InitializationData("BaseVersionXX", "MachineIDXX", "userIDxx")));
                 Log.LogDebug($"initializationRequest: {initializationRequest.Dump()}");
 
-                Log.LogDebug($"UriHelper.ToAbsoluteUri(BaseServicesInitialization).ToString(): {UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString()}");
+                Log.LogDebug($"NavigationManager.ToAbsoluteUri(BaseServicesInitialization).ToString(): {NavigationManager.ToAbsoluteUri("BaseServicesInitialization").ToString()}");
+                //Log.LogDebug($"UriHelper.ToAbsoluteUri(BaseServicesInitialization).ToString(): {UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString()}");
+
                 Log.LogDebug($"Calling PostJsonAsync<InitializationResponse> with initializationRequest = {initializationRequest.Dump()}");
-                var initializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>(UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString(), initializationRequest); // use the DOT NET CORE Blazor Built-In JSON serializer library
+                var initializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>(NavigationManager.ToAbsoluteUri("BaseServicesInitialization").ToString(), initializationRequest); // use the DOT NET CORE Blazor Built-In JSON serializer library
+                //var initializationResponse = await HttpClient.PostJsonAsync<InitializationResponse>(UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString(), initializationRequest); // use the DOT NET CORE Blazor Built-In JSON serializer library
                 //var initializationResponse = await HttpClient.PostJsonAsyncSS<InitializationResponse>(UriHelper.ToAbsoluteUri("BaseServicesInitialization").ToString(), initializationRequest); // use the ServiceStack JSON serializer library
                 Log.LogDebug($"Returned from PostJsonAsync<InitializationResponse>, initializationResponse = {initializationResponse.Dump()}");
                 //Log.LogDebug($"Returned from PostJsonAsyncSS<InitializationResponse>, initializationResponse = {initializationResponse.Dump()}");
@@ -194,7 +200,8 @@ namespace Ace.AceGUI.Pages {
             IsAliveReqPayload isAliveReqPayload = new IsAliveReqPayload { };
             Log.LogDebug($"Calling PostJsonAsyncSS<isAliveRspPayload> with IsAliveReqPayload = {isAliveReqPayload}");
             var isAliveRspPayload=
-      await HttpClient.PostJsonAsyncSS<IsAliveRspPayload>(UriHelper.ToAbsoluteUri("IsAlive").ToString(), isAliveReqPayload);
+              await HttpClient.PostJsonAsyncSS<IsAliveRspPayload>(NavigationManager.ToAbsoluteUri("IsAlive").ToString(), isAliveReqPayload);
+              //await HttpClient.PostJsonAsyncSS<IsAliveRspPayload>(UriHelper.ToAbsoluteUri("IsAlive").ToString(), isAliveReqPayload);
             Log.LogDebug($"Returned from PostJsonAsyncSS<isAliveRspPayload> with isAliveRspPayload = {isAliveRspPayload}");
             Log.LogDebug($"Leaving IsAlive");
         }

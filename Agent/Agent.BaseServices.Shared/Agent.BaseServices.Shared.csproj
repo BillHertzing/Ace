@@ -22,7 +22,7 @@
   <!-- Packages to implement IL Weaving using Fody during the build process -->
   <ItemGroup>
     <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
-    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.118" />
     <ProjectReference Include="..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
   </ItemGroup>
   

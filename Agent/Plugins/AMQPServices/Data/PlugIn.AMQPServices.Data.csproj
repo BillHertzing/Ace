@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
-  
+
   <!-- Separate Property Group for Version Control -->
   <PropertyGroup>
     <!-- Assembly, File, and Package Information for this assembly-->
@@ -23,17 +22,20 @@
   <!-- Packages to implement IL Weaving using Fody during the build process -->
   <ItemGroup>
     <!-- Packages to implement ETW logging of method entry, method exit, and exceptions -->
-    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.113" />
-    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
+    <PackageReference Include="MethodBoundaryAspect.Fody" Version="2.0.118" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.6.1" />
+    <PackageReference Include="ServiceStack" Version="5.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Shared\PlugIn.AMQPServices.Shared.csproj" />
     <ProjectReference Include="..\Models\PlugIn.AMQPServices.Models.csproj" />
     <ProjectReference Include="..\Interfaces\PlugIn.AMQPServices.Interfaces.csproj" />
     <ProjectReference Include="..\PublicInterfaces\PlugIn.AMQPServices.PublicInterfaces.csproj" />
     <ProjectReference Include="..\StringConstants\PlugIn.AMQPServices.StringConstants.csproj" />
+    <ProjectReference Include="..\..\..\..\ATAP.Utilities\ATAP.Utilities\ATAP.Utilities.csproj" />
   </ItemGroup>
 
-  </Project>
+</Project>

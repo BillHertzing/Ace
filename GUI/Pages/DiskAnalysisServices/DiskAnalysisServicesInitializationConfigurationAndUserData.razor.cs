@@ -29,7 +29,7 @@ namespace Ace.AceGUI.Pages {
 
             var initializationRequest = new Ace.Plugin.DiskAnalysisServices.InitializationRequest(new Ace.Plugin.DiskAnalysisServices.InitializationRequestPayload(new Ace.Agent.BaseServices.InitializationData()));
             Logger.LogDebug($"Calling PostJsonAsyncSS<InitializationResponse> with InitializationRequest ={initializationRequest.Dump()}");
-            InitializationResponse=await HttpClient.PostJsonAsyncSS<Ace.Plugin.DiskAnalysisServices.InitializationResponse>(UriHelper.ToAbsoluteUri("DiskAnalysisServicesInitialization").ToString(),
+            InitializationResponse=await HttpClient.PostJsonAsyncSS<Ace.Plugin.DiskAnalysisServices.InitializationResponse>(NavigationManager.ToAbsoluteUri("DiskAnalysisServicesInitialization").ToString(),
                                 initializationRequest);
             Logger.LogDebug($"Returned from GetJsonAsync<Agent.BaseServices.InitializationResponse>, InitializationResponse = {InitializationResponse.Dump()}");
 
@@ -47,7 +47,7 @@ namespace Ace.AceGUI.Pages {
             SetConfigurationDataRequest setConfigurationDataRequest = new SetConfigurationDataRequest() { ConfigurationData=ConfigurationData, ConfigurationDataSave=ConfigurationDataSave };
             Logger.LogDebug($"Calling GetJsonAsync<SetConfigurationDataResponse> with SetConfigurationDataRequest = {setConfigurationDataRequest.Dump()}");
             SetConfigurationDataResponse setConfigurationDataResponse =
-      await HttpClient.PostJsonAsyncSS<SetConfigurationDataResponse>(UriHelper.ToAbsoluteUri("SetConfigurationData").ToString(),
+      await HttpClient.PostJsonAsyncSS<SetConfigurationDataResponse>(NavigationManager.ToAbsoluteUri("SetConfigurationData").ToString(),
                                                                                            setConfigurationDataRequest);
             Logger.LogDebug($"Returned from GetJsonAsync<SetConfigurationDataResponse> with setConfigurationDataResponse = {setConfigurationDataResponse.Dump()}");
             Logger.LogDebug($"Leaving SetConfigurationData");
