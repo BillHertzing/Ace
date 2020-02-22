@@ -1,6 +1,6 @@
 using System;
 using Itenso.TimePeriod;
-using ATAP.Utilities.ComputerHardware.Enumerations;
+using ATAP.Utilities.ComputerInventory.Enumerations;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ComponentModel;

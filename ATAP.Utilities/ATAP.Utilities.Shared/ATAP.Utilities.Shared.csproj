@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ATAP.Utilities.ComputerInventory.Enumerations.HardwareInfo" Version="1.0.*" />
+    <PackageReference Include="ATAP.Utilities.ComputerInventory.Enumerations.SoftwareInfo.FileSystem" Version="1.0.*" />
+    <PackageReference Include="ATAP.Utilities.ComputerInventory.Enumerations.ProcessInfo.RuntimePlatformLifetime" Version="1.0.*" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="ServiceStack.Text" Version="5.8.1" />
@@ -34,7 +37,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj" />
-    <ProjectReference Include="..\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
   </ItemGroup>
 
 </Project>

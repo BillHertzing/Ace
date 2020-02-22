@@ -1,5 +1,5 @@
 ﻿using System;
-using ATAP.Utilities.Runtime.Enumerations;
+using ATAP.Utilities.ComputerInventory.Enumerations;
 using System.Runtime.InteropServices;
 
 namespace ATAP.Utilities.Runtime {

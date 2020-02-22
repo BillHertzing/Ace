@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ATAP.Utilities.ConcurrentObservableCollections\ATAP.Utilities.ConcurrentObservableCollections.csproj" />
-    <ProjectReference Include="..\ATAP.Utilities.Enumerations\ATAP.Utilities.Enumerations.csproj" />
     <ProjectReference Include="..\ATAP.Utilities.Shared\ATAP.Utilities.Shared.csproj" />
     <ProjectReference Include="..\ATAP.Utilities.StringConstants\ATAP.Utilities.StringConstants.csproj" />
   </ItemGroup>

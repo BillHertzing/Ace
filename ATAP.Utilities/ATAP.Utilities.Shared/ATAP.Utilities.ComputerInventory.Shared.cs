@@ -1,4 +1,4 @@
-using ATAP.Utilities.ComputerHardware.Enumerations;
+using ATAP.Utilities.ComputerInventory.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using Itenso.TimePeriod;
 using System.Threading.Tasks;
 using System.Threading;
-using ATAP.Utilities.Database.Enumerations;
+using ATAP.Utilities.ComputerInventory.Enumerations;
 using ATAP.Utilities.DiskDrive;
 using ATAP.Utilities.TypedGuids;
 using ATAP.Utilities.ConcurrentObservableCollections;
