@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ServiceStack" Version="5.5.1" />
+    <PackageReference Include="ServiceStack" Version="5.9.2" />
     <PackageReference Include="Swordfish.NET.CollectionsV3" Version="3.0.0.1" />
   </ItemGroup>
   
